@@ -6,23 +6,36 @@
 #include "GameFramework/Character.h"
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
+//便于编译效率
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS() //Part of UE Property System
 class CHARMINGCRAFT_API ADCharacter : public ACharacter
 {
-	GENERATED_BODY()
+	GENERATED_BODY() //确保放在第一行
 
 public:
 	// Sets default values for this character's properties
 	ADCharacter();
+	/*
+	 * Constructor called when the Object is initialized
+	 * then call BeginPlay() when everything is loaded
+	 */
 
 protected:
-	// Called when the game starts or when spawned
+	// Called when the game starts or when spawned (or when the level load it)
 	virtual void BeginPlay() override;
 	/*
 	 * The override keyword is an optional keyword
 	 * used to indicate that a virtual function is
 	 * overridden in a derived class.
 	 */
+
+	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
+	USpringArmComponent* SpringArmComp;
+	UPROPERTY(VisibleAnywhere)
+	UCameraComponent* CameraComp;
 
 public:	
 	// Called every frame
