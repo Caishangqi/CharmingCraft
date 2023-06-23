@@ -32,6 +32,13 @@ protected:
 	 * overridden in a derived class.
 	 */
 
+	/*!
+	 * 角色的向前移动函数
+	 * @param value 传入scale值 0.0 - 1.0
+	 * 
+	 */
+	virtual void MoveForward(float value);
+
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)

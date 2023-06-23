@@ -26,6 +26,14 @@ void ADCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
+
+void ADCharacter::MoveForward(float value)
+{
+	// 先获取角色向前的向量，之后对这个向量进行 0 - 1 的scale
+	// 注意键盘只会输入 0 - 1,其本身工作原理就是提供 0 或者 1
+	AddMovementInput(GetActorForwardVector(),value);
+}
+
 // Called every frame
 void ADCharacter::Tick(float DeltaTime)
 {
@@ -36,4 +44,10 @@ void ADCharacter::Tick(float DeltaTime)
 void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	//绑定游戏内的轴，第一个参数是名字, 第二个参数是目标, 第三个参数是触发后激活的函数
+	PlayerInputComponent->BindAxis("MoveForward",this,&ADCharacter::MoveForward);
+
+	//绑定水平旋转, yaw是水平, pitch是垂直旋转, 这里用的Pawn上的方法
+	PlayerInputComponent->BindAxis("Turn",this,&APawn::AddControllerYawInput);
 }
