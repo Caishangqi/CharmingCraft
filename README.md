@@ -22,3 +22,4 @@ Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject
 ## 进度 Progress
 
 - 人物弹簧摄像机 `USpringArmComponent` 应用
+- 人物基于弹簧摄像头的绝对位移 应用
