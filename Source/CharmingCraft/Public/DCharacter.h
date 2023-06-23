@@ -38,6 +38,7 @@ protected:
 	 * 
 	 */
 	virtual void MoveForward(float value);
+	virtual void MoveRight(float value);
 
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
