@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DInteractionComponent.h"
 // Sets default values
 ADCharacter::ADCharacter()
 {
@@ -22,6 +23,8 @@ ADCharacter::ADCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true; //设置相机起始点？
 	bUseControllerRotationYaw = false;
+
+	InteractionComp = CreateDefaultSubobject<UDInteractionComponent>("InteractionComp");
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +57,11 @@ void ADCharacter::MoveRight(float value)
 
 	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 	AddMovementInput(RightVector, value);
+}
+
+void ADCharacter::PrimaryInteract()
+{
+	InteractionComp->PrimaryInteract();
 }
 
 void ADCharacter::PrimaryAttack()
@@ -95,7 +103,8 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	 */
 	PlayerInputComponent->BindAxis("MoveRight", this, &ADCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAction("Jump",IE_Pressed,this,&ADCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ADCharacter::Jump);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ADCharacter::PrimaryInteract);
 }

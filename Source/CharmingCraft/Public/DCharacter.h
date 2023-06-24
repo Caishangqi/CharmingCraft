@@ -9,6 +9,7 @@
 //便于编译效率
 class UCameraComponent;
 class USpringArmComponent;
+class UDInteractionComponent;
 
 UCLASS() //Part of UE Property System
 class CHARMINGCRAFT_API ADCharacter : public ACharacter
@@ -43,11 +44,14 @@ protected:
 	 */
 	virtual void MoveForward(float value);
 	virtual void MoveRight(float value);
+	virtual void PrimaryInteract();
 
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
+	UPROPERTY(VisibleAnywhere)
+	UDInteractionComponent* InteractionComp;
 
 public:	
 	// Called every frame
