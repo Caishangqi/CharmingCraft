@@ -61,7 +61,11 @@ void ADCharacter::PrimaryAttack()
 	/*!
 	 *	GetControlRotation() 得到玩家控制器的朝向, 就是对准方向
 	 */
-	FTransform SpawnTM = FTransform(GetControlRotation(), GetActorLocation());
+
+	// 人物骨架上可以有插槽 socket
+	FVector GunLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+	FTransform SpawnTM = FTransform(GetControlRotation(), GunLocation);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	//先从世界生成投射物
