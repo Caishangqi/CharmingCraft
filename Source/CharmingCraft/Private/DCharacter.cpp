@@ -56,11 +56,24 @@ void ADCharacter::MoveRight(float value)
 	AddMovementInput(RightVector, value);
 }
 
+void ADCharacter::PrimaryAttack()
+{
+	/*!
+	 *	GetControlRotation() 得到玩家控制器的朝向, 就是对准方向
+	 */
+	FTransform SpawnTM = FTransform(GetControlRotation(), GetActorLocation());
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//先从世界生成投射物
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+}
+
 // Called every frame
 void ADCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
 
 // Called to bind functionality to input
 void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -78,4 +91,6 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	 */
 	PlayerInputComponent->BindAxis("MoveRight", this, &ADCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADCharacter::PrimaryAttack);
 }
