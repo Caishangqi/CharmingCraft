@@ -55,8 +55,9 @@ void UDInteractionComponent::PrimaryInteract()
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
 
-
-	GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams); //这个函数后填满了Hit信息
+	//是否击中,这个也可以不需要返回值也能正常运行
+	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
+	//这个函数后填满了Hit信息
 	AActor* HitActor = Hit.GetActor();
 	if (HitActor)
 	{
@@ -66,4 +67,6 @@ void UDInteractionComponent::PrimaryInteract()
 			IDGameplayInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
 		}
 	}
+	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
 }
