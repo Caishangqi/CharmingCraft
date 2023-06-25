@@ -23,7 +23,10 @@ Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject
 
 - 人物弹簧摄像机 `USpringArmComponent` 应用
 - 人物基于弹簧摄像头的绝对位移 应用
+- 基于C++的投射物蓝图模板实现
+- 交互接口以及人物交互功能
+- 基于交互接口实现的开宝箱功能及动画
 
-## 白嫖 Resourced
+## 白嫖 BaiPiao
 
 - 链接在[这里](https://www.modongwang.com/)
