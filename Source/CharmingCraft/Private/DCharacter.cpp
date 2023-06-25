@@ -66,6 +66,21 @@ void ADCharacter::PrimaryInteract()
 
 void ADCharacter::PrimaryAttack()
 {
+	//攻击动画
+	PlayAnimMontage(AttackAnim);
+	//先放动画再放延迟代码施法
+	/*
+	 *	第一个参数是时间处理器,包含在玩家对象内(以创建),注意在延迟后要把计时器清零
+	 *	第二个参数是谁调用了这个函数,这里是玩家
+	 *	第三个参数是在这个计时结束后调用的函数,这里把攻击封装到了ADCharacter::PrimaryAttack_TimeElapsed()
+	 *	第四个参数是延迟
+	 */
+	GetWorldTimerManager().SetTimer(TimeHandle_PrimaryAttack, this, &ADCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+	GetWorldTimerManager().ClearTimer(TimeHandle_PrimaryAttack);
+}
+
+void ADCharacter::PrimaryAttack_TimeElapsed()
+{
 	/*!
 	 *	GetControlRotation() 得到玩家控制器的朝向, 就是对准方向
 	 */

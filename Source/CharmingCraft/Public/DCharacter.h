@@ -10,16 +10,20 @@
 class UCameraComponent;
 class USpringArmComponent;
 class UDInteractionComponent;
+class UAnimMontage;
 
 UCLASS() //Part of UE Property System
 class CHARMINGCRAFT_API ADCharacter : public ACharacter
 {
 	GENERATED_BODY() //确保放在第一行
 protected:
-
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> ProjectileClass; //stack 上的变量，在UE编辑器中被指定抛射物
+	UPROPERTY(EditAnywhere, Category= "Attack")
+	UAnimMontage* AttackAnim;
+	FTimerHandle TimeHandle_PrimaryAttack;
 	
+
 public:
 	// Sets default values for this character's properties
 	ADCharacter();
@@ -53,12 +57,12 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UDInteractionComponent* InteractionComp;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void PrimaryAttack();
+	void PrimaryAttack_TimeElapsed();
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
