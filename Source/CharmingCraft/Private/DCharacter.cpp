@@ -76,29 +76,52 @@ void ADCharacter::PrimaryAttack()
 	 *	第四个参数是延迟
 	 */
 	GetWorldTimerManager().SetTimer(TimeHandle_PrimaryAttack, this, &ADCharacter::PrimaryAttack_TimeElapsed, 0.2f);
-	GetWorldTimerManager().ClearTimer(TimeHandle_PrimaryAttack);
+	//GetWorldTimerManager().ClearTimer(TimeHandle_PrimaryAttack);
+	UE_LOG(LogTemp, Warning, TEXT("Start Animation AActor"));
 }
 
 void ADCharacter::PrimaryAttack_TimeElapsed()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Enter PrimaryAttack_TimeElapsed"));
 	/*!
 	 *	GetControlRotation() 得到玩家控制器的朝向, 就是对准方向
 	 */
 
 	// 人物骨架上可以有插槽 socket
-	FVector GunLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	FVector const GunLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FTransform SpawnTM = FTransform(GetControlRotation(), GunLocation);
+	FTransform const SpawnTM = FTransform(GetControlRotation(), GunLocation);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//指定发射 Instigator 是玩家自己
+	SpawnParams.Instigator = this;
 	//先从世界生成投射物
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
+	UE_LOG(LogTemp, Warning, TEXT("Start Generate AActor"));
 }
 
 // Called every frame
 void ADCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// -- Rotation Visualization -- //
+	const float DrawScale = 100.0f;
+	const float Tickness = 5.0f;
+
+	FVector LineStart = GetActorLocation();
+	// Offset to the right of spawn
+	LineStart += GetActorRightVector() * 100.0f;
+	// Set Line end in direction of the actor's forward
+	FVector ActorDirection_LineEnd = LineStart + (GetActorForwardVector() * 100);
+	// Draw Actor's Direction
+	DrawDebugDirectionalArrow(GetWorld(), LineStart, ActorDirection_LineEnd, DrawScale, FColor::Yellow, false, 0.0f, 0,
+	                          Tickness);
+
+	FVector ControllerDirection_LineEnd = LineStart + (GetControlRotation().Vector() * 100.0f);
+	// Draw Controller's Rotation {'PlayerController' that 'possessed' this character}
+	DrawDebugDirectionalArrow(GetWorld(), LineStart, ControllerDirection_LineEnd, DrawScale, FColor::Green, false, 0.0f,
+	                          0, Tickness);
 }
 
 

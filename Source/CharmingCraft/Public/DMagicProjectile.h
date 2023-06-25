@@ -14,37 +14,35 @@ UCLASS()
 class CHARMINGCRAFT_API ADMagicProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ADMagicProjectile();
 
 protected:
-
 	/*
 	 *	球碰撞体积组件
 	 */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	USphereComponent* SphereComp;
 
 	/*
 	 *	投射物运动组件
 	 *	这个组件给予一个初速度, 然后直线行走
 	 */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UProjectileMovementComponent* MovementComp;
 
 	/*
 	 *	粒子组件
 	 */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UParticleSystemComponent* EffectComp;
-	
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };
