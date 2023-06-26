@@ -53,9 +53,12 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 		// 假如打到墙壁, 但是墙壁没有这个类型的Component,因此还需要一个if判断
 		if (AttributeComp)
 		{
+			// 调用 Actor(这个里是DCharactor也就是玩家)上的类型为UDAttributeComponent组件
 			AttributeComp->ApplyHealthChange(-20.0f); // -20 血
+			// 因为这个 AttributeComp 实例化在玩家Actor中,所以改变AttributeComp中的Health就相当于改变了玩家的血量
+			// 这是解耦很重要的一环
 
-			Destroy();
+			Destroy(); //完成任务后就可以摧毁这个弹射物了
 		}
 	}
 }

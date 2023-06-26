@@ -26,7 +26,7 @@ ADCharacter::ADCharacter()
 	bUseControllerRotationYaw = false;
 
 	InteractionComp = CreateDefaultSubobject<UDInteractionComponent>("InteractionComp");
-
+	// 初始化 UDAttributeComponent 
 	AttributeComp = CreateDefaultSubobject<UDAttributeComponent>("AttributeComp");
 }
 

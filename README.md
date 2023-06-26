@@ -26,7 +26,12 @@ Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject
 - 基于C++的投射物蓝图模板实现
 - 交互接口以及人物交互功能
 - 基于交互接口实现的开宝箱功能及动画
+- 基于C++的 `Actor Component` 解耦人物属性
 
-## 白嫖 BaiPiao
+## 概念,设计模式,和知识点
 
-- 链接在[这里](https://www.modongwang.com/)
+- 项目 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki)
+
+## 资源 Resource
+
+- 链接在 [这里](https://www.modongwang.com/)
