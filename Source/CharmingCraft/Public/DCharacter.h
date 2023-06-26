@@ -11,6 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UDInteractionComponent;
 class UAnimMontage;
+class UDAttributeComponent;
 
 UCLASS() //Part of UE Property System
 class CHARMINGCRAFT_API ADCharacter : public ACharacter
@@ -22,7 +23,6 @@ protected:
 	UPROPERTY(EditAnywhere, Category= "Attack")
 	UAnimMontage* AttackAnim;
 	FTimerHandle TimeHandle_PrimaryAttack;
-	
 
 public:
 	// Sets default values for this character's properties
@@ -56,6 +56,12 @@ protected:
 	UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 	UDInteractionComponent* InteractionComp;
+
+	/*
+	 *	属性组件
+	 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
+	UDAttributeComponent* AttributeComp;
 
 public:
 	// Called every frame

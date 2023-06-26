@@ -3,6 +3,7 @@
 
 #include "DCharacter.h"
 
+#include "DAttributeComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -25,6 +26,8 @@ ADCharacter::ADCharacter()
 	bUseControllerRotationYaw = false;
 
 	InteractionComp = CreateDefaultSubobject<UDInteractionComponent>("InteractionComp");
+
+	AttributeComp = CreateDefaultSubobject<UDAttributeComponent>("AttributeComp");
 }
 
 // Called when the game starts or when spawned
