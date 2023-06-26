@@ -49,6 +49,16 @@ void ADExplosiveBarrel::OnActorHit(UPrimitiveComponent* HitComponent, AActor* Ot
                                    UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	ForceComp->FireImpulse(); // Fire the impulse
+
+	UE_LOG(LogTemp, Log, TEXT("OnActorHit in Explosive Barrel"));
+
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor),
+	       GetWorld()->TimeSeconds)
+	FString const CombineString = FString::Printf(TEXT("Hit at location: %s"), *Hit.ImpactPoint.ToString());
+	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombineString, nullptr, FColor::Green, 2.0f, true);
+
+	// Detailed information on logging in UE
+	// logs-printing-message-to-yourself-during-runtime
 }
 
 // Called every frame
