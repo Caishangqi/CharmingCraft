@@ -45,7 +45,7 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
                                        const FHitResult& SweepResult)
 {
 	//Check the other actor, collision one is not null
-	if (OtherActor)
+	if (OtherActor && OtherActor!= GetInstigator())
 	{
 		// 找到击中的组件并且在这个组件身上找到UDAttributeComponent这个组件
 		UDAttributeComponent* AttributeComp = Cast<UDAttributeComponent>(
