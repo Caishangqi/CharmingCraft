@@ -36,7 +36,10 @@ void UDAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 bool UDAttributeComponent::ApplyHealthChange(float const Delta)
 {
-	Health += Delta;
 
+	
+	Health += Delta;
+	//播放事件, 触发事件
+	OnHealthChanged.Broadcast(nullptr,this,Health,Delta);
 	return true;
 }
