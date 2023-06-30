@@ -27,10 +27,18 @@ Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject
 - 交互接口以及人物交互功能
 - 基于交互接口实现的开宝箱功能及动画
 - 基于C++的 `Actor Component` 解耦人物属性
+- 使用 Tick() 事件刷新的血量显示
+- 使用事件绑定触发的血量刷新和显示 (改进)
+- 基于事件绑定和UI参数暴露实现血条衰减
+- 基于动画系统实现的数字动画
+- 基于数学函数的动态材质
+- 在击中时使材质发亮,显示高光
 
 ## 概念,设计模式,和知识点
-
-- 项目 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki)
+以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示。
+- [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
+- [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
+- [解耦和设计模式](https://github.com/Caishangqi/CharmingCraft/wiki/Decoupling-and-Actor-Component)
 
 ## 资源 Resource
 
