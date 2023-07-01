@@ -3,6 +3,9 @@
 
 #include "DActionComponent.h"
 
+#include "DAction.h"
+
+
 // Sets default values for this component's properties
 UDActionComponent::UDActionComponent()
 {
@@ -20,15 +23,54 @@ void UDActionComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
 // Called every frame
-void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                      FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
 
+void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)
+{
+	if (!ensure(ActionClass))
+	{
+		return;
+	}
+
+	UDAction* NewAction = NewObject<UDAction>(this, ActionClass);
+	if (ensure(NewAction))
+	{
+		Actions.Add(NewAction);
+	}
+}
+
+bool UDActionComponent::StartActionByName(AActor* Instigator, const FName ActionName)
+{
+	for (UDAction* Action : Actions)
+	{
+		if (Action && Action->ActionName == ActionName)
+		{
+			Action->StartAction(Instigator);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UDActionComponent::StopActionByName(AActor* Instigator, const FName ActionName)
+{
+	for (UDAction* Action : Actions)
+	{
+		if (Action && Action->ActionName == ActionName)
+		{
+			Action->StopAction(Instigator);
+			return true;
+		}
+	}
+	return false;
+}

@@ -3,6 +3,7 @@
 
 #include "DCharacter.h"
 
+#include "DActionComponent.h"
 #include "DAttributeComponent.h"
 #include "DDashProjectile.h"
 #include "Camera/CameraComponent.h"
@@ -29,6 +30,12 @@ ADCharacter::ADCharacter()
 	InteractionComp = CreateDefaultSubobject<UDInteractionComponent>("InteractionComp");
 	// 初始化 UDAttributeComponent 
 	AttributeComp = CreateDefaultSubobject<UDAttributeComponent>("AttributeComp");
+	MovementComponent = CreateDefaultSubobject<
+		UCharacterMovementComponent>("MovementComponent");
+	/*
+	 *	AbilityComponent System
+	 */
+	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComponent");
 }
 
 // Called when the game starts or when spawned
@@ -115,6 +122,16 @@ void ADCharacter::Dash_TimeElapsed()
 	//SpawnProjectile(ADDashProjectile);
 }
 
+void ADCharacter::SprintStart()
+{
+	ActionComponent->StartActionByName(this, "Sprint");
+}
+
+void ADCharacter::SprintStop()
+{
+	ActionComponent->StopActionByName(this, "Sprint");
+}
+
 void ADCharacter::PrimaryAttack()
 {
 	//攻击动画
@@ -196,4 +213,7 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ADCharacter::PrimaryInteract);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ADCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ADCharacter::SprintStop);
 }

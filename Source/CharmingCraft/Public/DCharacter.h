@@ -6,12 +6,14 @@
 #include "GameFramework/Character.h"
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
+
 //便于编译效率
 class UCameraComponent;
 class USpringArmComponent;
 class UDInteractionComponent;
 class UAnimMontage;
 class UDAttributeComponent;
+class UDActionComponent;
 
 UCLASS() //Part of UE Property System
 class CHARMINGCRAFT_API ADCharacter : public ACharacter
@@ -51,6 +53,8 @@ protected:
 	virtual void PrimaryInteract();
 	virtual void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 	virtual void Dash_TimeElapsed();
+	virtual void SprintStart();
+	virtual void SprintStop();
 
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
@@ -64,6 +68,15 @@ protected:
 	 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UDAttributeComponent* AttributeComp;
+
+	/*
+	 *	AbilityComponent System
+	 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
+	UDActionComponent* ActionComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
+	UCharacterMovementComponent* MovementComponent;
 
 public:
 	// Called every frame
