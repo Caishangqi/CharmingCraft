@@ -4,6 +4,7 @@
 #include "DCharacter.h"
 
 #include "DAttributeComponent.h"
+#include "DDashProjectile.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -65,6 +66,53 @@ void ADCharacter::MoveRight(float value)
 void ADCharacter::PrimaryInteract()
 {
 	InteractionComp->PrimaryInteract();
+}
+
+void ADCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+	if (ensureAlways(ClassToSpawn))
+	{
+		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Instigator = this;
+
+		FCollisionShape Shape;
+		Shape.SetSphere(20.0f);
+
+		// Ignore Player collision
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+
+		FCollisionObjectQueryParams ObjParams;
+		ObjParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjParams.AddObjectTypesToQuery(ECC_WorldStatic);
+
+		FVector TraceStart = CameraComp->GetComponentLocation();
+		// endpoint far into the look-at distance (not too far, still adjust somewhat towards cross hair on a miss)
+		FVector TraceEnd = CameraComp->GetComponentLocation() + (GetControlRotation().Vector() * 5000);
+
+		FHitResult Hit;
+		// Return true if we go to a blocking hit
+		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
+		{
+			// Overwrite trace end with impact point in the world
+			TraceEnd = Hit.ImpactPoint;
+		}
+
+		// Find new direction/rotation from Hand pointing to impact point in world
+		FRotator ProjRotation = FRotationMatrix::MakeFromX(TraceEnd - HandLocation).Rotator();
+
+		FTransform SpawnTM = FTransform(ProjRotation, HandLocation);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn, SpawnTM, SpawnParams);
+	}
+}
+
+void ADCharacter::Dash_TimeElapsed()
+{
+	//SpawnProjectile(ADDashProjectile);
 }
 
 void ADCharacter::PrimaryAttack()

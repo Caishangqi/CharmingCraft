@@ -49,6 +49,8 @@ protected:
 	virtual void MoveForward(float value);
 	virtual void MoveRight(float value);
 	virtual void PrimaryInteract();
+	virtual void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+	virtual void Dash_TimeElapsed();
 
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
