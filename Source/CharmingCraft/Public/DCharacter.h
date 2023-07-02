@@ -48,8 +48,8 @@ protected:
 	 * @param value 传入scale值 0.0 - 1.0
 	 * 
 	 */
-	virtual void MoveForward(float value);
-	virtual void MoveRight(float value);
+	virtual void MoveForward(float Value);
+	virtual void MoveRight(float Value);
 	virtual void PrimaryInteract();
 	virtual void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 	virtual void Dash_TimeElapsed();

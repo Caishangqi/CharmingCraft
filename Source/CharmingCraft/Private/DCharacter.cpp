@@ -19,7 +19,7 @@ ADCharacter::ADCharacter()
 	SpringArmComp->bUsePawnControlRotation = true; //  使用控制器的位置对Pawn进行操控
 	//	确保弹簧和网格体/角色本身相连
 	SpringArmComp->SetupAttachment(RootComponent); //  层级中第一个组件,最上面的 (胶囊体组件)
-	
+
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	//	确保摄像机连接到弹簧上面
 	CameraComp->SetupAttachment(SpringArmComp);
@@ -45,7 +45,7 @@ void ADCharacter::BeginPlay()
 }
 
 
-void ADCharacter::MoveForward(float value)
+void ADCharacter::MoveForward(float Value)
 {
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
@@ -53,10 +53,10 @@ void ADCharacter::MoveForward(float value)
 
 	// 先获取角色向前的向量，之后对这个向量进行 0 - 1 的scale
 	// 注意键盘只会输入 0 - 1,其本身工作原理就是提供 0 或者 1
-	AddMovementInput(ControlRot.Vector(), value);
+	AddMovementInput(ControlRot.Vector(), Value);
 }
 
-void ADCharacter::MoveRight(float value)
+void ADCharacter::MoveRight(float Value)
 {
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
@@ -67,7 +67,7 @@ void ADCharacter::MoveRight(float value)
 	// Z = Up (Blue)
 
 	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
-	AddMovementInput(RightVector, value);
+	AddMovementInput(RightVector, Value);
 }
 
 void ADCharacter::PrimaryInteract()
@@ -100,7 +100,7 @@ void ADCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		FVector TraceStart = CameraComp->GetComponentLocation();
 		// endpoint far into the look-at distance (not too far, still adjust somewhat towards cross hair on a miss)
 		FVector TraceEnd = CameraComp->GetComponentLocation() + (GetControlRotation().Vector() * 5000);
-
+		
 		FHitResult Hit;
 		// Return true if we go to a blocking hit
 		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
@@ -134,9 +134,8 @@ void ADCharacter::SprintStop()
 
 void ADCharacter::PrimaryAttack()
 {
-
 	ActionComponent->StartActionByName(this, "PrimaryAttack");
-	
+
 	//攻击动画
 	//PlayAnimMontage(AttackAnim);
 	//先放动画再放延迟代码施法
