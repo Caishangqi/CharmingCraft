@@ -32,6 +32,10 @@ public:
 	UDActionComponent();
 
 protected:
+	/** Granted abilities at game start */
+	UPROPERTY(EditAnywhere, Category = "Actions")
+	TArray<TSubclassOf<UDAction>> DefaultActions;
+
 	// List of actions
 	UPROPERTY() // When we deal with pointers to actions, we want to let UE handle
 	TArray<UDAction*> Actions;

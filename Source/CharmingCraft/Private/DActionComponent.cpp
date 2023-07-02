@@ -22,6 +22,10 @@ void UDActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	for (TSubclassOf<UDAction> ActionClass : DefaultActions)
+	{
+		AddAction(ActionClass);
+	}
 	// ...
 }
 

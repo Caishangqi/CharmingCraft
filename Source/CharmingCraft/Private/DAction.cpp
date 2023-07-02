@@ -11,3 +11,15 @@ void UDAction::StartAction_Implementation(AActor* Instigator)
 void UDAction::StopAction_Implementation(AActor* Instigator)
 {
 }
+
+UWorld* UDAction::GetWorld() const
+{
+	// Outer is set when creating action via NewObject<T>
+	UActorComponent* Comp = Cast<UActorComponent>(GetOuter());
+	if (Comp)
+	{
+		return Comp->GetWorld();
+	}
+
+	return nullptr;
+}

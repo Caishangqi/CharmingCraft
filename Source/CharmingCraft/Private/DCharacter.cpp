@@ -15,16 +15,16 @@ ADCharacter::ADCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp"); //范形是对象类型，括号内给名字，这个名字会在编辑器显示而已
-	SpringArmComp->bUsePawnControlRotation = true; //使用控制器的位置对Pawn进行操控
-	//确保弹簧和网格体/角色本身相连
-	SpringArmComp->SetupAttachment(RootComponent); //层级中第一个组件,最上面的 (胶囊体组件)
-
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp"); //  范形是对象类型，括号内给名字，这个名字会在编辑器显示而已
+	SpringArmComp->bUsePawnControlRotation = true; //  使用控制器的位置对Pawn进行操控
+	//	确保弹簧和网格体/角色本身相连
+	SpringArmComp->SetupAttachment(RootComponent); //  层级中第一个组件,最上面的 (胶囊体组件)
+	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
-	//确保摄像机连接到弹簧上面
+	//	确保摄像机连接到弹簧上面
 	CameraComp->SetupAttachment(SpringArmComp);
 
-	GetCharacterMovement()->bOrientRotationToMovement = true; //设置相机起始点？
+	GetCharacterMovement()->bOrientRotationToMovement = true; //  设置相机起始点？
 	bUseControllerRotationYaw = false;
 
 	InteractionComp = CreateDefaultSubobject<UDInteractionComponent>("InteractionComp");
@@ -134,8 +134,11 @@ void ADCharacter::SprintStop()
 
 void ADCharacter::PrimaryAttack()
 {
+
+	ActionComponent->StartActionByName(this, "PrimaryAttack");
+	
 	//攻击动画
-	PlayAnimMontage(AttackAnim);
+	//PlayAnimMontage(AttackAnim);
 	//先放动画再放延迟代码施法
 	/*
 	 *	第一个参数是时间处理器,包含在玩家对象内(以创建),注意在延迟后要把计时器清零
@@ -143,9 +146,9 @@ void ADCharacter::PrimaryAttack()
 	 *	第三个参数是在这个计时结束后调用的函数,这里把攻击封装到了ADCharacter::PrimaryAttack_TimeElapsed()
 	 *	第四个参数是延迟
 	 */
-	GetWorldTimerManager().SetTimer(TimeHandle_PrimaryAttack, this, &ADCharacter::PrimaryAttack_TimeElapsed, 0.2f);
+	//GetWorldTimerManager().SetTimer(TimeHandle_PrimaryAttack, this, &ADCharacter::PrimaryAttack_TimeElapsed, 0.2f);
 	//GetWorldTimerManager().ClearTimer(TimeHandle_PrimaryAttack);
-	UE_LOG(LogTemp, Warning, TEXT("Start Animation AActor"));
+	//UE_LOG(LogTemp, Warning, TEXT("Start Animation AActor"));
 }
 
 void ADCharacter::PrimaryAttack_TimeElapsed()

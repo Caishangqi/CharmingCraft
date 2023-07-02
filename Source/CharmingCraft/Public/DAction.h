@@ -10,17 +10,18 @@
  * 
  */
 
+class UWorld;
 /*
  *	Because we drive the Class from UObject, without UCLASS(Blueprintable), we can
  *	not make child classes from as Action
  */
-UCLASS(Blueprintable) 
+
+UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UDAction : public UObject
 {
 	GENERATED_BODY()
 
 public:
-
 	/* Action nickname to start/stop without a reference to the object */
 	UPROPERTY(EditDefaultsOnly, Category= "Action")
 	FName ActionName; // FName is hashed used in game, highly optimized
@@ -34,10 +35,10 @@ public:
 	 */
 	UFUNCTION(BlueprintNativeEvent, Category= "Action")
 	void StartAction(AActor* Instigator); // Passing who is responsible for starting the action
-	
-	
+
+
 	UFUNCTION(BlueprintNativeEvent, Category= "Action")
 	void StopAction(AActor* Instigator);
 
-	
+	virtual UWorld* GetWorld() const override;
 };
