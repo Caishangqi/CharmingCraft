@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "DActionComponent.generated.h"
 
@@ -10,6 +11,7 @@
  *	Action Component Holds the actions we want to able to use
  *	The main goal of Action Component is to keep a list of actions
  */
+
 
 class UDAction;
 
@@ -19,6 +21,16 @@ class CHARMINGCRAFT_API UDActionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+
+	/*
+	 *	GameTag System
+	 *	We can not use forwards declaration because it is a struct and
+	 *	the compiler need to know the size of the struct, if it is a
+	 *	pointer(same size) it do not need to know
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Tags")
+	FGameplayTagContainer ActiveGamePlayTags;
+	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	void AddAction(TSubclassOf<UDAction> ActionClass);
 

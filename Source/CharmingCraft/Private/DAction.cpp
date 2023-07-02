@@ -6,10 +6,36 @@
 void UDAction::StartAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));
+
+	// Find the ActionComponent we belong to, and apply the tag to that
+
+	UDActionComponent* Comp = GetOwningComponent();
+	Comp->ActiveGamePlayTags.AppendTags(GrantsTags);
+
+	bIsRunning = true;
 }
 
 void UDAction::StopAction_Implementation(AActor* Instigator)
 {
+	UDActionComponent* Comp = GetOwningComponent();
+	Comp->ActiveGamePlayTags.RemoveTags(GrantsTags);
+
+	bIsRunning = false;
+}
+
+bool UDAction::CanStart_Implementation(AActor* Instigator)
+{
+	if (IsRunning())
+	{
+		return false;
+	}
+
+	const UDActionComponent* Comp = GetOwningComponent();
+	if (Comp->ActiveGamePlayTags.HasAny(BlockedTags))
+	{
+		return false;
+	}
+	return true;
 }
 
 UWorld* UDAction::GetWorld() const
@@ -22,4 +48,15 @@ UWorld* UDAction::GetWorld() const
 	}
 
 	return nullptr;
+}
+
+
+UDActionComponent* UDAction::GetOwningComponent() const
+{
+	return Cast<UDActionComponent>(GetOuter());
+}
+
+bool UDAction::IsRunning() const
+{
+	return bIsRunning;
 }
