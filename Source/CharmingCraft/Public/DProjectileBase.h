@@ -27,11 +27,23 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category= "Effects")
 	UParticleSystem* ImpactVFX;
 
+	/*
+	 *	球碰撞体积组件
+	 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	USphereComponent* SphereComp;
 
+	/*
+	 *	投射物运动组件
+	 *	这个组件给予一个初速度, 然后直线行走
+	 */
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UProjectileMovementComponent* MoveComp;
+
+	/*
+	 *	粒子组件
+	 */
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UParticleSystemComponent* EffectComp;

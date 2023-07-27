@@ -3,6 +3,7 @@
 
 #include "DMagicProjectile.h"
 
+#include "DActionComponent.h"
 #include "DAttributeComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -24,11 +25,11 @@ ADMagicProjectile::ADMagicProjectile()
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
 	EffectComp->SetupAttachment(SphereComp);
 
-	MovementComp = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComp");
-	MovementComp->InitialSpeed = 1000.0f;
-	MovementComp->bRotationFollowsVelocity = true;
-	MovementComp->bInitialVelocityInLocalSpace = true;
-	MovementComp->ProjectileGravityScale = 0.0f;
+
+	MoveComp->InitialSpeed = 1000.0f;
+	MoveComp->bRotationFollowsVelocity = true;
+	MoveComp->bInitialVelocityInLocalSpace = true;
+	MoveComp->ProjectileGravityScale = 0.0f;
 
 	// 当弹道的球状Component碰撞到角色时对健康值做出改变
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ADMagicProjectile::OnActorOverlap);
@@ -45,11 +46,35 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
                                        const FHitResult& SweepResult)
 {
 	//Check the other actor, collision one is not null
-	if (OtherActor && OtherActor!= GetInstigator())
+	if (OtherActor && OtherActor != GetInstigator())
 	{
 		// 找到击中的组件并且在这个组件身上找到UDAttributeComponent这个组件
 		UDAttributeComponent* AttributeComp = Cast<UDAttributeComponent>(
 			OtherActor->GetComponentByClass(UDAttributeComponent::StaticClass())); // StaticClass() 允许传入类作为参数
+
+		/* 比较不实用的方法,破坏了耦合性 */
+		//static FGameplayTag Tag = FGameplayTag::RequestGameplayTag("Status.Parrying");
+
+		/* 如果玩家身上有标签,那么可以抵挡这次攻击 (建议方法)
+		 * <see cref = "ADMagicProjectile.ParryTag" />
+		 * 在这个方法中,我们可以暴露ParryTag,从而在编辑器中
+		 * 编辑和操作
+		 */
+		UDActionComponent* ActionComp = Cast<UDActionComponent>(
+			OtherActor->GetComponentByClass(UDActionComponent::StaticClass()));
+		if (ActionComp && ActionComp->ActiveGamePlayTags.HasTag(ParryTag))
+		{
+			/* 反弹这次攻击,因为我们在 DMagicProjectiles.cpp 中设置了
+			 * MoveComp->bRotationFollowsVelocity = true;,所以Rotation
+			 * 也会跟随一起改变
+			 */
+			MoveComp->Velocity = -MoveComp->Velocity;
+			/* 让这次攻击的煽动者成为玩家 */
+			SetInstigator(Cast<APawn>(OtherActor));
+			return;
+		}
+
+
 		// 假如打到墙壁, 但是墙壁没有这个类型的Component,因此还需要一个if判断
 		if (AttributeComp)
 		{
