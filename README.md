@@ -4,7 +4,7 @@
 <img src = "https://github.com/Caishangqi/minecraft-modpack-charmingcraft-journey/assets/39553613/290e0607-2e2a-4f35-9149-6abfe15459f7">
 </p>
 
-<h4 align="center">Concurrent Development of Game Project from Minecraft ModPack and  made by Unreal 5</h4>
+<h4 align="center">Concurrent Development of Game Project from Minecraft ModPack and made by Unreal 5</h4>
 <p align="center">
 <a href="https://www.codefactor.io/repository/github/caishangqi/charmingcraft"><img src="https://www.codefactor.io/repository/github/caishangqi/minecraft-modpack-charmingcraft-journey/badge" alt="CodeFactor" /></a>
 <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Caishangqi/CharmingCraft">
@@ -14,10 +14,15 @@
 </p>
 
 ## 介绍 Introduction
-The project is a replica of the Minecraft modpack called Charming Craft, utilizing Unreal Engine 5 to replicate both the content and gameplay. As the first C++ game project, this endeavor encompasses numerous areas of inefficiency and room for improvement. Additionally, there is a comprehensive wiki documenting noteworthy aspects of Unreal Engine.
+
+The project is a replica of the Minecraft modpack called Charming Craft, utilizing Unreal Engine 5 to replicate both the
+content and gameplay. As the first C++ game project, this endeavor encompasses numerous areas of inefficiency and room
+for improvement. Additionally, there is a comprehensive wiki documenting noteworthy aspects of Unreal Engine.
 
 ## 构建 Build
-Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject file` to build. All dependency is on this repository.
+
+Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject file` to build. All dependency is on
+this repository.
 
 ## 进度 Progress
 
@@ -32,12 +37,17 @@ Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject
 - 基于事件绑定和UI参数暴露实现血条衰减
 - 基于动画系统实现的数字动画
 - 基于数学函数的动态材质
+- 使用游戏标签 GameTags 实现箱子和钥匙
+- 使用游戏标签 GameTags 实现格挡技能 (R) 键
 - 在击中时使材质发亮,显示高光
 
-- Episodes 35,67 ...
+- Episodes 35,70 ...
 
 ## 概念,设计模式,和知识点
-以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示。
+
+以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki
+**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示。
+
 - [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
 - [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
 - [解耦和设计模式](https://github.com/Caishangqi/CharmingCraft/wiki/Decoupling-and-Actor-Component)

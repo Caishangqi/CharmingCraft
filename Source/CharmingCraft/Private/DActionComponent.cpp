@@ -21,7 +21,9 @@ UDActionComponent::UDActionComponent()
 void UDActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	/* 把从编辑器设置的 DefaultActions 中的内容添加到 Actions中
+	 * @see UDActionComponent.Actions 内容
+	 */
 	for (TSubclassOf<UDAction> ActionClass : DefaultActions)
 	{
 		AddAction(ActionClass);
@@ -43,11 +45,15 @@ void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)
 {
+	/* 安全的空指针判断 */
 	if (!ensure(ActionClass))
 	{
 		return;
 	}
 
+	/* 实例化 UDAction, outer可以理解成包裹的类,这样在 UDAction中就可以
+	 * .GetOuter()获取 UDActionComponent 了.
+	 */
 	UDAction* NewAction = NewObject<UDAction>(this, ActionClass);
 	if (ensure(NewAction))
 	{

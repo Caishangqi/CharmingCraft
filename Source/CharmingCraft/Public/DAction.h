@@ -37,6 +37,8 @@ public:
 	 *
 	 *	Also, because we mark this BlueprintNativeEvent, the implementation will be
 	 *	_Implementation
+	 *
+	 *	@see UDAction::StartAction_Implementation(AActor* Instigator)
 	 */
 	UFUNCTION(BlueprintNativeEvent, Category= "Action")
 	void StartAction(AActor* Instigator); // Passing who is responsible for starting the action
