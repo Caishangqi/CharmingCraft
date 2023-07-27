@@ -31,6 +31,7 @@ bool UDAction::CanStart_Implementation(AActor* Instigator)
 	}
 
 	const UDActionComponent* Comp = GetOwningComponent();
+	/* 如果在激活的标签中发现应该禁止的, 则禁止不能启动该动作。 */
 	if (Comp->ActiveGamePlayTags.HasAny(BlockedTags))
 	{
 		return false;
