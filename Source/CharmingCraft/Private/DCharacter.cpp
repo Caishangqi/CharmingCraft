@@ -50,6 +50,7 @@ void ADCharacter::MoveForward(float Value)
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
 	ControlRot.Roll = 0.0f;
+	ControlRot.Yaw = 0.0f;
 
 	// 先获取角色向前的向量，之后对这个向量进行 0 - 1 的scale
 	// 注意键盘只会输入 0 - 1,其本身工作原理就是提供 0 或者 1
@@ -61,6 +62,7 @@ void ADCharacter::MoveRight(float Value)
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
 	ControlRot.Roll = 0.0f;
+	ControlRot.Yaw = 0.0f;
 
 	// X = Forward (Red)
 	// Y = Right (Green)
@@ -100,7 +102,7 @@ void ADCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		FVector TraceStart = CameraComp->GetComponentLocation();
 		// endpoint far into the look-at distance (not too far, still adjust somewhat towards cross hair on a miss)
 		FVector TraceEnd = CameraComp->GetComponentLocation() + (GetControlRotation().Vector() * 5000);
-		
+
 		FHitResult Hit;
 		// Return true if we go to a blocking hit
 		if (GetWorld()->SweepSingleByObjectType(Hit, TraceStart, TraceEnd, FQuat::Identity, ObjParams, Shape, Params))
