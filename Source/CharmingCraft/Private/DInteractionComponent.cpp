@@ -3,7 +3,7 @@
 
 #include "DInteractionComponent.h"
 
-#include "DGameplayInterface.h"
+#include "../Interface/DGameplayInterface.h"
 
 
 // Sets default values for this component's properties

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DGameplayInterface.h"
+#include "../Interface/DGameplayInterface.h"
 #include "GameFramework/Actor.h"
 #include "DItemChest.generated.h"
 

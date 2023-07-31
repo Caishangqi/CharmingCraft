@@ -34,4 +34,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable,BlueprintNativeEvent) // UFUNCTION(BlueprintNativeEvent) 允许把这个函数暴露到蓝图中
 	void Interact(APawn* InstigatorPawn); //Instigator = Initiator 谁激活的
+
+
 };
