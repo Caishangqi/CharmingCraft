@@ -10,7 +10,8 @@
  * 定义一个三个参数的多播委托，将其命名为FOnCreditsChanged类型。
  * 当调用这个委托时，执行注册在委托里的所有函数
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCreditsChanged, ADPlayerState*, PlayerState, int32, NewCredits, int32, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCreditsChanged, ADPlayerState*, PlayerState, int32, NewCredits, int32,
+                                               Delta);
 
 /**
  * 

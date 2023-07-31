@@ -21,7 +21,6 @@ class CHARMINGCRAFT_API UDActionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-
 	/*
 	 *	GameTag System
 	 *	We can not use forwards declaration because it is a struct and
@@ -30,7 +29,7 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Tags")
 	FGameplayTagContainer ActiveGamePlayTags;
-	
+
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	void AddAction(TSubclassOf<UDAction> ActionClass);
 

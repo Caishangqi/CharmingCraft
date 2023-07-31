@@ -163,9 +163,9 @@ void ADCharacter::PrimaryAttack_TimeElapsed()
 	 */
 
 	// 人物骨架上可以有插槽 socket
-	FVector const GunLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	const FVector GunLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FTransform const SpawnTM = FTransform(GetControlRotation(), GunLocation);
+	const FTransform SpawnTM = FTransform(GetControlRotation(), GunLocation);
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	//指定发射 Instigator 是玩家自己

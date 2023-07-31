@@ -63,7 +63,6 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UDInteractionComponent* InteractionComp;
 
-	
 
 	/*
 	 *	属性组件
@@ -76,7 +75,7 @@ protected:
 	 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UDActionComponent* ActionComponent;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UCharacterMovementComponent* MovementComponent;
 

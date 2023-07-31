@@ -35,7 +35,7 @@ protected:
 
 	UFUNCTION()
 	void AttackDelay_Elapsed(ACharacter* InstigatorCharacter);
-	
+
 public:
 	virtual void StartAction_Implementation(AActor* Instigator) override;
 

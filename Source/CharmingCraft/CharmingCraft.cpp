@@ -3,4 +3,4 @@
 #include "CharmingCraft.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, CharmingCraft, "CharmingCraft" );
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, CharmingCraft, "CharmingCraft");

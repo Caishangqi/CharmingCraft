@@ -32,8 +32,6 @@ public:
 	/*!
 	 *	@param InstigatorPawn 哪个Pawn激活的这个方法, 通常是玩家
 	 */
-	UFUNCTION(BlueprintCallable,BlueprintNativeEvent) // UFUNCTION(BlueprintNativeEvent) 允许把这个函数暴露到蓝图中
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent) // UFUNCTION(BlueprintNativeEvent) 允许把这个函数暴露到蓝图中
 	void Interact(APawn* InstigatorPawn); //Instigator = Initiator 谁激活的
-
-
 };

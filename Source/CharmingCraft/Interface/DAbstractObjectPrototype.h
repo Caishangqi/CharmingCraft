@@ -10,8 +10,8 @@ UCLASS()
 class CHARMINGCRAFT_API ADAbstractObjectPrototype : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ADAbstractObjectPrototype();
 
@@ -19,8 +19,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

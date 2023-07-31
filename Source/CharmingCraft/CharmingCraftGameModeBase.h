@@ -13,5 +13,4 @@ UCLASS()
 class CHARMINGCRAFT_API ACharmingCraftGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
