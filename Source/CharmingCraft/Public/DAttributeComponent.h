@@ -13,7 +13,11 @@
  *
  *	其中第一个参数是事件名称,后续每个参数以此为 参数类型 + 参数变量
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged,AActor*, InstigatorActor,UDAttributeComponent*, OwningComp,float,NewHealth,float, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UDAttributeComponent*,
+                                              OwningComp, float, NewHealth, float, Delta);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnManaChanged, AActor*, InstigatorActor, UDAttributeComponent*,
+                                              OwningComp, float, NewHealth, float, Delta);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UDAttributeComponent : public UActorComponent
@@ -26,9 +30,10 @@ public:
 
 protected:
 	// -- Attributes -- //
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes" )
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float Health;
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	float Mana;
 
 
 	// Called when the game starts
@@ -38,10 +43,16 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
-	
+
 	UPROPERTY(BlueprintAssignable) //暴露这个事件
 	FOnHealthChanged OnHealthChanged; // 构造这个事件
 
-	UFUNCTION(BlueprintCallable, Category= "Attributes" )
+	UPROPERTY(BlueprintAssignable)
+	FOnManaChanged OnManaChanged; // 构造这个事件
+
+
+	UFUNCTION(BlueprintCallable, Category= "Attributes")
 	bool ApplyHealthChange(float Delta); // whether or not change apply
+
+	bool ApplyManaChange(float Delta); // whether or not change apply
 };

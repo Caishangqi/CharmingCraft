@@ -63,6 +63,8 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UDInteractionComponent* InteractionComp;
 
+	
+
 	/*
 	 *	属性组件
 	 */

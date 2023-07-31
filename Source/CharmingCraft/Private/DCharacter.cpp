@@ -3,6 +3,7 @@
 
 #include "DCharacter.h"
 
+#include "AIController.h"
 #include "DActionComponent.h"
 #include "DAttributeComponent.h"
 #include "DDashProjectile.h"
@@ -10,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DInteractionComponent.h"
+#include "NavigationSystem.h"
 // Sets default values
 ADCharacter::ADCharacter()
 {
@@ -133,6 +135,7 @@ void ADCharacter::SprintStop()
 {
 	ActionComponent->StopActionByName(this, "Sprint");
 }
+
 
 void ADCharacter::PrimaryAttack()
 {
