@@ -18,8 +18,6 @@ public:
 	UPROPERTY(EditAnywhere) //现在可以在编辑器中编辑这个变量, 这个变量可以控制箱子开合pitch
 	float TargetPitch;
 
-	
-
 protected:
 	//箱子底部
 	UPROPERTY(VisibleAnywhere)

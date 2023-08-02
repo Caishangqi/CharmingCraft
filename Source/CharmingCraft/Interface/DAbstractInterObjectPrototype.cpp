@@ -5,7 +5,7 @@
 
 ADAbstractInterObjectPrototype::ADAbstractInterObjectPrototype()
 {
-	MinimumInteractRange = 10;
+	MinimumInteractRange = 250;
 	bIgnoreRangeToInteract = false;
 	bIgnoreRangeToInteract = true;
 	FindClassBaseOnBluePrint();

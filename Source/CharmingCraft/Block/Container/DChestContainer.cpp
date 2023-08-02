@@ -25,6 +25,4 @@ ADChestContainer::ADChestContainer()
 	LidMesh->SetupAttachment(BaseMesh);
 
 	TargetPitch = 110; //初始化,默认变量
-
-	
 }

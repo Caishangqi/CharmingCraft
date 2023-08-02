@@ -3,7 +3,13 @@
 
 #include "DInteractionComponent.h"
 
+#include "AIController.h"
+#include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
+#include "CharmingCraft/Controller/DPlayerController.h"
+#include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Navigation/PathFollowingComponent.h"
 
 
 // Sets default values for this component's properties
@@ -35,7 +41,51 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UDInteractionComponent::PrimaryInteract()
+void UDInteractionComponent::PrimaryInteract() const
+{
+	AActor* MyOwner = GetOwner();
+	APlayerController* Controller = Cast<APlayerController>(MyOwner->GetInstigatorController());
+	float MouseX, MouseY;
+	Controller->GetMousePosition(MouseX, MouseY);
+
+	// 将鼠标位置转换为世界空间的射线
+	FHitResult HitResult;
+	// 将鼠标位置转换为世界空间的射线
+	FVector WorldLocation, WorldDirection;
+	Controller->DeprojectScreenPositionToWorld(MouseX, MouseY, WorldLocation, WorldDirection);
+
+
+	// 进行射线投射
+	FVector StartLocation = WorldLocation;
+	FVector EndLocation = StartLocation + WorldDirection * 10000.0f; // 你可以根据需要调整这个值
+	GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility);
+
+	// 如果射线击中了一个Actor，那么获取这个Actor
+	AActor* HitActor = HitResult.GetActor();
+	if (HitActor)
+	{
+		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
+		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
+		{
+			ADAbstractInterObjectPrototype* CastedObject = Cast<ADAbstractInterObjectPrototype>(HitActor);
+			UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
+			//计算玩家角色和这个Actor之间的距离
+			float Distance = FVector::DistXY(MyOwner->GetActorLocation(), HitActor->GetActorLocation());
+			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
+			if (Distance < CastedObject->MinimumInteractRange)
+			{
+				ACharacter* Character = Cast<ACharacter>(MyOwner);
+				// TODO 在范围内阻止玩家移动
+				ADPlayerController* c = Cast<ADPlayerController>(Character->Controller);
+
+				// 执行交互操作
+				IDGameplayInterface::Execute_Interact(HitActor, Cast<APawn>(MyOwner));
+			}
+		}
+	}
+}
+
+void UDInteractionComponent::LineTracingInteract() const
 {
 	/*!
 	 *	LineTrace从世界发射一个虚拟线,到达目的地,检索穿过的所有目标
@@ -54,6 +104,7 @@ void UDInteractionComponent::PrimaryInteract()
 
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
+
 
 	/*
 	 *	线性追踪实现方法 I
@@ -74,8 +125,8 @@ void UDInteractionComponent::PrimaryInteract()
 	 * 	APawn* MyPawn = Cast<APawn>(MyOwner);
 	 * 	IDGameplayInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
 	 * 	}
-     * }
-     */
+	 * }
+	 */
 
 	/*
 	 *	球型追踪实现方法 II

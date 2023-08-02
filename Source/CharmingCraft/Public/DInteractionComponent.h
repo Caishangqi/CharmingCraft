@@ -13,11 +13,12 @@ class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	void PrimaryInteract();
-
-public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
+	void PrimaryInteract() const;
+	void LineTracingInteract() const;
+
+public:
 
 protected:
 	// Called when the game starts
