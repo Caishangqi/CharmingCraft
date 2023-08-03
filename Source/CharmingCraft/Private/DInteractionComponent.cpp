@@ -2,15 +2,12 @@
 
 
 #include "DInteractionComponent.h"
-
-#include "AIController.h"
-#include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Navigation/PathFollowingComponent.h"
+#include "GameFramework/Character.h"
 
 
 // Sets default values for this component's properties
@@ -75,20 +72,38 @@ void UDInteractionComponent::PrimaryInteract() const
 			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
 			if (Distance < CastedObject->MinimumInteractRange)
 			{
-				ACharacter* Character = Cast<ACharacter>(MyOwner);
-				// TODO 在范围内阻止玩家移动
-				//UAIBlueprintHelperLibrary::SimpleMoveToActor(Controller, nullptr);
-
-				UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(
-					Controller->GetPawn()->GetMovementComponent());
-				CharacterMovement->StopMovementKeepPathing();
-
-				// 执行交互操作
 				IDGameplayInterface::Execute_Interact(HitActor, Cast<APawn>(MyOwner));
+			}
+			else
+			{
+				// TODO: 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行 这里有空指针异常！！！
+				APawn* MyPawn = Cast<APawn>(MyOwner);
+				if (MyPawn)
+				{
+					// 获取Pawn的AI控制器
+					AAIController* AIController = Cast<AAIController>(MyPawn->GetController());
+					if (AIController)
+					{
+						// 使用AI控制器移动Pawn
+						AIController->MoveToActor(HitActor, CastedObject->MinimumInteractRange, true, true, true,
+						                          nullptr, false);
+						// TODO: 在到达目标位置后，需要执行的代码（例如，进行交互等）
+					}
+					else
+					{
+						UE_LOG(LogTemp, Warning, TEXT("No AIController found for the pawn."));
+					}
+				}
+				else
+				{
+					UE_LOG(LogTemp, Error, TEXT("Owner is not a Pawn."));
+				}
+				//UAIBlueprintHelperLibrary::SimpleMoveToActor(Controller, HitActor);
 			}
 		}
 	}
 }
+
 
 void UDInteractionComponent::LineTracingInteract() const
 {

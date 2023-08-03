@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DInteractionComponent.h"
+#include "CharmingCraft/Controller/DPlayerAIController.h"
 // Sets default values
 ADCharacter::ADCharacter()
 {
@@ -35,6 +36,9 @@ ADCharacter::ADCharacter()
 	 *	AbilityComponent System
 	 */
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComponent");
+
+	AIControllerClass = ADPlayerAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 // Called when the game starts or when spawned

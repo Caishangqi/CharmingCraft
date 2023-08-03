@@ -2,3 +2,10 @@
 
 
 #include "DPlayerController.h"
+
+#include "DPlayerAIController.h"
+
+ADPlayerController::ADPlayerController()
+{
+	PlayerAIController = CreateDefaultSubobject<ADPlayerAIController>("AIController");
+}
