@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -76,7 +77,11 @@ void UDInteractionComponent::PrimaryInteract() const
 			{
 				ACharacter* Character = Cast<ACharacter>(MyOwner);
 				// TODO 在范围内阻止玩家移动
-				ADPlayerController* c = Cast<ADPlayerController>(Character->Controller);
+				//UAIBlueprintHelperLibrary::SimpleMoveToActor(Controller, nullptr);
+
+				UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(
+					Controller->GetPawn()->GetMovementComponent());
+				CharacterMovement->StopMovementKeepPathing();
 
 				// 执行交互操作
 				IDGameplayInterface::Execute_Interact(HitActor, Cast<APawn>(MyOwner));
