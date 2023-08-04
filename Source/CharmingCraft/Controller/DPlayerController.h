@@ -16,9 +16,5 @@ class CHARMINGCRAFT_API ADPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Controller")
-	ADPlayerAIController* PlayerAIController;
-
 	ADPlayerController();
 };

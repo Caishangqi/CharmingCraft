@@ -7,6 +7,8 @@
 #include "DInteractionComponent.generated.h"
 
 
+class ADPlayerAIController;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 {
@@ -15,11 +17,12 @@ class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
-	void PrimaryInteract() const;
+	void PrimaryInteract();
 	void LineTracingInteract() const;
 
 public:
-
+	UPROPERTY(BlueprintReadWrite)
+	ADPlayerAIController* AIController;
 
 protected:
 	// Called when the game starts

@@ -2,6 +2,8 @@
 
 
 #include "DInteractionComponent.h"
+
+#include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
@@ -17,6 +19,7 @@ UDInteractionComponent::UDInteractionComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+
 	// ...
 }
 
@@ -25,6 +28,8 @@ UDInteractionComponent::UDInteractionComponent()
 void UDInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 初始化AI控制器 负责玩家交互过程中的移动
 
 	// ...
 }
@@ -39,7 +44,7 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UDInteractionComponent::PrimaryInteract() const
+void UDInteractionComponent::PrimaryInteract()
 {
 	AActor* MyOwner = GetOwner();
 	APlayerController* Controller = Cast<APlayerController>(MyOwner->GetInstigatorController());
@@ -70,35 +75,29 @@ void UDInteractionComponent::PrimaryInteract() const
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(MyOwner->GetActorLocation(), HitActor->GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
+			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
 			if (Distance < CastedObject->MinimumInteractRange)
 			{
 				IDGameplayInterface::Execute_Interact(HitActor, Cast<APawn>(MyOwner));
 			}
 			else
 			{
-				// TODO: 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行 这里有空指针异常！！！
-				APawn* MyPawn = Cast<APawn>(MyOwner);
-				if (MyPawn)
+				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
+				if (!AIController)
 				{
-					// 获取Pawn的AI控制器
-					AAIController* AIController = Cast<AAIController>(MyPawn->GetController());
-					if (AIController)
-					{
-						// 使用AI控制器移动Pawn
-						AIController->MoveToActor(HitActor, CastedObject->MinimumInteractRange, true, true, true,
-						                          nullptr, false);
-						// TODO: 在到达目标位置后，需要执行的代码（例如，进行交互等）
-					}
-					else
-					{
-						UE_LOG(LogTemp, Warning, TEXT("No AIController found for the pawn."));
-					}
+					/*
+					 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
+					 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
+					 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
+					 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
+					 */
+					AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
 				}
-				else
-				{
-					UE_LOG(LogTemp, Error, TEXT("Owner is not a Pawn."));
-				}
-				//UAIBlueprintHelperLibrary::SimpleMoveToActor(Controller, HitActor);
+				// 使用AI控制器移动Pawn
+				AIController->MoveToActor(HitActor, CastedObject->MinimumInteractRange, true, true, true,
+				                          nullptr, false);
+				// 给AI控制器类里面设置点击的目标, 传参到这个类
+				AIController->TargetActor = HitActor;
 			}
 		}
 	}

@@ -7,5 +7,5 @@
 
 ADPlayerController::ADPlayerController()
 {
-	PlayerAIController = CreateDefaultSubobject<ADPlayerAIController>("AIController");
+	
 }

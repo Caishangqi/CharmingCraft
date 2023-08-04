@@ -37,6 +37,7 @@ ADCharacter::ADCharacter()
 	 */
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComponent");
 
+
 	AIControllerClass = ADPlayerAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
@@ -45,6 +46,17 @@ ADCharacter::ADCharacter()
 void ADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//PlayerAIController = CreateDefaultSubobject<ADPlayerAIController>("PlayerAIController");
+	PlayerAIController = GetWorld()->SpawnActor<ADPlayerAIController>(AIControllerClass);
+	if (PlayerAIController)
+	{
+		PlayerAIController->SetPawn(this);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Unable to set player AIController to Pawn"));
+	}
 }
 
 

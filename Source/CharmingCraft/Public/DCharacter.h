@@ -7,6 +7,7 @@
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
 
+class ADPlayerAIController;
 //便于编译效率
 class UCameraComponent;
 class USpringArmComponent;
@@ -33,6 +34,9 @@ public:
 	 * Constructor called when the Object is initialized
 	 * then call BeginPlay() when everything is loaded
 	 */
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ADPlayerAIController* PlayerAIController;
 
 protected:
 	// Called when the game starts or when spawned (or when the level load it)
