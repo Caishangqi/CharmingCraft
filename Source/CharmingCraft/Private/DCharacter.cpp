@@ -194,8 +194,8 @@ void ADCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// -- Rotation Visualization -- //
-	const float DrawScale = 100.0f;
-	const float Tickness = 5.0f;
+	constexpr float DrawScale = 100.0f;
+	constexpr float Tickness = 5.0f;
 
 	FVector LineStart = GetActorLocation();
 	// Offset to the right of spawn
