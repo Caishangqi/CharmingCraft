@@ -7,6 +7,7 @@
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
 
+class UPostProcessComponent;
 class ADPlayerAIController;
 //便于编译效率
 class UCameraComponent;
@@ -82,6 +83,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UCharacterMovementComponent* MovementComponent;
+
+	/* 后期处理组件 */
+	UPROPERTY(VisibleAnywhere)
+	UPostProcessComponent* PostProcessComponent;
 
 public:
 	// Called every frame

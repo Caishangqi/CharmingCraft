@@ -10,6 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DInteractionComponent.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
+#include "Components/PostProcessComponent.h"
 // Sets default values
 ADCharacter::ADCharacter()
 {
@@ -38,8 +39,12 @@ ADCharacter::ADCharacter()
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComponent");
 
 
+	/* AI 控制器 */
 	AIControllerClass = ADPlayerAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	/* 后处理组件 */
+	PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
 }
 
 // Called when the game starts or when spawned
