@@ -16,30 +16,40 @@ ADCharacter::ADCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	/* Camera Settings */
+
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp"); //  范形是对象类型，括号内给名字，这个名字会在编辑器显示而已
 	SpringArmComp->bUsePawnControlRotation = true; //  使用控制器的位置对Pawn进行操控
 	//	确保弹簧和网格体/角色本身相连
 	SpringArmComp->SetupAttachment(RootComponent); //  层级中第一个组件,最上面的 (胶囊体组件)
-
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	//	确保摄像机连接到弹簧上面
 	CameraComp->SetupAttachment(SpringArmComp);
-
+	SpringArmComp->bDoCollisionTest = false; //不要让摄像机卡住,我们需要卡住摄像机用透视.
 	GetCharacterMovement()->bOrientRotationToMovement = true; //  设置相机起始点？
 	bUseControllerRotationYaw = false;
 
+
+	/* Interaction Settings */
+
 	InteractionComp = CreateDefaultSubobject<UDInteractionComponent>("InteractionComp");
-	// 初始化 UDAttributeComponent 
+
+	/* Attribute Settings */
+
 	AttributeComp = CreateDefaultSubobject<UDAttributeComponent>("AttributeComp");
+
+	/* Movement Settings */
+
 	MovementComponent = CreateDefaultSubobject<
 		UCharacterMovementComponent>("MovementComponent");
-	/*
-	 *	AbilityComponent System
-	 */
+
+	/* Ability Component Settings */
+
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComponent");
 
+	/* AI Settings */
 
-	/* AI 控制器 */
 	AIControllerClass = ADPlayerAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
@@ -52,7 +62,8 @@ void ADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//PlayerAIController = CreateDefaultSubobject<ADPlayerAIController>("PlayerAIController");
+	/* AI Controller Initialization */
+
 	PlayerAIController = GetWorld()->SpawnActor<ADPlayerAIController>(AIControllerClass);
 	if (PlayerAIController)
 	{
