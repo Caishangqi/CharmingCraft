@@ -40,13 +40,23 @@ this repository.
 - 使用游戏标签 GameTags 实现箱子和钥匙
 - 使用游戏标签 GameTags 实现格挡技能 (R) 键
 - 在击中时使材质发亮,显示高光
+- 第二套操控输入,支持鼠标点击和长按
+- 物品交互高光和玩家遮挡高光
 
+## 即将到来
+- 物品栏系统,物品原型
+- 人物建模和动画
+- 完整的属性UI
+- 近战攻击和基础装备系统
 - Episodes 35,70 ...
+## 等待改进
+- 寻路高处可交互物品造成的卡死,抖动
+- 在被建筑物遮挡时正确地在建筑物后方移动 (Ray Tracing)
+
 
 ## 概念,设计模式,和知识点
 
-以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki
-**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示。
+以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示。
 
 - [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
 - [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
@@ -55,4 +65,3 @@ this repository.
 ## 资源 Resource
 
 - 链接在 [这里](https://www.modongwang.com/)
-- 
