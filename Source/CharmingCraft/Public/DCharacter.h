@@ -63,7 +63,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 	UDInteractionComponent* InteractionComp;
@@ -85,8 +85,8 @@ protected:
 	UCharacterMovementComponent* MovementComponent;
 
 	/* 后期处理组件 */
-	UPROPERTY(VisibleAnywhere)
-	UPostProcessComponent* PostProcessComponent;
+	//UPROPERTY(VisibleAnywhere)
+	//UPostProcessComponent* PostProcessComponent;
 
 public:
 	// Called every frame

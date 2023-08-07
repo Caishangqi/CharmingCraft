@@ -54,7 +54,7 @@ ADCharacter::ADCharacter()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	/* 后处理组件 */
-	PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
+	//PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
 }
 
 // Called when the game starts or when spawned
