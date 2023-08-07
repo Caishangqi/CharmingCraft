@@ -7,6 +7,7 @@
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
 
+class UDInventoryComponent;
 class UPostProcessComponent;
 class ADPlayerAIController;
 //便于编译效率
@@ -87,6 +88,10 @@ protected:
 	/* 后期处理组件 */
 	//UPROPERTY(VisibleAnywhere)
 	//UPostProcessComponent* PostProcessComponent;
+
+	/* 物品栏 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
+	UDInventoryComponent* InventoryComponent;
 
 public:
 	// Called every frame

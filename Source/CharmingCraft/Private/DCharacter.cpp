@@ -10,6 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DInteractionComponent.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
+#include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "Components/PostProcessComponent.h"
 // Sets default values
 ADCharacter::ADCharacter()
@@ -55,6 +56,9 @@ ADCharacter::ADCharacter()
 
 	/* 后处理组件 */
 	//PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
+
+	/* 物品栏 */
+	InventoryComponent = CreateDefaultSubobject<UDInventoryComponent>("InventoryComponent");
 }
 
 // Called when the game starts or when spawned
