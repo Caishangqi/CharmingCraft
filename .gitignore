@@ -72,3 +72,17 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+/Content/__ExternalActors__/
+/Content/__ExternalObjects__/
+/Content/Collections/
+/Content/ControlRig/
+/Content/Developers/
+/Content/ExampleContent/
+/Content/Grruzam_Fighter_Pack/
+/Content/LyraMigrated/
+/Content/ParagonGideon/
+/Content/ParagonMinions/
+/Content/ShooterGame/
+/Content/Splash/
+
