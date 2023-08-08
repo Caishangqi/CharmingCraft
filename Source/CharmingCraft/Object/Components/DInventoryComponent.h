@@ -25,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	int InventorySize;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category="Inventory Parameter")
 	TArray<FDSlotStruct> Content;
 
 	/* Replicated 确保只有服务器可以更改该属性，并且更改完毕后复制到客户端 */

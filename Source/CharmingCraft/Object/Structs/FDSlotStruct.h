@@ -12,5 +12,5 @@ struct FDSlotStruct
 	FText ItemID;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Quantity"))
-	int32 Quantity;
+	int32 Quantity = 0;
 };
