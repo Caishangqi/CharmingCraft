@@ -14,21 +14,28 @@ UDItemDataComponent::UDItemDataComponent()
 }
 
 
+void UDItemDataComponent::Interact_Implementation(APawn* InstigatorPawn)
+{
+	UE_LOG(LogTemp, Warning, TEXT("接口实现调用: UDItemDataComponent::Interact_Implementation"));
+	GetOwner()->Destroy();
+
+	IDItemInteractInterface::Interact_Implementation(InstigatorPawn);
+}
+
 // Called when the game starts
 void UDItemDataComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	// ...FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *ActionName.ToString());
-	
 }
 
 
 // Called every frame
-void UDItemDataComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UDItemDataComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                        FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
-

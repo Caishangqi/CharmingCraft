@@ -3,6 +3,8 @@
 
 #include "DAction.h"
 
+#include "CharmingCraft/Object/Components/DActionComponent.h"
+
 void UDAction::StartAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));

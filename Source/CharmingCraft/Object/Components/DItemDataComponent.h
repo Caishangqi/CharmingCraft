@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Interface/DItemInteractInterface.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
 #include "DItemDataComponent.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UDItemDataComponent : public UActorComponent
+class CHARMINGCRAFT_API UDItemDataComponent : public UActorComponent, public IDItemInteractInterface
 {
 	GENERATED_BODY()
 
@@ -24,6 +25,8 @@ public:
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 Quantity;
+
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
 	// Called when the game starts

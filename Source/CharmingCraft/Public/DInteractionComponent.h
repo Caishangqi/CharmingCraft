@@ -19,6 +19,7 @@ public:
 	UDInteractionComponent();
 	void PrimaryInteract();
 	void LineTracingInteract() const;
+	void OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator);
 
 public:
 	UPROPERTY(BlueprintReadWrite)

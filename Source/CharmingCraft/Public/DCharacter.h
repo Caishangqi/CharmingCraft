@@ -40,7 +40,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	ADPlayerAIController* PlayerAIController;
 
-protected:
+public:
 	// Called when the game starts or when spawned (or when the level load it)
 	virtual void BeginPlay() override;
 	/*

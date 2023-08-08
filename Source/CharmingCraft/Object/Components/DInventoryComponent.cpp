@@ -3,6 +3,12 @@
 
 #include "DInventoryComponent.h"
 
+#include "DCharacter.h"
+#include "DItemDataComponent.h"
+#include "CharmingCraft/Controller/DPlayerAIController.h"
+#include "CharmingCraft/Interface/DGameplayInterface.h"
+#include "CharmingCraft/Interface/DItemInteractInterface.h"
+
 // Sets default values for this component's properties
 UDInventoryComponent::UDInventoryComponent()
 {
@@ -11,6 +17,7 @@ UDInventoryComponent::UDInventoryComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	SetIsReplicatedByDefault(true);
+
 	// ...
 }
 
@@ -23,12 +30,23 @@ void UDInventoryComponent::RemoveFromInventory()
 }
 
 
+void UDInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
+{
+	if (TargetActor.Get()->GetComponentByClass(UDItemDataComponent::StaticClass()))
+	{
+		IDItemInteractInterface::Execute_Interact(
+			TargetActor.Get()->GetComponentByClass(UDItemDataComponent::StaticClass()), Instigator);
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInventoryComponent::OnItemInteract"));
+}
+
 // Called when the game starts
 void UDInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	// 注册事件
 }
 
 

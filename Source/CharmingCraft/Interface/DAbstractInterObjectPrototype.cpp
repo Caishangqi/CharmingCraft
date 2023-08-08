@@ -13,6 +13,7 @@ ADAbstractInterObjectPrototype::ADAbstractInterObjectPrototype()
 
 void ADAbstractInterObjectPrototype::Interact_Implementation(APawn* InstigatorPawn)
 {
+	UE_LOG(LogTemp, Warning, TEXT("CALLED BACK!"));
 	IDGameplayInterface::Interact_Implementation(InstigatorPawn);
 }
 

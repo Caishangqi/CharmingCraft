@@ -3,13 +3,14 @@
 
 #include "DCharacter.h"
 
-#include "DActionComponent.h"
-#include "DAttributeComponent.h"
+
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DInteractionComponent.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
+#include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "Components/PostProcessComponent.h"
 // Sets default values

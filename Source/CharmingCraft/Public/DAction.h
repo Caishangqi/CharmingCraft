@@ -3,9 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DActionComponent.h"
 #include "GameplayTagContainer.h"
-#include "UObject/NoExportTypes.h"
 #include "DAction.generated.h"
 
 /**

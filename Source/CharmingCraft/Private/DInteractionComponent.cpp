@@ -9,6 +9,7 @@
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
+#include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "GameFramework/Character.h"
 
 
@@ -30,8 +31,6 @@ void UDInteractionComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// 初始化AI控制器 负责玩家交互过程中的移动
-
-	// ...
 }
 
 
@@ -79,6 +78,7 @@ void UDInteractionComponent::PrimaryInteract()
 			if (Distance < CastedObject->MinimumInteractRange)
 			{
 				IDGameplayInterface::Execute_Interact(HitActor, Cast<APawn>(MyOwner));
+				Cast<ADCharacter>(GetOwner())->InventoryComponent->OnItemInteract(HitActor, Cast<APawn>(MyOwner));
 			}
 			else
 			{
@@ -179,4 +179,10 @@ void UDInteractionComponent::LineTracingInteract() const
 
 
 	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
+}
+
+void UDInteractionComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
+{
+	Cast<ADCharacter>(GetOwner())->InventoryComponent->OnItemInteract(TargetActor, Instigator);
+	UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInteractionComponent::OnItemInteract"));
 }

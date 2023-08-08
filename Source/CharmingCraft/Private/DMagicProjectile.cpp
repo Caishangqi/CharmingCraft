@@ -3,8 +3,8 @@
 
 #include "DMagicProjectile.h"
 
-#include "DActionComponent.h"
-#include "DAttributeComponent.h"
+#include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"

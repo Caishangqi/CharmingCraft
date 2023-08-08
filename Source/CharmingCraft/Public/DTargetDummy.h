@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DAttributeComponent.h"
 #include "GameFramework/Actor.h"
 #include "DTargetDummy.generated.h"
 class UDAttributeComponent;
