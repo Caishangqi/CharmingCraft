@@ -146,8 +146,9 @@ void UDInventoryComponent::PrintDebugMessage()
 	for (int32 Index = 0; Index < Content.Num(); ++Index)
 	{
 		FDSlotStruct& Slot = Content[Index];
-		UE_LOG(LogTemp, Warning, TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *Slot.ItemID.ToString(),
-		       Slot.Quantity);
+		FString DebugMessage = FString::Printf(
+			TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *Slot.ItemID.ToString(), Slot.Quantity);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
 	}
 }
 
