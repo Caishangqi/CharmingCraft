@@ -29,14 +29,13 @@ void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
 			ADAbstractInterObjectPrototype>(TargetActor.Get())) //弱指针解引
 		{
 			IDGameplayInterface::Execute_Interact(TargetActor.Get(), Cast<APawn>(GetPawn()));
-			ADCharacter* player = Cast<ADCharacter>(GetPawn());
 			// FIXME: 如果玩家成功交互物品,由AI控制器触发 交互组件上的 OnItemInteract()
-			if (player)
+			if (const ADCharacter* Player = Cast<ADCharacter>(GetPawn()))
 			{
 				/*
 				 * 设计上的缺陷,这个其实最好由物品发出或者Interact组件本身
 				 */
-				player->InteractionComp->OnItemInteract(TargetActor.Get(), Cast<APawn>(GetPawn()));
+				Player->InteractionComp->OnItemInteract(TargetActor.Get(), Cast<APawn>(GetPawn()));
 			}
 		}
 		TargetActor = nullptr; // Reset the target actor
