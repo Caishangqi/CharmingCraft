@@ -62,6 +62,9 @@ public:
 	virtual void SprintStart();
 	virtual void SprintStop();
 
+	/* Debug Input button */
+	virtual void PrintDebugMessage();
+
 	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -101,4 +104,7 @@ public:
 	void PrimaryAttack_TimeElapsed();
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+
 };

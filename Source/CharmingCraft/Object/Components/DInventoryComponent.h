@@ -47,6 +47,9 @@ public:
 
 	virtual bool CreateNewStack(FText ItemID, int32 Quantity);
 
+	/* Debug Function */
+	virtual void PrintDebugMessage();
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	int InventorySize;

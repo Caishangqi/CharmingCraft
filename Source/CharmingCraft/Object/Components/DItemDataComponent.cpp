@@ -3,6 +3,10 @@
 
 #include "DItemDataComponent.h"
 
+#include "DCharacter.h"
+#include "DInventoryComponent.h"
+#include "CharmingCraft/Object/Structs/FDItemStruct.h"
+
 // Sets default values for this component's properties
 UDItemDataComponent::UDItemDataComponent()
 {
@@ -17,9 +21,19 @@ UDItemDataComponent::UDItemDataComponent()
 void UDItemDataComponent::Interact_Implementation(APawn* InstigatorPawn)
 {
 	UE_LOG(LogTemp, Warning, TEXT("接口实现调用: UDItemDataComponent::Interact_Implementation"));
-	GetOwner()->Destroy();
 
-	IDItemInteractInterface::Interact_Implementation(InstigatorPawn);
+	const ADCharacter* Player = Cast<ADCharacter>(InstigatorPawn);
+	if (Player->InventoryComponent->
+	            AddToInventory(FText::FromName(ItemID.RowName), Quantity).
+	            bIsSuccess)
+	{
+		IDItemInteractInterface::Interact_Implementation(InstigatorPawn);
+		GetOwner()->Destroy();
+	}
+	else
+	{
+		return;
+	}
 }
 
 // Called when the game starts

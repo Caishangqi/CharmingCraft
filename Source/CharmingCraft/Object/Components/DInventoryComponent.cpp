@@ -25,14 +25,17 @@ UDInventoryComponent::UDInventoryComponent()
 
 UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(FText ItemID, int32 Quantity)
 {
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemID.ToString(), Quantity);
 	FReturnSuccessRemainQuantity Result;
 	int32 LocalQuantity = Quantity;
 	while (LocalQuantity > 0 && !bLocalHasFailed)
 	{
-		if (int32 SlotIndex = FindSlot(ItemID))
+		if (FindSlot(ItemID) != -1)
 		{
+			int32 SlotIndex = FindSlot(ItemID);
 			AddToStack(SlotIndex, 1, ItemID);
 			LocalQuantity--;
+			UE_LOG(LogTemp, Warning, TEXT("AddToStack(SlotIndex, 1, ItemID);"));
 		}
 		else if (AnyEmptySlotAvailable().Result)
 		{
@@ -70,9 +73,11 @@ int32 UDInventoryComponent::FindSlot(FText ItemID)
 		if (bIDEqual && bQuantityValid)
 		{
 			bLocalHasFailed = true;
+			UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot %d"), Index);
 			return Index; // 返回找到的Index
 		}
 	}
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot =  FALSE"));
 	return -1; // 如果没有找到合适的Slot，返回-1或其他指示值
 }
 
@@ -81,10 +86,12 @@ int32 UDInventoryComponent::GetMaxStackSize(FText ItemID)
 	const FName RowName = FName(*ItemID.ToString());
 	if (FDItemStruct* Row = ItemData->FindRow<FDItemStruct>(RowName,TEXT("Looking up row in MyDataTable")))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize HAVE ITEM DATA FOUND"));
 		return Row->StackSize;
 	}
 	else
 	{
+		UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
 		return -1;
 	}
 }
@@ -132,6 +139,18 @@ bool UDInventoryComponent::CreateNewStack(FText ItemID, int32 Quantity)
 	return false;
 }
 
+void UDInventoryComponent::PrintDebugMessage()
+{
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::PrintDebugMessage"));
+	UE_LOG(LogTemp, Warning, TEXT("Content Size is %d"), Content.Num());
+	for (int32 Index = 0; Index < Content.Num(); ++Index)
+	{
+		FDSlotStruct& Slot = Content[Index];
+		UE_LOG(LogTemp, Warning, TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *Slot.ItemID.ToString(),
+		       Slot.Quantity);
+	}
+}
+
 
 void UDInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
 {
@@ -149,7 +168,8 @@ void UDInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// 注册事件
+	// 设置背包大小
+	Content.SetNum(InventorySize);
 }
 
 

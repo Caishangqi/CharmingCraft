@@ -170,6 +170,13 @@ void ADCharacter::SprintStop()
 	ActionComponent->StopActionByName(this, "Sprint");
 }
 
+void ADCharacter::PrintDebugMessage()
+{
+	/* 测试背包 */
+	UE_LOG(LogTemp, Warning, TEXT("should print something"));
+	InventoryComponent->PrintDebugMessage();
+}
+
 
 void ADCharacter::PrimaryAttack()
 {
@@ -206,7 +213,6 @@ void ADCharacter::PrimaryAttack_TimeElapsed()
 	SpawnParams.Instigator = this;
 	//先从世界生成投射物
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);
-	UE_LOG(LogTemp, Warning, TEXT("Start Generate AActor"));
 }
 
 // Called every frame
@@ -257,4 +263,6 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ADCharacter::SprintStart);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ADCharacter::SprintStop);
+
+	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ADCharacter::PrintDebugMessage);
 }
