@@ -10,6 +10,7 @@
 
 class UDataTable;
 class ADPlayerAIController;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdate);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UDInventoryComponent : public UActorComponent
@@ -47,8 +48,16 @@ public:
 
 	virtual bool CreateNewStack(FName ItemID, int32 Quantity);
 
+	UFUNCTION(BlueprintCallable)
+	virtual void TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
+
 	/* Debug Function */
 	virtual void PrintDebugMessage();
+
+	/* Event */
+
+	UPROPERTY(BlueprintAssignable)
+	FOnInventoryUpdate OnInventoryUpdate;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
@@ -61,6 +70,8 @@ public:
 	UDataTable* ItemData;
 
 	inline static bool bLocalHasFailed = false;
+
+	FDSlotStruct LocalSlotContents;
 
 	/* Replicated 确保只有服务器可以更改该属性，并且更改完毕后复制到客户端 */
 

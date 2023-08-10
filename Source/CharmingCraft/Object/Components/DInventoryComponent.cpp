@@ -136,6 +136,30 @@ bool UDInventoryComponent::CreateNewStack(FName ItemID, int32 Quantity)
 	return false;
 }
 
+void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
+                                         int32 DestinationIndex)
+{
+	LocalSlotContents = SourceInventory->Content[SourceIndex];
+	if (DestinationIndex < 0)
+	{
+	}
+	else
+	{
+		// 发出者的背包Index
+		if (Content[DestinationIndex].ItemID == LocalSlotContents.ItemID)
+		{
+		}
+		else
+		{
+			SourceInventory->Content[SourceIndex] = Content[DestinationIndex];
+			Content[DestinationIndex] = LocalSlotContents;
+			//
+			OnInventoryUpdate.Broadcast();
+			SourceInventory->OnInventoryUpdate.Broadcast();
+		}
+	}
+}
+
 void UDInventoryComponent::PrintDebugMessage()
 {
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::PrintDebugMessage"));
