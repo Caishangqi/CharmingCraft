@@ -33,19 +33,19 @@ public:
 	UDInventoryComponent();
 
 	/* 将物品添加到物品栏函数 */
-	virtual FReturnSuccessRemainQuantity AddToInventory(FText ItemID, int32 Quantity);
+	virtual FReturnSuccessRemainQuantity AddToInventory(FName ItemID, int32 Quantity);
 	/* 将物品从到物品栏移除函数 */
 	virtual void RemoveFromInventory();
 	/* 找到物品栏可以堆叠物品的slot */
-	virtual int32 FindSlot(FText ItemID);
+	virtual int32 FindSlot(FName ItemID);
 	/* 找到物品的最大叠加 */
-	virtual int32 GetMaxStackSize(FText ItemID);
+	virtual int32 GetMaxStackSize(FName ItemID);
 
-	virtual void AddToStack(int32 Index, int32 Quantity, FText ItemID);
+	virtual void AddToStack(int32 Index, int32 Quantity, FName ItemID);
 
 	virtual FReturnValue AnyEmptySlotAvailable();
 
-	virtual bool CreateNewStack(FText ItemID, int32 Quantity);
+	virtual bool CreateNewStack(FName ItemID, int32 Quantity);
 
 	/* Debug Function */
 	virtual void PrintDebugMessage();

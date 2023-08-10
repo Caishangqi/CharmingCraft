@@ -9,12 +9,12 @@ struct FDSlotStruct
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="ItemID"))
-	FText ItemID;
+	FName ItemID;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Quantity"))
 	int32 Quantity;
 
-	FDSlotStruct(): ItemID(FText::FromString("None")), Quantity(0)
+	FDSlotStruct(): ItemID(FName("None")), Quantity(0)
 	{
 	}
 };

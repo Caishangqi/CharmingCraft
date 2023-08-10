@@ -24,7 +24,7 @@ void UDItemDataComponent::Interact_Implementation(APawn* InstigatorPawn)
 
 	const ADCharacter* Player = Cast<ADCharacter>(InstigatorPawn);
 	if (Player->InventoryComponent->
-	            AddToInventory(FText::FromName(ItemID.RowName), Quantity).
+	            AddToInventory(ItemID.RowName, Quantity).
 	            bIsSuccess)
 	{
 		IDItemInteractInterface::Interact_Implementation(InstigatorPawn);
@@ -32,7 +32,6 @@ void UDItemDataComponent::Interact_Implementation(APawn* InstigatorPawn)
 	}
 	else
 	{
-		return;
 	}
 }
 

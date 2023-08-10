@@ -23,7 +23,7 @@ UDInventoryComponent::UDInventoryComponent()
 	// ...
 }
 
-UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(FText ItemID, int32 Quantity)
+UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(FName ItemID, int32 Quantity)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemID.ToString(), Quantity);
 	FReturnSuccessRemainQuantity Result;
@@ -63,12 +63,12 @@ void UDInventoryComponent::RemoveFromInventory()
 {
 }
 
-int32 UDInventoryComponent::FindSlot(FText ItemID)
+int32 UDInventoryComponent::FindSlot(FName ItemID)
 {
 	for (int32 Index = 0; Index < Content.Num(); ++Index)
 	{
 		FDSlotStruct& Slot = Content[Index];
-		bool bIDEqual = Slot.ItemID.EqualTo(ItemID);
+		bool bIDEqual = Slot.ItemID == ItemID;
 		bool bQuantityValid = Slot.Quantity < GetMaxStackSize(ItemID);
 		if (bIDEqual && bQuantityValid)
 		{
@@ -81,7 +81,7 @@ int32 UDInventoryComponent::FindSlot(FText ItemID)
 	return -1; // 如果没有找到合适的Slot，返回-1或其他指示值
 }
 
-int32 UDInventoryComponent::GetMaxStackSize(FText ItemID)
+int32 UDInventoryComponent::GetMaxStackSize(FName ItemID)
 {
 	const FName RowName = FName(*ItemID.ToString());
 	if (FDItemStruct* Row = ItemData->FindRow<FDItemStruct>(RowName,TEXT("Looking up row in MyDataTable")))
@@ -89,14 +89,11 @@ int32 UDInventoryComponent::GetMaxStackSize(FText ItemID)
 		UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize HAVE ITEM DATA FOUND"));
 		return Row->StackSize;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
-		return -1;
-	}
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
+	return -1;
 }
 
-void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, FText ItemID)
+void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, FName ItemID)
 {
 	if (Content.IsValidIndex(Index))
 	{
@@ -125,7 +122,7 @@ UDInventoryComponent::FReturnValue UDInventoryComponent::AnyEmptySlotAvailable()
 	return Result;
 }
 
-bool UDInventoryComponent::CreateNewStack(FText ItemID, int32 Quantity)
+bool UDInventoryComponent::CreateNewStack(FName ItemID, int32 Quantity)
 {
 	if (AnyEmptySlotAvailable().Result)
 	{
