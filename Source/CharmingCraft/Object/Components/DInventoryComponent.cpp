@@ -151,11 +151,13 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 		// 发出者的背包Index
 		if (Content[DestinationIndex].ItemID == LocalSlotContents.ItemID)
 		{
-			FString CC = Content[DestinationIndex].ItemID;
 			// Content 是箱子, Source 是玩家的背包
-			int32 MaxStackSize = GetMaxStackSize(CC);
+			int32 MaxStackSize = GetMaxStackSize(Content[DestinationIndex].ItemID);
 			if (LocalSlotContents.Quantity + Content[DestinationIndex].Quantity > MaxStackSize)
 			{
+				// 优先算出背包剩余物品, 如果鼠标悬浮物品为 32 箱子里 64,则先计算背包
+				// 计算如下 光标物品 - (最大堆叠数 - 同Index下的相同物品数量)
+				// 32- (64 - 48) = 16
 				SourceInventory->Content[SourceIndex].Quantity = LocalSlotContents.Quantity - (MaxStackSize - Content[
 					DestinationIndex].Quantity);
 				Content[DestinationIndex].Quantity = MaxStackSize;
@@ -213,18 +215,6 @@ void UDInventoryComponent::BeginPlay()
 
 	// 设置背包大小
 	Content.SetNum(InventorySize);
-
-	// // Load the data table
-	// ConstructorHelpers::FObjectFinder<UDataTable> DataTableAsset(
-	// 	TEXT("/Game/CharmingCraft/Objects/DataTable/Item_Data"));
-	// if (DataTableAsset.Succeeded())
-	// {
-	// 	ItemData = DataTableAsset.Object;
-	// }
-	// else
-	// {
-	// 	UE_LOG(LogTemp, Warning, TEXT("Failed to load data table."));
-	// }
 }
 
 
