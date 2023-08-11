@@ -23,9 +23,9 @@ UDInventoryComponent::UDInventoryComponent()
 	// ...
 }
 
-UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(FName ItemID, int32 Quantity)
+UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(FString ItemID, int32 Quantity)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemID.ToString(), Quantity);
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemID, Quantity);
 	FReturnSuccessRemainQuantity Result;
 	int32 LocalQuantity = Quantity;
 	while (LocalQuantity > 0 && !bLocalHasFailed)
@@ -63,7 +63,7 @@ void UDInventoryComponent::RemoveFromInventory()
 {
 }
 
-int32 UDInventoryComponent::FindSlot(FName ItemID)
+int32 UDInventoryComponent::FindSlot(FString ItemID)
 {
 	for (int32 Index = 0; Index < Content.Num(); ++Index)
 	{
@@ -72,7 +72,7 @@ int32 UDInventoryComponent::FindSlot(FName ItemID)
 		bool bQuantityValid = Slot.Quantity < GetMaxStackSize(ItemID);
 		if (bIDEqual && bQuantityValid)
 		{
-			bLocalHasFailed = true;
+			bLocalHasFailed = false;
 			UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot %d"), Index);
 			return Index; // 返回找到的Index
 		}
@@ -81,9 +81,9 @@ int32 UDInventoryComponent::FindSlot(FName ItemID)
 	return -1; // 如果没有找到合适的Slot，返回-1或其他指示值
 }
 
-int32 UDInventoryComponent::GetMaxStackSize(FName ItemID)
+int32 UDInventoryComponent::GetMaxStackSize(FString ItemID)
 {
-	const FName RowName = FName(*ItemID.ToString());
+	const FName RowName = FName(*ItemID);
 	if (FDItemStruct* Row = ItemData->FindRow<FDItemStruct>(RowName,TEXT("Looking up row in MyDataTable")))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize HAVE ITEM DATA FOUND"));
@@ -93,14 +93,12 @@ int32 UDInventoryComponent::GetMaxStackSize(FName ItemID)
 	return -1;
 }
 
-void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, FName ItemID)
+void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, FString ItemID)
 {
 	if (Content.IsValidIndex(Index))
 	{
-		FDSlotStruct Slot;
-		Slot.ItemID = ItemID;
-		Slot.Quantity = Content[Index].Quantity + Quantity;
-		Content.Insert(Slot, Index);
+		Content[Index].ItemID = ItemID;
+		Content[Index].Quantity = Content[Index].Quantity + Quantity;
 	}
 }
 
@@ -122,7 +120,7 @@ UDInventoryComponent::FReturnValue UDInventoryComponent::AnyEmptySlotAvailable()
 	return Result;
 }
 
-bool UDInventoryComponent::CreateNewStack(FName ItemID, int32 Quantity)
+bool UDInventoryComponent::CreateNewStack(FString ItemID, int32 Quantity)
 {
 	if (AnyEmptySlotAvailable().Result)
 	{
@@ -168,7 +166,7 @@ void UDInventoryComponent::PrintDebugMessage()
 	{
 		FDSlotStruct& Slot = Content[Index];
 		FString DebugMessage = FString::Printf(
-			TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *Slot.ItemID.ToString(), Slot.Quantity);
+			TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *Slot.ItemID, Slot.Quantity);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
 	}
 }

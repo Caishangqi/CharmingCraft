@@ -24,14 +24,16 @@ void UDItemDataComponent::Interact_Implementation(APawn* InstigatorPawn)
 
 	const ADCharacter* Player = Cast<ADCharacter>(InstigatorPawn);
 	if (Player->InventoryComponent->
-	            AddToInventory(ItemID.RowName, Quantity).
+	            AddToInventory(FString(ItemID.RowName.ToString()), Quantity).
 	            bIsSuccess)
 	{
 		IDItemInteractInterface::Interact_Implementation(InstigatorPawn);
 		GetOwner()->Destroy();
 	}
 	else
+
 	{
+		UE_LOG(LogTemp, Warning, TEXT("UDItemDataComponent::Interact_Implementation 存入背包失败"));
 	}
 }
 

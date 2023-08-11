@@ -34,19 +34,19 @@ public:
 	UDInventoryComponent();
 
 	/* 将物品添加到物品栏函数 */
-	virtual FReturnSuccessRemainQuantity AddToInventory(FName ItemID, int32 Quantity);
+	virtual FReturnSuccessRemainQuantity AddToInventory(FString ItemID, int32 Quantity);
 	/* 将物品从到物品栏移除函数 */
 	virtual void RemoveFromInventory();
 	/* 找到物品栏可以堆叠物品的slot */
-	virtual int32 FindSlot(FName ItemID);
+	virtual int32 FindSlot(FString ItemID);
 	/* 找到物品的最大叠加 */
-	virtual int32 GetMaxStackSize(FName ItemID);
+	virtual int32 GetMaxStackSize(FString ItemID);
 
-	virtual void AddToStack(int32 Index, int32 Quantity, FName ItemID);
+	virtual void AddToStack(int32 Index, int32 Quantity, FString ItemID);
 
 	virtual FReturnValue AnyEmptySlotAvailable();
 
-	virtual bool CreateNewStack(FName ItemID, int32 Quantity);
+	virtual bool CreateNewStack(FString ItemID, int32 Quantity);
 
 	UFUNCTION(BlueprintCallable)
 	virtual void TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
