@@ -20,6 +20,7 @@ UDInventoryComponent::UDInventoryComponent()
 
 	SetIsReplicatedByDefault(true);
 
+
 	// ...
 }
 
@@ -84,6 +85,10 @@ int32 UDInventoryComponent::FindSlot(FString ItemID)
 int32 UDInventoryComponent::GetMaxStackSize(FString ItemID)
 {
 	const FName RowName = FName(*ItemID);
+	if (ItemData)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Item Data IS NULL"));
+	}
 	if (FDItemStruct* Row = ItemData->FindRow<FDItemStruct>(RowName,TEXT("Looking up row in MyDataTable")))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize HAVE ITEM DATA FOUND"));
@@ -146,6 +151,24 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 		// 发出者的背包Index
 		if (Content[DestinationIndex].ItemID == LocalSlotContents.ItemID)
 		{
+			FString CC = Content[DestinationIndex].ItemID;
+			// Content 是箱子, Source 是玩家的背包
+			int32 MaxStackSize = GetMaxStackSize(CC);
+			if (LocalSlotContents.Quantity + Content[DestinationIndex].Quantity > MaxStackSize)
+			{
+				SourceInventory->Content[SourceIndex].Quantity = LocalSlotContents.Quantity - (MaxStackSize - Content[
+					DestinationIndex].Quantity);
+				Content[DestinationIndex].Quantity = MaxStackSize;
+			}
+			else if (LocalSlotContents.Quantity + Content[DestinationIndex].Quantity <= MaxStackSize)
+			{
+				Content[DestinationIndex].Quantity = LocalSlotContents.Quantity + Content[
+					SourceIndex].Quantity;
+				SourceInventory->Content[SourceIndex].Quantity = 0;
+				SourceInventory->Content[SourceIndex].ItemID = FString("None");
+			}
+			OnInventoryUpdate.Broadcast();
+			SourceInventory->OnInventoryUpdate.Broadcast();
 		}
 		else
 		{
@@ -190,6 +213,18 @@ void UDInventoryComponent::BeginPlay()
 
 	// 设置背包大小
 	Content.SetNum(InventorySize);
+
+	// // Load the data table
+	// ConstructorHelpers::FObjectFinder<UDataTable> DataTableAsset(
+	// 	TEXT("/Game/CharmingCraft/Objects/DataTable/Item_Data"));
+	// if (DataTableAsset.Succeeded())
+	// {
+	// 	ItemData = DataTableAsset.Object;
+	// }
+	// else
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("Failed to load data table."));
+	// }
 }
 
 
