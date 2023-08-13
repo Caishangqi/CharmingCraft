@@ -36,7 +36,7 @@ public:
 	/* 将物品添加到物品栏函数 */
 	virtual FReturnSuccessRemainQuantity AddToInventory(FString ItemID, int32 Quantity);
 	/* 将物品从到物品栏移除函数 */
-	virtual void RemoveFromInventory();
+	virtual void RemoveFromInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
 	/* 找到物品栏可以堆叠物品的slot */
 	virtual int32 FindSlot(FString ItemID);
 	/* 找到物品的最大叠加 */
@@ -69,7 +69,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Data")
 	UDataTable* ItemData;
 
+	/* Local Variables */
 	inline static bool bLocalHasFailed = false;
+	int32 LocalQuantity;
+	FString LocalItemID;
 
 	FDSlotStruct LocalSlotContents;
 
@@ -85,5 +88,4 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
-	
 };

@@ -23,5 +23,5 @@ class CHARMINGCRAFT_API IDItemInteractInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent) // UFUNCTION(BlueprintNativeEvent) 允许把这个函数暴露到蓝图中
-	void Interact(APawn* InstigatorPawn);
+	void Interact(APawn* InstigatorPawn4);
 };

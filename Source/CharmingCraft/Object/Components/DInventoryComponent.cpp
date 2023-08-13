@@ -31,9 +31,9 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 	int32 LocalQuantity = Quantity;
 	while (LocalQuantity > 0 && !bLocalHasFailed)
 	{
-		if (FindSlot(ItemID) != -1)
+		int32 SlotIndex = FindSlot(ItemID);
+		if (SlotIndex != -1)
 		{
-			int32 SlotIndex = FindSlot(ItemID);
 			AddToStack(SlotIndex, 1, ItemID);
 			LocalQuantity--;
 			UE_LOG(LogTemp, Warning, TEXT("AddToStack(SlotIndex, 1, ItemID);"));
@@ -60,8 +60,19 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 	return Result;
 }
 
-void UDInventoryComponent::RemoveFromInventory()
+/*!
+ * 
+ */
+void UDInventoryComponent::RemoveFromInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
 {
+	LocalQuantity = Content[Index].Quantity;
+	LocalItemID = Content[Index].ItemID;
+
+	// 4:49
+	if (LocalQuantity == 1 || RemoveWholeStack)
+	{
+		
+	}
 }
 
 int32 UDInventoryComponent::FindSlot(FString ItemID)
