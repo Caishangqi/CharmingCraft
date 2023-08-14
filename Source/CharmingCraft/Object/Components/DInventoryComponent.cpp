@@ -61,15 +61,17 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 }
 
 /*!
- * 
+ * @param Index 移除物品栏序号位置
+ * @param RemoveWholeStack 是否移除整组物品还只是一个
+ * @param IsConsumed 是否是消耗物品
  */
 void UDInventoryComponent::RemoveFromInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
 {
-	LocalQuantity = Content[Index].Quantity;
+	RFILocalQuantity = Content[Index].Quantity;
 	LocalItemID = Content[Index].ItemID;
 
 	// 4:49
-	if (LocalQuantity == 1 || RemoveWholeStack)
+	if (RFILocalQuantity == 1 || RemoveWholeStack)
 	{
 		
 	}

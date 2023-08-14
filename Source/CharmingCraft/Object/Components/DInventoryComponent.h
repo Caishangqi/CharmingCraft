@@ -71,7 +71,7 @@ public:
 
 	/* Local Variables */
 	inline static bool bLocalHasFailed = false;
-	int32 LocalQuantity;
+	int32 RFILocalQuantity;
 	FString LocalItemID;
 
 	FDSlotStruct LocalSlotContents;
