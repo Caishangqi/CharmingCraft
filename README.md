@@ -61,7 +61,7 @@ this repository.
 
 ### 项目资源结构
 
-- assets\minecraft\textures\item
+- assets\ccraft\textures\item
 
 ## 概念,设计模式,和知识点
 

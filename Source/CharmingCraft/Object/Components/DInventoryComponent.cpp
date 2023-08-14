@@ -3,6 +3,9 @@
 
 #include "DInventoryComponent.h"
 
+#include <random>
+#include <hlslcc/hlslcc/src/hlslcc_lib/compiler.h>
+
 #include "DCharacter.h"
 #include "DItemDataComponent.h"
 #include "Algo/IndexOf.h"
@@ -67,14 +70,36 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
  */
 void UDInventoryComponent::RemoveFromInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
 {
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::RemoveFromInventory Parameter: Index: %d| Quantity: %d"),
+	       Index, Content[Index].Quantity);
 	RFILocalQuantity = Content[Index].Quantity;
 	LocalItemID = Content[Index].ItemID;
 
 	// 4:49
 	if (RFILocalQuantity == 1 || RemoveWholeStack)
 	{
-		
+		Content[Index].Quantity = 0;
+		Content[Index].ItemID = FString("None");
+		if (IsConsumed)
+		{
+		}
+		else
+		{
+			DropItem(LocalItemID, RFILocalQuantity);
+		}
 	}
+	else
+	{
+		Content[Index].Quantity = Content[Index].Quantity - 1;
+		if (IsConsumed)
+		{
+		}
+		else
+		{
+			DropItem(LocalItemID, 1);
+		}
+	}
+	OnInventoryUpdate.Broadcast();
 }
 
 int32 UDInventoryComponent::FindSlot(FString ItemID)
@@ -196,6 +221,35 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 	}
 }
 
+void UDInventoryComponent::DropItem(FString ItemID, int32 Quantity)
+{
+	int32 DIQuantity = Quantity;
+	UClass* ActorClass = GetItemData(ItemID)->ItemClass;
+	for (int32 Index = 0; Index < DIQuantity; ++Index)
+	{
+		GetWorld()->SpawnActor<AActor>(ActorClass, GetDropLocation(), FRotator3d(1.0));
+	}
+}
+
+FVector UDInventoryComponent::GetDropLocation()
+{
+	FHitResult Hit;
+	FCollisionQueryParams QueryParams;
+	//
+	FVector TraceStart = GetOwner()->GetActorLocation() + RandomUnitVectorInConeInDegrees(
+		GetOwner()->GetActorForwardVector(), 30) * 150;
+	FVector TraceEnd = TraceStart - FVector(0.0, 0.0, 500.0);
+	GetWorld()->LineTraceSingleByChannel(Hit, TraceStart, TraceEnd, ECC_Visibility, QueryParams);
+	return Hit.Location;
+}
+
+
+FDItemStruct* UDInventoryComponent::GetItemData(FString ItemID)
+{
+	FDItemStruct* Data = ItemData->FindRow<FDItemStruct>(FName(ItemID),TEXT("Looking up row in MyDataTable"));
+	return Data;
+}
+
 void UDInventoryComponent::PrintDebugMessage()
 {
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::PrintDebugMessage"));
@@ -207,6 +261,30 @@ void UDInventoryComponent::PrintDebugMessage()
 			TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *Slot.ItemID, Slot.Quantity);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
 	}
+}
+
+/*
+ * 随机圆锥方向向量生成
+ */
+FVector UDInventoryComponent::RandomUnitVectorInConeInDegrees(const FVector& ConeDir, float ConeHalfAngleInDegrees)
+{
+	// 随机生成一个角度和方位角
+	float RandAngle = FMath::RandRange(0.f, FMath::DegreesToRadians(ConeHalfAngleInDegrees));
+	float RandAzimuth = FMath::RandRange(0.f, 2.f * PI);
+
+	// 使用球坐标系生成随机向量
+	FVector RandVector;
+	RandVector.X = FMath::Sin(RandAngle) * FMath::Cos(RandAzimuth);
+	RandVector.Y = FMath::Sin(RandAngle) * FMath::Sin(RandAzimuth);
+	RandVector.Z = FMath::Cos(RandAngle);
+
+	// 创建一个旋转，使Z轴对齐到指定的ConeDir
+	FQuat AlignQuat = FQuat::FindBetweenNormals(FVector::UpVector, ConeDir);
+
+	// 将随机向量旋转到指定的圆锥方向上
+	FVector ResultVector = AlignQuat.RotateVector(RandVector);
+
+	return ResultVector;
 }
 
 
