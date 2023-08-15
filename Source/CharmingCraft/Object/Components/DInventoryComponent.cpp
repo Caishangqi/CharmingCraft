@@ -2,15 +2,7 @@
 
 
 #include "DInventoryComponent.h"
-
-#include <random>
-#include <hlslcc/hlslcc/src/hlslcc_lib/compiler.h>
-
-#include "DCharacter.h"
 #include "DItemDataComponent.h"
-#include "Algo/IndexOf.h"
-#include "CharmingCraft/Controller/DPlayerAIController.h"
-#include "CharmingCraft/Interface/DGameplayInterface.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
 #include "CharmingCraft/Object/Structs/FDItemStruct.h"
 
