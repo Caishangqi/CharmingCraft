@@ -3,6 +3,7 @@
 
 #include "DInventoryComponent.h"
 #include "DItemDataComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
 #include "CharmingCraft/Object/Structs/FDItemStruct.h"
 
@@ -298,6 +299,14 @@ void UDInventoryComponent::BeginPlay()
 
 	// 设置背包大小
 	Content.SetNum(InventorySize);
+
+	// 启用ActionBar UI组件
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		ActionBarWidgetClass(TEXT("Game/CharmingCraft/UI/W_ActionBar"));
+	if (ActionBarWidgetClass.Succeeded())
+	{
+		UUserWidget* ActionBarWidget = CreateWidget<UUserWidget>(GetWorld(), ActionBarWidgetClass.Class);
+	}
 }
 
 
