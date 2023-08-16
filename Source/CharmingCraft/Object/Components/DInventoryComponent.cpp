@@ -300,13 +300,16 @@ void UDInventoryComponent::BeginPlay()
 	// 设置背包大小
 	Content.SetNum(InventorySize);
 
-	// 启用ActionBar UI组件
+	// 启用ActionBar UI组件 不是很美观,暂时封印
+
+	/*
 	static ConstructorHelpers::FClassFinder<UUserWidget>
 		ActionBarWidgetClass(TEXT("Game/CharmingCraft/UI/W_ActionBar"));
 	if (ActionBarWidgetClass.Succeeded())
 	{
 		UUserWidget* ActionBarWidget = CreateWidget<UUserWidget>(GetWorld(), ActionBarWidgetClass.Class);
 	}
+	*/
 }
 
 

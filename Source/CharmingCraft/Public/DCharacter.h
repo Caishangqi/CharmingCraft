@@ -18,6 +18,9 @@ class UAnimMontage;
 class UDAttributeComponent;
 class UDActionComponent;
 
+/*
+ * https://sketchfab.com/3d-models/minecraft-player-slim-4e9962a0a094494ab3e85cd688f3d74d
+ */
 UCLASS() //Part of UE Property System
 class CHARMINGCRAFT_API ADCharacter : public ACharacter
 {
