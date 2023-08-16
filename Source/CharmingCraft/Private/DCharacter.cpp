@@ -180,7 +180,8 @@ void ADCharacter::PrintDebugMessage()
 
 void ADCharacter::PrimaryAttack()
 {
-	ActionComponent->StartActionByName(this, "PrimaryAttack");
+	/* 依照手中的武器来展开武器的使用 */
+	//ActionComponent->StartActionByName(this, "PrimaryAttack");
 
 	//攻击动画
 	//PlayAnimMontage(AttackAnim);
