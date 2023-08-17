@@ -12,7 +12,7 @@ UDAttributeComponent::UDAttributeComponent()
 
 	// ...
 
-	Health = 100;
+	HealthMax = Health = 100;
 }
 
 
