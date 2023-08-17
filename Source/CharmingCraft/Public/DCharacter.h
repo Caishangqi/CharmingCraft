@@ -7,6 +7,7 @@
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
 
+class UEquipmentManagerComponent;
 class UDInventoryComponent;
 class UPostProcessComponent;
 class ADPlayerAIController;
@@ -101,6 +102,10 @@ public:
 	/* 物品栏 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UDInventoryComponent* InventoryComponent;
+
+	/* 装备管理器 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
+	UEquipmentManagerComponent* EquipmentManagerComponent;
 
 public:
 	// Called every frame

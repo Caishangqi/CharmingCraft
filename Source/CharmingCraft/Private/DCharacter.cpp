@@ -12,6 +12,7 @@
 #include "CharmingCraft/Object/Components/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "CharmingCraft/Object/Components/EquipmentManagerComponent.h"
 #include "Components/PostProcessComponent.h"
 // Sets default values
 ADCharacter::ADCharacter()
@@ -60,6 +61,9 @@ ADCharacter::ADCharacter()
 
 	/* 物品栏 */
 	InventoryComponent = CreateDefaultSubobject<UDInventoryComponent>("InventoryComponent");
+
+	/* 装备管理器 */
+	EquipmentManagerComponent = CreateDefaultSubobject<UEquipmentManagerComponent>("EquipmentManagerComponent");
 }
 
 // Called when the game starts or when spawned
