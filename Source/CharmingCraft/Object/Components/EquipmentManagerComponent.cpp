@@ -3,6 +3,10 @@
 
 #include "EquipmentManagerComponent.h"
 
+#include "EquipmentRenderComponent.h"
+#include "EquipmentSlotComponent.h"
+#include "CharmingCraft/Item/Equip/HelmetClass.h"
+
 // Sets default values for this component's properties
 UEquipmentManagerComponent::UEquipmentManagerComponent()
 {
@@ -10,7 +14,9 @@ UEquipmentManagerComponent::UEquipmentManagerComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	HelmetSlot = CreateDefaultSubobject<UEquipmentSlotComponent>("HelmetSlot");
+
+	EquipmentRenderComponent = CreateDefaultSubobject<UEquipmentRenderComponent>("EquipmentRenderComponent");
 }
 
 
@@ -20,15 +26,14 @@ void UEquipmentManagerComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
 // Called every frame
-void UEquipmentManagerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UEquipmentManagerComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                               FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
-

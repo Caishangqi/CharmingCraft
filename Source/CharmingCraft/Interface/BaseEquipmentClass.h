@@ -6,14 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "BaseEquipmentClass.generated.h"
 
-UCLASS()
-class CHARMINGCRAFT_API ABaseEquipmentClass : public AActor
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class CHARMINGCRAFT_API UBaseEquipmentClass : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ABaseEquipmentClass();
+	UBaseEquipmentClass();
 
 	/* Filed */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Render")
@@ -33,7 +33,6 @@ protected:
 
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	/* Method */
 };

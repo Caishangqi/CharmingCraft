@@ -12,7 +12,7 @@ UEquipPartComponent::UEquipPartComponent()
 
 	// ...
 	/* 初始化 */
-	ItemID = "None";
+	ComponentMaterial = "None";
 	ItemNeedToForge = 0;
 }
 

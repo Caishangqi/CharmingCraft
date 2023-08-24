@@ -12,8 +12,8 @@ class UEquipPartHelmetCore;
 /**
  * 
  */
-UCLASS()
-class CHARMINGCRAFT_API AHelmetClass : public ABaseEquipmentClass
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class CHARMINGCRAFT_API UHelmetClass : public UBaseEquipmentClass
 {
 	GENERATED_BODY()
 
@@ -27,4 +27,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Helmet Parts")
 	UEquipPartArmorTrim* EquipPartArmorTrim;
+
+	UHelmetClass();
 };

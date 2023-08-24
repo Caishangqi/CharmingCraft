@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipPartArmorTrim : public UEquipPartComponent
 {
 	GENERATED_BODY()

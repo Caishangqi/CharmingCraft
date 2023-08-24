@@ -7,7 +7,11 @@
 #include "EquipmentManagerComponent.generated.h"
 
 
-class AHelmetClass;
+class UEquipmentRenderComponent;
+class UEquipmentSlotComponent;
+/*
+ * UML Diagram link https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/
+ */
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipmentManagerComponent : public UActorComponent
@@ -19,9 +23,16 @@ public:
 	UEquipmentManagerComponent();
 
 	/* 属性 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
+	UEquipmentSlotComponent* HelmetSlot;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equip Slot")
-	AHelmetClass* HelmetSlot;
-
+	UEquipmentSlotComponent* ChestPlateSlot;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equip Slot")
+	UEquipmentSlotComponent* LeggingSlot;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equip Slot")
+	UEquipmentSlotComponent* BootSlot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
+	UEquipmentRenderComponent* EquipmentRenderComponent;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
