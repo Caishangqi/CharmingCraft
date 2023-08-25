@@ -8,7 +8,8 @@
 #include "CharmingCraft/Item/Equip/HelmetClass.h"
 
 // Sets default values for this component's properties
-UEquipmentManagerComponent::UEquipmentManagerComponent()
+UEquipmentManagerComponent::UEquipmentManagerComponent(const FObjectInitializer& ObjectInitializer): Super(
+	ObjectInitializer)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -16,7 +17,8 @@ UEquipmentManagerComponent::UEquipmentManagerComponent()
 
 	HelmetSlot = CreateDefaultSubobject<UEquipmentSlotComponent>("HelmetSlot");
 
-	EquipmentRenderComponent = CreateDefaultSubobject<UEquipmentRenderComponent>("EquipmentRenderComponent");
+	EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
+		this, "EquipmentRenderComponent");
 }
 
 

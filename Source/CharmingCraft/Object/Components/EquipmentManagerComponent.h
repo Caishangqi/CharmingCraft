@@ -20,7 +20,7 @@ class CHARMINGCRAFT_API UEquipmentManagerComponent : public UActorComponent
 
 public:
 	// Sets default values for this component's properties
-	UEquipmentManagerComponent();
+	UEquipmentManagerComponent(const FObjectInitializer& ObjectInitializer);
 
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
@@ -33,6 +33,7 @@ public:
 	UEquipmentSlotComponent* BootSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
 	UEquipmentRenderComponent* EquipmentRenderComponent;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
