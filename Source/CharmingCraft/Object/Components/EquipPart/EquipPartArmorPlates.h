@@ -13,8 +13,8 @@ class CHARMINGCRAFT_API UEquipPartArmorPlates : public UEquipPartComponent
 
 public:
 	/* 属性 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
-	int32 PartProvidedArmor; //部件提供的护甲
 	
 	UEquipPartArmorPlates();
+
+	virtual void UpdateRenderMesh(FString& NewComponentMaterialText) override;
 };

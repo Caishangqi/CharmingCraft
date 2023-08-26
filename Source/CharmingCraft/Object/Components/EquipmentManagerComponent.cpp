@@ -19,6 +19,7 @@ UEquipmentManagerComponent::UEquipmentManagerComponent(const FObjectInitializer&
 
 	EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
 		this, "EquipmentRenderComponent");
+	
 }
 
 

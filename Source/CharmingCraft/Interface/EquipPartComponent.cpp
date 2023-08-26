@@ -10,9 +10,7 @@ UEquipPartComponent::UEquipPartComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 	/* 初始化 */
-	ComponentMaterial = "None";
 	ItemNeedToForge = 0;
 }
 
@@ -23,6 +21,10 @@ void UEquipPartComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+}
+
+void UEquipPartComponent::UpdateRenderMesh(FString& NewComponentMaterialText)
+{
 }
 
 

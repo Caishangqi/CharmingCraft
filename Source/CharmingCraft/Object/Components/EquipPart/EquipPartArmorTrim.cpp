@@ -5,6 +5,15 @@
 
 UEquipPartArmorTrim::UEquipPartArmorTrim()
 {
-	PartProvidedDurability = 0;
 	TypeSuffix = "Armor Trim";
+	UEquipPartArmorTrim::UpdateRenderMesh(ComponentMaterialText);
+}
+
+void UEquipPartArmorTrim::UpdateRenderMesh(FString& NewComponentMaterialText)
+{
+	if (Super::UpdateRenderMesh(NewComponentMaterialText);
+		const FDArmorMaterial* RowResult = ComponentMaterial.GetRow<FDArmorMaterial>(NewComponentMaterialText))
+	{
+		PartMesh = RowResult->TrimTexture;
+	}
 }

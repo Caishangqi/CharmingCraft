@@ -19,8 +19,9 @@ public:
 
 
 	/* 提供的耐久 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
-	int32 PartProvidedDurability; //
 
 	UEquipPartArmorTrim();
+
+	virtual void UpdateRenderMesh(FString& NewComponentMaterialText) override;
+
 };

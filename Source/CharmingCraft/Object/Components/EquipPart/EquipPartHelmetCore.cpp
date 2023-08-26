@@ -3,8 +3,18 @@
 
 #include "EquipPartHelmetCore.h"
 
+
 UEquipPartHelmetCore::UEquipPartHelmetCore()
 {
 	TypeSuffix = "Helmet Core";
-	PartProvidedResistance = 0;
+	UEquipPartHelmetCore::UpdateRenderMesh(ComponentMaterialText);
+}
+
+void UEquipPartHelmetCore::UpdateRenderMesh(FString& NewComponentMaterialText)
+{
+	if (Super::UpdateRenderMesh(NewComponentMaterialText);
+		const FDArmorMaterial* RowResult = ComponentMaterial.GetRow<FDArmorMaterial>(NewComponentMaterialText))
+	{
+		PartMesh = RowResult->CoreTexture;
+	}
 }

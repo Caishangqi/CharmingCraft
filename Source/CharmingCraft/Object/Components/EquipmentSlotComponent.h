@@ -15,8 +15,11 @@ class CHARMINGCRAFT_API UEquipmentSlotComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equipment")
-	TSubclassOf<AActor> Equipment;
+	AActor* Equipment;
+	
+	bool bIsOccupied = false;
 
 	// Sets default values for this component's properties
 	UEquipmentSlotComponent();
@@ -29,4 +32,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void UpdateOccupied();
 };

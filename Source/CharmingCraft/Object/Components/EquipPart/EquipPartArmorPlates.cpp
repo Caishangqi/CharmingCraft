@@ -7,5 +7,14 @@
 UEquipPartArmorPlates::UEquipPartArmorPlates()
 {
 	TypeSuffix = "Armor Plates";
-	PartProvidedArmor = 0;
+	UEquipPartArmorPlates::UpdateRenderMesh(ComponentMaterialText);
+}
+
+void UEquipPartArmorPlates::UpdateRenderMesh(FString& NewComponentMaterialText)
+{
+	if (Super::UpdateRenderMesh(NewComponentMaterialText);
+		const FDArmorMaterial* RowResult = ComponentMaterial.GetRow<FDArmorMaterial>(NewComponentMaterialText))
+	{
+		PartMesh = RowResult->PlateTexture;
+	}
 }

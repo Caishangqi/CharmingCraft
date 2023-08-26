@@ -7,7 +7,7 @@
 #include "EquipmentRenderComponent.generated.h"
 
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
 class CHARMINGCRAFT_API UEquipmentRenderComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -20,7 +20,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Helmet Socket")
 	UStaticMeshComponent* HelmetSocket;
 
-	
+
 	/* Chest Plate Render Socket */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Chestplate Socket")
 	UStaticMesh* ChestBodyProtectSocket;
@@ -64,4 +64,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+
 };
