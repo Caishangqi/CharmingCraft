@@ -7,6 +7,8 @@
 #include "EquipmentManagerComponent.generated.h"
 
 
+class UHelmetMeta;
+class UItemStack;
 class UEquipmentRenderComponent;
 class UEquipmentSlotComponent;
 /*
@@ -24,15 +26,15 @@ public:
 
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
-	UEquipmentSlotComponent* HelmetSlot;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equip Slot")
-	UEquipmentSlotComponent* ChestPlateSlot;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equip Slot")
-	UEquipmentSlotComponent* LeggingSlot;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Equip Slot")
-	UEquipmentSlotComponent* BootSlot;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
-	UEquipmentRenderComponent* EquipmentRenderComponent;
+	UItemStack* HelmetSlot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
+	UItemStack* ChestPlateSlot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
+	UItemStack* LeggingSlot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
+	UItemStack* BootSlot;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
+	// UEquipmentRenderComponent* EquipmentRenderComponent;
 
 protected:
 	// Called when the game starts

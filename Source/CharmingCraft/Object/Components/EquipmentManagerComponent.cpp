@@ -5,6 +5,8 @@
 
 #include "EquipmentRenderComponent.h"
 #include "EquipmentSlotComponent.h"
+#include "ItemStack.h"
+#include "CharmingCraft/Interface/Meta/HelmetMeta.h"
 #include "CharmingCraft/Item/Equip/HelmetClass.h"
 
 // Sets default values for this component's properties
@@ -14,12 +16,11 @@ UEquipmentManagerComponent::UEquipmentManagerComponent(const FObjectInitializer&
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	HelmetSlot = CreateDefaultSubobject<UItemStack>("Helmet ItemStack");
+	HelmetSlot->ItemMeta = CreateDefaultSubobject<UHelmetMeta>("HelmetMeta");
 
-	HelmetSlot = CreateDefaultSubobject<UEquipmentSlotComponent>("HelmetSlot");
-
-	EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
-		this, "EquipmentRenderComponent");
-	
+	// EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
+	// 	this, "EquipmentRenderComponent");
 }
 
 

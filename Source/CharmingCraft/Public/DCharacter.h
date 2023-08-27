@@ -104,8 +104,8 @@ public:
 	UDInventoryComponent* InventoryComponent;
 
 	/* 装备管理器 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
-	UEquipmentManagerComponent* EquipmentManagerComponent;
+	// UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
+	// UEquipmentManagerComponent* EquipmentManagerComponent;
 
 public:
 	// Called every frame
