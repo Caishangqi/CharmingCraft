@@ -14,7 +14,7 @@ struct FDArmorMaterial : public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Material", MakeStructureDefaultValue="None"))
 	FString Material; // 物品系统应当重置,按照Minecraft的设计
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Color", MakeStructureDefaultValue= "None"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Color", MakeStructureDefaultValue= NULL))
 	FColor Color;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Dimension", MakeStructureDefaultValue="None"))
@@ -23,7 +23,7 @@ struct FDArmorMaterial : public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Type", MakeStructureDefaultValue="None"))
 	FString Type;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Creation", MakeStructureDefaultValue="None"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Creation", MakeStructureDefaultValue= "None"))
 	FString Creation;
 
 	/* Attributes */
