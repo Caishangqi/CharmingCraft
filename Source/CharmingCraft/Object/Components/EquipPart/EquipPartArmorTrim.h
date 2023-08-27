@@ -23,5 +23,4 @@ public:
 	UEquipPartArmorTrim();
 
 	virtual void UpdateRenderMesh(FString& NewComponentMaterialText) override;
-
 };

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Interface/ItemMeta.h"
+#include "ItemMeta.h"
 #include "ArmorMeta.generated.h"
 
 /**

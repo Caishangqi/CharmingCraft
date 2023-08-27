@@ -2,7 +2,6 @@
 
 
 #include "HelmetMeta.h"
-
 #include "../Object/Components/EquipPart/EquipPartArmorPlates.h"
 #include "../Object/Components/EquipPart/EquipPartArmorTrim.h"
 #include "../Object/Components/EquipPart/EquipPartHelmetCore.h"

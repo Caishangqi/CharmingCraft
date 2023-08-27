@@ -16,7 +16,7 @@ UEquipmentRenderComponent::UEquipmentRenderComponent()
 	// ...
 
 	UE_LOG(LogTemp, Warning, TEXT("UEquipmentRenderComponent Initialize"));
-	UEquipmentManagerComponent * EquipmentManagerComponent  = Cast<UEquipmentManagerComponent>(GetOuter());
+	UEquipmentManagerComponent* EquipmentManagerComponent = Cast<UEquipmentManagerComponent>(GetOuter());
 	//EquipmentManagerComponent->HelmetSlot
 }
 

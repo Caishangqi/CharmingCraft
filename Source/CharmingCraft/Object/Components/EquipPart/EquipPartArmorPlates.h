@@ -13,7 +13,7 @@ class CHARMINGCRAFT_API UEquipPartArmorPlates : public UEquipPartComponent
 
 public:
 	/* 属性 */
-	
+
 	UEquipPartArmorPlates();
 
 	virtual void UpdateRenderMesh(FString& NewComponentMaterialText) override;

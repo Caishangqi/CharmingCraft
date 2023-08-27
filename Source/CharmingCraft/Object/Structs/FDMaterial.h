@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
-#include "CharmingCraft/Interface/ItemMeta.h"
+#include "CharmingCraft/Interface/Meta/ItemMeta.h"
 #include "Engine/DataTable.h"
 #include "FDMaterial.generated.h"
 
@@ -17,6 +17,6 @@ struct FDMaterial : public FTableRowBase
 		meta=(DisplayName="Default Texture", MakeStructureDefaultValue="None"))
 	TObjectPtr<UTexture2D> DefaultTexture;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,
-			meta=(DisplayName="ItemMeta", MakeStructureDefaultValue="None"))
+		meta=(DisplayName="ItemMeta", MakeStructureDefaultValue="None"))
 	TSubclassOf<UItemMeta> ItemMeta;
 };

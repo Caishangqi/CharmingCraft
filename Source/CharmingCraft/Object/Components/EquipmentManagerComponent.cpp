@@ -2,12 +2,9 @@
 
 
 #include "EquipmentManagerComponent.h"
-
 #include "EquipmentRenderComponent.h"
-#include "EquipmentSlotComponent.h"
 #include "ItemStack.h"
 #include "CharmingCraft/Interface/Meta/HelmetMeta.h"
-#include "CharmingCraft/Item/Equip/HelmetClass.h"
 
 // Sets default values for this component's properties
 UEquipmentManagerComponent::UEquipmentManagerComponent(const FObjectInitializer& ObjectInitializer): Super(

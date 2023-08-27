@@ -18,9 +18,8 @@ class CHARMINGCRAFT_API UHelmetMeta : public UArmorMeta
 	GENERATED_BODY()
 
 public:
-
 	UHelmetMeta();
-	
+
 	/* 属性 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Helmet Parts")
 	UEquipPartHelmetCore* HelmetCore;
