@@ -3,6 +3,7 @@
 
 #include "DInventoryComponent.h"
 #include "DItemDataComponent.h"
+#include "ItemStack.h"
 #include "Blueprint/UserWidget.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
 #include "CharmingCraft/Object/Structs/FDItemStruct.h"
@@ -13,10 +14,6 @@ UDInventoryComponent::UDInventoryComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	SetIsReplicatedByDefault(true);
-
-
 	// ...
 }
 
@@ -37,6 +34,44 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 		else if (AnyEmptySlotAvailable().Result)
 		{
 			if (CreateNewStack(ItemID, 1))
+			{
+				LocalQuantity--;
+			}
+			else
+			{
+				bLocalHasFailed = true;
+			}
+		}
+		else
+		{
+			bLocalHasFailed = true;
+		}
+	}
+	Result.bIsSuccess = !bLocalHasFailed;
+	Result.RemainQuantity = LocalQuantity;
+
+	return Result;
+}
+
+UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
+{
+	// UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemStack->MaterialName,
+	//        ItemStack->Amount);
+	FReturnSuccessRemainQuantity Result;
+
+	int32 LocalQuantity = ItemStack->Amount;
+	while (LocalQuantity > 0 && !bLocalHasFailed)
+	{
+		int32 SlotIndex = FindSlot(ItemStack);
+		if (SlotIndex != -1)
+		{
+			AddToStack(SlotIndex, 1);
+			LocalQuantity--;
+			UE_LOG(LogTemp, Warning, TEXT("AddToStack(SlotIndex, 1, ItemID);"));
+		}
+		else if (AnyEmptySlotAvailable().Result)
+		{
+			if (CreateNewStack(ItemStack, 1))
 			{
 				LocalQuantity--;
 			}
@@ -95,6 +130,36 @@ void UDInventoryComponent::RemoveFromInventory(int32 Index, bool RemoveWholeStac
 	OnInventoryUpdate.Broadcast();
 }
 
+void UDInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
+{
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::RemoveFromInventory Parameter: Index: %d| Quantity: %d"),
+	       Index, Inventory[Index]->Amount);
+	LocalItemStack = Inventory[Index];
+	if (LocalItemStack->Amount == 1 || RemoveWholeStack)
+	{
+		Inventory[Index] = nullptr;
+		if (IsConsumed)
+		{
+		}
+		else
+		{
+			Drop(LocalItemStack, LocalItemStack->Amount);
+		}
+	}
+	else
+	{
+		Inventory[Index]->Amount = Inventory[Index]->Amount - 1;
+		if (IsConsumed)
+		{
+		}
+		else
+		{
+			Drop(LocalItemStack, 1);
+		}
+	}
+	OnInventoryUpdate.Broadcast();
+}
+
 int32 UDInventoryComponent::FindSlot(FString ItemID)
 {
 	for (int32 Index = 0; Index < Content.Num(); ++Index)
@@ -102,6 +167,24 @@ int32 UDInventoryComponent::FindSlot(FString ItemID)
 		FDSlotStruct& Slot = Content[Index];
 		bool bIDEqual = Slot.ItemID == ItemID;
 		bool bQuantityValid = Slot.Quantity < GetMaxStackSize(ItemID);
+		if (bIDEqual && bQuantityValid)
+		{
+			bLocalHasFailed = false;
+			UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot %d"), Index);
+			return Index; // 返回找到的Index
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot =  FALSE"));
+	return -1; // 如果没有找到合适的Slot，返回-1或其他指示值
+}
+
+int32 UDInventoryComponent::FindSlot(UItemStack* ItemStack)
+{
+	for (int32 Index = 0; Index < Inventory.Num(); ++Index)
+	{
+		UItemStack* CacheItemStack = Inventory[Index];
+		bool bIDEqual = CacheItemStack->Material == ItemStack->Material;
+		bool bQuantityValid = CacheItemStack->Amount < GetMaxStackSize(ItemStack);
 		if (bIDEqual && bQuantityValid)
 		{
 			bLocalHasFailed = false;
@@ -129,12 +212,36 @@ int32 UDInventoryComponent::GetMaxStackSize(FString ItemID)
 	return -1;
 }
 
+int32 UDInventoryComponent::GetMaxStackSize(UItemStack* ItemStack)
+{
+	if (MaterialData)
+	{
+	} // TODO
+	if (FDMaterial* Row = MaterialData->FindRow<FDMaterial>(FName("占位符"),
+	                                                        TEXT("Looking up row in MyDataTable")))
+	{
+		// UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize HAVE ITEM DATA FOUND"));
+		// TODO
+		//return Row->MaxStackSize;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
+	return -1;
+}
+
 void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, FString ItemID)
 {
 	if (Content.IsValidIndex(Index))
 	{
 		Content[Index].ItemID = ItemID;
 		Content[Index].Quantity = Content[Index].Quantity + Quantity;
+	}
+}
+
+void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity)
+{
+	if (Content.IsValidIndex(Index))
+	{
+		Inventory[Index]->Amount = Inventory[Index]->Amount + Quantity;
 	}
 }
 
@@ -145,6 +252,23 @@ UDInventoryComponent::FReturnValue UDInventoryComponent::AnyEmptySlotAvailable()
 	for (int32 Index = 0; Index < Content.Num(); ++Index)
 	{
 		if (Content[Index].Quantity == 0)
+		{
+			Result.Index = Index;
+			Result.Result = true;
+			return Result;
+		}
+	}
+	Result.Index = -1;
+	Result.Result = false;
+	return Result;
+}
+
+UDInventoryComponent::FReturnValue UDInventoryComponent::IsEmptySlotAvailable()
+{
+	FReturnValue Result;
+	for (int32 Index = 0; Index < Inventory.Num(); ++Index)
+	{
+		if (Inventory[Index]->Amount == 0)
 		{
 			Result.Index = Index;
 			Result.Result = true;
@@ -168,6 +292,25 @@ bool UDInventoryComponent::CreateNewStack(FString ItemID, int32 Quantity)
 		return true;
 	}
 	return false;
+}
+
+bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
+{
+	if (AnyEmptySlotAvailable().Result)
+	{
+		UItemStack* NewItemStack = NewObject<UItemStack>();
+		NewItemStack->Amount = ItemStack->Amount;
+		NewItemStack->Material = ItemStack->Material;
+		NewItemStack->ItemMeta = ItemStack->ItemMeta;
+		NewItemStack->ItemMeta->Durability = ItemStack->ItemMeta->Durability;
+
+		Inventory[IsEmptySlotAvailable().Index] = NewItemStack;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
@@ -214,6 +357,48 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 	}
 }
 
+void UDInventoryComponent::MoveToSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex)
+{
+	LocalItemStack = SourceInventory->Inventory[SourceIndex];
+	if (DestinationIndex < 0)
+	{
+	}
+	else
+	{
+		// 发出者的背包Index
+		if (Inventory[DestinationIndex]->Material == LocalItemStack->Material)
+		{
+			// Content 是箱子, Source 是玩家的背包
+			int32 MaxStackSize = GetMaxStackSize(Inventory[DestinationIndex]);
+			if (LocalItemStack->Amount + Inventory[DestinationIndex]->Amount > MaxStackSize)
+			{
+				// 优先算出背包剩余物品, 如果鼠标悬浮物品为 32 箱子里 64,则先计算背包
+				// 计算如下 光标物品 - (最大堆叠数 - 同Index下的相同物品数量)
+				// 32- (64 - 48) = 16
+				SourceInventory->Inventory[SourceIndex]->Amount = LocalItemStack->Amount - (MaxStackSize - Inventory[
+					DestinationIndex]->Amount);
+				Inventory[DestinationIndex]->Amount = MaxStackSize;
+			}
+			else if (LocalItemStack->Amount + Inventory[DestinationIndex]->Amount <= MaxStackSize)
+			{
+				Inventory[DestinationIndex]->Amount = LocalItemStack->Amount + Inventory[
+					SourceIndex]->Amount;
+				SourceInventory->Inventory[SourceIndex] = nullptr;
+			}
+			OnInventoryUpdate.Broadcast();
+			SourceInventory->OnInventoryUpdate.Broadcast();
+		}
+		else
+		{
+			SourceInventory->Inventory[SourceIndex] = Inventory[DestinationIndex];
+			Inventory[DestinationIndex] = LocalItemStack;
+			//
+			OnInventoryUpdate.Broadcast();
+			SourceInventory->OnInventoryUpdate.Broadcast();
+		}
+	}
+}
+
 void UDInventoryComponent::DropItem(FString ItemID, int32 Quantity)
 {
 	int32 DIQuantity = Quantity;
@@ -222,6 +407,11 @@ void UDInventoryComponent::DropItem(FString ItemID, int32 Quantity)
 	{
 		GetWorld()->SpawnActor<AActor>(ActorClass, GetDropLocation(), FRotator3d(1.0));
 	}
+}
+
+void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
+{
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop"));
 }
 
 FVector UDInventoryComponent::GetDropLocation()
@@ -310,6 +500,19 @@ void UDInventoryComponent::BeginPlay()
 		UUserWidget* ActionBarWidget = CreateWidget<UUserWidget>(GetWorld(), ActionBarWidgetClass.Class);
 	}
 	*/
+}
+
+
+void UDInventoryComponent::OnRegister()
+{
+	Super::OnRegister();
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister()"));
+}
+
+void UDInventoryComponent::PostInitProperties()
+{
+	Super::PostInitProperties();
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::PostInitProperties()"));
 }
 
 

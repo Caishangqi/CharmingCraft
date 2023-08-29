@@ -16,8 +16,8 @@ UEquipmentManagerComponent::UEquipmentManagerComponent(const FObjectInitializer&
 	HelmetSlot = CreateDefaultSubobject<UItemStack>("Helmet ItemStack");
 	HelmetSlot->ItemMeta = CreateDefaultSubobject<UHelmetMeta>("HelmetMeta");
 
-	// EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
-	// 	this, "EquipmentRenderComponent");
+	EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
+		this, "EquipmentRenderComponent");
 }
 
 
@@ -37,4 +37,13 @@ void UEquipmentManagerComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+bool UEquipmentManagerComponent::IsOccupied(UItemStack* Slot)
+{
+	if (Slot == NULL)
+	{
+		return false;
+	}
+	return true;
 }

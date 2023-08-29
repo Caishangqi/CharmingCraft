@@ -33,8 +33,8 @@ public:
 	UItemStack* LeggingSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
 	UItemStack* BootSlot;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
-	// UEquipmentRenderComponent* EquipmentRenderComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
+	UEquipmentRenderComponent* EquipmentRenderComponent;
 
 protected:
 	// Called when the game starts
@@ -44,4 +44,5 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+	virtual bool IsOccupied(UItemStack* Slot);
 };

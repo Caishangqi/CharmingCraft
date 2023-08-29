@@ -22,6 +22,8 @@ public:
 	FString DisplayName;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Custom Model Data")
 	int32 CustomModelData;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Durability")
+	int32 Durability; //
 
 protected:
 	// Called when the game starts

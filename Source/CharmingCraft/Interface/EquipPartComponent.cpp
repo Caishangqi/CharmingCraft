@@ -23,7 +23,7 @@ void UEquipPartComponent::BeginPlay()
 	// ...
 }
 
-void UEquipPartComponent::UpdateRenderMesh(FString& NewComponentMaterialText)
+void UEquipPartComponent::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
 }
 
@@ -35,4 +35,9 @@ void UEquipPartComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UEquipPartComponent::OnRegister()
+{
+	Super::OnRegister();
 }

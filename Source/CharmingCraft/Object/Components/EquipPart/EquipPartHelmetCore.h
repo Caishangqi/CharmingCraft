@@ -13,11 +13,11 @@ UCLASS()
 class CHARMINGCRAFT_API UEquipPartHelmetCore : public UEquipPartComponent
 {
 	GENERATED_BODY()
-
 public:
 	/* 属性 */
 
 	UEquipPartHelmetCore();
 
-	virtual void UpdateRenderMesh(FString& NewComponentMaterialText) override;
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
+	virtual void OnRegister() override;
 };

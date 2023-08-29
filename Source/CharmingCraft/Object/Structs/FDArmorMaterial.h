@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Engine/DataTable.h"
 #include "CoreMinimal.h"
+#include "CharmingCraft/Object/Enum/MaterialType.h"
 #include  "FDArmorMaterial.generated.h"
 
 USTRUCT()
@@ -12,7 +13,7 @@ struct FDArmorMaterial : public FTableRowBase
 	FString Tier;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Material", MakeStructureDefaultValue="None"))
-	FString Material; // 物品系统应当重置,按照Minecraft的设计
+	EMaterial Material; // 物品系统应当重置,按照Minecraft的设计
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Color", MakeStructureDefaultValue= NULL))
 	FColor Color;

@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
+#include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "Components/ActorComponent.h"
+#include "Engine/DataTable.h"
 #include "EquipPartComponent.generated.h"
-
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipPartComponent : public UActorComponent
@@ -19,7 +19,7 @@ public:
 
 	/* 属性 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
-	FDataTableRowHandle ComponentMaterial; //锻造这个部件所用的材料
+	EMaterial ComponentMaterial; //锻造这个部件所用的材料
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
 	int32 ItemNeedToForge; // 多少个材料才能锻造这个部件
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
@@ -27,7 +27,7 @@ public:
 
 	// 用于编辑器分配,这个名字就是材料名称,塞进RenderUpdate里更新材质
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
-	FString ComponentMaterialText;
+	FDataTableRowHandle ComponentMaterialDataTable;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,
 		Category= "Naming")
@@ -48,6 +48,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
+
+	virtual void OnRegister() override;
+	
 	// 构造的时候依照玩家选择的 Material 调用数据表格的材料进行材质更替
-	virtual void UpdateRenderMesh(FString& NewComponentMaterialText);
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText);
 };

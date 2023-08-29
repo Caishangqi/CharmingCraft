@@ -3,18 +3,31 @@
 
 #include "EquipPartArmorPlates.h"
 
+#include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
+
 
 UEquipPartArmorPlates::UEquipPartArmorPlates()
 {
 	TypeSuffix = "Armor Plates";
-	UEquipPartArmorPlates::UpdateRenderMesh(ComponentMaterialText);
 }
 
-void UEquipPartArmorPlates::UpdateRenderMesh(FString& NewComponentMaterialText)
+void UEquipPartArmorPlates::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
-	if (Super::UpdateRenderMesh(NewComponentMaterialText);
-		const FDArmorMaterial* RowResult = ComponentMaterial.GetRow<FDArmorMaterial>(NewComponentMaterialText))
-	{
-		PartMesh = RowResult->PlateTexture;
-	}
+	UEnum* MaterialEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
+	FString MaterialString = MaterialEnum->GetNameStringByValue(static_cast<int64>(ComponentMaterial));
+
+	FString Prefix, EnumValue;
+	// 使用Split方法去除前缀
+	MaterialString.Split(TEXT("::"), &Prefix, &EnumValue);
+
+	const FDArmorMaterial* RowResult = ComponentMaterialDataTable.GetRow<FDArmorMaterial>(EnumValue);
+
+
+	PartMesh = RowResult->PlateTexture;
+}
+
+void UEquipPartArmorPlates::OnRegister()
+{
+	Super::OnRegister();
+	//UEquipPartArmorPlates::UpdateRenderMesh(ComponentMaterial);
 }

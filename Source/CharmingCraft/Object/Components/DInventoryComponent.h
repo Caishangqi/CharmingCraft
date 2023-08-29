@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Object/Class/Item/Item.h"
 #include "CharmingCraft/Object/Structs/FDSlotStruct.h"
 #include "Components/ActorComponent.h"
 #include "DInventoryComponent.generated.h"
 
 
+class UItemStack;
 struct FDItemStruct;
 class UDataTable;
 class ADPlayerAIController;
@@ -36,25 +38,43 @@ public:
 
 	/* 将物品添加到物品栏函数 */
 	virtual FReturnSuccessRemainQuantity AddToInventory(FString ItemID, int32 Quantity);
+	/* 将物品添加到物品栏函数 ItemStack 版本 */
+	virtual FReturnSuccessRemainQuantity AddToInventory(UItemStack* ItemStack);
+
+
 	/* 将物品从到物品栏移除函数 */
 	UFUNCTION(BlueprintCallable)
 	virtual void RemoveFromInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
+	/* 将物品从到物品栏移除函数 ItemStack 版本 */
+	virtual void RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
 	/* 找到物品栏可以堆叠物品的slot */
 	virtual int32 FindSlot(FString ItemID);
+	/* 找到物品栏可以堆叠物品的slot ItemStack 版本 */
+	virtual int32 FindSlot(UItemStack* ItemID);
 	/* 找到物品的最大叠加 */
 	virtual int32 GetMaxStackSize(FString ItemID);
-
+	/* 找到物品的最大叠加 ItemStack 版本*/
+	virtual int32 GetMaxStackSize(UItemStack* ItemStack);
+	/* 叠加同类物品 */
 	virtual void AddToStack(int32 Index, int32 Quantity, FString ItemID);
+	/* 叠加同类物品 ItemStack 版本*/
+	virtual void AddToStack(int32 Index, int32 Quantity);
 
 	virtual FReturnValue AnyEmptySlotAvailable();
+	virtual FReturnValue IsEmptySlotAvailable();
 
 	virtual bool CreateNewStack(FString ItemID, int32 Quantity);
+	virtual bool CreateNewStack(UItemStack* ItemStack, int32 Quantity);
 
 	UFUNCTION(BlueprintCallable)
 	virtual void TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
+	UFUNCTION(BlueprintCallable)
+	virtual void MoveToSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
 
 	UFUNCTION(BlueprintCallable)
 	virtual void DropItem(FString ItemID, int32 Quantity);
+	UFUNCTION(BlueprintCallable)
+	virtual void Drop(UItemStack* ItemStack, int32 Quantity);
 
 	virtual FVector GetDropLocation();
 
@@ -75,13 +95,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	TArray<FDSlotStruct> Content;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
+	TArray<UItemStack*> Inventory; // Updated
+
 	UPROPERTY(EditAnywhere, Category = "Data")
 	UDataTable* ItemData;
+
+	UPROPERTY(EditAnywhere, Category = "MaterialData")
+	UDataTable* MaterialData; // Updated
 
 	/* Local Variables */
 	inline static bool bLocalHasFailed = false;
 	int32 RFILocalQuantity;
 	FString LocalItemID;
+	UItemStack* LocalItemStack;
 
 	FDSlotStruct LocalSlotContents;
 
@@ -92,6 +119,10 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	virtual void OnRegister() override;
+
+	virtual void PostInitProperties() override;
 
 public:
 	// Called every frame
