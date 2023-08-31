@@ -20,21 +20,26 @@ class CHARMINGCRAFT_API UItemStack : public UObject
 public:
 	// Sets default values for this component's properties
 	UItemStack();
-	UItemStack(EMaterial Type);
-	UItemStack(EMaterial Type, int32 Amount);
+
+	UFUNCTION(BlueprintCallable)
+	void Initialize(EMaterial Type, int32 Amount);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	int32 Amount;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	EMaterial Material; //
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="ItemStack")
-	TSubclassOf<UItem> ItemClass;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="ItemStackRef")
+	UItem* ItemClassRef; // 必须BlueprintReadOnly
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	TSubclassOf<UItemMeta> ItemMetaClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	UItemMeta* ItemMeta;
 
-protected:
+private:
+
+public:
+	UFUNCTION(BlueprintCallable)
+	bool SynchronizeData();
 
 public:
 	virtual void PostInitProperties() override;

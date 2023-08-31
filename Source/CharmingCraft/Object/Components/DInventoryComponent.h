@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Object/Class/Item/Item.h"
 #include "CharmingCraft/Object/Structs/FDSlotStruct.h"
 #include "Components/ActorComponent.h"
 #include "DInventoryComponent.generated.h"
@@ -83,6 +82,9 @@ public:
 	virtual void PrintDebugMessage();
 	static FVector RandomUnitVectorInConeInDegrees(const FVector& ConeDir, float ConeHalfAngleInDegrees);
 
+	/* Editor Only */
+	//virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
 	/* Event */
 
 	UPROPERTY(BlueprintAssignable)
@@ -95,7 +97,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	TArray<FDSlotStruct> Content;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Inventory Parameter")
 	TArray<UItemStack*> Inventory; // Updated
 
 	UPROPERTY(EditAnywhere, Category = "Data")
@@ -108,6 +110,7 @@ public:
 	inline static bool bLocalHasFailed = false;
 	int32 RFILocalQuantity;
 	FString LocalItemID;
+	UPROPERTY(EditAnywhere, Category = "LocalItemStack")
 	UItemStack* LocalItemStack;
 
 	FDSlotStruct LocalSlotContents;

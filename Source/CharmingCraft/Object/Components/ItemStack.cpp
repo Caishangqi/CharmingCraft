@@ -4,6 +4,7 @@
 #include "ItemStack.h"
 
 #include "CharmingCraft/Interface/Meta/HelmetMeta.h"
+#include "CharmingCraft/Object/Class/Util/ItemRegistry.h"
 
 // Sets default values for this component's properties
 UItemStack::UItemStack()
@@ -16,37 +17,45 @@ UItemStack::UItemStack()
 	Amount = 1;
 }
 
-UItemStack::UItemStack(const EMaterial Type)
+void UItemStack::Initialize(const EMaterial SetType, const int32 SetAmount)
 {
-	Material = Type;
-	Amount = 1;
+	this->Material = SetType;
+	this->Amount = SetAmount;
+	SynchronizeData();
 }
 
-UItemStack::UItemStack(EMaterial Type, int32 Amount)
+bool UItemStack::SynchronizeData()
 {
-	Material = Type;
-	this->Amount = Amount;
+	const FString AssetPath = TEXT(
+		"/Script/Engine.DataTable'/Game/CharmingCraft/Objects/DataTable/MaterialMetaMapper.MaterialMetaMapper'");
+	UDataTable* MaterialMetaMapper = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *AssetPath));
+
+	if (MaterialMetaMapper)
+	{
+		UEnum* MapperEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
+		FString MaterialString = MapperEnum->GetNameStringByValue(static_cast<int64>(Material));
+		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),
+		                                                              TEXT(
+			                                                              "[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
+
+		if (RowData)
+		{
+			// TSubclassOf<UItemMeta> ItemMetaClass 只是个类引用 ItemMeta.Class
+			this->ItemMeta = NewObject<UItemMeta>(this, RowData->ItemMeta, FName(RowData->ItemMeta->GetName()));
+			// 基于类引用创建对应类型的ItemMeta
+			this->ItemClassRef = UItemRegistry::Get()->ItemMap[Material];
+			// UE_LOG(LogTemp, Error, TEXT("ItemMap[Material]-> %s"),
+			//        *UItemRegistry::Get()->ItemMap[Material]->DisplayName.ToString());
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void UItemStack::PostInitProperties()
 {
-	UObject::PostInitProperties();
-	FString AssetPath = TEXT(
-		"/Script/Engine.DataTable'/Game/CharmingCraft/Objects/DataTable/MaterialMetaMapper.MaterialMetaMapper'");
-	UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *AssetPath));
-
-	if (DataTable)
-	{
-		UEnum* MapperEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
-		FString MaterialString = MapperEnum->GetNameStringByValue(static_cast<int64>(Material));
-		FDMaterial* RowData = DataTable->FindRow<FDMaterial>(FName(MaterialString), TEXT("没找到捏"));
-
-		if (RowData)
-		{
-			// 使用RowData进行操作
-			ItemClass = RowData->ItemClass;
-			// TSubclassOf<UItemMeta> ItemMetaClass 只是个类引用 ItemMeta.Class
-			ItemMeta = NewObject<UItemMeta>(this, RowData->ItemMeta, "ItemMeta"); // 基于类引用创建对应类型的ItemMeta
-		}
-	}
+	Super::PostInitProperties();
+	//在这里调用ItemMap[Material]是空的，因为生命周期相同时刻
 }
