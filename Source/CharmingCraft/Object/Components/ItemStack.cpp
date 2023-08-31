@@ -58,4 +58,5 @@ void UItemStack::PostInitProperties()
 {
 	Super::PostInitProperties();
 	//在这里调用ItemMap[Material]是空的，因为生命周期相同时刻
+	SynchronizeData();
 }

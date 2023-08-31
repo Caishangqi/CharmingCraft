@@ -54,6 +54,25 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 	return Result;
 }
 
+void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	// 检查更改的属性是否是我们关心的属性
+	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == GET_MEMBER_NAME_CHECKED(
+		UDInventoryComponent, Inventory))
+	{
+		for (UItemStack* & ItemStack : Inventory)
+		{
+			// 如果元素是nullptr，为其分配默认的UItem对象
+			if (!ItemStack)
+			{
+				ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass());
+				ItemStack->Initialize(EMaterial::APPLE, 32);
+			}
+		}
+	}
+}
+
 UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
 {
 	// UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemStack->MaterialName,
@@ -314,49 +333,6 @@ bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
                                          int32 DestinationIndex)
 {
-	LocalSlotContents = SourceInventory->Content[SourceIndex];
-	if (DestinationIndex < 0)
-	{
-	}
-	else
-	{
-		// 发出者的背包Index
-		if (Content[DestinationIndex].ItemID == LocalSlotContents.ItemID)
-		{
-			// Content 是箱子, Source 是玩家的背包
-			int32 MaxStackSize = GetMaxStackSize(Content[DestinationIndex].ItemID);
-			if (LocalSlotContents.Quantity + Content[DestinationIndex].Quantity > MaxStackSize)
-			{
-				// 优先算出背包剩余物品, 如果鼠标悬浮物品为 32 箱子里 64,则先计算背包
-				// 计算如下 光标物品 - (最大堆叠数 - 同Index下的相同物品数量)
-				// 32- (64 - 48) = 16
-				SourceInventory->Content[SourceIndex].Quantity = LocalSlotContents.Quantity - (MaxStackSize - Content[
-					DestinationIndex].Quantity);
-				Content[DestinationIndex].Quantity = MaxStackSize;
-			}
-			else if (LocalSlotContents.Quantity + Content[DestinationIndex].Quantity <= MaxStackSize)
-			{
-				Content[DestinationIndex].Quantity = LocalSlotContents.Quantity + Content[
-					SourceIndex].Quantity;
-				SourceInventory->Content[SourceIndex].Quantity = 0;
-				SourceInventory->Content[SourceIndex].ItemID = FString("None");
-			}
-			OnInventoryUpdate.Broadcast();
-			SourceInventory->OnInventoryUpdate.Broadcast();
-		}
-		else
-		{
-			SourceInventory->Content[SourceIndex] = Content[DestinationIndex];
-			Content[DestinationIndex] = LocalSlotContents;
-			//
-			OnInventoryUpdate.Broadcast();
-			SourceInventory->OnInventoryUpdate.Broadcast();
-		}
-	}
-}
-
-void UDInventoryComponent::MoveToSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex)
-{
 	LocalItemStack = SourceInventory->Inventory[SourceIndex];
 	if (DestinationIndex < 0)
 	{
@@ -364,10 +340,16 @@ void UDInventoryComponent::MoveToSlots(int32 SourceIndex, UDInventoryComponent* 
 	else
 	{
 		// 发出者的背包Index
-		if (Inventory[DestinationIndex]->Material == LocalItemStack->Material)
+		/* 备注: 这里真的好丑陋,应当实现Minecraft 空气逻辑 */
+		if (Inventory[DestinationIndex] != nullptr && Inventory[DestinationIndex]->Material == LocalItemStack->Material)
 		{
-			// Content 是箱子, Source 是玩家的背包
+			// Content 是箱子, Source 是玩家的背包 TODO
 			int32 MaxStackSize = GetMaxStackSize(Inventory[DestinationIndex]);
+			UE_LOG(LogTemp, Warning,
+			       TEXT(
+				       "UDInventoryComponent::TransferSlots -> LocalItemStack: %d Inventory[DestinationIndex]: %d MaxStackSize: %d"
+			       ),
+			       LocalItemStack->Amount, Inventory[DestinationIndex]->Amount, MaxStackSize);
 			if (LocalItemStack->Amount + Inventory[DestinationIndex]->Amount > MaxStackSize)
 			{
 				// 优先算出背包剩余物品, 如果鼠标悬浮物品为 32 箱子里 64,则先计算背包
@@ -380,7 +362,7 @@ void UDInventoryComponent::MoveToSlots(int32 SourceIndex, UDInventoryComponent* 
 			else if (LocalItemStack->Amount + Inventory[DestinationIndex]->Amount <= MaxStackSize)
 			{
 				Inventory[DestinationIndex]->Amount = LocalItemStack->Amount + Inventory[
-					SourceIndex]->Amount;
+					DestinationIndex]->Amount;
 				SourceInventory->Inventory[SourceIndex] = nullptr;
 			}
 			OnInventoryUpdate.Broadcast();
@@ -396,6 +378,7 @@ void UDInventoryComponent::MoveToSlots(int32 SourceIndex, UDInventoryComponent* 
 		}
 	}
 }
+
 
 void UDInventoryComponent::DropItem(FString ItemID, int32 Quantity)
 {
@@ -468,26 +451,6 @@ FVector UDInventoryComponent::RandomUnitVectorInConeInDegrees(const FVector& Con
 
 	return ResultVector;
 }
-
-
-// void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-// {
-// 	Super::PostEditChangeProperty(PropertyChangedEvent);
-// 	// 检查更改的属性是否是我们关心的属性
-// 	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == GET_MEMBER_NAME_CHECKED(
-// 		UDInventoryComponent, Inventory))
-// 	{
-// 		for (UItemStack* & ItemStack : Inventory)
-// 		{
-// 			// 如果元素是nullptr，为其分配默认的UItem对象
-// 			if (!ItemStack)
-// 			{
-// 				ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass());
-// 			}
-// 		}
-// 	}
-// }
-
 
 void UDInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
 {

@@ -37,6 +37,7 @@ public:
 
 	/* 将物品添加到物品栏函数 */
 	virtual FReturnSuccessRemainQuantity AddToInventory(FString ItemID, int32 Quantity);
+	void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent);
 	/* 将物品添加到物品栏函数 ItemStack 版本 */
 	virtual FReturnSuccessRemainQuantity AddToInventory(UItemStack* ItemStack);
 
@@ -67,9 +68,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
-	UFUNCTION(BlueprintCallable)
-	virtual void MoveToSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
-
 	UFUNCTION(BlueprintCallable)
 	virtual void DropItem(FString ItemID, int32 Quantity);
 	UFUNCTION(BlueprintCallable)
@@ -119,13 +117,13 @@ public:
 
 	void OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator);
 
+	virtual void PostInitProperties() override;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	virtual void OnRegister() override;
-
-	virtual void PostInitProperties() override;
 
 public:
 	// Called every frame
