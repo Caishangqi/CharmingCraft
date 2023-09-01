@@ -38,7 +38,6 @@ void ADropItem::SetupCollision()
 void ADropItem::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
 }
 
 void ADropItem::Initialize(UItemStack* PassItemStack)
@@ -50,7 +49,16 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 
 void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 {
+	UE_LOG(LogTemp, Warning, TEXT("ADropItem::Interact_Implementation"));
+
 	Super::Interact_Implementation(InstigatorPawn);
 	ADCharacter* Player = Cast<ADCharacter>(InstigatorPawn);
-	Player->InventoryComponent->AddToInventory(this->ItemStack);
+
+	UE_LOG(LogTemp, Warning, TEXT("ADropItem::Interact_Implementation -> %s, %d"),
+	       *this->ItemStack->GetItemClass()->DisplayName.ToString(), this->ItemStack->Amount);
+	int32 RemainQuantity = Player->InventoryComponent->AddToInventory(this->ItemStack).RemainQuantity;
+	if (RemainQuantity == 0)
+	{
+		Destroy();
+	}
 }
