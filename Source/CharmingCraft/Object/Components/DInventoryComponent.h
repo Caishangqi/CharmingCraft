@@ -46,6 +46,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void RemoveFromInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
 	/* 将物品从到物品栏移除函数 ItemStack 版本 */
+	UFUNCTION(BlueprintCallable)
 	virtual void RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
 	/* 找到物品栏可以堆叠物品的slot */
 	virtual int32 FindSlot(FString ItemID);

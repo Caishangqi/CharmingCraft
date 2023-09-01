@@ -28,8 +28,8 @@ public:
 	int32 Amount;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	EMaterial Material; //
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="ItemStackRef")
-	UItem* ItemClassRef; // 必须BlueprintReadOnly
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="ItemStack InternalData")
+	TSubclassOf<UItem> ItemClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	TSubclassOf<UItemMeta> ItemMetaClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
@@ -43,4 +43,7 @@ public:
 
 public:
 	virtual void PostInitProperties() override;
+
+	UFUNCTION(BlueprintCallable)
+	UItem* GetItemClass() const;
 };

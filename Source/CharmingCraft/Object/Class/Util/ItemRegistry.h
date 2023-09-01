@@ -23,7 +23,7 @@ public:
 	void InitializeRegistry();
 
 	UPROPERTY()
-	TMap<EMaterial, UItem*> ItemMap;
+	TMap<EMaterial,TSubclassOf<UItem>> ItemMap;
 
 private:
 	// 单例实例

@@ -13,7 +13,7 @@ UEquipPartHelmetCore::UEquipPartHelmetCore()
 
 void UEquipPartHelmetCore::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
-	UEnum* MaterialEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
+	UEnum* MaterialEnum = FindObject<UEnum>(this, TEXT("EMaterial"), true);
 	FString MaterialString = MaterialEnum->GetNameStringByValue(static_cast<int64>(ComponentMaterial));
 
 	FString Prefix, EnumValue;

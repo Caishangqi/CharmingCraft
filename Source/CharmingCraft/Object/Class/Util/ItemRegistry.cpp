@@ -43,8 +43,7 @@ void UItemRegistry::InitializeRegistry()
 				// 在这里处理RowStruct和RowName
 				UE_LOG(LogTemp, Warning, TEXT("UItemRegistry::InitializeRegistry() Material: %s ItemClass: %s"),
 				       *RowName.ToString(), *RowStruct->ItemClass->GetName());
-				UItem* Item = NewObject<UItem>(this, RowStruct->ItemClass);
-				ItemMap.Add(RowStruct->Material, Item);
+				ItemMap.Add(RowStruct->Material, RowStruct->ItemClass);
 			}
 		}
 	}

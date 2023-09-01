@@ -18,6 +18,7 @@ class CHARMINGCRAFT_API ADropItem : public ADAbstractInterObjectPrototype
 public:
 	
 	ADropItem();
+	void SetupCollision();
 
 	// 添加一个USceneComponent作为根组件
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -32,5 +33,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* DropModelMesh;
 
+	virtual void PostInitializeComponents() override;
 
+	void Initialize(UItemStack* PassItemStack);
+
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 };

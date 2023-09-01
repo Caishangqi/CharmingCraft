@@ -13,9 +13,11 @@ UEquipPartArmorPlates::UEquipPartArmorPlates()
 
 void UEquipPartArmorPlates::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
-	UEnum* MaterialEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
-	FString MaterialString = MaterialEnum->GetNameStringByValue(static_cast<int64>(ComponentMaterial));
+	//UEnum* MaterialEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("/Script/CharmingCraft.EMaterial"), true);
 
+	UEnum* MaterialEnum = FindObject<UEnum>(this, TEXT("EMaterial"), true);
+	FString MaterialString = MaterialEnum->GetNameStringByValue(static_cast<int64>(ComponentMaterial));
+	
 	FString Prefix, EnumValue;
 	// 使用Split方法去除前缀
 	MaterialString.Split(TEXT("::"), &Prefix, &EnumValue);

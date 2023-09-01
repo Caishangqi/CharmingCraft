@@ -4,9 +4,10 @@
 #include "DInventoryComponent.h"
 #include "DItemDataComponent.h"
 #include "ItemStack.h"
-#include "Blueprint/UserWidget.h"
+#include "CharmingCraft/Entity/Item/DropItem.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
 #include "CharmingCraft/Object/Structs/FDItemStruct.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UDInventoryComponent::UDInventoryComponent()
@@ -53,7 +54,7 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 
 	return Result;
 }
-
+#if WITH_EDITOR
 void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
@@ -72,7 +73,7 @@ void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& Propert
 		}
 	}
 }
-
+#endif
 UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
 {
 	// UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"), *ItemStack->MaterialName,
@@ -89,7 +90,7 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 			LocalQuantity--;
 			UE_LOG(LogTemp, Warning, TEXT("AddToStack(SlotIndex, 1, ItemID);"));
 		}
-		else if (AnyEmptySlotAvailable().Result)
+		else if (IsEmptySlotAvailable().Result)
 		{
 			if (CreateNewStack(ItemStack, 1))
 			{
@@ -237,9 +238,9 @@ int32 UDInventoryComponent::GetMaxStackSize(UItemStack* ItemStack)
 	if (MaterialData)
 	{
 	} // TODO
-	if (ItemStack->ItemClassRef->MaxStackSize)
+	if (ItemStack->GetItemClass()->MaxStackSize)
 	{
-		return ItemStack->ItemClassRef->MaxStackSize;
+		return ItemStack->GetItemClass()->MaxStackSize;
 	}
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
 	return -1;
@@ -393,6 +394,20 @@ void UDInventoryComponent::DropItem(FString ItemID, int32 Quantity)
 void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop"));
+	FVector Location = GetDropLocation();
+	FTransform SpawnTransform(Location);
+
+	// 使用SpawnActorDeferred创建ADropItem对象，但它还不在世界中
+	ADropItem* Drop = Cast<ADropItem>(
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(this, ADropItem::StaticClass(), SpawnTransform));
+
+	if (Drop)
+	{
+		Drop->Initialize(ItemStack);
+
+		// 使用FinishSpawningActor将Drop对象放入世界中
+		UGameplayStatics::FinishSpawningActor(Drop, SpawnTransform);
+	}
 }
 
 FVector UDInventoryComponent::GetDropLocation()
@@ -422,7 +437,7 @@ void UDInventoryComponent::PrintDebugMessage()
 	{
 		UItemStack* ItemStack = Inventory[Index];
 		FString DebugMessage = FString::Printf(
-			TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *ItemStack->ItemClassRef->DisplayName.ToString(),
+			TEXT("Index: %d | ItemID: %s | Quantity: %d"), Index, *ItemStack->GetItemClass()->DisplayName.ToString(),
 			ItemStack->Amount);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
 	}

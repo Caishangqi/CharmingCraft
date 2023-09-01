@@ -43,10 +43,7 @@ bool UItemStack::SynchronizeData()
 			// TSubclassOf<UItemMeta> ItemMetaClass 只是个类引用 ItemMeta.Class
 			this->ItemMeta = NewObject<UItemMeta>(this, RowData->ItemMeta, FName(RowData->ItemMeta->GetName()));
 			// 基于类引用创建对应类型的ItemMeta
-			this->ItemClassRef = UItemRegistry::Get()->ItemMap[Material];
-			// UE_LOG(LogTemp, Error, TEXT("ItemMap[Material]-> %s"),
-			//        *UItemRegistry::Get()->ItemMap[Material]->DisplayName.ToString());
-
+			this->ItemClass = RowData->ItemClass;
 			return true;
 		}
 	}
@@ -59,4 +56,9 @@ void UItemStack::PostInitProperties()
 	Super::PostInitProperties();
 	//在这里调用ItemMap[Material]是空的，因为生命周期相同时刻
 	SynchronizeData();
+}
+
+UItem* UItemStack::GetItemClass() const
+{
+	return ItemClass.GetDefaultObject();
 }
