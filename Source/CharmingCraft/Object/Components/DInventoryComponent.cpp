@@ -339,12 +339,15 @@ FVector UDInventoryComponent::RandomUnitVectorInConeInDegrees(const FVector& Con
 
 void UDInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
 {
-	if (TargetActor.Get() != nullptr)
+	// 修复普通交互方块触发物品掉落类的逻辑 -> 只有时掉落物类型才执行物品交互
+	// 这里的判断符合逻辑应为InteractComponent触发了所有接触到的Actor实现的接口
+	if (TargetActor.Get() != nullptr && TargetActor->IsA(ADropItem::StaticClass()))
 	{
 		IDItemInteractInterface::Execute_Interact(
 			TargetActor.Get(), Instigator);
 	}
 
+	// TODO 更好的解决方案是把判断抽象出来，Handler基于接触Actor类型再分配调用
 	UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInventoryComponent::OnItemInteract"));
 }
 

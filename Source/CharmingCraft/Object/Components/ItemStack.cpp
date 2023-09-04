@@ -34,10 +34,7 @@ bool UItemStack::SynchronizeData()
 	{
 		UEnum* MapperEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
 		FString MaterialString = MapperEnum->GetNameStringByValue(static_cast<int64>(Material));
-		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),
-		                                                              TEXT(
-			                                                              "[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
-
+		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),TEXT("[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
 		if (RowData)
 		{
 			// TSubclassOf<UItemMeta> ItemMetaClass 只是个类引用 ItemMeta.Class
