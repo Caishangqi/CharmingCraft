@@ -6,6 +6,7 @@
 #include "../Interface/DAbstractInterObjectPrototype.h"
 #include "WorkBench.generated.h"
 
+class UWorkBenchComponent;
 /**
  * 
  */
@@ -29,4 +30,8 @@ protected:
 	// 工作台全息
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UStaticMeshComponent* HologramMesh;
+
+	// 工作台处理组件
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UWorkBenchComponent* WorkBenchComponent;
 };

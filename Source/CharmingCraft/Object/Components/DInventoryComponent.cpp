@@ -362,16 +362,13 @@ void UDInventoryComponent::BeginPlay()
 }
 
 /*
-* 很好，你已经找到了解决方法。从你提供的代码中，我可以看出，你首先确保UDInventoryComponent::PostInitProperties()被调用来初始化Inventory数组，然后再在UDInventoryComponent::OnRegister()中添加物品。这样的调用顺序使得你能够保证在添加物品之前，Inventory数组已经被正确地初始化。
-
-在UE4中，生命周期的理解是很关键的。特定的函数会在特定的时间点被调用，这会影响到对象的初始化和其他逻辑。例如：
-
-PostInitProperties()：这个函数在属性被初始化之后调用。这是初始化默认属性值的好地方。
-
-OnRegister()：当一个对象被注册到游戏的逻辑中时，这个函数被调用。这通常发生在物件已经创建和初始化，但在它开始交互或更新之前。
-
-确保正确地初始化和设置你的数据是非常重要的，这样可以防止未定义的行为和潜在的崩溃。
- */
+* 很好，你已经找到了解决方法。从你提供的代码中，我可以看出，你首先确保UDInventoryComponent::PostInitProperties()被调
+* 用来初始化Inventory数组，然后再在UDInventoryComponent::OnRegister()中添加物品。这样的调用顺序使得你能够保证在添加物品之前，Inventory数组已经被正确地初始化。
+* 在UE4中，生命周期的理解是很关键的。特定的函数会在特定的时间点被调用，这会影响到对象的初始化和其他逻辑。例如：
+* PostInitProperties()：这个函数在属性被初始化之后调用。这是初始化默认属性值的好地方。
+* OnRegister()：当一个对象被注册到游戏的逻辑中时，这个函数被调用。这通常发生在物件已经创建和初始化，但在它开始交互或更新之前。
+* 确保正确地初始化和设置你的数据是非常重要的，这样可以防止未定义的行为和潜在的崩溃。
+*/
 
 void UDInventoryComponent::OnRegister()
 {
