@@ -11,4 +11,5 @@ UHelmetMeta::UHelmetMeta()
 	HelmetCore = CreateDefaultSubobject<UEquipPartHelmetCore>("HelmetCore");
 	EquipPartArmorPlates = CreateDefaultSubobject<UEquipPartArmorPlates>("ArmorPlates");
 	EquipPartArmorTrim = CreateDefaultSubobject<UEquipPartArmorTrim>("ArmorTrim");
+	bIsRenderItem = true;
 }

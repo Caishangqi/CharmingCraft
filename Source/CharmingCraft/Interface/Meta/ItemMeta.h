@@ -24,6 +24,12 @@ public:
 	int32 CustomModelData;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Durability")
 	int32 Durability; //
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Rendering")
+	bool bIsRenderItem;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Rendering")
+	UMaterialInstanceDynamic* DynamicRenderingInstance;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Rendering")
+	UTextureRenderTarget2D* TextureRenderTarget2D;
 
 protected:
 	// Called when the game starts
