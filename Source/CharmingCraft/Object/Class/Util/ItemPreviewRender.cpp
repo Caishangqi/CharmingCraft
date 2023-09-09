@@ -8,6 +8,7 @@ UItemPreviewRender* UItemPreviewRender::Get()
 {
 	if (!Instance)
 	{
+		
 		Instance = NewObject<UItemPreviewRender>();
 		Instance->AddToRoot(); // 防止垃圾回收
 	}
