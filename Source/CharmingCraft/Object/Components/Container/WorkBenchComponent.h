@@ -19,4 +19,8 @@ protected:
 
 public:
 	UWorkBenchComponent();
+
+	virtual void PostInitProperties() override;
+	virtual void BeginPlay() override;
+	virtual void OnRegister() override;
 };
