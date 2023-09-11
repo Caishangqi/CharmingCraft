@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "ItemPreviewRender.generated.h"
 
+class UItemMeta;
 class UItemStack;
 /**
  * 
@@ -22,5 +23,5 @@ public:
 	// 单例实例
 	static UItemPreviewRender* Instance;
 
-	void RenderItem(UItemStack* InputStack);
+	UMaterialInstanceDynamic* RenderItem(UItemMeta* InputMeta, UWorld* RenderWorld);
 };

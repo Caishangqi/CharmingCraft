@@ -30,10 +30,14 @@ public:
 	UMaterialInstanceDynamic* DynamicRenderingInstance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Rendering")
 	UTextureRenderTarget2D* TextureRenderTarget2D;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Model Mesh")
+	UStaticMesh* ItemModelMesh;
+
+	virtual void UpdateRender(UWorld* RenderWorld);
 
 protected:
 	// Called when the game starts
-
+	virtual void PostInitProperties() override;
 
 public:
 	// Called every frame

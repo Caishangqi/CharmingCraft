@@ -13,9 +13,6 @@ UEquipmentManagerComponent::UEquipmentManagerComponent(const FObjectInitializer&
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	HelmetSlot = CreateDefaultSubobject<UItemStack>("Helmet ItemStack");
-	HelmetSlot->ItemMeta = CreateDefaultSubobject<UHelmetMeta>("HelmetMeta");
-
 	EquipmentRenderComponent = ObjectInitializer.CreateDefaultSubobject<UEquipmentRenderComponent>(
 		this, "EquipmentRenderComponent");
 }

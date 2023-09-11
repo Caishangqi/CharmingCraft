@@ -29,4 +29,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Helmet Parts")
 	UEquipPartArmorTrim* EquipPartArmorTrim;
+	
+
+	virtual void PostInitProperties() override;
 };
