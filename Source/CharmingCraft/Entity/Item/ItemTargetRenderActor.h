@@ -23,7 +23,9 @@ public:
 	UMaterialInstanceDynamic* OutPutMaterialInstanceDynamic;
 
 private:
+	UPROPERTY(VisibleAnywhere)
 	UMaterial* CachedMaterial = nullptr;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -5,6 +5,7 @@
 #include "../Object/Components/EquipPart/EquipPartArmorPlates.h"
 #include "../Object/Components/EquipPart/EquipPartArmorTrim.h"
 #include "../Object/Components/EquipPart/EquipPartHelmetCore.h"
+#include "Blueprint/UserWidget.h"
 
 UHelmetMeta::UHelmetMeta()
 {
@@ -28,6 +29,14 @@ UHelmetMeta::UHelmetMeta()
 	}
 
 	bIsRenderItem = true;
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClassFinder(TEXT(
+		"/Script/UMGEditor.WidgetBlueprint'/Game/CharmingCraft/UI/Container/WorkBench/LayOut/W_WorkBench_LayOut_Helmet.W_WorkBench_LayOut_Helmet_C'"));
+	if (WidgetClassFinder.Succeeded())
+	{
+		Layout = WidgetClassFinder.Class;
+	}
+	
 }
 
 void UHelmetMeta::PostInitProperties()

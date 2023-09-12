@@ -43,6 +43,8 @@ this repository.
 - 第二套操控输入,支持鼠标点击和长按
 - 物品交互高光和玩家遮挡高光
 - 物品栏系统,物品原型
+- 盔甲锻造台
+- 3D物品渲染2D
 
 ## 即将到来
 
@@ -57,12 +59,15 @@ this repository.
 - 在被建筑物遮挡时正确地在建筑物后方移动 (Ray Tracing)
 - 动态寻路完善, 玩家在破坏方块或者交互物品时刷新可供的路线
 - 丢弃物品的时候是发射行为而不是生成行为
+- 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**严重**)
 
 ## 项目结构
 
 ### 项目资源结构
 
-- assets\ccraft\textures\item
+- Assets
+  - models
+  - textures
 
 ## 概念,设计模式,和实现原理
 
@@ -75,6 +80,8 @@ this repository.
 ### 实现原理
 
 - [近战攻击实现原理](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [3D物品渲染2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Minecraft物品结构](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
 
 ## 资源 Resource

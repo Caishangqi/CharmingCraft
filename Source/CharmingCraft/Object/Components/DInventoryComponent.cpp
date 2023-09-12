@@ -384,9 +384,6 @@ void UDInventoryComponent::OnRegister()
 	// 默认物品
 	UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass());
 	ItemStack->Initialize(EMaterial::APPLE, 64);
-	// UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister() -> %s"),
-	//        *ItemStack->ItemClassRef->DisplayName.ToString())
-
 	// 默认物品 - 头盔
 	UItemStack* ItemStackHelmet = NewObject<UItemStack>(this, UItemStack::StaticClass());
 	ItemStackHelmet->Initialize(EMaterial::HELMET, 1);

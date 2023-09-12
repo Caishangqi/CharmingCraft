@@ -15,9 +15,9 @@ AItemTargetRenderActor::AItemTargetRenderActor()
 	SceneCaptureComponent->SetupAttachment(RootComponent);
 	SceneCaptureComponent->SetRelativeRotation(FRotator3d(0.0, -10.0, -120));
 	SceneCaptureComponent->SetRelativeLocation(FVector3d(50.0, 90.0, 60.0));
-	SceneCaptureComponent->bCaptureEveryFrame = true;
+	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = true;
-	SceneCaptureComponent->ShowFlags.SetLighting(false);
+	SceneCaptureComponent->ShowFlags.SetLighting(true);
 	UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(this->GetRootComponent());
 
 	if (PrimComp)
@@ -40,6 +40,7 @@ void AItemTargetRenderActor::BeginPlay()
 	SceneCaptureComponent->ShowOnlyComponent(DropModelMesh);
 	SceneCaptureComponent->ShowOnlyComponent(DropIconMesh);
 	// 把渲染的 Texture 2D传给 自身存储的Texture
+	SceneCaptureComponent->CaptureScene();
 	TextureRenderTarget2D = SceneCaptureComponent->TextureTarget;
 
 

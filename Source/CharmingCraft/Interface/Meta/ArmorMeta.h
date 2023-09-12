@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemMeta.h"
+#include "IntegratedMeta.h"
 #include "ArmorMeta.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API UArmorMeta : public UItemMeta
+class CHARMINGCRAFT_API UArmorMeta : public UIntegratedMeta
 {
 public:
 	/* 作为初始化默认盔甲模型,后续根据盔甲部件进行修改 */
