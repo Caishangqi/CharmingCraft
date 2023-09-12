@@ -88,8 +88,6 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
  */
 void UDInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
 {
-	// UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::RemoveFromInventory Parameter: Index: %d| Quantity: %d"),
-	//        Index, Inventory[Index]->Amount);
 	LocalItemStack = Inventory[Index];
 	if (LocalItemStack->Amount == 1 || RemoveWholeStack)
 	{
@@ -401,10 +399,7 @@ void UDInventoryComponent::OnRegister()
 void UDInventoryComponent::PostInitProperties()
 {
 	Super::PostInitProperties();
-	//UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::PostInitProperties()"));
-	//
 	Inventory.SetNum(InventorySize);
-	//Inventory.SetNumUninitialized(InventorySize);
 }
 
 
