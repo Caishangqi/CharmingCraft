@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "CharmingCraft/Interface/EquipPartComponent.h"
 #include "../Object/Components/Container/WorkBenchComponent.h"
 
 UWorkBenchComponent::UWorkBenchComponent()
@@ -26,4 +26,9 @@ void UWorkBenchComponent::BeginPlay()
 void UWorkBenchComponent::OnRegister()
 {
 	Super::OnRegister();
+}
+
+bool UWorkBenchComponent::SetPartMaterial(UEquipPartComponent* Component, EMaterial Material)
+{
+	return true;
 }

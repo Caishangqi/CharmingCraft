@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "../Object/Components/DInventoryComponent.h"
+
+#include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "WorkBenchComponent.generated.h"
+
+class UEquipPartComponent;
 
 /**
  * 
@@ -23,4 +27,7 @@ public:
 	virtual void PostInitProperties() override;
 	virtual void BeginPlay() override;
 	virtual void OnRegister() override;
+
+	UFUNCTION(BlueprintCallable)
+	bool SetPartMaterial(UEquipPartComponent* Component, EMaterial Material);
 };

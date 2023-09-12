@@ -12,6 +12,7 @@ UEquipPartComponent::UEquipPartComponent()
 
 	/* 初始化 */
 	ItemNeedToForge = 0;
+	ComponentMaterial = EMaterial::AIR;
 }
 
 
