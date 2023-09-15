@@ -18,8 +18,10 @@ class CHARMINGCRAFT_API UWorkBenchComponent : public UDInventoryComponent
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	/* 属性 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
+	UUserWidget * SavedLayout;
 
 public:
 	UWorkBenchComponent();

@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-#include "CharmingCraft/Interface/EquipPartComponent.h"
 #include "../Object/Components/Container/WorkBenchComponent.h"
-
+#include "CharmingCraft/Interface/EquipPartComponent.h"
 UWorkBenchComponent::UWorkBenchComponent()
 {
 	InventorySize = 2;

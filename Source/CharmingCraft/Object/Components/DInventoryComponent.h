@@ -10,7 +10,9 @@
 class UItemStack;
 class UDataTable;
 class ADPlayerAIController;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdateIndex, int32, Index);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UDInventoryComponent : public UActorComponent
@@ -69,10 +71,13 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnInventoryUpdate OnInventoryUpdate;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnInventoryUpdateIndex OnInventoryUpdateIndex;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	int InventorySize;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Inventory Parameter")
 	TArray<UItemStack*> Inventory; // Updated
 
