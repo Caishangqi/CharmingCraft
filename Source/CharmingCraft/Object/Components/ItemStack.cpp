@@ -17,11 +17,12 @@ UItemStack::UItemStack()
 	Amount = 1;
 }
 
-void UItemStack::Initialize(const EMaterial SetType, const int32 SetAmount)
+UItemStack* UItemStack::Initialize(const EMaterial SetType, const int32 SetAmount)
 {
 	this->Material = SetType;
 	this->Amount = SetAmount;
 	SynchronizeData();
+	return this;
 }
 
 bool UItemStack::SynchronizeData()
@@ -34,7 +35,9 @@ bool UItemStack::SynchronizeData()
 	{
 		UEnum* MapperEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
 		FString MaterialString = MapperEnum->GetNameStringByValue(static_cast<int64>(Material));
-		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),TEXT("[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
+		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),
+		                                                              TEXT(
+			                                                              "[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
 		if (RowData)
 		{
 			// TSubclassOf<UItemMeta> ItemMetaClass 只是个类引用 ItemMeta.Class

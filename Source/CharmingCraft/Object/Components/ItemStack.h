@@ -22,7 +22,7 @@ public:
 	UItemStack();
 
 	UFUNCTION(BlueprintCallable)
-	void Initialize(EMaterial Type, int32 Amount);
+	UItemStack * Initialize(EMaterial Type, int32 Amount);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	int32 Amount;

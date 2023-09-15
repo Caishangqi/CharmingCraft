@@ -382,15 +382,22 @@ void UDInventoryComponent::OnRegister()
 	Super::OnRegister();
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister()"));
 	// 默认物品
-	UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass());
-	ItemStack->Initialize(EMaterial::APPLE, 64);
+	UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::APPLE, 64);
 	// 默认物品 - 头盔
-	UItemStack* ItemStackHelmet = NewObject<UItemStack>(this, UItemStack::StaticClass());
-	ItemStackHelmet->Initialize(EMaterial::HELMET, 1);
-
+	UItemStack* ItemStackHelmet = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
+		EMaterial::HELMET, 1);
+	// 默认物品 - 铜矿石
+	UItemStack* ItemCopper = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::COPPER, 64);
+	// 默认物品 - 铅矿石
+	UItemStack* ItemLead = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::LEAD, 64);
+	// 默认物品 - 钴矿石
+	UItemStack* ItemCobalt = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::COBALT, 64);
 
 	Inventory.Add(ItemStack);
 	Inventory.Add(ItemStackHelmet);
+	Inventory.Add(ItemCopper);
+	Inventory.Add(ItemLead);
+	Inventory.Add(ItemCobalt);
 }
 
 void UDInventoryComponent::PostInitProperties()
