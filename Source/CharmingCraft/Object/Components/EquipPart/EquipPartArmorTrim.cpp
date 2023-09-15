@@ -8,7 +8,11 @@
 UEquipPartArmorTrim::UEquipPartArmorTrim()
 {
 	TypeSuffix = "Armor Trim";
+	TypeSuffixShort = "Trim";
+	Description = "Armor Trim is Armor Trim so it should be Armor Trim or you can also call it Armor Trim";
+	ItemNeedToForge = 3;
 }
+
 
 void UEquipPartArmorTrim::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {

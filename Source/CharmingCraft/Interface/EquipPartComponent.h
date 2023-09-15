@@ -33,6 +33,14 @@ public:
 		Category= "Naming")
 	FString TypeSuffix;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere,
+		Category= "Naming")
+	FString TypeSuffixShort;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere,
+		Category= "Description")
+	FString Description;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Graphic")
 	TObjectPtr<UTexture2D> PartIcon; //这个部件在锻造GUI中的图标
 
@@ -50,7 +58,7 @@ public:
 
 
 	virtual void OnRegister() override;
-	
+
 	// 构造的时候依照玩家选择的 Material 调用数据表格的材料进行材质更替
 	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText);
 };

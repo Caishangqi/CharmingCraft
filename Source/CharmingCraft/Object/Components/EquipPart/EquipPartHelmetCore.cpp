@@ -9,6 +9,9 @@
 UEquipPartHelmetCore::UEquipPartHelmetCore()
 {
 	TypeSuffix = "Helmet Core";
+	TypeSuffixShort = "Core";
+	Description = "Helmet Core is Helmet Core so it should be Helmet Core or you can also call it Helmet Core";
+	ItemNeedToForge = 2;
 }
 
 void UEquipPartHelmetCore::UpdateRenderMesh(EMaterial& NewComponentMaterialText)

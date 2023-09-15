@@ -23,6 +23,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
 	UUserWidget * SavedLayout;
 
+	/* 属性 */
+
 public:
 	UWorkBenchComponent();
 
