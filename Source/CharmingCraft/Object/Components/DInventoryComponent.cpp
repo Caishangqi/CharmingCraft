@@ -387,7 +387,7 @@ void UDInventoryComponent::OnRegister()
 	UItemStack* ItemStackHelmet = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
 		EMaterial::HELMET, 1);
 	// 默认物品 - 铜矿石
-	UItemStack* ItemCopper = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::COPPER, 64);
+	UItemStack* ItemCopper = NewObject<UItemStack> (this, UItemStack::StaticClass())->Initialize(EMaterial::COPPER, 64);
 	// 默认物品 - 铅矿石
 	UItemStack* ItemLead = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::LEAD, 64);
 	// 默认物品 - 钴矿石
