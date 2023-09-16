@@ -221,7 +221,7 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 	{
 		// 发出者的背包Index
 		/* 备注: 这里真的好丑陋,应当实现Minecraft 空气逻辑 */
-		if (Inventory[DestinationIndex] != nullptr && Inventory[DestinationIndex]->Material == LocalItemStack->Material)
+		if (IsValid(Inventory[DestinationIndex]) && Inventory[DestinationIndex]->Material == LocalItemStack->Material)
 		{
 			// Content 是箱子, Source 是玩家的背包 TODO
 			int32 MaxStackSize = GetMaxStackSize(Inventory[DestinationIndex]);
@@ -387,7 +387,7 @@ void UDInventoryComponent::OnRegister()
 	UItemStack* ItemStackHelmet = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
 		EMaterial::HELMET, 1);
 	// 默认物品 - 铜矿石
-	UItemStack* ItemCopper = NewObject<UItemStack> (this, UItemStack::StaticClass())->Initialize(EMaterial::COPPER, 64);
+	UItemStack* ItemCopper = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::COPPER, 64);
 	// 默认物品 - 铅矿石
 	UItemStack* ItemLead = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::LEAD, 64);
 	// 默认物品 - 钴矿石

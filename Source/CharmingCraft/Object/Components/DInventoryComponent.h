@@ -12,6 +12,7 @@ class UDataTable;
 class ADPlayerAIController;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdate);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdateIndex, int32, Index);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -42,6 +43,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
 	/* 找到物品栏可以堆叠物品的slot ItemStack 版本 */
+	UFUNCTION(BlueprintCallable)
 	virtual int32 FindSlot(UItemStack* ItemID);
 	/* 找到物品的最大叠加 ItemStack 版本*/
 	virtual int32 GetMaxStackSize(UItemStack* ItemStack);
