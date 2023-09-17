@@ -35,8 +35,6 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, U
 		UGameplayStatics::FinishSpawningActor(RenderActor, SpawnTransform);
 		UMaterialInstanceDynamic* RenderMaterial = DuplicateObject<UMaterialInstanceDynamic>(
 			RenderActor->OutPutMaterialInstanceDynamic, this);
-		UE_LOG(LogTemp, Warning, TEXT("(!) UItemPreviewRender::RenderItem() %s"),
-		       *RenderActor->OutPutMaterialInstanceDynamic->GetName())
 		//RenderActor->SceneCaptureComponent->CaptureScene();
 		RenderActor->Destroy();
 		UE_LOG(LogTemp, Warning, TEXT("(!) Successfully destroy RenderItem"))
@@ -47,7 +45,6 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, U
 		UE_LOG(LogTemp, Error, TEXT("Faile to Spawn RenderItem"))
 	}
 
-	// TODO: 记得修复空指针
 	return nullptr;
 }
 

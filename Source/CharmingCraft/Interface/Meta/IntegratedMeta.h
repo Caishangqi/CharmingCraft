@@ -18,7 +18,4 @@ public:
 	// Layout for UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
 	TSubclassOf<UUserWidget> Layout;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Render")
-	UStaticMesh* RenderedMesh;
 };

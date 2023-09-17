@@ -45,6 +45,7 @@ this repository.
 - 物品栏系统,物品原型
 - 盔甲锻造台
 - 3D物品渲染2D
+- 物品装配机制, 不同材料打造物品
 
 ## 即将到来
 
@@ -59,7 +60,7 @@ this repository.
 - 在被建筑物遮挡时正确地在建筑物后方移动 (Ray Tracing)
 - 动态寻路完善, 玩家在破坏方块或者交互物品时刷新可供的路线
 - 丢弃物品的时候是发射行为而不是生成行为
-- 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**严重**)
+- 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**已修复**)
 
 ## 项目结构
 
@@ -82,7 +83,7 @@ this repository.
 - [近战攻击实现原理](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [3D物品渲染2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Minecraft物品结构](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-
+- [装备组装](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
 ## 资源 Resource
 
