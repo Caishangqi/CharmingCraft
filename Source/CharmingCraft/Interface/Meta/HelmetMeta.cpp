@@ -21,7 +21,10 @@ UHelmetMeta::UHelmetMeta()
 	if (MeshAsset.Succeeded())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Static Mesh Founded!"));
-		ItemModelMesh = MeshAsset.Object;
+		UStaticMesh* RenderMaterial = DuplicateObject<UStaticMesh>(
+			MeshAsset.Object, this);
+
+		ItemModelMesh = RenderMaterial;
 	}
 	else
 	{
@@ -36,7 +39,6 @@ UHelmetMeta::UHelmetMeta()
 	{
 		Layout = WidgetClassFinder.Class;
 	}
-	
 }
 
 void UHelmetMeta::PostInitProperties()

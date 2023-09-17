@@ -10,16 +10,28 @@
 AItemTargetRenderActor::AItemTargetRenderActor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	RootComponent = Root;
+
+	DropIconMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropIconMesh"));
+	DropIconMesh->SetupAttachment(RootComponent); // 附加到Root组件
+	DropModelMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropModelMesh"));
+	DropModelMesh->SetupAttachment(RootComponent); //
+	FRotator DropIconRotation = FRotator(0.0f, 180.0f, 0.0f); // Pitch, Yaw, Roll
+	FVector DropIconLocation = FVector(0.0f, 0.0f, 8.0f); // X, Y, Z
+	DropIconMesh->SetRelativeLocation(DropIconLocation);
+	DropIconMesh->SetRelativeRotation(DropIconRotation);
+
 	PrimaryActorTick.bCanEverTick = true;
 	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCaptureComponent");
 	SceneCaptureComponent->SetupAttachment(RootComponent);
-	SceneCaptureComponent->SetRelativeRotation(FRotator3d(0.0, -10.0, -120));
+	SceneCaptureComponent->SetRelativeRotation(FRotator3d(-10.0, -120.0, 0));
 	SceneCaptureComponent->SetRelativeLocation(FVector3d(50.0, 90.0, 60.0));
 	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = true;
-	SceneCaptureComponent->ShowFlags.SetLighting(true);
+	SceneCaptureComponent->ShowFlags.SetLighting(false);
+	SceneCaptureComponent->bAlwaysPersistRenderingState = true;
 	UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(this->GetRootComponent());
-
 	if (PrimComp)
 	{
 		PrimComp->SetSimulatePhysics(false);
@@ -31,23 +43,27 @@ AItemTargetRenderActor::AItemTargetRenderActor()
 	{
 		CachedMaterial = FoundMaterial.Object;
 	}
+	TextureRenderTarget2D = CreateDefaultSubobject<UTextureRenderTarget2D>("TextureRenderTarget2D");
+	TextureRenderTarget2D->InitCustomFormat(512, 512, PF_FloatRGBA, false);
+	SceneCaptureComponent->TextureTarget = TextureRenderTarget2D;
 }
 
 // Called when the game starts or when spawned
 void AItemTargetRenderActor::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("(!) AItemTargetRenderActor::BeginPlay()"))
 	SceneCaptureComponent->ShowOnlyComponent(DropModelMesh);
 	SceneCaptureComponent->ShowOnlyComponent(DropIconMesh);
 	// 把渲染的 Texture 2D传给 自身存储的Texture
 	SceneCaptureComponent->CaptureScene();
-	TextureRenderTarget2D = SceneCaptureComponent->TextureTarget;
 
 
 	if (CachedMaterial)
 	{
 		OutPutMaterialInstanceDynamic = UMaterialInstanceDynamic::Create(CachedMaterial, this);
 		OutPutMaterialInstanceDynamic->SetTextureParameterValue(FName("InputRenderTarget"), TextureRenderTarget2D);
+		UE_LOG(LogTemp, Warning, TEXT("(!) AItemTargetRenderActor Successfully Add DMI"))
 	}
 }
 

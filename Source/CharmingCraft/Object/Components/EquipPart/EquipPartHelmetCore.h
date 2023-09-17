@@ -20,4 +20,5 @@ public:
 
 	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
 	virtual void OnRegister() override;
+	virtual void BeginPlay() override;
 };

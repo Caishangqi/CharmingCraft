@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "../Object/Components/Container/WorkBenchComponent.h"
 #include "CharmingCraft/Interface/EquipPartComponent.h"
+#include "CharmingCraft/Interface/Meta/IntegratedMeta.h"
+#include "CharmingCraft/Object/Class/Util/ItemPreviewRender.h"
 
 UWorkBenchComponent::UWorkBenchComponent()
 {
@@ -32,5 +34,27 @@ bool UWorkBenchComponent::SetPartMaterial(UEquipPartComponent* Component, EMater
 	UE_LOG(LogTemp, Warning, TEXT(
 		       "Start Manipulate"
 	       ))
+	UE_LOG(LogTemp, Warning, TEXT(
+		       "Manipulate Information: %s"
+	       ), *Component->GetOuter()->GetName())
+	UE_LOG(LogTemp, Warning, TEXT(
+		       "Manipulate Information: %s"
+	       ), *Component->GetClass()->GetName())
+
+	Component->ComponentMaterial = Material;
+	Component->UpdateRenderMesh(Component->ComponentMaterial);
+
+	UE_LOG(LogTemp, Warning, TEXT(
+		       "Manipulate Information: %hhd"
+	       ), Component->ComponentMaterial)
+
+	UItemMeta* Meta = Cast<UItemMeta>(Component->GetOuter());
+	UItemPreviewRender::Get()->UpdateMeshMaterialSlot(Meta->ItemModelMesh,
+	                                                  Component->MaterialSlotIndex, Component->PartMaterial);
+	UE_LOG(LogTemp, Warning, TEXT(
+		       "Manipulate Information: %hhd"
+	       ), Meta->bIsRenderItem);
+	Meta->UpdateRender(GetWorld());
+
 	return true;
 }

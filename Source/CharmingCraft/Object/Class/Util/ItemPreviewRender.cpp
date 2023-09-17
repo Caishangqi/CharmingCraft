@@ -5,6 +5,7 @@
 
 #include "CharmingCraft/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Interface/Meta/ItemMeta.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Kismet/GameplayStatics.h"
 
 UItemPreviewRender* UItemPreviewRender::Instance = nullptr;
@@ -28,12 +29,15 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, U
 	AItemTargetRenderActor* RenderActor = Cast<AItemTargetRenderActor>(
 		UGameplayStatics::BeginDeferredActorSpawnFromClass(RenderWorld,
 		                                                   AItemTargetRenderActor::StaticClass(), SpawnTransform));
-	RenderActor->DropModelMesh->SetStaticMesh(InputMeta->ItemModelMesh);
+	RenderActor->DropIconMesh->SetStaticMesh(InputMeta->ItemModelMesh);
 	if (RenderActor)
 	{
 		UGameplayStatics::FinishSpawningActor(RenderActor, SpawnTransform);
 		UMaterialInstanceDynamic* RenderMaterial = DuplicateObject<UMaterialInstanceDynamic>(
 			RenderActor->OutPutMaterialInstanceDynamic, this);
+		UE_LOG(LogTemp, Warning, TEXT("(!) UItemPreviewRender::RenderItem() %s"),
+		       *RenderActor->OutPutMaterialInstanceDynamic->GetName())
+		//RenderActor->SceneCaptureComponent->CaptureScene();
 		RenderActor->Destroy();
 		UE_LOG(LogTemp, Warning, TEXT("(!) Successfully destroy RenderItem"))
 		return RenderMaterial;
@@ -45,4 +49,10 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, U
 
 	// TODO: 记得修复空指针
 	return nullptr;
+}
+
+void UItemPreviewRender::UpdateMeshMaterialSlot(UStaticMesh* TargetMesh, int32 TargetMaterialIndex,
+                                                UMaterial* InputMaterial)
+{
+	TargetMesh->SetMaterial(TargetMaterialIndex, InputMaterial);
 }

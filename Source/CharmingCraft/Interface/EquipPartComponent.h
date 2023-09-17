@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
+#include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
 #include "EquipPartComponent.generated.h"
@@ -24,10 +25,10 @@ public:
 	int32 ItemNeedToForge; // 多少个材料才能锻造这个部件
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
 	FString Type;
-
 	// 用于编辑器分配,这个名字就是材料名称,塞进RenderUpdate里更新材质
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
-	FDataTableRowHandle ComponentMaterialDataTable;
+	UDataTable* ComponentMaterialDataTable;
+	FDArmorMaterial* FoundRow = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,
 		Category= "Naming")
@@ -43,9 +44,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Graphic")
 	TObjectPtr<UTexture2D> PartIcon; //这个部件在锻造GUI中的图标
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Graphic")
+	int32 MaterialSlotIndex;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Equip Part Render")
-	UMaterial* PartMesh; // Default Value
+	UMaterial* PartMaterial; // Default Value
 
 protected:
 	// Called when the game starts

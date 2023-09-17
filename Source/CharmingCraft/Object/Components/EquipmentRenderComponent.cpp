@@ -50,7 +50,7 @@ void UEquipmentRenderComponent::UpdateRender()
 	//
 	// 	const FDArmorMaterial* ArmorMaterial = HelmetMeta->HelmetCore->ComponentMaterial.GetRow<FDArmorMaterial>(
 	// 		FString("Cactus"));
-	// 	HelmetMeta->HelmetCore->PartMesh = ArmorMaterial->CoreTexture;
+	// 	HelmetMeta->HelmetCore->PartMaterial = ArmorMaterial->CoreTexture;
 	// 	//设置HelmetSlot 网格体材质
 	// 	ADCharacter* PlayerCharacter = Cast<ADCharacter>(EquipmentManagerComponent->GetOwner());
 	// 	UStaticMeshComponent* HelmetSlot = nullptr;

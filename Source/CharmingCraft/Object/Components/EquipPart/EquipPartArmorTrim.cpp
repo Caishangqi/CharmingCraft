@@ -2,7 +2,6 @@
 
 
 #include "EquipPartArmorTrim.h"
-
 #include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
 
 UEquipPartArmorTrim::UEquipPartArmorTrim()
@@ -11,26 +10,23 @@ UEquipPartArmorTrim::UEquipPartArmorTrim()
 	TypeSuffixShort = "Trim";
 	Description = "Armor Trim is Armor Trim so it should be Armor Trim or you can also call it Armor Trim";
 	ItemNeedToForge = 3;
+	MaterialSlotIndex = 2;
 }
 
 
 void UEquipPartArmorTrim::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
-	UEnum* MaterialEnum = FindObject<UEnum>(this, TEXT("EMaterial"), true);
-	FString MaterialString = MaterialEnum->GetNameStringByValue(static_cast<int64>(ComponentMaterial));
-
-	FString Prefix, EnumValue;
-	// 使用Split方法去除前缀
-	MaterialString.Split(TEXT("::"), &Prefix, &EnumValue);
-
-	const FDArmorMaterial* RowResult = ComponentMaterialDataTable.GetRow<FDArmorMaterial>(EnumValue);
-
-
-	PartMesh = RowResult->TrimTexture;
+	Super::UpdateRenderMesh(NewComponentMaterialText);
+	PartMaterial = FoundRow->TrimTexture;
 }
 
 void UEquipPartArmorTrim::OnRegister()
 {
 	Super::OnRegister();
-	//UEquipPartArmorTrim::UpdateRenderMesh(ComponentMaterial);
+}
+
+void UEquipPartArmorTrim::BeginPlay()
+{
+	Super::BeginPlay();
+	UEquipPartArmorTrim::UpdateRenderMesh(ComponentMaterial);
 }

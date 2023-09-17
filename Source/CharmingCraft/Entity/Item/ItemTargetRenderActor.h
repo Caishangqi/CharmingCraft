@@ -3,18 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DropItem.h"
 #include "GameFramework/Actor.h"
 #include "ItemTargetRenderActor.generated.h"
 
 UCLASS()
-class CHARMINGCRAFT_API AItemTargetRenderActor : public ADropItem
+class CHARMINGCRAFT_API AItemTargetRenderActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
 	AItemTargetRenderActor();
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	USceneComponent* Root;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* DropIconMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* DropModelMesh;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	USceneCaptureComponent2D* SceneCaptureComponent;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
