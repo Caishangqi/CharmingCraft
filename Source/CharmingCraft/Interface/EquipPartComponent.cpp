@@ -27,7 +27,7 @@ void UEquipPartComponent::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
 	UCharmingCraftInstance* GameInstance = Cast<UCharmingCraftInstance>(
 		GetWorld()->GetGameInstance());
-	if (GameInstance && !IsValid(ComponentMaterialDataTable))
+	if (GameInstance)
 	{
 		ComponentMaterialDataTable = GameInstance->ArmorMaterialDataTable;
 		if (ComponentMaterialDataTable)

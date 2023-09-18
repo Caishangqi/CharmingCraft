@@ -24,5 +24,5 @@ public:
 	static UItemPreviewRender* Instance;
 
 	UMaterialInstanceDynamic* RenderItem(UItemMeta* InputMeta, UWorld* RenderWorld);
-	void UpdateMeshMaterialSlot(UStaticMesh* TargetMesh, int32 TargetMaterialIndex, UMaterial * InputMaterial);
+	static void UpdateMeshMaterialSlot(UStaticMesh* TargetMesh, int32 TargetMaterialIndex, UMaterial * InputMaterial);
 };

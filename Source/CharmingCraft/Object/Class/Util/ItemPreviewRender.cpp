@@ -1,11 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "ItemPreviewRender.h"
-
 #include "CharmingCraft/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Interface/Meta/ItemMeta.h"
-#include "Components/SceneCaptureComponent2D.h"
 #include "Kismet/GameplayStatics.h"
 
 UItemPreviewRender* UItemPreviewRender::Instance = nullptr;
@@ -40,11 +37,6 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, U
 		UE_LOG(LogTemp, Warning, TEXT("(!) Successfully destroy RenderItem"))
 		return RenderMaterial;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Faile to Spawn RenderItem"))
-	}
-
 	return nullptr;
 }
 
