@@ -10,7 +10,7 @@ UCobalt::UCobalt()
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/cobalt_ingot.cobalt_ingot'"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(
-		TEXT("/Script/Engine.StaticMesh'/Game/CharmingCraft/Assets/models/item/apple.apple'"));
+		TEXT("/Script/Engine.StaticMesh'/Game/CharmingCraft/Assets/models/item/cobalt_ingot.cobalt_ingot'"));
 	if (IconTexture.Succeeded() && MeshTexture.Succeeded())
 	{
 		Icon = IconTexture.Object;

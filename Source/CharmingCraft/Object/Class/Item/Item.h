@@ -24,4 +24,6 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UStaticMesh* StaticMesh;
+
+
 };

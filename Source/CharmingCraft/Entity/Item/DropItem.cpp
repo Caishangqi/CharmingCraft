@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "DropItem.h"
 #include "DCharacter.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
@@ -13,16 +12,14 @@ ADropItem::ADropItem()
 	RootComponent = Root;
 
 	DropIconMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropIconMesh"));
-	DropModelMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropModelMesh"));
 	DropIconMesh->SetupAttachment(RootComponent); // 附加到Root组件
 	// 设置旋转
 	FRotator DropIconRotation = FRotator(0.0f, 90.0f, -30.0f); // Pitch, Yaw, Roll
 	FVector DropIconLocation = FVector(0.0f, 0.0f, 8.0f); // X, Y, Z
 	DropIconMesh->SetRelativeLocation(DropIconLocation);
 	DropIconMesh->SetRelativeRotation(DropIconRotation);
-
-
-	DropModelMesh->SetupAttachment(RootComponent); //
+	DropIconMesh->SetCastShadow(false);
+	DropIconMesh->SetReceivesDecals(false);
 	SetupCollision();
 }
 
@@ -48,8 +45,9 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("ADropItem::Initialize Mesh Ready"));
 		}
-
-		DropModelMesh->SetStaticMesh(ItemStack->ItemMeta->ItemModelMesh);
+		FRotator DropIconRotation = FRotator(0.0f, -90.0f, 0.0f); // Pitch, Yaw, Roll
+		DropIconMesh->SetRelativeRotation(DropIconRotation);
+		DropIconMesh->SetStaticMesh(ItemStack->ItemMeta->ItemModelMesh);
 	}
 	else
 	{

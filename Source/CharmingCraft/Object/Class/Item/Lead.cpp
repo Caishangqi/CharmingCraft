@@ -10,7 +10,7 @@ ULead::ULead()
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/lead_ingot.lead_ingot'"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(
-		TEXT("/Script/Engine.StaticMesh'/Game/CharmingCraft/Assets/models/item/apple.apple'"));
+		TEXT("/Script/Engine.StaticMesh'/Game/CharmingCraft/Assets/models/item/lead_ingot.lead_ingot'"));
 	if (IconTexture.Succeeded() && MeshTexture.Succeeded())
 	{
 		Icon = IconTexture.Object;
