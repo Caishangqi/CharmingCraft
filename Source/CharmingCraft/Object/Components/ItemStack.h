@@ -22,7 +22,7 @@ public:
 	UItemStack();
 
 	UFUNCTION(BlueprintCallable)
-	UItemStack * Initialize(EMaterial Type, int32 Amount);
+	UItemStack* Initialize(EMaterial Type, int32 Amount);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	int32 Amount;
@@ -35,12 +35,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	UItemMeta* ItemMeta;
 
-private:
+protected:
+	
 
 public:
 	UFUNCTION(BlueprintCallable)
 	bool SynchronizeData();
-
+	UItemStack* CopyData();
 public:
 	virtual void PostInitProperties() override;
 

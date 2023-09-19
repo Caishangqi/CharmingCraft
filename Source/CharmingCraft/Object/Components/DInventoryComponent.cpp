@@ -261,9 +261,9 @@ void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 	FTransform SpawnTransform(Location);
 
 	ItemStack->ClearFlags(RF_Standalone);
-	// TODO: Fatal error x -Render Core error cause can not drop model item
-	UItemStack* CachedItemStack = DuplicateObject<UItemStack>(ItemStack, this);
 
+	// Fixed in 23.09.19.01 Custom Copy constructor
+	UItemStack* CachedItemStack = ItemStack->CopyData();
 
 	// 使用SpawnActorDeferred创建ADropItem对象，但它还不在世界中
 	ADropItem* Drop = Cast<ADropItem>(
