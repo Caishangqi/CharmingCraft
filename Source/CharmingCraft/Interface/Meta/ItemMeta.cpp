@@ -8,6 +8,7 @@
 // Sets default values for this component's properties
 UItemMeta::UItemMeta()
 {
+	bIsRenderItem = false;
 }
 
 void UItemMeta::PostInitProperties()
@@ -20,6 +21,7 @@ void UItemMeta::UpdateRender(UWorld* RenderWorld)
 	// 如果是需要渲染的物品
 	if (bIsRenderItem)
 	{
+		ItemModelMesh->InitResources();
 		UMaterialInstanceDynamic* RenderedTexture = DuplicateObject<UMaterialInstanceDynamic>(
 			UItemPreviewRender::Get()->RenderItem(this, RenderWorld), this);
 

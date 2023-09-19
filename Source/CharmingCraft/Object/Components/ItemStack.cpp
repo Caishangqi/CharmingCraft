@@ -15,6 +15,7 @@ UItemStack::UItemStack()
 	// ...
 	Material = EMaterial::AIR;
 	Amount = 1;
+	
 }
 
 UItemStack* UItemStack::Initialize(const EMaterial SetType, const int32 SetAmount)

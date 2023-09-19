@@ -2,3 +2,8 @@
 
 
 #include "IntegratedMeta.h"
+
+UIntegratedMeta::UIntegratedMeta()
+{
+	bIsRenderItem = true;
+}

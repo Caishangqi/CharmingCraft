@@ -91,13 +91,13 @@ void UDInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, b
 	LocalItemStack = Inventory[Index];
 	if (LocalItemStack->Amount == 1 || RemoveWholeStack)
 	{
-		Inventory[Index] = nullptr;
 		if (IsConsumed)
 		{
 		}
 		else
 		{
 			Drop(LocalItemStack, LocalItemStack->Amount);
+			Inventory[Index] = nullptr;
 		}
 	}
 	else
@@ -195,12 +195,6 @@ bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 {
 	if (IsEmptySlotAvailable().Result)
 	{
-		// UItemStack* NewItemStack = NewObject<UItemStack>();
-		// NewItemStack->Amount = ItemStack->Amount;
-		// NewItemStack->Material = ItemStack->Material;
-		// NewItemStack->ItemMeta = ItemStack->ItemMeta;
-		// NewItemStack->ItemMeta->Durability = ItemStack->ItemMeta->Durability;
-
 		Inventory[IsEmptySlotAvailable().Index] = ItemStack;
 		return true;
 	}
@@ -262,19 +256,23 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 
 void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop"));
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop -0"));
 	FVector Location = GetDropLocation();
 	FTransform SpawnTransform(Location);
+
+	ItemStack->ClearFlags(RF_Standalone);
+	// TODO: Fatal error x -Render Core error cause can not drop model item
+	UItemStack* CachedItemStack = DuplicateObject<UItemStack>(ItemStack, this);
+
 
 	// 使用SpawnActorDeferred创建ADropItem对象，但它还不在世界中
 	ADropItem* Drop = Cast<ADropItem>(
 		UGameplayStatics::BeginDeferredActorSpawnFromClass(this, ADropItem::StaticClass(), SpawnTransform));
-	UItemStack* CopiedItemStack = DuplicateObject<UItemStack>(ItemStack, this);
-	CopiedItemStack->Amount = Quantity;
+	// Enter
+	CachedItemStack->Amount = Quantity;
 	if (Drop)
 	{
-		Drop->Initialize(CopiedItemStack);
-
+		Drop->Initialize(CachedItemStack);
 		// 使用FinishSpawningActor将Drop对象放入世界中
 		UGameplayStatics::FinishSpawningActor(Drop, SpawnTransform);
 	}

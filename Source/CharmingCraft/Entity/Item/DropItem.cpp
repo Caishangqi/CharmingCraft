@@ -2,21 +2,18 @@
 
 
 #include "DropItem.h"
-
 #include "DCharacter.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "CharmingCraft/Object/Components/ItemStack.h"
 
 ADropItem::ADropItem()
 {
-	ItemStack = CreateDefaultSubobject<UItemStack>("Default ItemStack");
-
-
 	// 创建一个USceneComponent并将其设置为根组件
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	RootComponent = Root;
 
 	DropIconMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropIconMesh"));
+	DropModelMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropModelMesh"));
 	DropIconMesh->SetupAttachment(RootComponent); // 附加到Root组件
 	// 设置旋转
 	FRotator DropIconRotation = FRotator(0.0f, 90.0f, -30.0f); // Pitch, Yaw, Roll
@@ -24,7 +21,7 @@ ADropItem::ADropItem()
 	DropIconMesh->SetRelativeLocation(DropIconLocation);
 	DropIconMesh->SetRelativeRotation(DropIconRotation);
 
-	DropModelMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropModelMesh"));
+
 	DropModelMesh->SetupAttachment(RootComponent); //
 	SetupCollision();
 }
@@ -40,11 +37,26 @@ void ADropItem::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
+// bRenderingResourcesInitialized
 void ADropItem::Initialize(UItemStack* PassItemStack)
 {
-	this->ItemStack = PassItemStack;
+	//ItemStack = DuplicateObject<UItemStack>(PassItemStack, this);
+	ItemStack = PassItemStack;
+	if (ItemStack->ItemMeta->bIsRenderItem)
+	{
+		if (IsValid(ItemStack->ItemMeta->ItemModelMesh))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ADropItem::Initialize Mesh Ready"));
+		}
+
+		DropModelMesh->SetStaticMesh(ItemStack->ItemMeta->ItemModelMesh);
+	}
+	else
+	{
+		DropIconMesh->SetStaticMesh(ItemStack->GetItemClass()->StaticMesh);
+	}
+
 	//
-	this->DropIconMesh->SetStaticMesh(this->ItemStack->GetItemClass()->StaticMesh);
 }
 
 void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
@@ -61,4 +73,10 @@ void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 	{
 		Destroy();
 	}
+}
+
+void ADropItem::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("ADropItem::BeginPlay()"));
 }

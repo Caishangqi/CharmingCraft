@@ -3,6 +3,7 @@
 #include "ItemPreviewRender.h"
 #include "CharmingCraft/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Interface/Meta/ItemMeta.h"
+#include "Engine/TextureRenderTarget2D.h"
 #include "Kismet/GameplayStatics.h"
 
 UItemPreviewRender* UItemPreviewRender::Instance = nullptr;

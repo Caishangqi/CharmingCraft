@@ -38,4 +38,5 @@ public:
 	void Initialize(UItemStack* PassItemStack);
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
+	virtual void BeginPlay() override;
 };
