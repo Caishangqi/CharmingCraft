@@ -37,6 +37,16 @@ void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& Propert
 		}
 	}
 }
+
+void UDInventoryComponent::InitializeItemStackWithMaterials()
+{
+	for (auto Element : PreloadMaterials)
+	{
+		UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
+			Element.Material, Element.Amount);
+		Inventory.Add(ItemStack);
+	}
+}
 #endif
 UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
 {
@@ -260,7 +270,7 @@ void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 	FVector Location = GetDropLocation();
 	FTransform SpawnTransform(Location);
 
-	ItemStack->ClearFlags(RF_Standalone);
+	//ItemStack->ClearFlags(RF_Standalone);
 
 	// Fixed in 23.09.19.01 Custom Copy constructor
 	UItemStack* CachedItemStack = ItemStack->CopyData();
@@ -356,6 +366,8 @@ void UDInventoryComponent::BeginPlay()
 	Inventory.SetNum(8);
 	// 启用ActionBar UI组件 不是很美观,暂时封印
 
+	UDInventoryComponent::InitializeItemStackWithMaterials();
+
 	// TODO 有点蠢, 可以优化为另一个世界生成，这个世界优先加载
 	for (UItemStack* Items : Inventory)
 	{
@@ -379,23 +391,6 @@ void UDInventoryComponent::OnRegister()
 {
 	Super::OnRegister();
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister()"));
-	// 默认物品
-	UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::APPLE, 64);
-	// 默认物品 - 头盔
-	UItemStack* ItemStackHelmet = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
-		EMaterial::HELMET, 1);
-	// 默认物品 - 铜矿石
-	UItemStack* ItemCopper = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::COPPER, 64);
-	// 默认物品 - 铅矿石
-	UItemStack* ItemLead = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::LEAD, 64);
-	// 默认物品 - 钴矿石
-	UItemStack* ItemCobalt = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(EMaterial::COBALT, 64);
-
-	Inventory.Add(ItemStack);
-	Inventory.Add(ItemStackHelmet);
-	Inventory.Add(ItemCopper);
-	Inventory.Add(ItemLead);
-	Inventory.Add(ItemCobalt);
 }
 
 void UDInventoryComponent::PostInitProperties()

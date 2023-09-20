@@ -61,7 +61,6 @@ ADCharacter::ADCharacter()
 
 	/* 物品栏 */
 	InventoryComponent = CreateDefaultSubobject<UDInventoryComponent>("InventoryComponent");
-
 	/* 装备管理器 */
 	//EquipmentManagerComponent = CreateDefaultSubobject<UEquipmentManagerComponent>("EquipmentManagerComponent");
 }

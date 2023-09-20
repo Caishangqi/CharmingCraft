@@ -12,6 +12,7 @@ class CHARMINGCRAFT_API UItem : public UObject
 {
 	GENERATED_BODY()
 
+
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	FText DisplayName;

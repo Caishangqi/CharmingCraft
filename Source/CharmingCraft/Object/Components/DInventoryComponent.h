@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Object/Enum/MaterialType.h"
+#include "CharmingCraft/Object/Structs/FDItemStack.h"
 #include "Components/ActorComponent.h"
 #include "DInventoryComponent.generated.h"
 
@@ -67,7 +69,9 @@ public:
 
 	/* Editor Only */
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreloadMaterials")
+	TArray<FDItemStack> PreloadMaterials;
+	void InitializeItemStackWithMaterials();
 	/* Event */
 
 	UPROPERTY(BlueprintAssignable)
