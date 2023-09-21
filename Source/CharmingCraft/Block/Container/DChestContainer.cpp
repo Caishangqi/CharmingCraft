@@ -10,7 +10,7 @@ void ADChestContainer::Interact_Implementation(APawn* InstigatorPawn)
 	 *	SetRelativeRotation 中的Relative是相对于LidMesh 连接的组件这里相对的应该是BaseMesh
 	 *	FRotator(TargetPitch,0,0) 对应的是旋转向量旋转向量的仰角为Pitch也就是Y (绿色的)
 	 */
-	LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
+	LidMesh->SetRelativeRotation(FRotator(0, 0, TargetPitch));
 }
 
 ADChestContainer::ADChestContainer()
@@ -24,5 +24,5 @@ ADChestContainer::ADChestContainer()
 	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LidMesh"));
 	LidMesh->SetupAttachment(BaseMesh);
 
-	TargetPitch = 110; //初始化,默认变量
+	TargetPitch = -40; //初始化,默认变量
 }

@@ -30,6 +30,8 @@ ADCharacter::ADCharacter()
 	//	确保摄像机连接到弹簧上面
 	CameraComp->SetupAttachment(SpringArmComp);
 	SpringArmComp->bDoCollisionTest = false; //不要让摄像机卡住,我们需要卡住摄像机用透视.
+	SpringArmComp->bEnableCameraRotationLag = true;
+	SpringArmComp->CameraRotationLagSpeed = 0.5f;
 	GetCharacterMovement()->bOrientRotationToMovement = true; //  设置相机起始点？
 	bUseControllerRotationYaw = false;
 
@@ -55,6 +57,9 @@ ADCharacter::ADCharacter()
 
 	AIControllerClass = ADPlayerAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	// Set the auto step
+	GetCharacterMovement()->MaxStepHeight = 100.0f;
+	GetCharacterMovement()->SetWalkableFloorAngle(90.0f);
 
 	/* 后处理组件 */
 	//PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
