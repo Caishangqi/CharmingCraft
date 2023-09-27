@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "DInventoryComponent.h"
 #include "EquipmentManagerComponent.generated.h"
 
 
@@ -16,29 +17,23 @@ class UEquipmentSlotComponent;
  */
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UEquipmentManagerComponent : public UActorComponent
+class CHARMINGCRAFT_API UEquipmentManagerComponent : public UDInventoryComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	UEquipmentManagerComponent(const FObjectInitializer& ObjectInitializer);
+	UEquipmentManagerComponent();
+	virtual void PostInitProperties() override;
+	virtual void BeginPlay() override;
+	virtual void OnRegister() override;
 
 	/* 属性 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
-	UItemStack* HelmetSlot;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
-	UItemStack* ChestPlateSlot;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
-	UItemStack* LeggingSlot;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Slot")
-	UItemStack* BootSlot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
 	UEquipmentRenderComponent* EquipmentRenderComponent;
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+
 
 public:
 	// Called every frame

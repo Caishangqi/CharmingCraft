@@ -40,11 +40,11 @@ void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& Propert
 
 void UDInventoryComponent::InitializeItemStackWithMaterials()
 {
-	for (auto Element : PreloadMaterials)
+	for (int32 Index = 0; Index < PreloadMaterials.Num(); ++Index)
 	{
 		UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
-			Element.Material, Element.Amount);
-		Inventory.Add(ItemStack);
+			PreloadMaterials[Index].Material, PreloadMaterials[Index].Amount);
+		Inventory.Insert(ItemStack, Index);
 	}
 }
 #endif
@@ -127,8 +127,14 @@ void UDInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, b
 
 int32 UDInventoryComponent::FindSlot(UItemStack* ItemStack)
 {
+	int32 SaveIndex = -1; // 默认-1
+	bool bCanStack = false; // 是否叠加
 	for (int32 Index = 0; Index < Inventory.Num(); ++Index)
 	{
+		if (Inventory[Index] == nullptr)
+		{
+			SaveIndex = Index; // 如果是空指针, 预备当前槽位为要转移物品的槽
+		}
 		if (Inventory[Index] != nullptr)
 		{
 			UItemStack* CacheItemStack = Inventory[Index];
@@ -138,12 +144,13 @@ int32 UDInventoryComponent::FindSlot(UItemStack* ItemStack)
 			{
 				bLocalHasFailed = false;
 				UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot %d"), Index);
-				return Index; // 返回找到的Index
+				SaveIndex = Index; // 返回找到的Index
+				bCanStack = true; // 说明可以叠加, 设置 SaveIndex = Index
 			}
 		}
-		else
+		if (bCanStack) // 如果能叠加, 则不在空指针的位置放置物品, 要在能叠加物品上叠加
 		{
-			return Index;
+			return SaveIndex;
 		}
 	}
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot =  FALSE"));
@@ -390,7 +397,7 @@ void UDInventoryComponent::BeginPlay()
 void UDInventoryComponent::OnRegister()
 {
 	Super::OnRegister();
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister()"));
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister() ?"));
 }
 
 void UDInventoryComponent::PostInitProperties()
