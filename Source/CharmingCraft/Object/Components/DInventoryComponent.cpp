@@ -189,7 +189,6 @@ void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, UItemStack* I
 	}
 }
 
-
 UDInventoryComponent::FReturnValue UDInventoryComponent::IsEmptySlotAvailable()
 {
 	FReturnValue Result;
@@ -206,7 +205,6 @@ UDInventoryComponent::FReturnValue UDInventoryComponent::IsEmptySlotAvailable()
 	Result.Result = false;
 	return Result;
 }
-
 
 bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 {
