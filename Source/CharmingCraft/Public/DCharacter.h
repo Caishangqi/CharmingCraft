@@ -107,6 +107,9 @@ public:
 	// UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
 	// UEquipmentManagerComponent* EquipmentManagerComponent;
 
+	/* 槽位管理器 (可以考虑)*/
+	// TODO 添加槽位管理组件，这些组件包括格雷StaticMeshComponent 对应的骨骼Socket
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
