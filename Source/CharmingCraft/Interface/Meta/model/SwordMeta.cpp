@@ -12,8 +12,6 @@
 USwordMeta::USwordMeta()
 {
 	SetDefaultAssemble();
-
-	
 }
 
 void USwordMeta::SetDefaultAssemble()

@@ -19,6 +19,9 @@ struct FDMaterial : public FTableRowBase
 		meta=(DisplayName="ItemMeta", MakeStructureDefaultValue="None"))
 	TSubclassOf<UItemMeta> ItemMeta;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Color", MakeStructureDefaultValue= NULL))
+	FColor Color;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,
 		meta=(DisplayName="ItemClass", MakeStructureDefaultValue="None"))
 	TSubclassOf<UItem> ItemClass;
