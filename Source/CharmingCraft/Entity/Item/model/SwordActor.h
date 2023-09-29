@@ -28,22 +28,22 @@ public:
 	ASwordActor();
 
 	/* Sword Mesh Part */
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* Sword;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* Blade;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* Fuller;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* Guard;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* Hilt;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UStaticMeshComponent* Pommel;
 
 protected:

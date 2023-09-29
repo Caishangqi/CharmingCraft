@@ -6,6 +6,7 @@
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "SwordMeta.generated.h"
 
+class ASwordActor;
 class UEquipPartSwordPommel;
 class UEquipPartSwordHilt;
 class UEquipPartSwordGuard;
@@ -37,5 +38,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Sword Pommel")
 	UEquipPartSwordPommel* SwordPommel;
+
+	/* 模型 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Sword Actor Model")
+	ASwordActor* SwordActor;
 	
+	/* 渲染2D */
+
+public:
+	void SetDefaultAssemble();
 };
