@@ -1,10 +1,10 @@
-# CharmingCraft: Unreal Remaster
+# CharmingCraft: Desolate Age
 
 <p align="center">
 <img src = "https://github.com/Caishangqi/minecraft-modpack-charmingcraft-journey/assets/39553613/290e0607-2e2a-4f35-9149-6abfe15459f7">
 </p>
 
-<h4 align="center">Concurrent Development of Game Project from Minecraft ModPack and made by Unreal 5</h4>
+<h4 align="center">A Minecraft Style like top-down RPG game implement by Unreal Engine 5.2</h4>
 <p align="center">
 <a href="https://www.codefactor.io/repository/github/caishangqi/charmingcraft"><img src="https://www.codefactor.io/repository/github/caishangqi/minecraft-modpack-charmingcraft-journey/badge" alt="CodeFactor" /></a>
 <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Caishangqi/CharmingCraft">
@@ -15,19 +15,21 @@
 
 ## 介绍 Introduction
 
-The project is a replica of the Minecraft modpack called Charming Craft, utilizing Unreal Engine 5 to replicate both the
-content and gameplay. As the first C++ game project, this endeavor encompasses numerous areas of inefficiency and room
-for improvement. Additionally, there is a comprehensive wiki documenting noteworthy aspects of Unreal Engine.
+This project is crafted using Unreal Engine 5.2 and is a replica of the Minecraft ModPack, Charming Craft. Within this project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
 
 ## 构建 Build
 
 Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject file` to build. All dependency is on
 this repository.
 
+## 特性 Feature
+
+Waiting for the release of the first playable demo.
+
+等待第一个试玩版本发布
+
 ## 进度 Progress
 
-- 人物弹簧摄像机 `USpringArmComponent` 应用
-- 人物基于弹簧摄像头的绝对位移 应用
 - 基于C++的投射物蓝图模板实现
 - 交互接口以及人物交互功能
 - 基于交互接口实现的开宝箱功能及动画
@@ -46,33 +48,55 @@ this repository.
 - 盔甲锻造台
 - 3D物品渲染2D
 - 物品装配机制, 不同材料打造物品
+- 武器装配,不同武器部分可装配不同类型和材料的零件
 
-## 即将到来
+## 即将到来 Coming soon
 
 - 人物建模和动画
 - 完整的属性UI
 - 近战攻击和基础装备系统
 - Episodes 35,70 ...
 
-## 等待改进
+## 等待改进 Awaiting improvement
 
-- 寻路高处可交互物品造成的卡死,抖动
+- 寻路高处可交互物品造成的卡死,抖动 (**已修复**)
 - 在被建筑物遮挡时正确地在建筑物后方移动 (Ray Tracing)
 - 动态寻路完善, 玩家在破坏方块或者交互物品时刷新可供的路线
 - 丢弃物品的时候是发射行为而不是生成行为
 - 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**已修复**)
 
-## 项目结构
+## 项目结构 Project Structure
 
-### 项目资源结构
+### 项目资产结构 Asset Structure
 
 - Assets
   - models
   - textures
+### 项目源码结构 Code Structure
+
+- Source
+  - Object
+    - Class
+      - Core
+      - Item
+      - Util
+    - Component
+    - Enum
+    - Struct
+      - model
+        - sword
+          - blade
+          - fuller
+          - guard
+          - hilt
+          - pommel
+  - Interface
+    - Meta
+      - model
 
 ## 概念,设计模式,和实现原理
 
-以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示。
+以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示
 
 - [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
 - [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
@@ -82,8 +106,9 @@ this repository.
 
 - [近战攻击实现原理](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [3D物品渲染2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [Minecraft物品结构](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [装备组装](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Minecraft 物品结构](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [装备组装 - 盔甲](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [装备组装 - 武器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
 ## 资源 Resource
 

@@ -13,7 +13,9 @@ class CHARMINGCRAFT_API UEquipPartArmorPlates : public UEquipPartComponent
 
 public:
 	/* 属性 */
+	FDArmorMaterial* FoundRow = nullptr; // 用于编辑器分配,这个名字就是材料名称,塞进RenderUpdate里更新材质
 
+	
 	UEquipPartArmorPlates();
 
 	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;

@@ -15,20 +15,22 @@ class CHARMINGCRAFT_API UEquipPartComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	
 	// Sets default values for this component's properties
 	UEquipPartComponent();
-
+	
 	/* 属性 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
 	EMaterial ComponentMaterial; //锻造这个部件所用的材料
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
 	int32 ItemNeedToForge; // 多少个材料才能锻造这个部件
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
 	FString Type;
-	// 用于编辑器分配,这个名字就是材料名称,塞进RenderUpdate里更新材质
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
 	UDataTable* ComponentMaterialDataTable;
-	FDArmorMaterial* FoundRow = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,
 		Category= "Naming")
