@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/EquipPartSwordHilt.h"
+#include "CharmingCraft/Object/Structs/model/sword/hilt/FHiltBasicMaterial.h"
 #include "EquipPartSwordHiltBasic.generated.h"
 
 
@@ -13,6 +14,10 @@ class CHARMINGCRAFT_API UEquipPartSwordHiltBasic : public UEquipPartSwordHilt
 	GENERATED_BODY()
 
 public:
+
+	/* 属性 */
+	FHiltBasicMaterial * MaterialProperties;
+	
 	// Sets default values for this component's properties
 	UEquipPartSwordHiltBasic();
 
@@ -24,4 +29,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
 };

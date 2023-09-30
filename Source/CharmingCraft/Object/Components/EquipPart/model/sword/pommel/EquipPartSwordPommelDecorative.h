@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/EquipPartSwordPommel.h"
+#include "CharmingCraft/Object/Structs/model/sword/pommel/FPommelDecorativeMaterial.h"
 #include "EquipPartSwordPommelDecorative.generated.h"
 
 
@@ -13,6 +14,10 @@ class CHARMINGCRAFT_API UEquipPartSwordPommelDecorative : public UEquipPartSword
 	GENERATED_BODY()
 
 public:
+
+	/* 属性 */
+	FPommelDecorativeMaterial * MaterialProperties;
+	
 	// Sets default values for this component's properties
 	UEquipPartSwordPommelDecorative();
 
@@ -24,4 +29,5 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
 };

@@ -12,6 +12,7 @@
  * 
  */
 class UDataTable;
+
 UCLASS()
 class CHARMINGCRAFT_API UCharmingCraftInstance : public UGameInstance
 {
@@ -20,6 +21,17 @@ class CHARMINGCRAFT_API UCharmingCraftInstance : public UGameInstance
 public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
 	UDataTable* ArmorMaterialDataTable;
-
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* MaterialMetaMapper;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* BladeBasicMaterial;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* FullerReinforcedMaterial;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* GuardMakeShiftMaterial;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* HiltBasicMaterial;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* PommelDecorativeMaterial;
 	UCharmingCraftInstance();
 };

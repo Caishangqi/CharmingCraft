@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/EquipPartSwordBlade.h"
+#include "CharmingCraft/Object/Structs/model/sword/blade/FBladeBasicMaterial.h"
 #include "EquipPartSwordBladeBasic.generated.h"
-
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipPartSwordBladeBasic : public UEquipPartSwordBlade
@@ -13,6 +13,10 @@ class CHARMINGCRAFT_API UEquipPartSwordBladeBasic : public UEquipPartSwordBlade
 	GENERATED_BODY()
 
 public:
+
+	/* 属性 */
+	FBladeBasicMaterial * MaterialProperties;
+	
 	// Sets default values for this component's properties
 	UEquipPartSwordBladeBasic();
 
@@ -24,4 +28,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
 };

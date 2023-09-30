@@ -3,6 +3,8 @@
 
 #include "EquipPartSwordPommelDecorative.h"
 
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+
 
 // Sets default values for this component's properties
 UEquipPartSwordPommelDecorative::UEquipPartSwordPommelDecorative()
@@ -12,6 +14,19 @@ UEquipPartSwordPommelDecorative::UEquipPartSwordPommelDecorative()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	TypeSuffix = "pommel";
+	TypeSuffixShort = "Pommel";
+	Description = "Pommel is Pommel so it should be Pommel or you can also call it Pommel";
+	ItemNeedToForge = 1;
+	MaterialSlotIndex = 1;
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PartMeshFinder(
+		TEXT(
+			"StaticMesh'/Game/CharmingCraft/Assets/models/sword/pommel/pommel_default.pommel_default'"));
+	if (PartMeshFinder.Succeeded())
+	{
+		PartMesh = PartMeshFinder.Object;
+	}
 }
 
 
@@ -21,7 +36,6 @@ void UEquipPartSwordPommelDecorative::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
@@ -34,3 +48,37 @@ void UEquipPartSwordPommelDecorative::TickComponent(float DeltaTime, ELevelTick 
 	// ...
 }
 
+void UEquipPartSwordPommelDecorative::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
+{
+	Super::UpdateRenderMesh(NewComponentMaterialText);
+	UCharmingCraftInstance* GameInstance = Cast<UCharmingCraftInstance>(
+		GetWorld()->GetGameInstance());
+	if (GameInstance)
+	{
+		ComponentMaterialDataTable = GameInstance->PommelDecorativeMaterial;
+		if (ComponentMaterialDataTable)
+		{
+			TArray<FName> RowNames = ComponentMaterialDataTable->GetRowNames();
+			for (const FName& RowName : RowNames)
+			{
+				FPommelDecorativeMaterial* CurrentRow = ComponentMaterialDataTable->FindRow<FPommelDecorativeMaterial>(
+					RowName, TEXT("UpdateRenderMesh"), true);
+
+				if (CurrentRow && CurrentRow->Material == NewComponentMaterialText)
+				{
+					MaterialProperties = CurrentRow;
+					UE_LOG(LogTemp, Error, TEXT("ROW FOUND!"));
+					break;
+				}
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("DataTable not found!"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameInstance not found!"));
+	}
+}

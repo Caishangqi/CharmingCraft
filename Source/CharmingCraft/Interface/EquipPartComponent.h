@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
-#include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
+#include "CharmingCraft/Object/Structs/FDMaterial.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
 #include "EquipPartComponent.generated.h"
@@ -15,20 +15,22 @@ class CHARMINGCRAFT_API UEquipPartComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	
 	// Sets default values for this component's properties
 	UEquipPartComponent();
-	
+
 	/* 属性 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
 	EMaterial ComponentMaterial; //锻造这个部件所用的材料
-	
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
+	FDMaterial MaterialData;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
 	int32 ItemNeedToForge; // 多少个材料才能锻造这个部件
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Component Properties")
 	FString Type;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Component Properties")
 	UDataTable* ComponentMaterialDataTable;
 
@@ -51,6 +53,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Equip Part Render")
 	UMaterial* PartMaterial; // Default Value
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Equip Part Mesh")
+	UStaticMesh * PartMesh; // For Weapon
 
 protected:
 	// Called when the game starts

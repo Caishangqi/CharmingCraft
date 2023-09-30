@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/EquipPartSwordGuard.h"
+#include "CharmingCraft/Object/Structs/model/sword/guard/FGuardMakeShiftMaterial.h"
 #include "EquipPartSwordGuardMakeShift.generated.h"
 
 
@@ -13,6 +14,10 @@ class CHARMINGCRAFT_API UEquipPartSwordGuardMakeShift : public UEquipPartSwordGu
 	GENERATED_BODY()
 
 public:
+
+	/* 属性 */
+	FGuardMakeShiftMaterial * MaterialProperties;
+	
 	// Sets default values for this component's properties
 	UEquipPartSwordGuardMakeShift();
 
@@ -24,4 +29,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
 };

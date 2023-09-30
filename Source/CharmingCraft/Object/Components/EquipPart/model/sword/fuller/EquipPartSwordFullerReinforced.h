@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/EquipPartSwordFuller.h"
+#include "CharmingCraft/Object/Structs/model/sword/fuller/FFullerReinforcedMaterial.h"
 #include "EquipPartSwordFullerReinforced.generated.h"
 
 
@@ -13,6 +14,10 @@ class CHARMINGCRAFT_API UEquipPartSwordFullerReinforced : public UEquipPartSword
 	GENERATED_BODY()
 
 public:
+
+	/* 属性 */
+	FFullerReinforcedMaterial * MaterialProperties;
+	
 	// Sets default values for this component's properties
 	UEquipPartSwordFullerReinforced();
 
@@ -24,4 +29,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void UpdateRenderMesh(EMaterial& NewComponentMaterialText) override;
 };

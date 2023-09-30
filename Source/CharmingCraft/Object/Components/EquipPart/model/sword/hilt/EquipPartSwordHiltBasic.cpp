@@ -3,6 +3,8 @@
 
 #include "EquipPartSwordHiltBasic.h"
 
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+
 
 // Sets default values for this component's properties
 UEquipPartSwordHiltBasic::UEquipPartSwordHiltBasic()
@@ -12,6 +14,19 @@ UEquipPartSwordHiltBasic::UEquipPartSwordHiltBasic()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	TypeSuffix = "hilt";
+	TypeSuffixShort = "Hilt";
+	Description = "Hilt is Hilt so it should be Hilt or you can also call it Hilt";
+	ItemNeedToForge = 1;
+	MaterialSlotIndex = 1;
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> PartMeshFinder(
+		TEXT(
+			"StaticMesh'/Game/CharmingCraft/Assets/models/sword/hilt/hilt_default.hilt_default'"));
+	if (PartMeshFinder.Succeeded())
+	{
+		PartMesh = PartMeshFinder.Object;
+	}
 }
 
 
@@ -21,7 +36,6 @@ void UEquipPartSwordHiltBasic::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
@@ -34,3 +48,37 @@ void UEquipPartSwordHiltBasic::TickComponent(float DeltaTime, ELevelTick TickTyp
 	// ...
 }
 
+void UEquipPartSwordHiltBasic::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
+{
+	Super::UpdateRenderMesh(NewComponentMaterialText);
+	UCharmingCraftInstance* GameInstance = Cast<UCharmingCraftInstance>(
+		GetWorld()->GetGameInstance());
+	if (GameInstance)
+	{
+		ComponentMaterialDataTable = GameInstance->HiltBasicMaterial;
+		if (ComponentMaterialDataTable)
+		{
+			TArray<FName> RowNames = ComponentMaterialDataTable->GetRowNames();
+			for (const FName& RowName : RowNames)
+			{
+				FHiltBasicMaterial* CurrentRow = ComponentMaterialDataTable->FindRow<FHiltBasicMaterial>(
+					RowName, TEXT("UpdateRenderMesh"), true);
+
+				if (CurrentRow && CurrentRow->Material == NewComponentMaterialText)
+				{
+					MaterialProperties = CurrentRow;
+					UE_LOG(LogTemp, Error, TEXT("ROW FOUND!"));
+					break;
+				}
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("DataTable not found!"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameInstance not found!"));
+	}
+}
