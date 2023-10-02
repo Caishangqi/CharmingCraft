@@ -27,23 +27,26 @@ public:
 	// Sets default values for this actor's properties
 	ASwordActor();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	USceneComponent* Root;
+
 	/* Sword Mesh Part */
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Sword;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Blade;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Fuller;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Guard;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Hilt;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Pommel;
 
 protected:

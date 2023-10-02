@@ -7,6 +7,9 @@ ASwordActor::ASwordActor()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	RootComponent = Root;
+
 	Sword = CreateDefaultSubobject<UStaticMeshComponent>("Sword Root");
 	Blade = CreateDefaultSubobject<UStaticMeshComponent>("Blade");
 	Fuller = CreateDefaultSubobject<UStaticMeshComponent>("Fuller");
@@ -19,6 +22,7 @@ ASwordActor::ASwordActor()
 	Guard->SetupAttachment(Sword);
 	Hilt->SetupAttachment(Sword);
 	Pommel->SetupAttachment(Sword);
+	Sword->SetupAttachment(RootComponent);
 
 	for (auto Component : GetComponents())
 	{

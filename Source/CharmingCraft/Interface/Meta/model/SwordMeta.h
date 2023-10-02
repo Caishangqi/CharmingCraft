@@ -23,7 +23,7 @@ class CHARMINGCRAFT_API USwordMeta : public UWeaponMeta
 public:
 	USwordMeta();
 
-	/* 属性 */
+	/* 属性 部件 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Sword Blade")
 	UEquipPartSwordBlade* SwordBlade;
 
@@ -39,12 +39,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Sword Pommel")
 	UEquipPartSwordPommel* SwordPommel;
 
-	/* 模型 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Sword Actor Model")
-	ASwordActor* SwordActor;
-	
 	/* 渲染2D */
 
 public:
 	void SetDefaultAssemble();
+	virtual bool AssembleComponent(AActor * Actor) override;
 };

@@ -14,7 +14,7 @@ class CHARMINGCRAFT_API AItemTargetRenderActor : public AActor
 public:
 	// Sets default values for this actor's properties
 	AItemTargetRenderActor();
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -27,6 +27,8 @@ public:
 	UTextureRenderTarget2D* TextureRenderTarget2D;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UMaterialInstanceDynamic* OutPutMaterialInstanceDynamic;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	UChildActorComponent* ChildActorComponent;
 
 private:
 	UPROPERTY(VisibleAnywhere)

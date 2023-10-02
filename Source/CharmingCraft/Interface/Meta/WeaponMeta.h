@@ -13,4 +13,20 @@ UCLASS()
 class CHARMINGCRAFT_API UWeaponMeta : public UIntegratedMeta
 {
 	GENERATED_BODY()
+
+public:
+	/* 模型 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Actor Model")
+	TSubclassOf<AActor> WeaponActor;
+
+	/*!
+	 * When done initialize Meta, the ItemPreviewRender should call the method
+	 * after it BeginDeferredActorSpawnFromClass to assemble the meta stored component
+	 * into target actor
+	 * @param Actor The actor you want to assemble with different component parts
+	 * @return Weather successful assemblies component 
+	 */
+	virtual bool AssembleComponent(AActor* Actor);
+
+	virtual void UpdateRender(UWorld* RenderWorld) override;
 };

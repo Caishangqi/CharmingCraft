@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "ItemPreviewRender.generated.h"
 
+class UWeaponMeta;
 class UItemMeta;
 class UItemStack;
 /**
@@ -24,5 +25,6 @@ public:
 	static UItemPreviewRender* Instance;
 
 	UMaterialInstanceDynamic* RenderItem(UItemMeta* InputMeta, UWorld* RenderWorld);
+	UMaterialInstanceDynamic* RenderItem(UWeaponMeta* InputMeta, UWorld* RenderWorld);
 	static void UpdateMeshMaterialSlot(UStaticMesh* TargetMesh, int32 TargetMaterialIndex, UMaterial * InputMaterial);
 };

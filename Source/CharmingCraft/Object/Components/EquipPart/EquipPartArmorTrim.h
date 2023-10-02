@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../Interface/EquipPartComponent.h"
+#include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
 #include "EquipPartArmorTrim.generated.h"
 
 /**

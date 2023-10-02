@@ -31,6 +31,8 @@ AItemTargetRenderActor::AItemTargetRenderActor()
 	SceneCaptureComponent->bCaptureOnMovement = true;
 	SceneCaptureComponent->ShowFlags.SetLighting(false);
 	SceneCaptureComponent->bAlwaysPersistRenderingState = true;
+	ChildActorComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ChildActorComp"));
+	ChildActorComponent->SetupAttachment(RootComponent);
 	UPrimitiveComponent* PrimComp = Cast<UPrimitiveComponent>(this->GetRootComponent());
 	if (PrimComp)
 	{
@@ -53,8 +55,8 @@ void AItemTargetRenderActor::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("(!) AItemTargetRenderActor::BeginPlay()"))
-	SceneCaptureComponent->ShowOnlyComponent(DropModelMesh);
-	SceneCaptureComponent->ShowOnlyComponent(DropIconMesh);
+	// SceneCaptureComponent->ShowOnlyComponent(DropModelMesh);
+	// SceneCaptureComponent->ShowOnlyComponent(DropIconMesh);
 	// 把渲染的 Texture 2D传给 自身存储的Texture
 	SceneCaptureComponent->CaptureScene();
 
