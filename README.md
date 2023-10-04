@@ -4,22 +4,22 @@
 <img src = "https://github.com/Caishangqi/minecraft-modpack-charmingcraft-journey/assets/39553613/290e0607-2e2a-4f35-9149-6abfe15459f7">
 </p>
 
-<h4 align="center">A Minecraft Style like top-down RPG game implement by Unreal Engine 5.2</h4>
+<h4 align="center">A Minecraft Style like top-down RPG game implement by Unreal Engine 5.3</h4>
 <p align="center">
 <a href="https://www.codefactor.io/repository/github/caishangqi/charmingcraft"><img src="https://www.codefactor.io/repository/github/caishangqi/minecraft-modpack-charmingcraft-journey/badge" alt="CodeFactor" /></a>
 <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Caishangqi/CharmingCraft">
-<img alt="Lines of code" src="https://img.shields.io/badge/Unreal-5.2-orange">
+<img alt="Lines of code" src="https://img.shields.io/badge/Unreal-5.3.1-orange">
 <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/Caishangqi/CharmingCraft/master?label=build">
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Caishangqi/CharmingCraft">
 </p>
 
 ## 介绍 Introduction
 
-This project is crafted using Unreal Engine 5.2 and is a replica of the Minecraft ModPack, Charming Craft. Within this project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
+This project is crafted using Unreal Engine 5.3.1 and is a replica of the Minecraft ModPack, Charming Craft. Within this project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
 
 ## 构建 Build
 
-Use the `vc solution file` and the `Unreal 5.2 Engine source code` and `uproject file` to build. All dependency is on
+Use the `vc solution file` and the `Unreal 5.3.1 Engine source code` and `uproject file` to build. All dependency is on
 this repository.
 
 ## 特性 Feature
