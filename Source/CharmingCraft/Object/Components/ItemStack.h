@@ -36,12 +36,13 @@ public:
 	UItemMeta* ItemMeta;
 
 protected:
-	
+
 
 public:
 	UFUNCTION(BlueprintCallable)
 	bool SynchronizeData();
 	UItemStack* CopyData();
+
 public:
 	virtual void PostInitProperties() override;
 

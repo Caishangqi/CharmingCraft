@@ -89,6 +89,4 @@ struct FDArmorMaterial : public FTableRowBase
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="TrimTexture"))
 	UMaterial* TrimTexture;
-
-	
 };

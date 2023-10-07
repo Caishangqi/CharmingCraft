@@ -2,20 +2,32 @@
 
 #include "DropItem.h"
 #include "DCharacter.h"
+#include "CharmingCraft/Interface/Meta/WeaponMeta.h"
+#include "CharmingCraft/Object/Class/Util/ActorGenerator.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "CharmingCraft/Object/Components/ItemStack.h"
+#include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ADropItem::ADropItem()
 {
-	// 创建一个USceneComponent并将其设置为根组件
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
-	RootComponent = Root;
+	// Create the invisible collision box and attach it to the RootComponent of the actor
+	InvisibleCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("InvisibleCollision"));
+	RootComponent = InvisibleCollision;
+	// Set the size of the collision box
+	InvisibleCollision->SetBoxExtent(FVector(50.f, 50.f, 100.f)); // You can adjust the size as needed
+
+	// Ensure it doesn't render anything
+	InvisibleCollision->SetVisibility(true);
+
+	// Enable collision
+	InvisibleCollision->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 
 	DropIconMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropIconMesh"));
 	DropIconMesh->SetupAttachment(RootComponent); // 附加到Root组件
-	// 设置旋转
+	// Set up transform
 	FRotator DropIconRotation = FRotator(0.0f, 90.0f, -30.0f); // Pitch, Yaw, Roll
-	FVector DropIconLocation = FVector(0.0f, 0.0f, 8.0f); // X, Y, Z
+	FVector DropIconLocation = FVector(0.0f, -50.0f, 8.0f); // X, Y, Z
 	DropIconMesh->SetRelativeLocation(DropIconLocation);
 	DropIconMesh->SetRelativeRotation(DropIconRotation);
 	DropIconMesh->SetCastShadow(false);
@@ -26,7 +38,7 @@ ADropItem::ADropItem()
 void ADropItem::SetupCollision()
 {
 	// 设置Pawn通道的碰撞响应为ECR_Ignore
-	DropIconMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+	DropIconMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 }
 
 void ADropItem::PostInitializeComponents()
@@ -39,7 +51,24 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 {
 	//ItemStack = DuplicateObject<UItemStack>(PassItemStack, this);
 	ItemStack = PassItemStack;
-	if (ItemStack->ItemMeta->bIsRenderItem)
+
+	if (ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass()))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass())"));
+		UWeaponMeta* WeaponMeta = Cast<UWeaponMeta>(ItemStack->ItemMeta);
+
+		FVector WeaponLocation(0.0f, -50.0f, 5.0f);
+		FRotator WeaponRotation = FRotator(0.0f, 90.0f, -30.0f);
+		FTransform DefaultTransform(WeaponRotation, WeaponLocation);
+
+		AActor* WeaponActor = Cast<AActor>(
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(this,
+			                                                   WeaponMeta->WeaponActor, DefaultTransform));
+		WeaponMeta->AssembleComponent(WeaponActor);
+		UGameplayStatics::FinishSpawningActor(WeaponActor, DefaultTransform);
+		WeaponActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+	}
+	else if (ItemStack->ItemMeta->bIsRenderItem)
 	{
 		if (IsValid(ItemStack->ItemMeta->ItemModelMesh))
 		{
@@ -53,9 +82,8 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 	{
 		DropIconMesh->SetStaticMesh(ItemStack->GetItemClass()->StaticMesh);
 	}
-
-	//
 }
+
 
 void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 {
@@ -69,6 +97,17 @@ void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 	int32 RemainQuantity = Player->InventoryComponent->AddToInventory(this->ItemStack).RemainQuantity;
 	if (RemainQuantity == 0)
 	{
+		TArray<AActor*> AttachedActors;
+		this->GetAttachedActors(AttachedActors);
+		// Delete Attach Actor for Weapon Actors
+		if (AttachedActors.Num() != 0)
+		{
+			for (const auto AttachedActor : AttachedActors)
+			{
+				AttachedActor->Destroy();
+			}
+		}
+
 		Destroy();
 	}
 }

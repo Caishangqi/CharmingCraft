@@ -14,10 +14,9 @@ class CHARMINGCRAFT_API UEquipPartSwordHiltBasic : public UEquipPartSwordHilt
 	GENERATED_BODY()
 
 public:
-
 	/* 属性 */
-	FHiltBasicMaterial * MaterialProperties;
-	
+	FHiltBasicMaterial* MaterialProperties;
+
 	// Sets default values for this component's properties
 	UEquipPartSwordHiltBasic();
 

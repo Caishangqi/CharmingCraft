@@ -14,10 +14,9 @@ class CHARMINGCRAFT_API UEquipPartSwordFullerReinforced : public UEquipPartSword
 	GENERATED_BODY()
 
 public:
-
 	/* 属性 */
-	FFullerReinforcedMaterial * MaterialProperties;
-	
+	FFullerReinforcedMaterial* MaterialProperties;
+
 	// Sets default values for this component's properties
 	UEquipPartSwordFullerReinforced();
 

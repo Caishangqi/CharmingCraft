@@ -63,7 +63,7 @@ void UEquipmentManagerComponent::TickComponent(float DeltaTime, ELevelTick TickT
 
 bool UEquipmentManagerComponent::IsOccupied(UItemStack* Slot)
 {
-	if (Slot == NULL)
+	if (Slot == nullptr)
 	{
 		return false;
 	}

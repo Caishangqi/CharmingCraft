@@ -25,7 +25,6 @@ void UEquipPartComponent::BeginPlay()
 
 void UEquipPartComponent::UpdateRenderMesh(EMaterial& NewComponentMaterialText)
 {
-	
 }
 
 

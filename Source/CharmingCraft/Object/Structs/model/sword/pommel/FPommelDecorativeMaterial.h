@@ -12,5 +12,4 @@ struct FPommelDecorativeMaterial : public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, EditAnywhere,
 		meta=(DisplayName="Material", MakeStructureDefaultValue="None"))
 	EMaterial Material;
-
 };

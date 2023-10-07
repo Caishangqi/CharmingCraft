@@ -14,10 +14,9 @@ class CHARMINGCRAFT_API UEquipPartSwordGuardMakeShift : public UEquipPartSwordGu
 	GENERATED_BODY()
 
 public:
-
 	/* 属性 */
-	FGuardMakeShiftMaterial * MaterialProperties;
-	
+	FGuardMakeShiftMaterial* MaterialProperties;
+
 	// Sets default values for this component's properties
 	UEquipPartSwordGuardMakeShift();
 

@@ -14,10 +14,9 @@ class CHARMINGCRAFT_API UEquipPartSwordPommelDecorative : public UEquipPartSword
 	GENERATED_BODY()
 
 public:
-
 	/* 属性 */
-	FPommelDecorativeMaterial * MaterialProperties;
-	
+	FPommelDecorativeMaterial* MaterialProperties;
+
 	// Sets default values for this component's properties
 	UEquipPartSwordPommelDecorative();
 

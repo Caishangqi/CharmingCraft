@@ -21,7 +21,6 @@ void UEquipPartSwordPommel::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
@@ -33,4 +32,3 @@ void UEquipPartSwordPommel::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	// ...
 }
-

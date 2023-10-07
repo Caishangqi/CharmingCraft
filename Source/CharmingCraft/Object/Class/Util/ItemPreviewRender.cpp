@@ -83,7 +83,7 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UWeaponMeta* InputMeta,
 	WeaponActor->SetActorRelativeLocation(FVector(-60.0f, -30.0f, -15.0f));
 	WeaponActor->SetActorRelativeRotation(FRotator3d(0.0f, 350.0f, 0.0f));
 	// Finish spawning the Actor
-	UGameplayStatics::FinishSpawningActor(WeaponActor, SpawnTransform);
+	UGameplayStatics::FinishSpawningActor(WeaponActor, SpawnTransform); // KeepWorldTransform
 	WeaponActor->AttachToComponent(RenderActor->Root, FAttachmentTransformRules::KeepWorldTransform);
 	// Tip: 在附加时保持组件的世界变换不变。不应该使用 FAttachmentTransformRules::KeepRelativeTransform
 

@@ -213,10 +213,7 @@ bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 		Inventory[IsEmptySlotAvailable().Index] = ItemStack;
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
@@ -371,7 +368,7 @@ void UDInventoryComponent::BeginPlay()
 	Inventory.SetNum(8);
 	// 启用ActionBar UI组件 不是很美观,暂时封印
 
-	UDInventoryComponent::InitializeItemStackWithMaterials();
+	InitializeItemStackWithMaterials();
 
 	// TODO 有点蠢, 可以优化为另一个世界生成，这个世界优先加载
 	for (UItemStack* Items : Inventory)

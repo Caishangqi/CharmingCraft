@@ -12,7 +12,6 @@ class CHARMINGCRAFT_API UItem : public UObject
 {
 	GENERATED_BODY()
 
-
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	FText DisplayName;
@@ -22,9 +21,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	int32 MaxStackSize;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UStaticMesh* StaticMesh;
-
-
 };

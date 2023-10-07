@@ -15,9 +15,8 @@ class CHARMINGCRAFT_API UIntegratedMeta : public UItemMeta
 	GENERATED_BODY()
 
 public:
-
 	UIntegratedMeta();
-	
+
 	// Layout for UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
 	TSubclassOf<UUserWidget> Layout;

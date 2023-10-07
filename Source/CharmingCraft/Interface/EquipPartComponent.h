@@ -54,7 +54,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Equip Part Render")
 	UMaterial* PartMaterial; // Default Value
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Equip Part Mesh")
-	UStaticMesh * PartMesh; // For Weapon
+	UStaticMesh* PartMesh; // For Weapon
 
 protected:
 	// Called when the game starts

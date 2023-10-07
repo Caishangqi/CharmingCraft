@@ -6,6 +6,7 @@
 #include "../Interface/DAbstractInterObjectPrototype.h"
 #include "DropItem.generated.h"
 
+class UBoxComponent;
 class UItemStack;
 /**
  * 
@@ -16,13 +17,8 @@ class CHARMINGCRAFT_API ADropItem : public ADAbstractInterObjectPrototype
 	GENERATED_BODY()
 
 public:
-	
 	ADropItem();
 	void SetupCollision();
-
-	// 添加一个USceneComponent作为根组件
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	USceneComponent* Root;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category= "Drop Item Properties")
 	UItemStack* ItemStack;
@@ -32,6 +28,9 @@ public:
 	//
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* DropModelMesh;
+	// Collision for External Actor, because interact highlight and interact not handle by external actor
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
+	UBoxComponent* InvisibleCollision;
 
 	virtual void PostInitializeComponents() override;
 

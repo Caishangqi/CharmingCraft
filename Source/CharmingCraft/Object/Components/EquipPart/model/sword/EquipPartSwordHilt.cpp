@@ -21,7 +21,6 @@ void UEquipPartSwordHilt::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
@@ -33,4 +32,3 @@ void UEquipPartSwordHilt::TickComponent(float DeltaTime, ELevelTick TickType,
 
 	// ...
 }
-

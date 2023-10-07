@@ -21,7 +21,7 @@ class CHARMINGCRAFT_API UWorkBenchComponent : public UDInventoryComponent
 public:
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
-	UUserWidget * SavedLayout;
+	UUserWidget* SavedLayout;
 
 	/* 属性 */
 

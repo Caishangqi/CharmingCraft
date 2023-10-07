@@ -43,5 +43,5 @@ public:
 
 public:
 	void SetDefaultAssemble();
-	virtual bool AssembleComponent(AActor * Actor) override;
+	virtual bool AssembleComponent(AActor* Actor) override;
 };
