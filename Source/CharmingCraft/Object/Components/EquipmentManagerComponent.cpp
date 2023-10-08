@@ -3,7 +3,6 @@
 #include "EquipmentManagerComponent.h"
 #include "EquipmentRenderComponent.h"
 #include "ItemStack.h"
-#include "CharmingCraft/Interface/Meta/HelmetMeta.h"
 
 // Sets default values for this component's properties
 UEquipmentManagerComponent::UEquipmentManagerComponent()
@@ -49,6 +48,14 @@ void UEquipmentManagerComponent::BeginPlay()
 void UEquipmentManagerComponent::OnRegister()
 {
 	Super::OnRegister();
+	OnEquipUpdate.AddDynamic(EquipmentRenderComponent, &UEquipmentRenderComponent::UpdateRender);
+}
+
+void UEquipmentManagerComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
+                                               int32 DestinationIndex)
+{
+	Super::TransferSlots(SourceIndex, SourceInventory, DestinationIndex);
+	OnEquipUpdate.Broadcast(DestinationIndex);
 }
 
 

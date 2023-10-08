@@ -16,6 +16,7 @@ class UEquipmentSlotComponent;
  * UML Diagram link https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/
  */
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEquipUpdate, int32, Index);
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipmentManagerComponent : public UDInventoryComponent
 {
@@ -28,6 +29,11 @@ public:
 	virtual void BeginPlay() override;
 	virtual void OnRegister() override;
 
+	virtual void TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex) override;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnEquipUpdate OnEquipUpdate;
+	
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
 	UEquipmentRenderComponent* EquipmentRenderComponent;

@@ -2,12 +2,7 @@
 
 
 #include "EquipmentRenderComponent.h"
-
-#include "DCharacter.h"
 #include "EquipmentManagerComponent.h"
-#include "ItemStack.h"
-#include "CharmingCraft/Interface/Meta/HelmetMeta.h"
-#include "EquipPart/EquipPartHelmetCore.h"
 
 // Sets default values for this component's properties
 UEquipmentRenderComponent::UEquipmentRenderComponent()
@@ -20,6 +15,8 @@ UEquipmentRenderComponent::UEquipmentRenderComponent()
 
 	UE_LOG(LogTemp, Warning, TEXT("UEquipmentRenderComponent Initialize"));
 	UEquipmentManagerComponent* EquipmentManagerComponent = Cast<UEquipmentManagerComponent>(GetOuter());
+
+
 	//EquipmentManagerComponent->HelmetSlot
 }
 
@@ -28,9 +25,37 @@ UEquipmentRenderComponent::UEquipmentRenderComponent()
 void UEquipmentRenderComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	// ...
 }
 
+// UEquipmentManagerComponent* EquipmentManagerComponent = Cast<UEquipmentManagerComponent>(GetOuter());
+// if (EquipmentManagerComponent->IsOccupied(EquipmentManagerComponent->HelmetSlot))
+// {
+// 	const UHelmetMeta* HelmetMeta = Cast<UHelmetMeta>(EquipmentManagerComponent->HelmetSlot->ItemMeta);
+//
+// 	const FDArmorMaterial* ArmorMaterial = HelmetMeta->HelmetCore->ComponentMaterial.GetRow<FDArmorMaterial>(
+// 		FString("Cactus"));
+// 	HelmetMeta->HelmetCore->PartMaterial = ArmorMaterial->CoreTexture;
+// 	//设置HelmetSlot 网格体材质
+// 	ADCharacter* PlayerCharacter = Cast<ADCharacter>(EquipmentManagerComponent->GetOwner());
+// 	UStaticMeshComponent* HelmetSlot = nullptr;
+// 	USkeletalMeshComponent* PlayerMesh = PlayerCharacter->FindComponentByClass<USkeletalMeshComponent>();
+// 	TArray<USceneComponent*> ChildComponents;
+// 	PlayerMesh->GetChildrenComponents(true, ChildComponents);
+// 	for (USceneComponent* Child : ChildComponents)
+// 	{
+// 		if (Child->GetName() == TEXT("Helmet Slot"))
+// 		{
+// 			HelmetSlot = Cast<UStaticMeshComponent>(Child);
+// 			break;
+// 		}
+// 	}
+//
+// 	if (HelmetSlot)
+// 	{
+// 		// 现在您有了Helmet Slot组件的引用，可以进行进一步的操作
+// 		HelmetSlot->SetMaterial(0, ArmorMaterial->CoreTexture);
+// 	}
+// }
 
 // Called every frame
 void UEquipmentRenderComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -41,35 +66,7 @@ void UEquipmentRenderComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 	// ...
 }
 
-void UEquipmentRenderComponent::UpdateRender()
+void UEquipmentRenderComponent::UpdateRender(int32 Index)
 {
-	// UEquipmentManagerComponent* EquipmentManagerComponent = Cast<UEquipmentManagerComponent>(GetOuter());
-	// if (EquipmentManagerComponent->IsOccupied(EquipmentManagerComponent->HelmetSlot))
-	// {
-	// 	const UHelmetMeta* HelmetMeta = Cast<UHelmetMeta>(EquipmentManagerComponent->HelmetSlot->ItemMeta);
-	//
-	// 	const FDArmorMaterial* ArmorMaterial = HelmetMeta->HelmetCore->ComponentMaterial.GetRow<FDArmorMaterial>(
-	// 		FString("Cactus"));
-	// 	HelmetMeta->HelmetCore->PartMaterial = ArmorMaterial->CoreTexture;
-	// 	//设置HelmetSlot 网格体材质
-	// 	ADCharacter* PlayerCharacter = Cast<ADCharacter>(EquipmentManagerComponent->GetOwner());
-	// 	UStaticMeshComponent* HelmetSlot = nullptr;
-	// 	USkeletalMeshComponent* PlayerMesh = PlayerCharacter->FindComponentByClass<USkeletalMeshComponent>();
-	// 	TArray<USceneComponent*> ChildComponents;
-	// 	PlayerMesh->GetChildrenComponents(true, ChildComponents);
-	// 	for (USceneComponent* Child : ChildComponents)
-	// 	{
-	// 		if (Child->GetName() == TEXT("Helmet Slot"))
-	// 		{
-	// 			HelmetSlot = Cast<UStaticMeshComponent>(Child);
-	// 			break;
-	// 		}
-	// 	}
-	//
-	// 	if (HelmetSlot)
-	// 	{
-	// 		// 现在您有了Helmet Slot组件的引用，可以进行进一步的操作
-	// 		HelmetSlot->SetMaterial(0, ArmorMaterial->CoreTexture);
-	// 	}
-	// }
+	UE_LOG(LogTemp, Warning, TEXT("UEquipmentRenderComponent::UpdateRender(int32 %d)"), Index);
 }

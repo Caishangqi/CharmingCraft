@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "EquipmentRenderComponent.generated.h"
 
-
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
 class CHARMINGCRAFT_API UEquipmentRenderComponent : public UActorComponent
 {
@@ -64,5 +63,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
-	virtual void UpdateRender();
+	UFUNCTION(BlueprintCallable) // 必须是BlueprintCallable才能绑定委托
+	virtual void UpdateRender(int32 Index);
 };
