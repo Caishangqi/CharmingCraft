@@ -21,4 +21,6 @@ public:
 	UMainHandSocket();
 
 	virtual void UpdateRender() override;
+	
+	virtual void BindSocket() override;
 };

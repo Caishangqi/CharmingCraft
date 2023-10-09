@@ -21,9 +21,13 @@ public:
 	int32 SocketIndex;
 
 	UPROPERTY()
-	ADCharacter * Owner;
-	
-	UCharacterSocket* Initialize(ADCharacter * Player);
+	ADCharacter* Owner;
+	UPROPERTY()
+	USkeletalMeshComponent* SkeletalMeshComponent;
+
+	virtual UCharacterSocket* Initialize(ADCharacter* Player);
 
 	virtual void UpdateRender();
+
+	virtual void BindSocket();
 };

@@ -13,9 +13,8 @@ UEquipmentManagerComponent::UEquipmentManagerComponent()
 	// off to improve performance if you don't need them.
 	InventorySize = 12;
 	PrimaryComponentTick.bCanEverTick = true;
-	Owner = Cast<ADCharacter>(GetOwner());
 	EquipmentRenderComponent = CreateDefaultSubobject<UEquipmentRenderComponent>(
-		"EquipmentRenderComponent")->Initialize(InventorySize, Owner);
+		"EquipmentRenderComponent");
 
 
 	/*
@@ -48,10 +47,14 @@ void UEquipmentManagerComponent::BeginPlay()
 	// ...
 }
 
+// Be careful with life time
 void UEquipmentManagerComponent::OnRegister()
 {
 	Super::OnRegister();
 	OnEquipUpdate.AddDynamic(EquipmentRenderComponent, &UEquipmentRenderComponent::UpdateRender);
+	// Only in register phase the component will attach to player
+	Owner = Cast<ADCharacter>(GetOwner());
+	EquipmentRenderComponent->Initialize(InventorySize, Owner);
 }
 
 void UEquipmentManagerComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,

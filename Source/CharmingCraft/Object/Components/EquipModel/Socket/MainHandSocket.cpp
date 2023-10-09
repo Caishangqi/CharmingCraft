@@ -2,7 +2,6 @@
 
 
 #include "MainHandSocket.h"
-
 #include "DCharacter.h"
 
 UMainHandSocket::UMainHandSocket()
@@ -15,5 +14,20 @@ void UMainHandSocket::UpdateRender()
 {
 	Super::UpdateRender();
 	UE_LOG(LogTemp, Warning, TEXT("UMainHandSocket::UpdateRender()"));
-	UE_LOG(LogTemp, Warning, TEXT("UMainHandSocket Owner Is %p"), *Owner->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("UMainHandSocket Is %p"), *MainHandSocket->GetFullName());
+}
+
+void UMainHandSocket::BindSocket()
+{
+	Super::BindSocket();
+	TArray<USceneComponent*> ChildComponents;
+	SkeletalMeshComponent->GetChildrenComponents(true, ChildComponents);
+	for (USceneComponent* Child : ChildComponents)
+	{
+		if (Child && Child->GetName() == "MainHand")
+		{
+			MainHandSocket = Cast<UStaticMeshComponent>(Child);
+			break;
+		}
+	}
 }
