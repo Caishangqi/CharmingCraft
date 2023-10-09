@@ -3,6 +3,7 @@
 
 #include "EquipmentRenderComponent.h"
 #include "EquipmentManagerComponent.h"
+#include "Socket/MainHandSocket.h"
 
 // Sets default values for this component's properties
 UEquipmentRenderComponent::UEquipmentRenderComponent()
@@ -69,4 +70,14 @@ void UEquipmentRenderComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 void UEquipmentRenderComponent::UpdateRender(int32 Index)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UEquipmentRenderComponent::UpdateRender(int32 %d)"), Index);
+	PlayerSkeletonSocket[Index]->UpdateRender();
+}
+
+UEquipmentRenderComponent* UEquipmentRenderComponent::Initialize(int32 Size, ADCharacter* Player)
+{
+	this->Owner = Player;
+	PlayerSkeletonSocket.SetNumZeroed(Size);
+	PlayerSkeletonSocket[0] = NewObject<UMainHandSocket>(this)->Initialize(this
+		->Owner);
+	return this;
 }

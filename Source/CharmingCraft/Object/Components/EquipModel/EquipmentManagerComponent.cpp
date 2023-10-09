@@ -1,17 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EquipmentManagerComponent.h"
+
+#include "DCharacter.h"
 #include "EquipmentRenderComponent.h"
-#include "ItemStack.h"
+#include "../ItemStack.h"
 
 // Sets default values for this component's properties
 UEquipmentManagerComponent::UEquipmentManagerComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
+	InventorySize = 12;
 	PrimaryComponentTick.bCanEverTick = true;
+	Owner = Cast<ADCharacter>(GetOwner());
 	EquipmentRenderComponent = CreateDefaultSubobject<UEquipmentRenderComponent>(
-		"EquipmentRenderComponent");
+		"EquipmentRenderComponent")->Initialize(InventorySize, Owner);
+
 
 	/*
 	 * 主手 0
@@ -26,8 +31,6 @@ UEquipmentManagerComponent::UEquipmentManagerComponent()
 	 * 盔甲 护腿 9
 	 * 盔甲 靴子 10
 	 */
-
-	InventorySize = 12;
 }
 
 void UEquipmentManagerComponent::PostInitProperties()

@@ -12,7 +12,7 @@
 #include "CharmingCraft/Object/Components/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
-#include "CharmingCraft/Object/Components/EquipmentManagerComponent.h"
+#include "CharmingCraft/Object/Components/EquipModel/EquipmentManagerComponent.h"
 #include "Components/PostProcessComponent.h"
 // Sets default values
 ADCharacter::ADCharacter()
