@@ -104,8 +104,8 @@ public:
 	UDInventoryComponent* InventoryComponent;
 
 	/* 装备管理器 */
-	// UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
-	// UEquipmentManagerComponent* EquipmentManagerComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
+	UEquipmentManagerComponent* EquipmentManagerComponent;
 
 	/* 槽位管理器 (可以考虑)*/
 	// TODO 添加槽位管理组件，这些组件包括格雷StaticMeshComponent 对应的骨骼Socket

@@ -263,6 +263,8 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 			SourceInventory->OnInventoryUpdate.Broadcast();
 		}
 	}
+	/* Event BroadCast for Equipment Inventory*/
+	OnInventoryUpdateIndex.Broadcast(SourceIndex);
 }
 
 
@@ -392,7 +394,7 @@ void UDInventoryComponent::BeginPlay()
 void UDInventoryComponent::OnRegister()
 {
 	Super::OnRegister();
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister() ?"));
+	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister()"));
 }
 
 void UDInventoryComponent::PostInitProperties()

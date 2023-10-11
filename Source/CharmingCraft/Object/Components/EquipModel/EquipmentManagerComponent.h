@@ -31,18 +31,24 @@ public:
 	virtual void PostInitProperties() override;
 	virtual void BeginPlay() override;
 	virtual void OnRegister() override;
-
 	virtual void
 	TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex) override;
 
+	UEquipmentManagerComponent* Initialize(UDInventoryComponent* LinkInventory);
+
 	UPROPERTY(BlueprintAssignable)
 	FOnEquipUpdate OnEquipUpdate;
+
 	UPROPERTY()
 	ADCharacter* Owner;
 
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
 	UEquipmentRenderComponent* EquipmentRenderComponent;
+
+	/* Event Link Dispatcher*/
+	UPROPERTY()
+	UDInventoryComponent* HandleInventory;
 
 protected:
 

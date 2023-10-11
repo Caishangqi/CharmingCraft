@@ -11,14 +11,7 @@ UEquipmentRenderComponent::UEquipmentRenderComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
-
-	UE_LOG(LogTemp, Warning, TEXT("UEquipmentRenderComponent Initialize"));
-	UEquipmentManagerComponent* EquipmentManagerComponent = Cast<UEquipmentManagerComponent>(GetOuter());
-
-
-	//EquipmentManagerComponent->HelmetSlot
+	
 }
 
 
@@ -78,6 +71,6 @@ UEquipmentRenderComponent* UEquipmentRenderComponent::Initialize(int32 Size, ADC
 	this->Owner = Player;
 	PlayerSkeletonSocket.SetNumZeroed(Size);
 	PlayerSkeletonSocket[0] = NewObject<UMainHandSocket>(this)->Initialize(this
-		->Owner);
+	                                                                       ->Owner, 0);
 	return this;
 }

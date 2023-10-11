@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "EquipmentRenderComponent.generated.h"
 
+class UEquipmentManagerComponent;
 class ADCharacter;
 class UCharacterSocket;
 

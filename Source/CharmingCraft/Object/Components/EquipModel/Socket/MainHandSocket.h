@@ -18,9 +18,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* MainHandSocket;
 	
+	UPROPERTY()
+	AActor* AttachedActor;
+
 	UMainHandSocket();
 
 	virtual void UpdateRender() override;
-	
+
 	virtual void BindSocket() override;
 };

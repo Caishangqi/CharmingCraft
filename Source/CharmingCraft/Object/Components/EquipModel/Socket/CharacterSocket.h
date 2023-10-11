@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "CharacterSocket.generated.h"
-
+class UItemStack;
+class UEquipmentRenderComponent;
 class ADCharacter;
 /**
  * 
@@ -19,13 +20,16 @@ public:
 	UClass* SocketBindClass;
 	FName SocketName;
 	int32 SocketIndex;
-
+	
+	UPROPERTY()
+	const UItemStack * SocketItem;
+	
 	UPROPERTY()
 	ADCharacter* Owner;
 	UPROPERTY()
 	USkeletalMeshComponent* SkeletalMeshComponent;
 
-	virtual UCharacterSocket* Initialize(ADCharacter* Player);
+	virtual UCharacterSocket* Initialize(ADCharacter* Player, int32 RegisterIndex);
 
 	virtual void UpdateRender();
 

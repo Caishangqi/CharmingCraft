@@ -67,7 +67,8 @@ ADCharacter::ADCharacter()
 	/* 物品栏 */
 	InventoryComponent = CreateDefaultSubobject<UDInventoryComponent>("InventoryComponent");
 	/* 装备管理器 */
-	//EquipmentManagerComponent = CreateDefaultSubobject<UEquipmentManagerComponent>("EquipmentManagerComponent");
+	EquipmentManagerComponent = CreateDefaultSubobject<UEquipmentManagerComponent>("EquipmentManagerComponent")->
+	Initialize(InventoryComponent);
 }
 
 // Called when the game starts or when spawned

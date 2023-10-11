@@ -43,7 +43,7 @@ void UEquipmentManagerComponent::PostInitProperties()
 void UEquipmentManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Inventory.SetNum(InventorySize);
 	// ...
 }
 
@@ -51,17 +51,29 @@ void UEquipmentManagerComponent::BeginPlay()
 void UEquipmentManagerComponent::OnRegister()
 {
 	Super::OnRegister();
+	// This Event Bind is for transfer item in Equip inventory update
 	OnEquipUpdate.AddDynamic(EquipmentRenderComponent, &UEquipmentRenderComponent::UpdateRender);
+	// This Event Bind is for transfer item in Main inventory let equip inventory update
+	HandleInventory->OnInventoryUpdateIndex.AddDynamic(EquipmentRenderComponent,
+	                                                   &UEquipmentRenderComponent::UpdateRender);
 	// Only in register phase the component will attach to player
 	Owner = Cast<ADCharacter>(GetOwner());
 	EquipmentRenderComponent->Initialize(InventorySize, Owner);
 }
+
 
 void UEquipmentManagerComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
                                                int32 DestinationIndex)
 {
 	Super::TransferSlots(SourceIndex, SourceInventory, DestinationIndex);
 	OnEquipUpdate.Broadcast(DestinationIndex);
+	UE_LOG(LogTemp, Warning, TEXT("UEquipmentManagerComponent::TransferSlots"));
+}
+
+UEquipmentManagerComponent* UEquipmentManagerComponent::Initialize(UDInventoryComponent* LinkInventory)
+{
+	this->HandleInventory = LinkInventory;
+	return this;
 }
 
 
