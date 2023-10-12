@@ -68,7 +68,7 @@ ADCharacter::ADCharacter()
 	InventoryComponent = CreateDefaultSubobject<UDInventoryComponent>("InventoryComponent");
 	/* 装备管理器 */
 	EquipmentManagerComponent = CreateDefaultSubobject<UEquipmentManagerComponent>("EquipmentManagerComponent")->
-	Initialize(InventoryComponent);
+		Initialize(InventoryComponent);
 }
 
 // Called when the game starts or when spawned
@@ -276,3 +276,4 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ADCharacter::PrintDebugMessage);
 }
+

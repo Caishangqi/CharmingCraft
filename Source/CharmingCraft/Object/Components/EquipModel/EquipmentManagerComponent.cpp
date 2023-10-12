@@ -30,6 +30,8 @@ UEquipmentManagerComponent::UEquipmentManagerComponent()
 	 * 盔甲 护腿 9
 	 * 盔甲 靴子 10
 	 */
+	
+	
 }
 
 void UEquipmentManagerComponent::PostInitProperties()

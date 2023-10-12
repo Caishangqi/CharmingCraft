@@ -50,6 +50,7 @@ public:
 	UPROPERTY()
 	UDInventoryComponent* HandleInventory;
 
+
 protected:
 
 

@@ -264,7 +264,10 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 		}
 	}
 	/* Event BroadCast for Equipment Inventory*/
-	OnInventoryUpdateIndex.Broadcast(SourceIndex);
+	if (SourceInventory != this) // Inside this Inventory Use OnInventoryUpdate
+	{
+		OnInventoryUpdateIndex.Broadcast(SourceIndex);
+	}
 }
 
 

@@ -25,6 +25,12 @@ public:
 	UPROPERTY()
 	ADCharacter* Owner;
 
+public:
+	/* Socket Mesh Components*/
+
+	UPROPERTY()
+	UStaticMeshComponent* MainHand;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

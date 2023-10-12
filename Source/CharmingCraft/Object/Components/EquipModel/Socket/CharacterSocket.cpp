@@ -17,6 +17,7 @@ UCharacterSocket* UCharacterSocket::Initialize(ADCharacter* Player, int32 Index)
 		UE_LOG(LogTemp, Warning, TEXT("Owner is not NULL"));
 		SkeletalMeshComponent = Owner->GetMesh();
 	}
+
 	return this;
 }
 
