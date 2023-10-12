@@ -14,6 +14,7 @@
 
 
 class UDAction;
+DECLARE_LOG_CATEGORY_EXTERN(CharmingCraft, Display, Display);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UDActionComponent : public UActorComponent
