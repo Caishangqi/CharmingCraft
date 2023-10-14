@@ -3,6 +3,7 @@
 
 #include "DActionComponent.h"
 #include "DAction.h"
+#include "DCharacter.h"
 
 DEFINE_LOG_CATEGORY(CharmingCraft);
 // Sets default values for this component's properties
@@ -14,6 +15,12 @@ UDActionComponent::UDActionComponent()
 	// ...
 }
 
+
+void UDActionComponent::BindSkillToAction(FName Skill, FName ActionName)
+{
+	// 添加或更新绑定
+	KeyBindings.Add(Skill, ActionName);
+}
 
 // Called when the game starts
 void UDActionComponent::BeginPlay()
@@ -29,6 +36,11 @@ void UDActionComponent::BeginPlay()
 	// ...
 }
 
+void UDActionComponent::OnRegister()
+{
+	Super::OnRegister();
+}
+
 
 // Called every frame
 void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -39,6 +51,38 @@ void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	const FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGamePlayTags.ToStringSimple();
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 	// ...
+}
+
+void UDActionComponent::SkillOne()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillOne()");
+}
+
+void UDActionComponent::SkillTwo()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillTwo()");
+}
+
+void UDActionComponent::SkillThree()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillThree()");
+}
+
+void UDActionComponent::SkillFour()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillFour()");
+}
+
+void UDActionComponent::SkillStandbyPressed()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::StandbyPressed()");
+	this->StartActionByName(Cast<ADCharacter>(GetOwner()), "Standby");
+}
+
+void UDActionComponent::SkillStandbyReleased()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::StandbyReleased()");
+	this->StopActionByName(Cast<ADCharacter>(GetOwner()), "Standby");
 }
 
 void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)

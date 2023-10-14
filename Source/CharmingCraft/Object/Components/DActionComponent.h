@@ -52,11 +52,27 @@ protected:
 	UPROPERTY() // When we deal with pointers to actions, we want to let UE handle
 	TArray<UDAction*> Actions;
 
+	// 1 技能释放 函数 - 技能名称 Action
+	// 2 技能释放 函数 - 技能名称 Action (SkillOne(), ActionName())
+	TMap<FName, FName> KeyBindings;
+	// 动态绑定按键到特定功能
+	auto BindSkillToAction(FName Skill, FName ActionName) -> void;
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	virtual void OnRegister() override;
 
 public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+	/* In build Character Default Skill */
+	void SkillOne();
+	void SkillTwo();
+	void SkillThree();
+	void SkillFour();
+
+	void SkillStandbyPressed(); /* Shift */
+	void SkillStandbyReleased(); /* Shift */
 };
