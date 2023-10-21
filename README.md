@@ -110,6 +110,14 @@ Waiting for the release of the first playable demo.
 - [装备组装 - 盔甲](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [装备组装 - 武器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
+## WorkFlow
+
+### Animation Assets
+
+- [Fast Create Animation Asset](https://www.mixamo.com/)
+
+### Components and Native
+
 ## 资源 Resource
 
 - 链接在 [这里](https://www.modongwang.com/)
