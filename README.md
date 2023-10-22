@@ -109,6 +109,7 @@ Waiting for the release of the first playable demo.
 - [Minecraft 物品结构](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [装备组装 - 盔甲](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [装备组装 - 武器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [技能系统](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
 ## WorkFlow
 
