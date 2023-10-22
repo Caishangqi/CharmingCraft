@@ -68,6 +68,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 	/* In build Character Default Skill */
+	void MainHandAction();
+	void OffHandAction();
+
 	void SkillOne();
 	void SkillTwo();
 	void SkillThree();

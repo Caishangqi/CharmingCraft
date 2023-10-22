@@ -53,6 +53,18 @@ void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
+void UDActionComponent::MainHandAction()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::MainHandAction()");
+	// TODO 把每个武器对应的 Action 单独创建一个蓝图类，这个Action蓝图要与武器挂钩
+}
+
+void UDActionComponent::OffHandAction()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::OffHandAction()");
+}
+
+
 void UDActionComponent::SkillOne()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillOne()");

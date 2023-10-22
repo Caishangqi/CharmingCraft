@@ -17,7 +17,7 @@ class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
-	void PrimaryInteract();
+	bool PrimaryInteract();
 	void LineTracingInteract() const;
 	void OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator);
 

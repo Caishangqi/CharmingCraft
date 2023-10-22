@@ -2,7 +2,6 @@
 
 
 #include "EquipmentRenderComponent.h"
-#include "EquipmentManagerComponent.h"
 #include "Socket/MainHandSocket.h"
 #include "../Public/DCharacter.h"
 // Sets default values for this component's properties

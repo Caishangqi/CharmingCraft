@@ -187,8 +187,8 @@ void ADCharacter::PrintDebugMessage()
 }
 
 
-void ADCharacter::PrimaryAttack()
-{
+// void ADCharacter::PrimaryAttack()
+// {
 	/* 依照手中的武器来展开武器的使用 */
 	//ActionComponent->StartActionByName(this, "PrimaryAttack");
 
@@ -204,7 +204,7 @@ void ADCharacter::PrimaryAttack()
 	//GetWorldTimerManager().SetTimer(TimeHandle_PrimaryAttack, this, &ADCharacter::PrimaryAttack_TimeElapsed, 0.2f);
 	//GetWorldTimerManager().ClearTimer(TimeHandle_PrimaryAttack);
 	//UE_LOG(LogTemp, Warning, TEXT("Start Animation AActor"));
-}
+// }
 
 void ADCharacter::PrimaryAttack_TimeElapsed()
 {
@@ -268,14 +268,15 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ADCharacter::Jump);
 
-	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADCharacter::PrimaryAttack);
-	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ADCharacter::PrimaryInteract);
+	// PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ADCharacter::PrimaryInteract);
 
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ADCharacter::SprintStart);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ADCharacter::SprintStop);
 
 	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ADCharacter::PrintDebugMessage);
 
+	PlayerInputComponent->BindAction("OffHandAction", IE_Pressed, ActionComponent, &UDActionComponent::OffHandAction);
 	PlayerInputComponent->BindAction("SkillOne", IE_Pressed, ActionComponent, &UDActionComponent::SkillOne);
 	PlayerInputComponent->BindAction("SkillTwo", IE_Pressed, ActionComponent, &UDActionComponent::SkillTwo);
 	PlayerInputComponent->BindAction("SkillThree", IE_Pressed, ActionComponent, &UDActionComponent::SkillThree);

@@ -9,6 +9,7 @@
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
+#include "CharmingCraft/Object/Components/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "GameFramework/Character.h"
 
@@ -43,8 +44,16 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UDInteractionComponent::PrimaryInteract()
+bool UDInteractionComponent::PrimaryInteract()
 {
+	FGameplayTag StandbyTag = FGameplayTag::RequestGameplayTag(FName("Status.Standby"));
+
+	if (Cast<ADCharacter>(GetOwner())->ActionComponent->ActiveGamePlayTags.HasTag(StandbyTag))
+	{
+		Cast<ADCharacter>(GetOwner())->ActionComponent->MainHandAction();
+		return false;
+	}
+
 	AActor* MyOwner = GetOwner();
 	APlayerController* Controller = Cast<APlayerController>(MyOwner->GetInstigatorController());
 	float MouseX, MouseY;
@@ -101,6 +110,7 @@ void UDInteractionComponent::PrimaryInteract()
 			}
 		}
 	}
+	return true;
 }
 
 
