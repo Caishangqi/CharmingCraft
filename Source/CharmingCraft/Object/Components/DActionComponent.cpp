@@ -57,6 +57,8 @@ void UDActionComponent::MainHandAction()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::MainHandAction()");
 	// TODO 把每个武器对应的 Action 单独创建一个蓝图类，这个Action蓝图要与武器挂钩
+	this->StartActionByName(Cast<ADCharacter>(GetOwner()), "MainHand");
+
 }
 
 void UDActionComponent::OffHandAction()
