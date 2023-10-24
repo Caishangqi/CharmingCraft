@@ -26,7 +26,7 @@ public:
 public:
 	/* Socket Mesh Components*/
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	UStaticMeshComponent* MainHand;
 
 protected:

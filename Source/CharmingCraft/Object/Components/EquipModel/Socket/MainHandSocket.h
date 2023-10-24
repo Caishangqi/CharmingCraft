@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UMainHandSocket : public UCharacterSocket
 {
 	GENERATED_BODY()
@@ -17,8 +17,8 @@ class CHARMINGCRAFT_API UMainHandSocket : public UCharacterSocket
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* MainHandSocket;
-	
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	AActor* AttachedActor;
 
 	UMainHandSocket();

@@ -11,7 +11,7 @@ class ADCharacter;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UCharacterSocket : public UObject
 {
 	GENERATED_BODY()

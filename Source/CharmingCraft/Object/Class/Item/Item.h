@@ -7,6 +7,8 @@
 /**
  * 
  */
+class UItemStack;
+
 UCLASS()
 class CHARMINGCRAFT_API UItem : public UObject
 {
@@ -24,4 +26,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UStaticMesh* StaticMesh;
+
+public: // Methods
+	UFUNCTION(BlueprintCallable)
+	virtual void OnItemInteract(UItemStack* InteractItemStack, AActor* Instigator, AActor* ItemActorEntity);
+	UFUNCTION(BlueprintCallable)
+	virtual void EndItemInteract();
 };

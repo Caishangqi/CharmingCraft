@@ -2,3 +2,11 @@
 
 
 #include "Item.h"
+
+void UItem::OnItemInteract(UItemStack* InteractItemStack, AActor* Instigator, AActor* ItemActorEntity)
+{
+}
+
+void UItem::EndItemInteract()
+{
+}

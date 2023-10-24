@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SwordActor.generated.h"
+class UArrowComponent;
 /*!
  * This Class is for Integrate Sword, the sword have 5 parts, each parts is
  * StaticMeshComponent, player could modify each parts into different subpart
@@ -48,6 +49,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Pommel;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UArrowComponent* SwordTopArrow;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UArrowComponent* SwordBottomArrow;
 
 protected:
 	// Called when the game starts or when spawned

@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "SwordActor.h"
 
+#include "Components/ArrowComponent.h"
+
 // Sets default values
 ASwordActor::ASwordActor()
 {
@@ -16,12 +18,27 @@ ASwordActor::ASwordActor()
 	Guard = CreateDefaultSubobject<UStaticMeshComponent>("Guard");
 	Hilt = CreateDefaultSubobject<UStaticMeshComponent>("Hilt");
 	Pommel = CreateDefaultSubobject<UStaticMeshComponent>("Pommel");
+	/* For Attack Line Tracing*/
+	SwordTopArrow = CreateDefaultSubobject<UArrowComponent>("SwordTopArrow");
+	SwordTopArrow->SetHiddenInGame(false);
+	SwordBottomArrow = CreateDefaultSubobject<UArrowComponent>("SwordBottomArrow");
+	SwordBottomArrow->SetHiddenInGame(false);
 
 	Blade->SetupAttachment(Sword);
 	Fuller->SetupAttachment(Sword);
 	Guard->SetupAttachment(Sword);
 	Hilt->SetupAttachment(Sword);
 	Pommel->SetupAttachment(Sword);
+
+
+	SwordBottomArrow->SetupAttachment(Sword);
+	SwordTopArrow->SetupAttachment(Sword);
+	// Pitch(Green) Yaw(Blue) Roll(Red)
+	SwordTopArrow->SetRelativeLocation(FVector(150.0f, 50.0f, 160.0f));
+	SwordTopArrow->SetRelativeRotation(FRotator3d(-50.0f, 180.0f, 0.0f));
+	SwordBottomArrow->SetRelativeLocation(FVector(45.0f, 50.0f, 40.0f));
+	SwordBottomArrow->SetRelativeRotation(FRotator3d(50.0f, 0.0f, 0.0f));
+
 	Sword->SetupAttachment(RootComponent);
 
 	for (auto Component : GetComponents())
