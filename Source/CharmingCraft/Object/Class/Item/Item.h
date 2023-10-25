@@ -9,7 +9,7 @@
  */
 class UItemStack;
 
-UCLASS()
+UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UItem : public UObject
 {
 	GENERATED_BODY()

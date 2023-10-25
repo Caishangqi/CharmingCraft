@@ -27,7 +27,7 @@ void USword::OnItemInteract(UItemStack* InteractItemStack, AActor* Instigator, A
 	UE_LOG(LogTemp, Display, TEXT("ItemMeta: %s"), *InteractItemStack->ItemMeta->GetClass()->GetName());
 
 
-	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.1f, true);
+	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.05f, true);
 }
 
 void USword::OnWeaponUse()
@@ -48,10 +48,13 @@ void USword::OnWeaponUse()
 	bool bHit = Player->GetWorld()->SweepMultiByChannel(HitResults, Start, End, FQuat::Identity, ECC_Visibility,
 	                                                    FCollisionShape::MakeSphere(SphereRadius), CollisionParams);
 
-	// Draw debug sphere
-	// float LineDuration = 2.0f; // for example, make the sphere visible for 2 seconds
-	// FColor LineColor = FColor::Green;
-	//
+	//Draw debug sphere
+	float LineDuration = 2.0f; // for example, make the sphere visible for 2 seconds
+	FColor LineColor = FColor::Green;
+
+	// Draw debug line
+	DrawDebugLine(Player->GetWorld(), Start, End, LineColor, false, LineDuration, ECC_Visibility, 4.0f);
+
 	// for (const FHitResult& Hit : HitResults)
 	// {
 	// 	DrawDebugSphere(Player->GetWorld(), Hit.ImpactPoint, SphereRadius, 32, LineColor, false, LineDuration,

@@ -49,7 +49,7 @@ protected:
 	TArray<TSubclassOf<UDAction>> DefaultActions;
 
 	// List of actions
-	UPROPERTY() // When we deal with pointers to actions, we want to let UE handle
+	UPROPERTY(BlueprintReadWrite) // When we deal with pointers to actions, we want to let UE handle
 	TArray<UDAction*> Actions;
 
 	// 1 技能释放 函数 - 技能名称 Action

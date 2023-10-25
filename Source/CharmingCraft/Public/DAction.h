@@ -23,7 +23,7 @@ class CHARMINGCRAFT_API UDAction : public UObject
 
 public:
 	/* Action nickname to start/stop without a reference to the object */
-	UPROPERTY(EditDefaultsOnly, Category= "Action")
+	UPROPERTY(EditDefaultsOnly, Category= "Action", BlueprintReadWrite)
 	FName ActionName; // FName is hashed used in game, highly optimized
 
 	UFUNCTION(BlueprintCallable, Category= "Action")
