@@ -28,8 +28,10 @@ public:
 	// Sets default values for this component's properties
 	UDAttributeComponent();
 
-protected:
+public:
 	// -- Attributes -- //
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	float AttackRange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float Health;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")

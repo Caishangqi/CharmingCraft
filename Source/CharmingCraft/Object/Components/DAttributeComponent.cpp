@@ -13,6 +13,7 @@ UDAttributeComponent::UDAttributeComponent()
 	// ...
 
 	HealthMax = Health = 100;
+	AttackRange = 100;
 }
 
 

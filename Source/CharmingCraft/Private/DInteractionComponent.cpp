@@ -10,6 +10,7 @@
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "GameFramework/Character.h"
 
@@ -30,7 +31,7 @@ UDInteractionComponent::UDInteractionComponent()
 void UDInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Player = Cast<ADCharacter>(GetOuter());
 	// 初始化AI控制器 负责玩家交互过程中的移动
 }
 
@@ -48,14 +49,13 @@ bool UDInteractionComponent::PrimaryInteract()
 {
 	FGameplayTag StandbyTag = FGameplayTag::RequestGameplayTag(FName("Status.Standby"));
 
-	if (Cast<ADCharacter>(GetOwner())->ActionComponent->ActiveGamePlayTags.HasTag(StandbyTag))
+	if (Player->ActionComponent->ActiveGamePlayTags.HasTag(StandbyTag))
 	{
-		Cast<ADCharacter>(GetOwner())->ActionComponent->MainHandAction();
+		Player->ActionComponent->MainHandAction();
 		return false;
 	}
 
-	AActor* MyOwner = GetOwner();
-	APlayerController* Controller = Cast<APlayerController>(MyOwner->GetInstigatorController());
+	APlayerController* Controller = Cast<APlayerController>(Player->GetInstigatorController());
 	float MouseX, MouseY;
 	Controller->GetMousePosition(MouseX, MouseY);
 
@@ -81,16 +81,21 @@ bool UDInteractionComponent::PrimaryInteract()
 			ADAbstractInterObjectPrototype* CastedObject = Cast<ADAbstractInterObjectPrototype>(HitActor);
 			UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
 			//计算玩家角色和这个Actor之间的距离
-			float Distance = FVector::DistXY(MyOwner->GetActorLocation(), HitActor->GetActorLocation());
+			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
-			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
-			if (Distance < CastedObject->MinimumInteractRange)
+
+			/* 如果是执行攻击操作则开始判断人物身上的 AttackRange 属性 */
+			if (CastedObject->bIsAllowToDamage)
 			{
-				IDGameplayInterface::Execute_Interact(HitActor, Cast<APawn>(MyOwner));
-				Cast<ADCharacter>(GetOwner())->InventoryComponent->OnItemInteract(HitActor, Cast<APawn>(MyOwner));
-			}
-			else
-			{
+				//ADCharacter* Player = Cast<ADCharacter>(GetOwner());
+				if (Distance < Player->AttributeComp->AttackRange)
+				{
+					/* 转向 */
+
+					Player->ActionComponent->MainHandAction();
+					return false;
+				}
+
 				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
 				if (!AIController)
 				{
@@ -103,12 +108,55 @@ bool UDInteractionComponent::PrimaryInteract()
 					AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
 				}
 				// 使用AI控制器移动Pawn
+				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange, true, true, true,
+				                          nullptr, false);
+				// 执行动作
+				AIController->TargetActor = HitActor;
+				return false;
+			}
+
+			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
+			if (Distance < CastedObject->MinimumInteractRange)
+			{
+				IDGameplayInterface::Execute_Interact(HitActor, Player);
+				Cast<ADCharacter>(GetOwner())->InventoryComponent->OnItemInteract(HitActor, Player);
+			}
+			else
+			{
+				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
+				if (!AIController)
+				{
+					/*
+					 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
+					 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
+					 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
+					 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
+					 */
+					AIController = Player->PlayerAIController;
+				}
+				// 使用AI控制器移动Pawn
 				AIController->MoveToActor(HitActor, CastedObject->MinimumInteractRange, true, true, true,
 				                          nullptr, false);
 				// 给AI控制器类里面设置点击的目标, 传参到这个类
 				AIController->TargetActor = HitActor;
 			}
 		}
+	}
+	return true;
+}
+
+bool UDInteractionComponent::ExecuteInteractAction()
+{
+	if (AIController->TargetActor.IsValid() && AIController->TargetActor->Implements<UDGameplayInterface>() && Cast<
+		ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())) //弱指针解引
+	{
+		if (Cast<ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())->bIsAllowToDamage)
+		{
+			Player->ActionComponent->MainHandAction();
+			return false;
+		}
+		IDGameplayInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
+		Player->InteractionComp->OnItemInteract(AIController->TargetActor.Get(), Player);
 	}
 	return true;
 }
@@ -193,6 +241,6 @@ void UDInteractionComponent::LineTracingInteract() const
 
 void UDInteractionComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
 {
-	Cast<ADCharacter>(GetOwner())->InventoryComponent->OnItemInteract(TargetActor, Instigator);
+	Player->InventoryComponent->OnItemInteract(TargetActor, Instigator);
 	UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInteractionComponent::OnItemInteract"));
 }

@@ -76,7 +76,7 @@ public:
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UCameraComponent* CameraComp;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UDInteractionComponent* InteractionComp;
 
 
@@ -121,6 +121,4 @@ public:
 
 public:
 	/* Events */
-	
-
 };

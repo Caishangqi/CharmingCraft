@@ -54,14 +54,7 @@ void USword::OnWeaponUse()
 
 	// Draw debug line
 	DrawDebugLine(Player->GetWorld(), Start, End, LineColor, false, LineDuration, ECC_Visibility, 4.0f);
-
-	// for (const FHitResult& Hit : HitResults)
-	// {
-	// 	DrawDebugSphere(Player->GetWorld(), Hit.ImpactPoint, SphereRadius, 32, LineColor, false, LineDuration,
-	// 	                ECC_Visibility,
-	// 	                5.0f);
-	// }
-
+	
 	if (bHit)
 	{
 		for (const FHitResult& Hit : HitResults)

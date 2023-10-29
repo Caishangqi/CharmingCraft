@@ -7,9 +7,10 @@
 #include "DInteractionComponent.generated.h"
 
 
+class ADCharacter;
 class ADPlayerAIController;
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -17,13 +18,23 @@ class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
+	UFUNCTION(BlueprintCallable)
 	bool PrimaryInteract();
+
+	bool ExecuteInteractAction();
 	void LineTracingInteract() const;
 	void OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator);
+
+	/* Update Player Rotation */
+
 
 public:
 	UPROPERTY(BlueprintReadWrite)
 	ADPlayerAIController* AIController;
+
+private:
+	UPROPERTY()
+	ADCharacter* Player;
 
 protected:
 	// Called when the game starts
