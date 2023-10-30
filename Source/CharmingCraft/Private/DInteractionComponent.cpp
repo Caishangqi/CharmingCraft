@@ -87,7 +87,6 @@ bool UDInteractionComponent::PrimaryInteract()
 			/* 如果是执行攻击操作则开始判断人物身上的 AttackRange 属性 */
 			if (CastedObject->bIsAllowToDamage)
 			{
-				//ADCharacter* Player = Cast<ADCharacter>(GetOwner());
 				if (Distance < Player->AttributeComp->AttackRange)
 				{
 					/* 转向 */

@@ -269,7 +269,7 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ADCharacter::Jump);
 
 	// PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ADCharacter::PrimaryAttack);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ADCharacter::PrimaryInteract);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ADCharacter::PrimaryInteract);
 
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ADCharacter::SprintStart);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ADCharacter::SprintStop);
