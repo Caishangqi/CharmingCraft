@@ -119,7 +119,7 @@ void ADCharacter::MoveRight(float Value)
 
 void ADCharacter::PrimaryInteract()
 {
-	InteractionComp->PrimaryInteract();
+	//InteractionComp->PrimaryInteract();
 }
 
 void ADCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)

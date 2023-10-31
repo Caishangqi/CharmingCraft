@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "DInteractionComponent.generated.h"
 
@@ -19,7 +20,8 @@ public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
 	UFUNCTION(BlueprintCallable)
-	bool PrimaryInteract();
+	bool PrimaryInteract(AActor* HitActor);
+	//CancelInter
 
 	bool ExecuteInteractAction();
 	void LineTracingInteract() const;
@@ -27,9 +29,10 @@ public:
 
 	/* Update Player Rotation */
 
+	FGameplayTag InteractTag;
 
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ADPlayerAIController* AIController;
 
 private:

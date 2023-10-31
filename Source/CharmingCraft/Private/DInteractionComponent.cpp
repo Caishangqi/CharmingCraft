@@ -2,17 +2,13 @@
 
 
 #include "DInteractionComponent.h"
-
 #include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
-#include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "CharmingCraft/Object/Components/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
-#include "GameFramework/Character.h"
 
 
 // Sets default values for this component's properties
@@ -21,8 +17,7 @@ UDInteractionComponent::UDInteractionComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-
+	InteractTag = FGameplayTag::RequestGameplayTag(FName("Status.Interacting"));
 	// ...
 }
 
@@ -45,34 +40,36 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-bool UDInteractionComponent::PrimaryInteract()
+bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 {
 	FGameplayTag StandbyTag = FGameplayTag::RequestGameplayTag(FName("Status.Standby"));
+	Player->ActionComponent->ActiveGamePlayTags.AddTag(InteractTag);
 
 	if (Player->ActionComponent->ActiveGamePlayTags.HasTag(StandbyTag))
 	{
+		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 		Player->ActionComponent->MainHandAction();
 		return false;
 	}
 
-	APlayerController* Controller = Cast<APlayerController>(Player->GetInstigatorController());
-	float MouseX, MouseY;
-	Controller->GetMousePosition(MouseX, MouseY);
-
-	// 将鼠标位置转换为世界空间的射线
-	FHitResult HitResult;
-	// 将鼠标位置转换为世界空间的射线
-	FVector WorldLocation, WorldDirection;
-	Controller->DeprojectScreenPositionToWorld(MouseX, MouseY, WorldLocation, WorldDirection);
-
-
-	// 进行射线投射
-	FVector StartLocation = WorldLocation;
-	FVector EndLocation = StartLocation + WorldDirection * 10000.0f; // 你可以根据需要调整这个值
-	GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility);
-
-	// 如果射线击中了一个Actor，那么获取这个Actor
-	AActor* HitActor = HitResult.GetActor();
+	// APlayerController* Controller = Cast<APlayerController>(Player->GetInstigatorController());
+	// float MouseX, MouseY;
+	// Controller->GetMousePosition(MouseX, MouseY);
+	//
+	// // 将鼠标位置转换为世界空间的射线
+	// FHitResult HitResult;
+	// // 将鼠标位置转换为世界空间的射线
+	// FVector WorldLocation, WorldDirection;
+	// Controller->DeprojectScreenPositionToWorld(MouseX, MouseY, WorldLocation, WorldDirection);
+	//
+	//
+	// // 进行射线投射
+	// FVector StartLocation = WorldLocation;
+	// FVector EndLocation = StartLocation + WorldDirection * 10000.0f; // 你可以根据需要调整这个值
+	// GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility);
+	//
+	// // 如果射线击中了一个Actor，那么获取这个Actor
+	// AActor* HitActor = HitResult.GetActor();
 	if (HitActor)
 	{
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
@@ -90,7 +87,7 @@ bool UDInteractionComponent::PrimaryInteract()
 				if (Distance < Player->AttributeComp->AttackRange)
 				{
 					/* 转向 */
-
+					Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 					Player->ActionComponent->MainHandAction();
 					return false;
 				}
@@ -141,8 +138,10 @@ bool UDInteractionComponent::PrimaryInteract()
 			}
 		}
 	}
+	Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 	return true;
 }
+
 
 bool UDInteractionComponent::ExecuteInteractAction()
 {
@@ -151,12 +150,14 @@ bool UDInteractionComponent::ExecuteInteractAction()
 	{
 		if (Cast<ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())->bIsAllowToDamage)
 		{
+			Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 			Player->ActionComponent->MainHandAction();
 			return false;
 		}
 		IDGameplayInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
 		Player->InteractionComp->OnItemInteract(AIController->TargetActor.Get(), Player);
 	}
+	Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 	return true;
 }
 
