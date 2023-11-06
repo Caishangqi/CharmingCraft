@@ -52,6 +52,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 		return false;
 	}
 
+	/*
 	// APlayerController* Controller = Cast<APlayerController>(Player->GetInstigatorController());
 	// float MouseX, MouseY;
 	// Controller->GetMousePosition(MouseX, MouseY);
@@ -65,12 +66,13 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 	//
 	// // 进行射线投射
 	// FVector StartLocation = WorldLocation;
-	// FVector EndLocation = StartLocation + WorldDirection * 10000.0f; // 你可以根据需要调整这个值
+	// FVector EndLocation  = StartLocation + WorldDirection * 10000.0f; // 你可以根据需要调整这个值
 	// GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility);
 	//
 	// // 如果射线击中了一个Actor，那么获取这个Actor
-	// AActor* HitActor = HitResult.GetActor();
-	if (HitActor)
+	// AActor* HitActor = HitResult.GetActor();045637435 098.，7 09
+	*/
+	if (HitActor) 
 	{
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
@@ -80,7 +82,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
-
+ 
 			/* 如果是执行攻击操作则开始判断人物身上的 AttackRange 属性 */
 			if (CastedObject->bIsAllowToDamage)
 			{

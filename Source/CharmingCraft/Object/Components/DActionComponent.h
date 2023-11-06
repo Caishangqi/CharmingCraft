@@ -16,7 +16,7 @@
 class UDAction;
 DECLARE_LOG_CATEGORY_EXTERN(CharmingCraft, Display, Display);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UDActionComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -68,6 +68,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 	/* In build Character Default Skill */
+	UFUNCTION(BlueprintCallable)
 	void MainHandAction();
 	void OffHandAction();
 
