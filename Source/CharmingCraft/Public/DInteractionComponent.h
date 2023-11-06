@@ -20,7 +20,7 @@ public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
 	UFUNCTION(BlueprintCallable)
-	bool PrimaryInteract(AActor* HitActor);
+	bool PrimaryInteract(AActor* HitActor, FVector HitLocation);
 	//CancelInter
 
 	bool ExecuteInteractAction();

@@ -40,7 +40,7 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
+bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocation)
 {
 	FGameplayTag StandbyTag = FGameplayTag::RequestGameplayTag(FName("Status.Standby"));
 	Player->ActionComponent->ActiveGamePlayTags.AddTag(InteractTag);
@@ -72,7 +72,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 	// // 如果射线击中了一个Actor，那么获取这个Actor
 	// AActor* HitActor = HitResult.GetActor();045637435 098.，7 09
 	*/
-	if (HitActor) 
+	if (HitActor)
 	{
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
@@ -82,7 +82,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
- 
+
 			/* 如果是执行攻击操作则开始判断人物身上的 AttackRange 属性 */
 			if (CastedObject->bIsAllowToDamage)
 			{
@@ -106,8 +106,13 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor)
 					AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
 				}
 				// 使用AI控制器移动Pawn
-				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange, true, true, true,
-				                          nullptr, false);
+				// TODO AI 导航过于粗糙导致无法到达指定地点
+				AIController->MoveToLocation(HitActor->GetTargetLocation(), Player->AttributeComp->AttackRange, true,
+				                             true, false, true, nullptr, false);
+
+				DrawDebugLine(Player->GetWorld(), HitLocation, HitLocation, FColor::Yellow, false, 2, ECC_Visibility,
+				              20.0f);
+
 				// 执行动作
 				AIController->TargetActor = HitActor;
 				return false;
