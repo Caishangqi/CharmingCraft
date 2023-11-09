@@ -106,11 +106,11 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 					AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
 				}
 				// 使用AI控制器移动Pawn
-				// TODO AI 导航过于粗糙导致无法到达指定地点
-				AIController->MoveToLocation(HitActor->GetTargetLocation(), Player->AttributeComp->AttackRange, true,
-				                             true, false, true, nullptr, false);
-
-				DrawDebugLine(Player->GetWorld(), HitLocation, HitLocation, FColor::Yellow, false, 2, ECC_Visibility,
+				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange , true, true, false,
+				                          nullptr,
+				                          false);
+				DrawDebugLine(Player->GetWorld(), HitActor->GetActorLocation(), HitActor->GetActorLocation(),
+				              FColor::Yellow, false, 2, ECC_Visibility,
 				              20.0f);
 
 				// 执行动作
