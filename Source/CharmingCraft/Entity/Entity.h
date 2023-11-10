@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Interface/ActionOnHitInterface.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "Entity.generated.h"
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype
+class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype, public IActionOnHitInterface
 {
 	GENERATED_BODY()
 
@@ -24,4 +25,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
+	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
 };

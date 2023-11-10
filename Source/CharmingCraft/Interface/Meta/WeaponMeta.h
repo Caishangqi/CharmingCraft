@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "IntegratedMeta.h"
+#include "CharmingCraft/Object/Structs/model/FEquipmentAttribute.h"
 #include "WeaponMeta.generated.h"
 
 /**
@@ -13,11 +14,12 @@ UCLASS()
 class CHARMINGCRAFT_API UWeaponMeta : public UIntegratedMeta
 {
 	GENERATED_BODY()
-
 public:
 	/* 模型 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Actor Model")
 	TSubclassOf<AActor> WeaponActor;
+	UPROPERTY()
+	FEquipmentAttribute WeaponAttribute;
 
 	/*!
 	 * When done initialize Meta, the ItemPreviewRender should call the method

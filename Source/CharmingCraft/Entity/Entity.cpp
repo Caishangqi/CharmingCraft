@@ -26,3 +26,8 @@ void AEntity::Tick(float DeltaTime)
 void AEntity::Interact_Implementation(APawn* InstigatorPawn)
 {
 }
+
+void AEntity::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
+{
+	IActionOnHitInterface::OnActionHit_Implementation(InstigatorPawn, HitData);
+}

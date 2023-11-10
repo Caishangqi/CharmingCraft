@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "DItemInteractInterface.generated.h"
+#include "../Object/Structs/Attribute/FHitData.h"
+#include "ActionOnHitInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
-class UDItemInteractInterface : public UInterface
+UINTERFACE()
+class UActionOnHitInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,12 +17,12 @@ class UDItemInteractInterface : public UInterface
 /**
  * 
  */
-class CHARMINGCRAFT_API IDItemInteractInterface
+class CHARMINGCRAFT_API IActionOnHitInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent) // UFUNCTION(BlueprintNativeEvent) 允许把这个函数暴露到蓝图中
-	void Interact(APawn* InstigatorPawn);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnActionHit(APawn* InstigatorPawn, FHitData HitData);
 };

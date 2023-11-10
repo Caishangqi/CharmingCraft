@@ -16,8 +16,8 @@ struct FBladeBasicMaterial : public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Damage", MakeStructureDefaultValue= 0))
 	int32 Damage;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Speed", MakeStructureDefaultValue= 0))
-	int32 Speed;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="AttackSpeed", MakeStructureDefaultValue= 0))
+	int32 AttackSpeed;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Durability", MakeStructureDefaultValue= 0))
 	int32 Durability;

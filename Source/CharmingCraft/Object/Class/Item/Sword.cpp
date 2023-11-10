@@ -4,8 +4,10 @@
 #include "Sword.h"
 #include "../Object/Components/ItemStack.h"
 #include "CharmingCraft/Entity/Item/model/SwordActor.h"
+#include "CharmingCraft/Interface/ActionOnHitInterface.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 /* 不修改数据, 只读取和执行操作 原型物品模板类 */
 USword::USword()
@@ -16,7 +18,7 @@ USword::USword()
 }
 
 
-void USword::OnItemInteract(UItemStack* InteractItemStack, AActor* Instigator, AActor* ItemActorEntity)
+void USword::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator, ItemActorEntity);
 	SwordActor = Cast<ASwordActor>(ItemActorEntity);
@@ -27,7 +29,7 @@ void USword::OnItemInteract(UItemStack* InteractItemStack, AActor* Instigator, A
 	UE_LOG(LogTemp, Display, TEXT("ItemMeta: %s"), *InteractItemStack->ItemMeta->GetClass()->GetName());
 
 
-	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.05f, true);
+	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.025f, true);
 }
 
 void USword::OnWeaponUse()
@@ -54,7 +56,7 @@ void USword::OnWeaponUse()
 
 	// Draw debug line
 	DrawDebugLine(Player->GetWorld(), Start, End, LineColor, false, LineDuration, ECC_Visibility, 4.0f);
-	
+
 	if (bHit)
 	{
 		for (const FHitResult& Hit : HitResults)
@@ -63,13 +65,32 @@ void USword::OnWeaponUse()
 			// AActor* HitActor = HitResult.GetActor();
 			// Do something with the HitActor...
 			UE_LOG(LogTemp, Display, TEXT("Hited Actor: %s"), *Hit.GetActor()->GetName());
+			if (Hit.GetActor()->Implements<UActionOnHitInterface>())
+			{
+				OnWeaponHit(MappingItemStack, Player, SwordActor, Hit.GetActor());
+			}
 		}
 	}
 }
 
-void USword::OnWeaponHit(UItemStack* WeaponHit, AActor* Instigator, AActor* ItemActorEntity)
+void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity)
 {
-	Super::OnWeaponHit(WeaponHit, Instigator, ItemActorEntity);
+	Super::OnWeaponHit(WeaponHit, Instigator, ItemActorEntity, HitEntity);
+
+	FEquipmentAttribute EquipmentAttribute = Cast<UWeaponMeta>(WeaponHit->ItemMeta)->WeaponAttribute;
+	FHitData HitData;
+	HitData.Damage = EquipmentAttribute.Damage;
+	HitData.MagicDamage = EquipmentAttribute.MagicDamage;
+
+	// 生成0到99之间的随机数
+	int32 RandomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 99);
+
+	// 如果随机数小于暴击率，则表示暴击
+	HitData.IsCritic = RandomNumber < EquipmentAttribute.CriticalChance;
+
+	UE_LOG(LogTemp, Display, TEXT("Hite Data: Damage = %f bIsCritic  = %hhd MagicDamage = %f"), HitData.Damage,
+	       HitData.IsCritic, HitData.MagicDamage);
+	IActionOnHitInterface::Execute_OnActionHit(HitEntity, Player, HitData);
 }
 
 void USword::EndItemInteract()

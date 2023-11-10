@@ -24,6 +24,11 @@ void USwordMeta::SetDefaultAssemble()
 	SwordGuard = CreateDefaultSubobject<UEquipPartSwordGuardMakeShift>("Guard MakeShift");
 	SwordHilt = CreateDefaultSubobject<UEquipPartSwordHiltBasic>("Hilt Basic");
 	SwordPommel = CreateDefaultSubobject<UEquipPartSwordPommelDecorative>("Pommel Decorative");
+	/* Test Data */
+	WeaponAttribute.Damage = 10;
+	WeaponAttribute.AttackSpeed = 1.5;
+	WeaponAttribute.CriticalChance = 30;
+	WeaponAttribute.CriticalDamage = 150;
 }
 
 

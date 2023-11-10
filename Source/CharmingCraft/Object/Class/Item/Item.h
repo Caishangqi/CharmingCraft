@@ -29,7 +29,7 @@ public:
 
 public: // Methods
 	UFUNCTION(BlueprintCallable)
-	virtual void OnItemInteract(UItemStack* InteractItemStack, AActor* Instigator, AActor* ItemActorEntity);
+	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity);
 	UFUNCTION(BlueprintCallable)
 	virtual void EndItemInteract();
 };
