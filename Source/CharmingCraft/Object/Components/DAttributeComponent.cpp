@@ -3,6 +3,8 @@
 
 #include "DAttributeComponent.h"
 
+#include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
+
 // Sets default values for this component's properties
 UDAttributeComponent::UDAttributeComponent()
 {
@@ -11,9 +13,18 @@ UDAttributeComponent::UDAttributeComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
-
 	HealthMax = Health = 100;
 	AttackRange = 100;
+	Damage = 2.0f;
+	AbilityPower = 0.0f;
+	Mana = 0.0f;
+	Level = 1;
+	CurrentLevelXP = 0.0f;
+	Armour = 0;
+	KnockBackResistance = 1;
+	CriticalChance = 0;
+	CriticalDamageEnhance = 0;
+	AttackSpeedEnhance = 0.0f;
 }
 
 
@@ -48,4 +59,22 @@ bool UDAttributeComponent::ApplyManaChange(float Delta)
 	Mana += Delta;
 	OnManaChanged.Broadcast(nullptr, this, Mana, Delta);
 	return true;
+}
+
+FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
+{
+	PlayerAttribute.Damage = Damage;
+	PlayerAttribute.Armour = Armour;
+	PlayerAttribute.Health = Health;
+	PlayerAttribute.Level = Level;
+	PlayerAttribute.Mana = Mana;
+	PlayerAttribute.AbilityPower = AbilityPower;
+	PlayerAttribute.CriticalChance = CriticalChance;
+	PlayerAttribute.HealthMax = HealthMax;
+	PlayerAttribute.AttackSpeedEnhance = AttackSpeedEnhance;
+	PlayerAttribute.CriticalDamageEnhance = CriticalDamageEnhance;
+	PlayerAttribute.KnockBackResistance = KnockBackResistance;
+	PlayerAttribute.CurrentLevelXP = CurrentLevelXP;
+
+	return PlayerAttribute;
 }

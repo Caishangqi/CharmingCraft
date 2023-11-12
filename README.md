@@ -1,4 +1,4 @@
-# CharmingCraft: Desolate Age
+# CharmingCraft: Desolate Age (Unreal Build)
 
 <p align="center">
 <img src = "https://github.com/Caishangqi/minecraft-modpack-charmingcraft-journey/assets/39553613/290e0607-2e2a-4f35-9149-6abfe15459f7">
@@ -49,10 +49,10 @@ Waiting for the release of the first playable demo.
 - 3D物品渲染2D
 - 物品装配机制, 不同材料打造物品
 - 武器装配,不同武器部分可装配不同类型和材料的零件
+- 基于不同武器类型的攻击动画和攻击范围
 
 ## 即将到来 Coming soon
 
-- 人物建模和动画
 - 完整的属性UI
 - 近战攻击和基础装备系统
 - Episodes 35,70 ...
@@ -64,6 +64,7 @@ Waiting for the release of the first playable demo.
 - 动态寻路完善, 玩家在破坏方块或者交互物品时刷新可供的路线
 - 丢弃物品的时候是发射行为而不是生成行为
 - 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**已修复**)
+- 武器的 `OnHit()` 方法是由武器类型决定的, 可以考虑传入武器类模板让交互组件执行模板类的方法实现 **HitData** 传递
 
 ## 项目结构 Project Structure
 
@@ -110,6 +111,7 @@ Waiting for the release of the first playable demo.
 - [装备组装 - 盔甲](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [装备组装 - 武器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [技能系统](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [战斗伤害传递链](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
 ## WorkFlow
 

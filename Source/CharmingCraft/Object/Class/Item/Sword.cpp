@@ -2,10 +2,13 @@
 
 
 #include "Sword.h"
+
+#include "DCharacter.h"
 #include "../Object/Components/ItemStack.h"
 #include "CharmingCraft/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Interface/ActionOnHitInterface.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
+#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -27,8 +30,7 @@ void USword::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AA
 
 	UE_LOG(LogTemp, Display, TEXT("(!) USword::OnItemInteract(UItemStack* InteractItemStack)"));
 	UE_LOG(LogTemp, Display, TEXT("ItemMeta: %s"), *InteractItemStack->ItemMeta->GetClass()->GetName());
-
-
+	
 	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.025f, true);
 }
 
@@ -77,16 +79,21 @@ void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemA
 {
 	Super::OnWeaponHit(WeaponHit, Instigator, ItemActorEntity, HitEntity);
 
+	FPlayerAttribute PlayerAttribute = Cast<ADCharacter>(Instigator)->AttributeComp->GetPlayerAttributeData();
+
 	FEquipmentAttribute EquipmentAttribute = Cast<UWeaponMeta>(WeaponHit->ItemMeta)->WeaponAttribute;
+
 	FHitData HitData;
-	HitData.Damage = EquipmentAttribute.Damage;
-	HitData.MagicDamage = EquipmentAttribute.MagicDamage;
+
+	HitData.Damage = EquipmentAttribute.Damage + PlayerAttribute.Damage;
+	HitData.MagicDamage = EquipmentAttribute.MagicDamage + PlayerAttribute.AbilityPower;
+	HitData.CriticalDamage = EquipmentAttribute.CriticalDamage + PlayerAttribute.CriticalDamageEnhance;
 
 	// 生成0到99之间的随机数
 	int32 RandomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 99);
 
 	// 如果随机数小于暴击率，则表示暴击
-	HitData.IsCritic = RandomNumber < EquipmentAttribute.CriticalChance;
+	HitData.IsCritic = RandomNumber < EquipmentAttribute.CriticalChance + PlayerAttribute.CriticalChance;
 
 	UE_LOG(LogTemp, Display, TEXT("Hite Data: Damage = %f bIsCritic  = %hhd MagicDamage = %f"), HitData.Damage,
 	       HitData.IsCritic, HitData.MagicDamage);
