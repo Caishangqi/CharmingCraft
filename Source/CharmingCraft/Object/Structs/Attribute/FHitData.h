@@ -15,4 +15,6 @@ struct FHitData : public FTableRowBase
 	bool IsCritic;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CriticalDamage")
 	int32 CriticalDamage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Instigator")
+	APawn* InstigatorPawn;
 };

@@ -7,6 +7,8 @@
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "Entity.generated.h"
 
+class UDamageIndicator;
+
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype, public IActionOnHitInterface
 {
@@ -26,4 +28,7 @@ public:
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
+
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	//UDamageIndicator* DamageIndicator;
 };

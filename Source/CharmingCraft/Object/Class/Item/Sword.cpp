@@ -30,8 +30,8 @@ void USword::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AA
 
 	UE_LOG(LogTemp, Display, TEXT("(!) USword::OnItemInteract(UItemStack* InteractItemStack)"));
 	UE_LOG(LogTemp, Display, TEXT("ItemMeta: %s"), *InteractItemStack->ItemMeta->GetClass()->GetName());
-	
-	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.025f, true);
+
+	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.01f, true);
 }
 
 void USword::OnWeaponUse()
@@ -63,13 +63,20 @@ void USword::OnWeaponUse()
 	{
 		for (const FHitResult& Hit : HitResults)
 		{
-			// Handle the hit. For example:
-			// AActor* HitActor = HitResult.GetActor();
-			// Do something with the HitActor...
-			UE_LOG(LogTemp, Display, TEXT("Hited Actor: %s"), *Hit.GetActor()->GetName());
-			if (Hit.GetActor()->Implements<UActionOnHitInterface>())
+			AActor* HitActor = Hit.GetActor();
+			// 检查Actor是否已经被击中
+			if (!HitActors.Contains(HitActor))
 			{
-				OnWeaponHit(MappingItemStack, Player, SwordActor, Hit.GetActor());
+				// 如果这个Actor还没有被击中
+				UE_LOG(LogTemp, Display, TEXT("Hited Actor: %s"), *HitActor->GetName());
+
+				if (HitActor->Implements<UActionOnHitInterface>())
+				{
+					OnWeaponHit(MappingItemStack, Player, SwordActor, HitActor);
+				}
+
+				// 添加Actor到已击中集合中
+				HitActors.Add(HitActor);
 			}
 		}
 	}
@@ -85,6 +92,7 @@ void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemA
 
 	FHitData HitData;
 
+	HitData.InstigatorPawn = Instigator;
 	HitData.Damage = EquipmentAttribute.Damage + PlayerAttribute.Damage;
 	HitData.MagicDamage = EquipmentAttribute.MagicDamage + PlayerAttribute.AbilityPower;
 	HitData.CriticalDamage = EquipmentAttribute.CriticalDamage + PlayerAttribute.CriticalDamageEnhance;
@@ -104,4 +112,5 @@ void USword::EndItemInteract()
 {
 	Super::EndItemInteract();
 	Player->GetWorld()->GetTimerManager().ClearTimer(SwordTraceTimer);
+	HitActors.Empty(0);
 }

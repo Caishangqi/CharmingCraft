@@ -14,6 +14,7 @@ UCLASS()
 class CHARMINGCRAFT_API UWeapon : public UItem
 {
 	GENERATED_BODY()
+
 protected:
 	/* 计时器 */
 	FTimerHandle SwordTraceTimer;
@@ -23,8 +24,11 @@ protected:
 	APawn* Player;
 	UPROPERTY()
 	UItemStack* MappingItemStack;
+	UPROPERTY()
+	TSet<AActor*> HitActors;
+
 public:
-	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor * ItemActorEntity) override;
+	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity) override;
 	virtual void OnWeaponUse();
-	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor * ItemActorEntity,AActor * HitEntity);
+	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity);
 };
