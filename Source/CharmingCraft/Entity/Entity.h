@@ -26,9 +26,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void BeginDestroy() override;
+
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
-
-	//UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	//UDamageIndicator* DamageIndicator;
+	
 };

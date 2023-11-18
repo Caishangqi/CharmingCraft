@@ -27,7 +27,7 @@ void USwordMeta::SetDefaultAssemble()
 	/* Test Data */
 	WeaponAttribute.Damage = 10;
 	WeaponAttribute.AttackSpeed = 1.5;
-	WeaponAttribute.CriticalChance = 30;
+	WeaponAttribute.CriticalChance = 50;
 	WeaponAttribute.CriticalDamage = 150;
 }
 

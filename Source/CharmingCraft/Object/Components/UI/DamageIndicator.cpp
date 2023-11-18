@@ -11,9 +11,8 @@ UDamageIndicator::UDamageIndicator()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-
-	// ...
 }
+
 
 
 // Called when the game starts
@@ -22,6 +21,12 @@ void UDamageIndicator::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+}
+
+void UDamageIndicator::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+	// UE_LOG(LogTemp, Error, TEXT("UDamageIndicator::UDamageIndicator() Destroy"));
 }
 
 
