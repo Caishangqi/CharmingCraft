@@ -15,7 +15,9 @@
 
 ## 介绍 Introduction
 
-This project is crafted using Unreal Engine 5.3.1 and is a replica of the Minecraft ModPack, Charming Craft. Within this project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
+This project is crafted using Unreal Engine 5.3.1 and is a replica of the Minecraft ModPack, Charming Craft. Within this
+project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous
+RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
 
 ## 构建 Build
 
@@ -33,16 +35,12 @@ Waiting for the release of the first playable demo.
 - 基于C++的投射物蓝图模板实现
 - 交互接口以及人物交互功能
 - 基于交互接口实现的开宝箱功能及动画
-- 基于C++的 `Actor Component` 解耦人物属性
-- 使用 Tick() 事件刷新的血量显示
-- 使用事件绑定触发的血量刷新和显示 (改进)
 - 基于事件绑定和UI参数暴露实现血条衰减
 - 基于动画系统实现的数字动画
 - 基于数学函数的动态材质
 - 使用游戏标签 GameTags 实现箱子和钥匙
 - 使用游戏标签 GameTags 实现格挡技能 (R) 键
 - 在击中时使材质发亮,显示高光
-- 第二套操控输入,支持鼠标点击和长按
 - 物品交互高光和玩家遮挡高光
 - 物品栏系统,物品原型
 - 盔甲锻造台
@@ -50,6 +48,12 @@ Waiting for the release of the first playable demo.
 - 物品装配机制, 不同材料打造物品
 - 武器装配,不同武器部分可装配不同类型和材料的零件
 - 基于不同武器类型的攻击动画和攻击范围
+- Dota 鼠标移动攻击系统, 例如角色转身,和新加原地攻击等...
+- 基于玩家攻击方向的 伤害数字 动画
+
+## 内容机制 Content and Mechanism
+
+- [属性乘区和伤害计算 Attribute Multiplier and Damage Calculator](https://github.com/Caishangqi/CharmingCraft/wiki/Attribute-Multiplier-and-Damage-Calculator)
 
 ## 即将到来 Coming soon
 
@@ -71,39 +75,41 @@ Waiting for the release of the first playable demo.
 ### 项目资产结构 Asset Structure
 
 - Assets
-  - models
-  - textures
+    - models
+    - textures
+
 ### 项目源码结构 Code Structure
 
 - Source
-  - Object
-    - Class
-      - Core
-      - Item
-      - Util
-    - Component
-    - Enum
-    - Struct
-      - model
-        - sword
-          - blade
-          - fuller
-          - guard
-          - hilt
-          - pommel
-  - Interface
-    - Meta
-      - model
+    - Object
+        - Class
+            - Core
+            - Item
+            - Util
+        - Component
+        - Enum
+        - Struct
+            - model
+                - sword
+                    - blade
+                    - fuller
+                    - guard
+                    - hilt
+                    - pommel
+    - Interface
+        - Meta
+            - model
 
 ## 概念,设计模式,和实现原理
 
-以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示
+以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki
+**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示
 
 - [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
 - [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
 - [解耦和设计模式](https://github.com/Caishangqi/CharmingCraft/wiki/Decoupling-and-Actor-Component)
 
-### 实现原理
+### 实现原理 Implementation
 
 - [近战攻击实现原理](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [3D物品渲染2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
@@ -112,6 +118,8 @@ Waiting for the release of the first playable demo.
 - [装备组装 - 武器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [技能系统](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [战斗伤害传递链](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [向量多伤害指示器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+-
 
 ## WorkFlow
 
