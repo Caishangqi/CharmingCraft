@@ -5,6 +5,7 @@
 #include "ItemStack.h"
 #include "CharmingCraft/Entity/Item/DropItem.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
+#include "EquipModel/EquipmentManagerComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -264,7 +265,7 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 		}
 	}
 	/* Event BroadCast for Equipment Inventory*/
-	if (SourceInventory != this) // Inside this Inventory Use OnInventoryUpdate
+	if (SourceInventory->IsA(UEquipmentManagerComponent::StaticClass())) // Inside this Inventory Use OnInventoryUpdate
 	{
 		OnInventoryUpdateIndex.Broadcast(SourceIndex);
 	}
@@ -276,9 +277,7 @@ void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop -0"));
 	FVector Location = GetDropLocation();
 	FTransform SpawnTransform(Location);
-
-	//ItemStack->ClearFlags(RF_Standalone);
-
+	
 	// Fixed in 23.09.19.01 Custom Copy constructor
 	UItemStack* CachedItemStack = ItemStack->CopyData();
 
@@ -383,6 +382,7 @@ void UDInventoryComponent::BeginPlay()
 			Items->ItemMeta->UpdateRender(GetWorld());
 		}
 	}
+	
 }
 
 /*

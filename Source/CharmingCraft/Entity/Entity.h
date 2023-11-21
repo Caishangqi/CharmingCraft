@@ -8,6 +8,7 @@
 #include "Entity.generated.h"
 
 class UDamageIndicator;
+class UDAttributeComponent;
 
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype, public IActionOnHitInterface
@@ -25,10 +26,17 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	virtual void BeginDestroy() override;
-
+	
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
-	
+
+	/** Please add a variable description */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="默认")
+	TObjectPtr<UDAttributeComponent> AttributeComponent;
+
+	/** TODO: Need to investigate why the component is inactive */
+	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="默认")
+	// TObjectPtr<UDamageIndicator> DamageIndicator;
+
+
 };

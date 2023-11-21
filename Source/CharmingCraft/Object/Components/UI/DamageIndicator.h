@@ -7,7 +7,7 @@
 #include "DamageIndicator.generated.h"
 
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
 class CHARMINGCRAFT_API UDamageIndicator : public UWidgetComponent
 {
 	GENERATED_BODY()

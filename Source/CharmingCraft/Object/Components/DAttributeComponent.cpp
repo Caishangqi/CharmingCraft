@@ -25,6 +25,9 @@ UDAttributeComponent::UDAttributeComponent()
 	CriticalChance = 0;
 	CriticalDamageEnhance = 0;
 	AttackSpeedEnhance = 0.0f;
+
+	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::UDAttributeComponent() Create Owner: %s"),
+	       *GetOuter()->GetName());
 }
 
 
@@ -33,6 +36,7 @@ void UDAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::BeginPlay() Name : %d"), IsValid(this));
 	// ...
 }
 
@@ -61,6 +65,12 @@ bool UDAttributeComponent::ApplyManaChange(float Delta)
 	return true;
 }
 
+void UDAttributeComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
+	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::OnComponentDestroyed() Destroy Owner: %p"), GetOwner());
+}
+
 FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 {
 	PlayerAttribute.Damage = Damage;
@@ -77,4 +87,15 @@ FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 	PlayerAttribute.CurrentLevelXP = CurrentLevelXP;
 
 	return PlayerAttribute;
+}
+
+FHitData UDAttributeComponent::PreInwardHitData(FHitData InwardHitData)
+{
+	return InwardHitData;
+}
+
+FHitData UDAttributeComponent::PostInwardHitData(FHitData ModifiedHitData)
+{
+	OnHitDataApply.Broadcast(ModifiedHitData);
+	return ModifiedHitData;
 }

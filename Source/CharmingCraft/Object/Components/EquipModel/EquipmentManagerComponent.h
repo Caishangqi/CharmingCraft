@@ -34,7 +34,7 @@ public:
 	virtual void
 	TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex) override;
 
-	UEquipmentManagerComponent* Initialize(UDInventoryComponent* LinkInventory);
+	UEquipmentManagerComponent* SetupDependency(UDInventoryComponent* Dependency);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnEquipUpdate OnEquipUpdate;
@@ -44,12 +44,11 @@ public:
 
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
-	UEquipmentRenderComponent* EquipmentRenderComponent;
+	TObjectPtr<UEquipmentRenderComponent> EquipmentRenderComponent;
 
 	/* Event Link Dispatcher*/
 	UPROPERTY()
-	UDInventoryComponent* HandleInventory;
-
+	TObjectPtr<UDInventoryComponent> InventoryComponent;
 
 protected:
 

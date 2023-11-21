@@ -30,8 +30,6 @@ UEquipmentManagerComponent::UEquipmentManagerComponent()
 	 * 盔甲 护腿 9
 	 * 盔甲 靴子 10
 	 */
-	
-	
 }
 
 void UEquipmentManagerComponent::PostInitProperties()
@@ -53,11 +51,19 @@ void UEquipmentManagerComponent::BeginPlay()
 void UEquipmentManagerComponent::OnRegister()
 {
 	Super::OnRegister();
+
+	/* Call back handle */
+
 	// This Event Bind is for transfer item in Equip inventory update
 	OnEquipUpdate.AddDynamic(EquipmentRenderComponent, &UEquipmentRenderComponent::UpdateRender);
-	// This Event Bind is for transfer item in Main inventory let equip inventory update
-	HandleInventory->OnInventoryUpdateIndex.AddDynamic(EquipmentRenderComponent,
-	                                                   &UEquipmentRenderComponent::UpdateRender);
+	/*
+	 *	When the equipment was transferred to player inventory, originally, the equip-manager will
+	 *	not notified. Through the player inventory component to determined the source inventory update
+	 *	.If it is from the UEquipmentManagerComponent::StaticClass() then it will notified UEquipmentManagerComponent
+	 *	to update correspond index
+	 */
+	InventoryComponent->OnInventoryUpdateIndex.AddDynamic(EquipmentRenderComponent,
+	                                                      &UEquipmentRenderComponent::UpdateRender);
 	// Only in register phase the component will attach to player
 	Owner = Cast<ADCharacter>(GetOwner());
 	EquipmentRenderComponent->Initialize(InventorySize, Owner);
@@ -72,9 +78,9 @@ void UEquipmentManagerComponent::TransferSlots(int32 SourceIndex, UDInventoryCom
 	UE_LOG(LogTemp, Warning, TEXT("UEquipmentManagerComponent::TransferSlots"));
 }
 
-UEquipmentManagerComponent* UEquipmentManagerComponent::Initialize(UDInventoryComponent* LinkInventory)
+UEquipmentManagerComponent* UEquipmentManagerComponent::SetupDependency(UDInventoryComponent* Dependency)
 {
-	this->HandleInventory = LinkInventory;
+	this->InventoryComponent = Dependency;
 	return this;
 }
 

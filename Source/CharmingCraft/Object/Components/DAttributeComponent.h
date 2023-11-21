@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Object/Structs/Attribute/FHitData.h"
 #include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
 #include "Components/ActorComponent.h"
 #include "DAttributeComponent.generated.h"
@@ -20,7 +21,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, Instiga
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnManaChanged, AActor*, InstigatorActor, UDAttributeComponent*,
                                               OwningComp, float, NewHealth, float, Delta);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitDataApply, FHitData, InwardHitData);
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
 class CHARMINGCRAFT_API UDAttributeComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -77,11 +80,39 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnManaChanged OnManaChanged; // 构造这个事件
 
+	UPROPERTY(BlueprintAssignable)
+	FOnHitDataApply OnHitDataApply;
 
 	UFUNCTION(BlueprintCallable, Category= "Attributes")
 	bool ApplyHealthChange(float Delta); // whether or not change apply
 
 	bool ApplyManaChange(float Delta); // whether or not change apply
 
+	void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+
 	FPlayerAttribute GetPlayerAttributeData();
+
+	/*!
+	 *	PreInwardHitData receive HitData from instigator and apply the attribute and
+	 *	damage multiplier, return FHitData that was modified
+	 *	
+	 *	@param InwardHitData Accept HitData From Instigator
+	 *	@return FHitData The HitData that had applied attribute and
+	 *	damage multiplier
+	 */
+	UFUNCTION(BlueprintCallable)
+	FHitData PreInwardHitData(FHitData InwardHitData);
+
+	/*!
+	 *	PostInwardHitData receive HitData from PreInwardHitData and apply the HitData
+	 *	that was modified to the Attribute of the components, after the actual attribute
+	 *	modification, it should broadcast to Entity(Owner) DamageIndicator Component to
+	 *	display HitData on screen
+	 *	
+	 *	@param ModifiedHitData Accept modified HitData from PreInwardHitData()
+	 *	@return FHitData The HitData that was finalized and prepare broadcast to
+	 *	UI related components
+	 */
+	UFUNCTION(BlueprintCallable)
+	FHitData PostInwardHitData(FHitData ModifiedHitData);
 };
