@@ -7,9 +7,11 @@
 #include "CharmingCraft/Object/Structs/FDMaterial.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
 #include "EquipPartComponent.generated.h"
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
 class CHARMINGCRAFT_API UEquipPartComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -55,6 +57,10 @@ public:
 	UMaterial* PartMaterial; // Default Value
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Equip Part Mesh")
 	UStaticMesh* PartMesh; // For Weapon
+
+	/* Animation */
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UEquipmentComponentAnimation> EquipmentComponentAnimationDataAsset;
 
 protected:
 	// Called when the game starts

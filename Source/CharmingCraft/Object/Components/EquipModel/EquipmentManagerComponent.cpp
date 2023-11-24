@@ -44,6 +44,8 @@ void UEquipmentManagerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Inventory.SetNum(InventorySize);
+	Hand = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
+		EMaterial::HAND, 1);
 	// ...
 }
 

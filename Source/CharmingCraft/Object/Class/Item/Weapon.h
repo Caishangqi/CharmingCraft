@@ -31,4 +31,5 @@ public:
 	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity) override;
 	virtual void OnWeaponUse();
 	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity);
+	virtual void EndItemInteract() override;
 };

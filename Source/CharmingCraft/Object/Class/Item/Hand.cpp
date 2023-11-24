@@ -1,50 +1,47 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Sword.h"
+
+
+#include "Hand.h"
+
 #include "DCharacter.h"
 #include "../Object/Components/ItemStack.h"
-#include "CharmingCraft/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Interface/ActionOnHitInterface.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "CharmingCraft/Object/Components/DAttributeComponent.h"
-#include "Components/ArrowComponent.h"
+#include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
+#include "Kismet/KismetMathLibrary.h"
 
-/* 不修改数据, 只读取和执行操作 原型物品模板类 */
-USword::USword()
+UHand::UHand()
 {
-	// 设置苹果的默认属性
-	DisplayName = FText::FromString("Sword");
+	DisplayName = FText::FromString("Hand");
 	MaxStackSize = 1;
 }
 
-
-void USword::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity)
+void UHand::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator, ItemActorEntity);
-	SwordActor = Cast<ASwordActor>(ItemActorEntity);
 	Player = Instigator;
+	Character = Cast<ADCharacter>(Player);
+
 	MappingItemStack = InteractItemStack;
-
-	UE_LOG(LogTemp, Display, TEXT("(!) USword::OnItemInteract(UItemStack* InteractItemStack)"));
+	UE_LOG(LogTemp, Display, TEXT("(!) UHand::OnItemInteract(UItemStack* InteractItemStack)"));
 	UE_LOG(LogTemp, Display, TEXT("ItemMeta: %s"), *InteractItemStack->ItemMeta->GetClass()->GetName());
-
-	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &USword::OnWeaponUse, 0.01f, true);
+	Instigator->GetWorld()->GetTimerManager().SetTimer(SwordTraceTimer, this, &UHand::OnWeaponUse, 0.01f, true);
 }
 
-void USword::OnWeaponUse()
+void UHand::OnWeaponUse()
 {
 	Super::OnWeaponUse();
-
-	// TODO 考虑是否让武器只能对敌人造成一次伤害 蒙太奇 + 动画通知
-	FVector Start = SwordActor->SwordTopArrow->GetComponentLocation();
-	FVector End = SwordActor->SwordTopArrow->GetComponentLocation();
+	FVector Start = Character->GetActorLocation();
+	FVector End = Start + Character->GetActorForwardVector() * Character->AttributeComp->AttackRange;
 
 	TArray<FHitResult> HitResults;
 
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(Player); // Ignore self
 
-	float SphereRadius = 120.0f; // 例如，设置为120.0，您可以根据需要进行调整
+	float SphereRadius = 40.0f; // 例如，设置为120.0，您可以根据需要进行调整
 
 	bool bHit = Player->GetWorld()->SweepMultiByChannel(HitResults, Start, End, FQuat::Identity, ECC_Visibility,
 	                                                    FCollisionShape::MakeSphere(SphereRadius), CollisionParams);
@@ -79,35 +76,25 @@ void USword::OnWeaponUse()
 	}
 }
 
-void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity)
+void UHand::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity)
 {
 	Super::OnWeaponHit(WeaponHit, Instigator, ItemActorEntity, HitEntity);
-
-	FPlayerAttribute PlayerAttribute = Cast<ADCharacter>(Instigator)->AttributeComp->GetPlayerAttributeData();
-
-	FEquipmentAttribute EquipmentAttribute = Cast<UWeaponMeta>(WeaponHit->ItemMeta)->WeaponAttribute;
-
+	FPlayerAttribute PlayerAttribute = Character->AttributeComp->GetPlayerAttributeData();
 	FHitData HitData;
 
 	HitData.InstigatorPawn = Instigator;
-	HitData.Damage = EquipmentAttribute.Damage + PlayerAttribute.Damage;
-	HitData.MagicDamage = EquipmentAttribute.MagicDamage + PlayerAttribute.AbilityPower;
-	HitData.CriticalDamage = EquipmentAttribute.CriticalDamage + PlayerAttribute.CriticalDamageEnhance;
+	HitData.Damage = PlayerAttribute.Damage;
+	HitData.MagicDamage = PlayerAttribute.AbilityPower;
+	HitData.CriticalDamage = PlayerAttribute.CriticalDamageEnhance;
 
-
-	// 如果随机数小于暴击率，则表示暴击
-	HitData.IsCritic = URoguelikeAttributeLibrary::IsAttackCriticInt(
-		EquipmentAttribute.CriticalChance + PlayerAttribute.CriticalChance);
+	HitData.IsCritic = URoguelikeAttributeLibrary::IsAttackCriticInt(PlayerAttribute.CriticalChance);
 
 	UE_LOG(LogTemp, Display, TEXT("Hite Data: Damage = %f bIsCritic  = %hhd MagicDamage = %f"), HitData.Damage,
 	       HitData.IsCritic, HitData.MagicDamage);
-	
 	IActionOnHitInterface::Execute_OnActionHit(HitEntity, Player, HitData);
 }
 
-void USword::EndItemInteract()
+void UHand::EndItemInteract()
 {
 	Super::EndItemInteract();
-	Player->GetWorld()->GetTimerManager().ClearTimer(SwordTraceTimer);
-	HitActors.Empty(0);
 }

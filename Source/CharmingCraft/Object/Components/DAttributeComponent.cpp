@@ -3,6 +3,7 @@
 
 #include "DAttributeComponent.h"
 
+#include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
 
 // Sets default values for this component's properties
@@ -15,6 +16,7 @@ UDAttributeComponent::UDAttributeComponent()
 	// ...
 	HealthMax = Health = 100;
 	AttackRange = 100;
+	InteractRange = 200;
 	Damage = 2.0f;
 	AbilityPower = 0.0f;
 	Mana = 0.0f;
@@ -23,9 +25,9 @@ UDAttributeComponent::UDAttributeComponent()
 	Armour = 0;
 	KnockBackResistance = 1;
 	CriticalChance = 0;
+	CriticalDamageDefenseEnhance = 0;
 	CriticalDamageEnhance = 0;
 	AttackSpeedEnhance = 0.0f;
-
 	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::UDAttributeComponent() Create Owner: %s"),
 	       *GetOuter()->GetName());
 }
@@ -75,6 +77,7 @@ FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 {
 	PlayerAttribute.Damage = Damage;
 	PlayerAttribute.Armour = Armour;
+	PlayerAttribute.MagicDefense = MagicDefense;
 	PlayerAttribute.Health = Health;
 	PlayerAttribute.Level = Level;
 	PlayerAttribute.Mana = Mana;
@@ -83,14 +86,24 @@ FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 	PlayerAttribute.HealthMax = HealthMax;
 	PlayerAttribute.AttackSpeedEnhance = AttackSpeedEnhance;
 	PlayerAttribute.CriticalDamageEnhance = CriticalDamageEnhance;
+	PlayerAttribute.CriticalDamageDefenseEnhance = CriticalDamageDefenseEnhance;
 	PlayerAttribute.KnockBackResistance = KnockBackResistance;
 	PlayerAttribute.CurrentLevelXP = CurrentLevelXP;
-
 	return PlayerAttribute;
 }
 
 FHitData UDAttributeComponent::PreInwardHitData(FHitData InwardHitData)
 {
+	/* Critical Damage Calculation */
+	InwardHitData.CriticalDamage = URoguelikeAttributeLibrary::GetCriticalDamage(
+		InwardHitData.CriticalDamage, CriticalDamageDefenseEnhance);
+	/* True Damage Handle After Armour Damage reduced */
+	InwardHitData.Damage = URoguelikeAttributeLibrary::GetDamage(InwardHitData.Damage, Armour, InwardHitData.IsCritic,
+	                                                             InwardHitData.CriticalDamage);
+	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::PreInwardHitData Owner: %p | CriticalDamage: %d | Damage: %f"),
+	       GetOwner(),
+	       InwardHitData.CriticalDamage, InwardHitData.Damage);
+
 	return InwardHitData;
 }
 

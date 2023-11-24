@@ -14,6 +14,7 @@ UCLASS()
 class CHARMINGCRAFT_API UWeaponMeta : public UIntegratedMeta
 {
 	GENERATED_BODY()
+
 public:
 	/* 模型 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Actor Model")
@@ -31,4 +32,13 @@ public:
 	virtual bool AssembleComponent(AActor* Actor);
 
 	virtual void UpdateRender(UWorld* RenderWorld) override;
+
+	/* Animation and Attack Stage */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "LoadedAnimMontage")
+	TArray<TObjectPtr<UAnimMontage>> LoadedAnimMontage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "CurrentAttackStage")
+	int CurrentAttackStage;
+	/* AnimMontage */
+	UFUNCTION(BlueprintCallable)
+	UAnimMontage * GetCurrentAttackAnimationMontage();
 };

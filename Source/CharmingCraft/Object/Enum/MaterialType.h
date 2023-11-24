@@ -10,6 +10,8 @@ enum class EMaterial: uint8
 	LEAD UMETA(DisplayName = "Lead"),
 	COBALT UMETA(DisplayName = "Cobalt"),
 	HELMET UMETA(DisplayName = "Helmet"),
-	SWORD UMETA(DisplayName = "Sword")
+	SWORD UMETA(DisplayName = "Sword"),
+	HAND UMETA(DisplayName = "Hand")
 	// ... 其他材料
+	
 };

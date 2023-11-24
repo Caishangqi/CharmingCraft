@@ -48,6 +48,7 @@ void UDInventoryComponent::InitializeItemStackWithMaterials()
 		Inventory.Insert(ItemStack, Index);
 	}
 }
+
 #endif
 UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
 {

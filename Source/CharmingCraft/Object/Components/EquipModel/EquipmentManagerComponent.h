@@ -42,6 +42,11 @@ public:
 	UPROPERTY()
 	ADCharacter* Owner;
 
+	/* Default Hand Equipment */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Default Hand Meta and Animation")
+	TObjectPtr<UItemStack> Hand;
+
+
 	/* 属性 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Equip Render")
 	TObjectPtr<UEquipmentRenderComponent> EquipmentRenderComponent;

@@ -24,13 +24,26 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float CurrentLevelXP;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
-	int32 Armour;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	int32 KnockBackResistance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	int32 CriticalChance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	int32 CriticalDamageEnhance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	int CriticalDamageDefenseEnhance;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float AttackSpeedEnhance;
+
+	/* Defense */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	int32 Armour;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	float DamageReducePhysicalDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	int32 MagicDefense;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	float DamageReduceMagicalDamage;
 };

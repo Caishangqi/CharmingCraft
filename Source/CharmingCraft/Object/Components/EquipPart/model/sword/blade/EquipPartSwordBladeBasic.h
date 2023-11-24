@@ -15,7 +15,7 @@ class CHARMINGCRAFT_API UEquipPartSwordBladeBasic : public UEquipPartSwordBlade
 public:
 	/* 属性 */
 	FBladeBasicMaterial* MaterialProperties;
-
+	
 	// Sets default values for this component's properties
 	UEquipPartSwordBladeBasic();
 

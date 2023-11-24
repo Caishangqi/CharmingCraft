@@ -4,6 +4,7 @@
 #include "EquipmentRenderComponent.h"
 #include "Socket/MainHandSocket.h"
 #include "../Public/DCharacter.h"
+#include "Components/ArrowComponent.h"
 // Sets default values for this component's properties
 UEquipmentRenderComponent::UEquipmentRenderComponent()
 {

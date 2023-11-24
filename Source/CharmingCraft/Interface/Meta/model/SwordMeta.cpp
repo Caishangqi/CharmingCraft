@@ -15,6 +15,11 @@ USwordMeta::USwordMeta()
 {
 	SetDefaultAssemble();
 	WeaponActor = ASwordActor::StaticClass();
+	/* 剑的攻击动画以剑的主要部件 Blade为准因此只用获取Blade上的动画 */
+	LoadedAnimMontage = SwordBlade->EquipmentComponentAnimationDataAsset->AttackStageAnimation;
+	CurrentAttackStage = SwordBlade->EquipmentComponentAnimationDataAsset->AttackStageAnimation.Num();
+	// UE_LOG(LogTemp, Warning,
+	//        TEXT("(+) USwordMeta::USwordMeta() AnimationDataAsset Count: %d"), CurrentAttackStage)
 }
 
 void USwordMeta::SetDefaultAssemble()

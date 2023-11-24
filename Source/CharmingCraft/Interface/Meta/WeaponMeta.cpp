@@ -18,3 +18,8 @@ void UWeaponMeta::UpdateRender(UWorld* RenderWorld)
 
 	this->DynamicRenderingInstance = RenderedTexture;
 }
+
+UAnimMontage* UWeaponMeta::GetCurrentAttackAnimationMontage()
+{
+	return LoadedAnimMontage[CurrentAttackStage - 1];
+}

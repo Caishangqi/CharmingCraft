@@ -18,7 +18,13 @@ void UWeapon::OnWeaponUse()
 }
 
 
-void UWeapon::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity,AActor * HitEntity)
+void UWeapon::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity)
 {
+}
 
+void UWeapon::EndItemInteract()
+{
+	Super::EndItemInteract();
+	Player->GetWorld()->GetTimerManager().ClearTimer(SwordTraceTimer);
+	HitActors.Empty(0);
 }

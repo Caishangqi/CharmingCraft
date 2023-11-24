@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "EquipmentRenderComponent.generated.h"
+class UArrowComponent;
 class UEquipmentManagerComponent;
 class ADCharacter;
 class UCharacterSocket;
@@ -28,6 +29,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	UStaticMeshComponent* MainHand;
+
 
 protected:
 	// Called when the game starts
