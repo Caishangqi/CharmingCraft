@@ -101,8 +101,7 @@ FHitData UDAttributeComponent::PreInwardHitData(FHitData InwardHitData)
 	InwardHitData.Damage = URoguelikeAttributeLibrary::GetDamage(InwardHitData.Damage, Armour, InwardHitData.IsCritic,
 	                                                             InwardHitData.CriticalDamage);
 	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::PreInwardHitData Owner: %p | CriticalDamage: %d | Damage: %f"),
-	       GetOwner(),
-	       InwardHitData.CriticalDamage, InwardHitData.Damage);
+	       GetOwner(), InwardHitData.CriticalDamage, InwardHitData.Damage);
 
 	return InwardHitData;
 }
