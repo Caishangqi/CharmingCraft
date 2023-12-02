@@ -102,8 +102,8 @@ Waiting for the release of the first playable demo.
 
 ## 概念,设计模式,和实现原理
 
-以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 [**Wiki
-**](https://github.com/Caishangqi/CharmingCraft/wiki) 中展示
+以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 **[Wiki
+](https://github.com/Caishangqi/CharmingCraft/wiki)** 中展示
 
 - [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
 - [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
