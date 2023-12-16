@@ -30,8 +30,8 @@ ADCharacter::ADCharacter()
 	//	确保摄像机连接到弹簧上面
 	CameraComp->SetupAttachment(SpringArmComp);
 	SpringArmComp->bDoCollisionTest = false; //不要让摄像机卡住,我们需要卡住摄像机用透视.
-	SpringArmComp->bEnableCameraRotationLag = true;
-	SpringArmComp->CameraRotationLagSpeed = 0.5f;
+	// SpringArmComp->bEnableCameraRotationLag = true;
+	// SpringArmComp->CameraRotationLagSpeed = 0.5f;
 	GetCharacterMovement()->bOrientRotationToMovement = true; //  设置相机起始点？
 	bUseControllerRotationYaw = false;
 

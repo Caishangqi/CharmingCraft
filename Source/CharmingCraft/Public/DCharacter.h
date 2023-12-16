@@ -72,7 +72,7 @@ public:
 	/* Inventory */
 
 
-	UPROPERTY(VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UCameraComponent* CameraComp;
@@ -100,7 +100,7 @@ public:
 	//UPostProcessComponent* PostProcessComponent;
 
 	/* 物品栏 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
 	UDInventoryComponent* InventoryComponent;
 
 	/* 装备管理器 */

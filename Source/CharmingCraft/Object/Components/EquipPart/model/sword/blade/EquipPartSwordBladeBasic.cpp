@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "EquipPartSwordBladeBasic.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
@@ -71,7 +70,7 @@ void UEquipPartSwordBladeBasic::UpdateRenderMesh(EMaterial& NewComponentMaterial
 			TArray<FName> RowNames = ComponentMaterialDataTable->GetRowNames();
 			for (const FName& RowName : RowNames)
 			{
-				FBladeBasicMaterial* CurrentRow = ComponentMaterialDataTable->FindRow<FBladeBasicMaterial>(
+				FBladeBasicMaterial * CurrentRow = ComponentMaterialDataTable->FindRow<FBladeBasicMaterial>(
 					RowName, TEXT("UpdateRenderMesh"), true);
 
 				if (CurrentRow && CurrentRow->Material == NewComponentMaterialText)

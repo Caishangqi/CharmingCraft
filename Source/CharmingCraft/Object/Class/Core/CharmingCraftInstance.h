@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DCharacter.h"
 
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
@@ -33,5 +34,9 @@ public:
 	UDataTable* HiltBasicMaterial;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
 	UDataTable* PommelDecorativeMaterial;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
+	TObjectPtr<ADCharacter> PlayerCharacter;
+
 	UCharmingCraftInstance();
 };

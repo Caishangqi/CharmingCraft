@@ -278,7 +278,7 @@ void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop -0"));
 	FVector Location = GetDropLocation();
 	FTransform SpawnTransform(Location);
-	
+
 	// Fixed in 23.09.19.01 Custom Copy constructor
 	UItemStack* CachedItemStack = ItemStack->CopyData();
 
@@ -383,7 +383,6 @@ void UDInventoryComponent::BeginPlay()
 			Items->ItemMeta->UpdateRender(GetWorld());
 		}
 	}
-	
 }
 
 /*
