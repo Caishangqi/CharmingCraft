@@ -2,6 +2,9 @@
 
 
 #include "Entry.h"
+#include "EngineUtils.h"
+#include "LevelTargetPoint.h"
+#include "Engine/TargetPoint.h"
 
 
 // Sets default values for this component's properties
@@ -31,4 +34,18 @@ void UEntry::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+bool UEntry::TeleportToDestination(APawn* TargetPawn)
+{
+	for (TActorIterator<ALevelTargetPoint> It(GetWorld(), ALevelTargetPoint::StaticClass()); It; ++It)
+	{
+		ALevelTargetPoint* TargetActor = *It;
+		if (TargetActor->GetActorLabel() == DestinationName)
+		{
+			TargetPawn->TeleportTo(TargetActor->GetActorLocation(), FRotator3d(0, 0, 0), false, true);
+			return true;
+		}
+	}
+	return false;
 }

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
-#include "Engine/TargetPoint.h"
 #include "Entry.generated.h"
 
 
@@ -21,6 +20,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UEntry> Destination;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString DestinationName;
+
 	// Whether or not set visibility of origin level after entry sublevel
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bPostEntryOriginVisibility;
@@ -33,4 +35,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	/*!
+	 * Teleport Any Pawn to the specific DestinationName, you must load the stream
+	 * level if you have then teleport or else the target point will be null
+	 * @param TargetPawn The Pawn Actor you want to teleport to the destination
+	 * @return whether or not find the target point
+	 */
+	UFUNCTION(BlueprintCallable)
+	bool TeleportToDestination(APawn* TargetPawn);
 };
