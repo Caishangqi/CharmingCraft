@@ -186,6 +186,11 @@ void ADCharacter::PrintDebugMessage()
 	// InventoryComponent->PrintDebugMessage();
 }
 
+void ADCharacter::SetCameraView()
+{
+	SpringArmComp->SetRelativeRotation(FRotator3d(-50, 45, 0));
+}
+
 
 // void ADCharacter::PrimaryAttack()
 // {

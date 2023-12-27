@@ -15,13 +15,13 @@
  */
 void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
-	Super::OnMoveCompleted(RequestID, Result);
+	//Super::OnMoveCompleted(RequestID, Result);
 	ADCharacter* Player = Cast<ADCharacter>(GetPawn());
-	
-	
+
 	// 如果被打断,没有成功
 	if (!Result.IsSuccess())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Interrupted! %s"), *Result.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted while moving ADPlayerAIController::OnMoveCompleted"));
 		TargetActor = nullptr; //释放资源
 	}

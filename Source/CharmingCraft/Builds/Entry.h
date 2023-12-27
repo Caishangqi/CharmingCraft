@@ -17,8 +17,8 @@ public:
 	UEntry();
 
 	// The Entry Destination, assign in Editor
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<UEntry> Destination;
+	// UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	// TObjectPtr<UEntry> Destination;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString DestinationName;

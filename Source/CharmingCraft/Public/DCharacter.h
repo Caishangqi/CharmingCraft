@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h" //核心UE运行环境下的要素
+
 #include "GameFramework/Character.h"
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
@@ -70,6 +71,12 @@ public:
 	virtual void PrintDebugMessage();
 
 	/* Inventory */
+
+	/* Camera Management*/
+
+	// TODO: Use enum to handle camera
+	UFUNCTION(BlueprintCallable)
+	void SetCameraView();
 
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分

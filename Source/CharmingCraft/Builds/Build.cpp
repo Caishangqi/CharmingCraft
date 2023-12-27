@@ -19,12 +19,22 @@ ABuild::ABuild()
 
 	BuildingEntry = CreateDefaultSubobject<UEntry>(TEXT("MainEntry"));
 	BuildingEntry->SetupAttachment(SceneComponent);
+
+	BuildingExitPoint = CreateDefaultSubobject<UChildActorComponent>(TEXT("Building Default Exit Location"));
+	BuildingExitPoint->SetupAttachment(SceneComponent);
+	// 创建并附加MyCustomActor到MyChildComponent
 }
 
 // Called when the game starts or when spawned
 void ABuild::BeginPlay()
 {
 	Super::BeginPlay();
+	ALevelTargetPoint* ExitActor = GetWorld()->SpawnActor<ALevelTargetPoint>(ALevelTargetPoint::StaticClass());
+	ExitActor->TargetName = BuildName + " Default Exit";
+	if (ExitActor)
+	{
+		ExitActor->AttachToComponent(BuildingExitPoint, FAttachmentTransformRules::KeepRelativeTransform);
+	}
 }
 
 // Called every frame

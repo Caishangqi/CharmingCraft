@@ -52,28 +52,19 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 		return false;
 	}
 
-	/*
-	// APlayerController* Controller = Cast<APlayerController>(Player->GetInstigatorController());
-	// float MouseX, MouseY;
-	// Controller->GetMousePosition(MouseX, MouseY);
-	//
-	// // 将鼠标位置转换为世界空间的射线
-	// FHitResult HitResult;
-	// // 将鼠标位置转换为世界空间的射线
-	// FVector WorldLocation, WorldDirection;
-	// Controller->DeprojectScreenPositionToWorld(MouseX, MouseY, WorldLocation, WorldDirection);
-	//
-	//
-	// // 进行射线投射
-	// FVector StartLocation = WorldLocation;
-	// FVector EndLocation  = StartLocation + WorldDirection * 10000.0f; // 你可以根据需要调整这个值
-	// GetWorld()->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility);
-	//
-	// // 如果射线击中了一个Actor，那么获取这个Actor
-	// AActor* HitActor = HitResult.GetActor();045637435 098.，7 09
-	*/
 	if (HitActor)
 	{
+		if (!AIController)
+		{
+			/*
+			 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
+			 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
+			 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
+			 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
+			 */
+			AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
+		}
+
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 		{
@@ -91,22 +82,13 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 					/* 转向 */
 					Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 					Player->ActionComponent->MainHandAction();
-					return false;
+					//return false;
 				}
 
 				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
-				if (!AIController)
-				{
-					/*
-					 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
-					 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
-					 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
-					 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
-					 */
-					AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
-				}
+
 				// 使用AI控制器移动Pawn
-				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange , true, true, false,
+				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange, true, true, false,
 				                          nullptr,
 				                          false);
 				DrawDebugLine(Player->GetWorld(), HitActor->GetActorLocation(), HitActor->GetActorLocation(),
@@ -115,7 +97,6 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 
 				// 执行动作
 				AIController->TargetActor = HitActor;
-				return false;
 			}
 
 			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
@@ -126,20 +107,10 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			}
 			else
 			{
-				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
-				if (!AIController)
-				{
-					/*
-					 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
-					 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
-					 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
-					 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
-					 */
-					AIController = Player->PlayerAIController;
-				}
 				// 使用AI控制器移动Pawn
 				AIController->MoveToActor(HitActor, CastedObject->MinimumInteractRange, true, true, true,
-				                          nullptr, false);
+				                          nullptr, true);
+
 				// 给AI控制器类里面设置点击的目标, 传参到这个类
 				AIController->TargetActor = HitActor;
 			}

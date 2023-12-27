@@ -9,4 +9,6 @@ class CHARMINGCRAFT_API ALevelTargetPoint : public ATargetPoint
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FString TargetName;
 };

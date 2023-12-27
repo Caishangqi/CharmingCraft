@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Entry.h"
+#include "LevelTargetPoint.h"
 #include "GameFramework/Actor.h"
 #include "Build.generated.h"
 
@@ -24,6 +25,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Building Information")
+	FString BuildName;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="SceneComponent")
 	TObjectPtr<USceneComponent> SceneComponent;
 
@@ -35,4 +39,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="BuildingEntry")
 	TObjectPtr<UEntry> BuildingEntry;
+
+	// Building Default Exit location, use for interior subspace teleport
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="BuildingEntry")
+	TObjectPtr<UChildActorComponent> BuildingExitPoint;
 };
