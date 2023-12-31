@@ -1,10 +1,10 @@
-# CharmingCraft: Desolate Age (Unreal Build)
-
+# CharmingCraft: Journey (Unreal Build)
+![project_title](https://github.com/Caishangqi/CharmingCraft/assets/39553613/afff6fe3-e541-455d-978c-84dfd8df58f3)
 <p align="center">
-<img src = "https://github.com/Caishangqi/minecraft-modpack-charmingcraft-journey/assets/39553613/290e0607-2e2a-4f35-9149-6abfe15459f7">
+<img src = "https://i.imgur.com/EF6t6WA.png">
 </p>
 
-<h4 align="center">A Minecraft Style like top-down RPG game implement by Unreal Engine 5.3</h4>
+<h4 align="center">A Pixel Low poly top-down RPG game implement by Unreal Engine 5.3</h4>
 <p align="center">
 <a href="https://www.codefactor.io/repository/github/caishangqi/charmingcraft"><img src="https://www.codefactor.io/repository/github/caishangqi/minecraft-modpack-charmingcraft-journey/badge" alt="CodeFactor" /></a>
 <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Caishangqi/CharmingCraft">
