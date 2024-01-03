@@ -9,6 +9,13 @@
 #include "GameFramework/Character.h"
 #include "Creature.generated.h"
 
+/*!
+ *	The Base Class in Editor is BP_Creature, it add more component
+ *	- DClickableActionComponentBP
+ *
+ *	TODO: The AI interface should write in this native class not inside the
+ *	Editor BP_Creature
+ */
 UCLASS()
 class CHARMINGCRAFT_API ACreature : public ACharacter, public IActionOnHitInterface, public IDGameplayInterface
 {
