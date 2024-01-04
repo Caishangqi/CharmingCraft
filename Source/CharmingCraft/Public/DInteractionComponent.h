@@ -19,6 +19,16 @@ class CHARMINGCRAFT_API UDInteractionComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UDInteractionComponent();
+	/*!
+	 * After line trace projection, the player would move to the actor they interact
+	 * if the distance is not in the minimum range, then the player should move to
+	 * the minimum range and execute interact methods
+	 * 
+	 * @param HitActor The actor that player interact
+	 * @param HitLocation The location that player interact
+	 * @return true if player interact within minimum range
+	 * @return false if player need extra move to actor
+	 */
 	UFUNCTION(BlueprintCallable)
 	bool PrimaryInteract(AActor* HitActor, FVector HitLocation);
 	//CancelInter

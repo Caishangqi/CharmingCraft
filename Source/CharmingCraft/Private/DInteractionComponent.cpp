@@ -49,7 +49,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 	{
 		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 		Player->ActionComponent->MainHandAction();
-		return false;
+		return false; 
 	}
 
 	if (HitActor)
@@ -82,10 +82,13 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 					/* 转向 */
 					Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 					Player->ActionComponent->MainHandAction();
-					//return false;
+					return true; // If do not need extra MoveTo(), then return true
 				}
 
 				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
+
+				// 执行动作
+				AIController->TargetActor = HitActor;
 
 				// 使用AI控制器移动Pawn
 				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange, true, true, false,
@@ -95,8 +98,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 				              FColor::Yellow, false, 2, ECC_Visibility,
 				              20.0f);
 
-				// 执行动作
-				AIController->TargetActor = HitActor;
+				return false;
 			}
 
 			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
