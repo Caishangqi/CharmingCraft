@@ -5,12 +5,9 @@
 
 #include "DCharacter.h"
 #include "../Object/Components/ItemStack.h"
-#include "CharmingCraft/Interface/ActionOnHitInterface.h"
+#include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
-#include "CharmingCraft/Object/Components/DAttributeComponent.h"
-#include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
-#include "Kismet/KismetMathLibrary.h"
 
 UHand::UHand()
 {
@@ -64,7 +61,7 @@ void UHand::OnWeaponUse()
 				// 如果这个Actor还没有被击中
 				UE_LOG(LogTemp, Display, TEXT("Hited Actor: %s"), *HitActor->GetName());
 
-				if (HitActor->Implements<UActionOnHitInterface>())
+				if (HitActor->Implements<UDamageable>())
 				{
 					OnWeaponHit(MappingItemStack, Player, SwordActor, HitActor);
 				}
@@ -91,7 +88,7 @@ void UHand::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemAc
 
 	UE_LOG(LogTemp, Display, TEXT("Hite Data: Damage = %f bIsCritic  = %hhd MagicDamage = %f"), HitData.Damage,
 	       HitData.IsCritic, HitData.MagicDamage);
-	IActionOnHitInterface::Execute_OnActionHit(HitEntity, Player, HitData);
+	IDamageable::Execute_OnActionHit(HitEntity, Player, HitData);
 }
 
 void UHand::EndItemInteract()

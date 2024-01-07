@@ -3,12 +3,13 @@
 
 #include "DMagicProjectile.h"
 
+#include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DActionComponent.h"
-#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
+class UDAttributeComponent;
 // Sets default values
 ADMagicProjectile::ADMagicProjectile()
 {

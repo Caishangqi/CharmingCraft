@@ -2,10 +2,8 @@
 
 
 #include "DCharacter.h"
-#include "DInteractionComponent.h"
 #include "DPlayerAIController.h"
-#include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
-#include "CharmingCraft/Interface/DGameplayInterface.h"
+#include "CharmingCraft/Core/Interact/DInteractionComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 
 /*!

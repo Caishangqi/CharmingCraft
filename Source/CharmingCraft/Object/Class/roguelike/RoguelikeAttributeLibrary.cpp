@@ -4,8 +4,6 @@
 #include "RoguelikeAttributeLibrary.h"
 
 #include "DCharacter.h"
-#include "CharmingCraft/Object/Components/DAttributeComponent.h"
-#include "CharmingCraft/Object/Structs/Attribute/FHitData.h"
 #include "Kismet/KismetMathLibrary.h"
 
 bool URoguelikeAttributeLibrary::IsAttackCriticFloat(float CriticValue)

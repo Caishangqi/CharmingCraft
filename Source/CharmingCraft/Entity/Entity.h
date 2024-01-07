@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Interface/ActionOnHitInterface.h"
+#include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "Entity.generated.h"
 
 class UDamageIndicator;
 class UDAttributeComponent;
 
-UCLASS(Blueprintable)
-class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype, public IActionOnHitInterface
+UCLASS(Blueprintable,BlueprintType)
+class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype, public IDamageable
 {
 	GENERATED_BODY()
 
@@ -34,6 +34,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="默认")
 	TObjectPtr<UDAttributeComponent> AttributeComponent;
 
+	
 	/** TODO: Need to investigate why the component is inactive */
 	// UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="默认")
 	// TObjectPtr<UDamageIndicator> DamageIndicator;

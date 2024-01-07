@@ -2,7 +2,8 @@
 
 
 #include "DTargetDummy.h"
-#include "CharmingCraft/Object/Components/DAttributeComponent.h"
+
+#include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 
 // Sets default values
 ADTargetDummy::ADTargetDummy()

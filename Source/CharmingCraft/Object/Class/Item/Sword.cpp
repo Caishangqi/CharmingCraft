@@ -2,11 +2,10 @@
 #include "Sword.h"
 #include "DCharacter.h"
 #include "../Object/Components/ItemStack.h"
+#include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Entity/Item/model/SwordActor.h"
-#include "CharmingCraft/Interface/ActionOnHitInterface.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
-#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "Components/ArrowComponent.h"
 
 /* 不修改数据, 只读取和执行操作 原型物品模板类 */
@@ -67,7 +66,7 @@ void USword::OnWeaponUse()
 				// 如果这个Actor还没有被击中
 				UE_LOG(LogTemp, Display, TEXT("Hited Actor: %s"), *HitActor->GetName());
 
-				if (HitActor->Implements<UActionOnHitInterface>())
+				if (HitActor->Implements<UDamageable>())
 				{
 					OnWeaponHit(MappingItemStack, Player, SwordActor, HitActor);
 				}
@@ -102,7 +101,7 @@ void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemA
 	UE_LOG(LogTemp, Display, TEXT("Hite Data: Damage = %f bIsCritic  = %hhd MagicDamage = %f"), HitData.Damage,
 	       HitData.IsCritic, HitData.MagicDamage);
 	
-	IActionOnHitInterface::Execute_OnActionHit(HitEntity, Player, HitData);
+	IDamageable::Execute_OnActionHit(HitEntity, Player, HitData);
 }
 
 void USword::EndItemInteract()

@@ -5,9 +5,9 @@
 #include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
+#include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "CharmingCraft/Object/Components/DActionComponent.h"
-#include "CharmingCraft/Object/Components/DAttributeComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 
 

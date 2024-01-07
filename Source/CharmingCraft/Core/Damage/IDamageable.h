@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "UObject/Interface.h"
-#include "../Object/Structs/Attribute/FHitData.h"
-#include "ActionOnHitInterface.generated.h"
+#include "CharmingCraft/Core/Attribute/FHitData.h"
+#include "IDamageable.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UActionOnHitInterface : public UInterface
+class UDamageable : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -17,7 +18,7 @@ class UActionOnHitInterface : public UInterface
 /**
  * 
  */
-class CHARMINGCRAFT_API IActionOnHitInterface
+class CHARMINGCRAFT_API IDamageable
 {
 	GENERATED_BODY()
 
@@ -25,4 +26,6 @@ class CHARMINGCRAFT_API IActionOnHitInterface
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnActionHit(APawn* InstigatorPawn, FHitData HitData);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UDAttributeComponent* GetAttributeComponent();
 };

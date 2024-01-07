@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Object/Structs/Attribute/FHitData.h"
-#include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
+#include "CharmingCraft/Core/Attribute/FHitData.h"
+#include "CharmingCraft/Core/Attribute/FPlayerAttribute.h"
+#include "CharmingCraft/Core/Damage/DamageHandler/DamageChain.h"
 #include "Components/ActorComponent.h"
 #include "DAttributeComponent.generated.h"
 
@@ -88,6 +89,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHitDataApply OnHitDataApply;
 
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	TObjectPtr<UDamageChain> DamageChain;
+
 	UFUNCTION(BlueprintCallable, Category= "Attributes")
 	bool ApplyHealthChange(float Delta); // whether or not change apply
 
@@ -96,17 +100,6 @@ public:
 	void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 
 	FPlayerAttribute GetPlayerAttributeData();
-
-	/*!
-	 *	PreInwardHitData receive HitData from instigator and apply the attribute and
-	 *	damage multiplier, return FHitData that was modified
-	 *	
-	 *	@param InwardHitData Accept HitData From Instigator
-	 *	@return FHitData The HitData that had applied attribute and
-	 *	damage multiplier
-	 */
-	UFUNCTION(BlueprintCallable)
-	FHitData PreInwardHitData(FHitData InwardHitData);
 
 	/*!
 	 *	PostInwardHitData receive HitData from PreInwardHitData and apply the HitData
@@ -118,6 +111,7 @@ public:
 	 *	@return FHitData The HitData that was finalized and prepare broadcast to
 	 *	UI related components
 	 */
+	DEPRECATED_MACRO()
 	UFUNCTION(BlueprintCallable)
 	FHitData PostInwardHitData(FHitData ModifiedHitData);
 };

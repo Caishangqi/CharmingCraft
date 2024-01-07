@@ -4,7 +4,6 @@
 #include "DAttributeComponent.h"
 
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
-#include "CharmingCraft/Object/Structs/Attribute/FPlayerAttribute.h"
 
 // Sets default values for this component's properties
 UDAttributeComponent::UDAttributeComponent()
@@ -38,7 +37,8 @@ void UDAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::BeginPlay() Name : %d"), IsValid(this));
+	// Apply DamageChain
+	DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
 	// ...
 }
 
@@ -92,19 +92,6 @@ FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 	return PlayerAttribute;
 }
 
-FHitData UDAttributeComponent::PreInwardHitData(FHitData InwardHitData)
-{
-	/* Critical Damage Calculation */
-	InwardHitData.CriticalDamage = URoguelikeAttributeLibrary::GetCriticalDamage(
-		InwardHitData.CriticalDamage, CriticalDamageDefenseEnhance);
-	/* True Damage Handle After Armour Damage reduced */
-	InwardHitData.Damage = URoguelikeAttributeLibrary::GetDamage(InwardHitData.Damage, Armour, InwardHitData.IsCritic,
-	                                                             InwardHitData.CriticalDamage);
-	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::PreInwardHitData Owner: %p | CriticalDamage: %d | Damage: %f"),
-	       GetOwner(), InwardHitData.CriticalDamage, InwardHitData.Damage);
-
-	return InwardHitData;
-}
 
 FHitData UDAttributeComponent::PostInwardHitData(FHitData ModifiedHitData)
 {

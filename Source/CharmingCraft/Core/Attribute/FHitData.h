@@ -11,6 +11,8 @@ struct FHitData : public FTableRowBase
 	float Damage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="MagicDamage")
 	float MagicDamage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TrueDamage")
+	float TrueDamage;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="IsCritic", MakeStructureDefaultValue= true))
 	bool IsCritic;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CriticalDamage")
