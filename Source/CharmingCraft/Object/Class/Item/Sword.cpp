@@ -92,7 +92,7 @@ void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemA
 	HitData.Damage = EquipmentAttribute.Damage + PlayerAttribute.Damage;
 	HitData.MagicDamage = EquipmentAttribute.MagicDamage + PlayerAttribute.AbilityPower;
 	HitData.CriticalDamage = EquipmentAttribute.CriticalDamage + PlayerAttribute.CriticalDamageEnhance;
-
+	HitData.DamageResponse = EDamageResponse::HitReaction;
 
 	// 如果随机数小于暴击率，则表示暴击
 	HitData.IsCritic = URoguelikeAttributeLibrary::IsAttackCriticInt(
@@ -100,7 +100,7 @@ void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemA
 
 	UE_LOG(LogTemp, Display, TEXT("Hite Data: Damage = %f bIsCritic  = %hhd MagicDamage = %f"), HitData.Damage,
 	       HitData.IsCritic, HitData.MagicDamage);
-	
+
 	IDamageable::Execute_OnActionHit(HitEntity, Player, HitData);
 }
 

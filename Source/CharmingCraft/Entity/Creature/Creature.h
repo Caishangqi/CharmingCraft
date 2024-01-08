@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
+#include "CharmingCraft/Core/UI/IUIProcess.h"
 #include "CharmingCraft/Interface/DGameplayInterface.h"
 #include "GameFramework/Character.h"
 #include "Creature.generated.h"
@@ -18,7 +19,7 @@ class UDamageIndicator;
  *	Editor BP_Creature
  */
 UCLASS(Blueprintable, BlueprintType)
-class CHARMINGCRAFT_API ACreature : public ACharacter, public IDamageable, public IDGameplayInterface
+class CHARMINGCRAFT_API ACreature : public ACharacter, public IDamageable, public IDGameplayInterface, public IUIProcess
 {
 	GENERATED_BODY()
 
@@ -35,6 +36,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Attribute")
 	TObjectPtr<UDAttributeComponent> CreatureAttributeComponent;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResponseMontage")
+	TMap<EDamageResponse, TObjectPtr<UAnimMontage>> HitResponseMontage;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,8 +47,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual void HandleDamageIndicator_Implementation(FHitData HitData) override;
+	UFUNCTION(BlueprintCallable)
+	virtual void HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp,
+	                                                float Health, float HealthDelta) override;
+	UFUNCTION(BlueprintCallable)
+	virtual void HandleDeath_Implementation() override;
+	UFUNCTION(BlueprintCallable)
+	virtual bool IsDead_Implementation() override;
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	void HitReaction(EDamageResponse Response);
 };

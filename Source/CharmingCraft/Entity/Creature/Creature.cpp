@@ -20,13 +20,16 @@ ACreature::ACreature()
 void ACreature::BeginPlay()
 {
 	Super::BeginPlay();
+	CreatureAttributeComponent->OnHealthChanged.AddDynamic(this, &ACreature::HandleHealthChanged);
 }
+
 
 // Called every frame
 void ACreature::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
 
 // Called to bind functionality to input
 void ACreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -36,5 +39,31 @@ void ACreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACreature::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
-	IDamageable::OnActionHit_Implementation(InstigatorPawn, HitData);
+	CreatureAttributeComponent->DamageChain->HandleDamage(HitData);
+	HitReaction(HitData.DamageResponse);
+}
+
+void ACreature::HandleDamageIndicator_Implementation(FHitData HitData)
+{
+	IUIProcess::HandleDamageIndicator_Implementation(HitData);
+}
+
+void ACreature::HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp,
+                                                   float Health, float HealthDelta)
+{
+	IDamageable::HandleHealthChanged_Implementation(InstigatorActor, OwningComp, Health, HealthDelta);
+}
+
+
+void ACreature::HandleDeath_Implementation()
+{
+}
+
+bool ACreature::IsDead_Implementation()
+{
+	return CreatureAttributeComponent->IsDead;
+}
+
+void ACreature::HitReaction_Implementation(EDamageResponse Response)
+{
 }

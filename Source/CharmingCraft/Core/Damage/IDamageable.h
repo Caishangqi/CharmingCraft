@@ -28,4 +28,11 @@ public:
 	void OnActionHit(APawn* InstigatorPawn, FHitData HitData);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UDAttributeComponent* GetAttributeComponent();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void HandleHealthChanged(AActor* InstigatorActor, UDAttributeComponent*
+	                         OwningComp, float Health, float HealthDelta);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void HandleDeath();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool IsDead();
 };

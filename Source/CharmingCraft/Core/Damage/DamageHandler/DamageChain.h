@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "DamageHandler.h"
+#include "EDamageHandlerType.h"
 #include "UObject/Object.h"
 #include "DamageChain.generated.h"
+
 
 /**
  * Damage Chain Control the order of damage handle
@@ -38,4 +40,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	void HandleDamage(FHitData HitData);
+
+protected:
+	static const TObjectPtr<UDamageHandler> CreateDamageHandler(EDamageHandlerType HandlerType, UObject* Outer);
+	
 };

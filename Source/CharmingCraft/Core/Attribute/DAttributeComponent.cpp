@@ -27,6 +27,7 @@ UDAttributeComponent::UDAttributeComponent()
 	CriticalDamageDefenseEnhance = 0;
 	CriticalDamageEnhance = 0;
 	AttackSpeedEnhance = 0.0f;
+	IsDead = false;
 	UE_LOG(LogTemp, Warning, TEXT("UDAttributeComponent::UDAttributeComponent() Create Owner: %s"),
 	       *GetOuter()->GetName());
 }
@@ -56,6 +57,8 @@ bool UDAttributeComponent::ApplyHealthChange(const float Delta)
 {
 	Health += Delta;
 	//播放事件, 触发事件
+	UE_LOG(LogTemp, Display, TEXT("[+]  UDAttributeComponent::ApplyHealthChange: %f | Owner: %s"), Delta,
+	       *GetOwner()->GetName());
 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
 	return true;
 }

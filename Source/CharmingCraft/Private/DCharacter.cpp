@@ -87,6 +87,8 @@ void ADCharacter::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Unable to set player AIController to Pawn"));
 	}
+
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ADCharacter::HandleHealthChanged);
 }
 
 
@@ -290,4 +292,15 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	                                 &UDActionComponent::SkillStandbyPressed);
 	PlayerInputComponent->BindAction("Standby", IE_Released, ActionComponent,
 	                                 &UDActionComponent::SkillStandbyReleased);
+}
+
+void ADCharacter::HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp,
+                                                     float Health, float HealthDelta)
+{
+	IDamageable::HandleHealthChanged_Implementation(InstigatorActor, OwningComp, Health, HealthDelta);
+}
+
+void ADCharacter::HandleDeath_Implementation()
+{
+	IDamageable::HandleDeath_Implementation();
 }

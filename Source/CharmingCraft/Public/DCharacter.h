@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h" //核心UE运行环境下的要素
+#include "CharmingCraft/Core/Damage/IDamageable.h"
 
 #include "GameFramework/Character.h"
 #include "DCharacter.generated.h" //自己生成的，恶心代码
@@ -24,7 +25,7 @@ class UDActionComponent;
  * https://sketchfab.com/3d-models/minecraft-player-slim-4e9962a0a094494ab3e85cd688f3d74d
  */
 UCLASS() //Part of UE Property System
-class CHARMINGCRAFT_API ADCharacter : public ACharacter
+class CHARMINGCRAFT_API ADCharacter : public ACharacter, public IDamageable
 {
 	GENERATED_BODY() //确保放在第一行
 protected:
@@ -126,6 +127,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp, float Health, float HealthDelta) override;
+	virtual void HandleDeath_Implementation() override;
 public:
 	/* Events */
 };

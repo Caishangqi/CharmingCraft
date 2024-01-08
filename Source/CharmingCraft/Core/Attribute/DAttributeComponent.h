@@ -67,6 +67,8 @@ public:
 	float AttackSpeedEnhance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	int32 InteractRange;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Attributes")
+	bool IsDead;
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
@@ -111,7 +113,6 @@ public:
 	 *	@return FHitData The HitData that was finalized and prepare broadcast to
 	 *	UI related components
 	 */
-	DEPRECATED_MACRO()
 	UFUNCTION(BlueprintCallable)
 	FHitData PostInwardHitData(FHitData ModifiedHitData);
 };
