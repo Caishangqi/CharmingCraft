@@ -13,24 +13,22 @@
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Caishangqi/CharmingCraft">
 </p>
 
-## 介绍 Introduction
+## 介绍
 
-This project is crafted using Unreal Engine 5.3.1 and is a replica of the Minecraft ModPack, Charming Craft. Within this
-project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous
-RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
+本项目使用 Unreal Engine 5.3 开发了一款顶视角体素 RPG 游戏。该游戏从《Minecraft》中汲取灵感，比如其背包系统、艺术风格，以及《Minecraft: Dungeon》的顶视角、战斗系统和等距室内场景设计。《CharmingCraft》旨在创造一种更加休闲的游戏体验，玩家可以自由地探索地图、收集资源制作武器、完成任务等等。
 
-## 构建 Build
+## 构建
 
 Use the `vc solution file` and the `Unreal 5.3.1 Engine source code` and `uproject file` to build. All dependency is on
 this repository.
 
-## 特性 Feature
+## 特性
 
 Waiting for the release of the first playable demo.
 
 等待第一个试玩版本发布
 
-## 进度 Progress
+## 进度
 
 - 基于C++的投射物蓝图模板实现
 - 交互接口以及人物交互功能
@@ -51,17 +49,17 @@ Waiting for the release of the first playable demo.
 - Dota 鼠标移动攻击系统, 例如角色转身,和新加原地攻击等...
 - 基于玩家攻击方向的 伤害数字 动画
 
-## 内容机制 Content and Mechanism
+## 内容机制
 
-- [属性乘区和伤害计算 Attribute Multiplier and Damage Calculator](https://github.com/Caishangqi/CharmingCraft/wiki/Attribute-Multiplier-and-Damage-Calculator)
+- [属性乘区和伤害计算](https://github.com/Caishangqi/CharmingCraft/wiki/Attribute-Multiplier-and-Damage-Calculator)
 
-## 即将到来 Coming soon
+## 即将到来
 
 - 完整的属性UI
 - 近战攻击和基础装备系统
 - Episodes 35,70 ...
 
-## 等待改进 Awaiting improvement
+## 等待改进
 
 - 寻路高处可交互物品造成的卡死,抖动 (**已修复**)
 - 在被建筑物遮挡时正确地在建筑物后方移动 (Ray Tracing)
@@ -70,15 +68,15 @@ Waiting for the release of the first playable demo.
 - 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**已修复**)
 - 武器的 `OnHit()` 方法是由武器类型决定的, 可以考虑传入武器类模板让交互组件执行模板类的方法实现 **HitData** 传递
 
-## 项目结构 Project Structure
+## 项目结构
 
-### 项目资产结构 Asset Structure
+### 项目资产结构
 
 - Assets
     - models
     - textures
 
-### 项目源码结构 Code Structure
+### 项目源码结构
 
 - Source
     - Object
@@ -109,7 +107,7 @@ Waiting for the release of the first playable demo.
 - [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
 - [解耦和设计模式](https://github.com/Caishangqi/CharmingCraft/wiki/Decoupling-and-Actor-Component)
 
-### 实现原理 Implementation
+### 实现原理
 
 - [近战攻击实现原理](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [3D物品渲染2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)

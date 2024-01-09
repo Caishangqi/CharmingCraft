@@ -13,113 +13,124 @@
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Caishangqi/CharmingCraft">
 </p>
 
-## 介绍 Introduction
+### Select Other Language README: [Chinese](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/README_CN.md)
 
-This project is crafted using Unreal Engine 5.3.1 and is a replica of the Minecraft ModPack, Charming Craft. Within this
-project, we've preserved the gameplay mechanics and crafting features of the original modpack while integrating numerous
-RPG elements. Additionally, various features of Unreal Engine will be utilized to implement certain mod mechanics.
+## Introduction
 
-## 构建 Build
+This project utilizes Unreal Engine 5.3 to create a Top-Down voxel RPG game. It draws inspiration from Minecraft, such as its inventory system and artistic style, as well as the Top-Down perspective, combat system, and isometric indoor scene design of the game Minecraft: Dungeon. CharmingCraft aims to offer a more relaxed gameplay experience, where players can freely explore the map, gather resources to craft weapons, complete quests, and more...
+
+
+## Build
 
 Use the `vc solution file` and the `Unreal 5.3.1 Engine source code` and `uproject file` to build. All dependency is on
 this repository.
 
-## 特性 Feature
+## Feature
 
-Waiting for the release of the first playable demo.
+### Equipment assembly
 
-等待第一个试玩版本发布
+- Just like how people make weapons, you can use any material to create different weapon parts and assemble them together
 
-## 进度 Progress
+### Smart enemy AI
 
-- 基于C++的投射物蓝图模板实现
-- 交互接口以及人物交互功能
-- 基于交互接口实现的开宝箱功能及动画
-- 基于事件绑定和UI参数暴露实现血条衰减
-- 基于动画系统实现的数字动画
-- 基于数学函数的动态材质
-- 使用游戏标签 GameTags 实现箱子和钥匙
-- 使用游戏标签 GameTags 实现格挡技能 (R) 键
-- 在击中时使材质发亮,显示高光
-- 物品交互高光和玩家遮挡高光
-- 物品栏系统,物品原型
-- 盔甲锻造台
-- 3D物品渲染2D
-- 物品装配机制, 不同材料打造物品
-- 武器装配,不同武器部分可装配不同类型和材料的零件
-- 基于不同武器类型的攻击动画和攻击范围
-- Dota 鼠标移动攻击系统, 例如角色转身,和新加原地攻击等...
-- 基于玩家攻击方向的 伤害数字 动画
+- Many enemies will interact with the scene and they will use their best advantage to try to defeat you
+- Current enemies: Slime, Skeleton, Skeleton Shaman
 
-## 内容机制 Content and Mechanism
+### Flexible action system
 
-- [属性乘区和伤害计算 Attribute Multiplier and Damage Calculator](https://github.com/Caishangqi/CharmingCraft/wiki/Attribute-Multiplier-and-Damage-Calculator)
+- Although it is a TopDown perspective game, you can click on the target to attack or hold down shift to attack to specify the click direction.
+- Different weapons have different attack animations, and the speed of these attack animations depends on your character and equipment attributes.
 
-## 即将到来 Coming soon
+### Scene switching
 
-- 完整的属性UI
-- 近战攻击和基础装备系统
-- Episodes 35,70 ...
+- When you walk into the room from the outside, the scene switching will be smooth and stylized.
 
-## 等待改进 Awaiting improvement
+### Inventory system
 
-- 寻路高处可交互物品造成的卡死,抖动 (**已修复**)
-- 在被建筑物遮挡时正确地在建筑物后方移动 (Ray Tracing)
-- 动态寻路完善, 玩家在破坏方块或者交互物品时刷新可供的路线
-- 丢弃物品的时候是发射行为而不是生成行为
-- 渲染成3D物品至2D图像时必须放置手动在世界放置RenderTargetActor否则失效 (**已修复**)
-- 武器的 `OnHit()` 方法是由武器类型决定的, 可以考虑传入武器类模板让交互组件执行模板类的方法实现 **HitData** 传递
+- The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
 
-## 项目结构 Project Structure
+### RPG elements
 
-### 项目资产结构 Asset Structure
+- Use the chain of responsibility design pattern to handle multiple types of damage. The damage is packaged into HitData by struct.
+- Magic, arcane, and some weird stuff...
+
+## Progress
+
+- Implementation of projectile blueprint templates based on C++
+- Interactive interface and character interaction functionality
+- Chest opening feature and animation implemented through the interactive interface
+- Health bar decay implemented using event binding and UI parameter exposure
+- Digital animations realized through the animation system
+- Dynamic materials based on mathematical functions
+- Implementation of chests and keys using GameTags
+- Block skill (R key) implemented using GameTags
+- Material highlight and glow upon impact
+- Interactive item highlight and player obstruction glow
+- Inventory system and item prototypes
+- Armor forging station
+- Rendering 3D items in 2D
+- Item assembly mechanism, crafting items from different materials
+- Weapon assembly, assembling different types and materials of parts for various weapon parts
+- Attack animations and ranges based on different weapon types
+- Dota-style mouse movement attack system, including character rotation and new stationary attacks
+- Damage number animations based on player's attack direction
+- Comprehensive AI system, including EQS, Behavior Trees, Decorators, and Services
+- Scene transitions implemented using scene streaming
+
+
+## Content and Mechanism
+
+- [Attribute Multiplier and Damage Calculator](https://github.com/Caishangqi/CharmingCraft/wiki/Attribute-Multiplier-and-Damage-Calculator)
+
+## Coming Soon
+
+- Complete attribute UI
+- Game serialization and saving
+- Refreshable areas: Respawn of monsters, resources, creatures
+- Reset inventory UI and drag method
+- Quest system with related NPCs and quest interfaces
+- Developing an engaging storyline (currently no ideas)
+
+## Awaiting Improvement
+
+- Fixing stuck and jittery issues when interacting with items on high ground (**Fixed**)
+- Correct movement behind buildings when obstructed (Ray Tracing)
+- Dynamic pathfinding improvements, refreshing available routes when players destroy blocks or interact with items (**Fixed**)
+- Changing item dropping from generation to a throwing action
+- Rendering 3D items into 2D images requires manual placement of RenderTargetActor in the world, otherwise it fails (**Fixed**)
+- The `OnHit()` method of weapons is determined by the weapon type, consider passing in a weapon class template for the interaction component to execute the template class method for **HitData** transmission (**Fixed**)
+
+## Project Structure
+
+### Asset Structure
 
 - Assets
     - models
     - textures
 
-### 项目源码结构 Code Structure
+### Code Structure
 
-- Source
-    - Object
-        - Class
-            - Core
-            - Item
-            - Util
-        - Component
-        - Enum
-        - Struct
-            - model
-                - sword
-                    - blade
-                    - fuller
-                    - guard
-                    - hilt
-                    - pommel
-    - Interface
-        - Meta
-            - model
+Refactoring...
 
-## 概念,设计模式,和实现原理
+## Concepts, Design Patterns, and Implementation Principles
 
-以下内容基于项目所使用的技术编写,并没有包含全部 UE 的内容,未完成的记录不会展现在主页readme而是会在项目的 **[Wiki
-](https://github.com/Caishangqi/CharmingCraft/wiki)** 中展示
+The following content is written based on the technology used in the project. It does not cover all aspects of Unreal Engine. Unfinished records are not displayed on the main README but are shown in the project's [Wiki](https://github.com/Caishangqi/CharmingCraft/wiki).
 
-- [类名规范](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
-- [控制器](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
-- [解耦和设计模式](https://github.com/Caishangqi/CharmingCraft/wiki/Decoupling-and-Actor-Component)
+- [Class Naming Conventions](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
+- [Controllers](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
+- [Decoupling and Design Patterns](https://github.com/Caishangqi/CharmingCraft/wiki/Decoupling-and-Actor-Component)
 
-### 实现原理 Implementation
+### Implementation Principles
 
-- [近战攻击实现原理](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [3D物品渲染2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [Minecraft 物品结构](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [装备组装 - 盔甲](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [装备组装 - 武器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [技能系统](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [战斗伤害传递链](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-- [向量多伤害指示器](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
--
+- [Principles of Melee Attack Implementation](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Rendering 3D Items in 2D](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Minecraft Item Structure](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Equipment Assembly - Armor](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Equipment Assembly - Weapons](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Skill System](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Combat Damage Transmission Chain](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Vector Multi-Damage Indicators](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+
 
 ## WorkFlow
 
@@ -129,6 +140,6 @@ Waiting for the release of the first playable demo.
 
 ### Components and Native
 
-## 资源 Resource
+## Resource
 
-- 链接在 [这里](https://www.modongwang.com/)
+- Link is [Here](https://www.modongwang.com/)
