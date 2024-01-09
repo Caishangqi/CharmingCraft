@@ -16,7 +16,7 @@
  *
  *	其中第一个参数是事件名称,后续每个参数以此为 参数类型 + 参数变量
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UDAttributeComponent*,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, APawn*, InstigatorPawn, UDAttributeComponent*,
                                               OwningComp, float, NewHealth, float, Delta);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnManaChanged, AActor*, InstigatorActor, UDAttributeComponent*,
@@ -95,9 +95,9 @@ public:
 	TObjectPtr<UDamageChain> DamageChain;
 
 	UFUNCTION(BlueprintCallable, Category= "Attributes")
-	bool ApplyHealthChange(float Delta); // whether or not change apply
+	bool ApplyHealthChange(APawn* InstigatorPawn, float Delta); // whether or not change apply
 
-	bool ApplyManaChange(float Delta); // whether or not change apply
+	bool ApplyManaChange(APawn* InstigatorPawn, float Delta); // whether or not change apply
 
 	void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 

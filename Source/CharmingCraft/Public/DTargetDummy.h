@@ -26,7 +26,7 @@ protected:
 	UStaticMeshComponent* MeshComp;
 
 	UFUNCTION()
-	void OnHealthChanged(AActor* InstigatorActor, UDAttributeComponent* OwningComp, float HewHealth, float Delta);
+	void OnHealthChanged(APawn* InstigatorPawn, UDAttributeComponent* OwningComp, float HewHealth, float Delta);
 
 public:
 	// Called every frame

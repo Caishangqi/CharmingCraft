@@ -25,5 +25,6 @@ class CHARMINGCRAFT_API IUIProcess
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void HandleDamageIndicator(FHitData HitData);
-	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void HandleHealthIndicator();
 };

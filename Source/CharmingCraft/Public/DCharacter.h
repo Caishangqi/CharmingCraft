@@ -127,8 +127,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual void HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp, float Health, float HealthDelta) override;
-	virtual void HandleDeath_Implementation() override;
+	virtual void HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
+	                                                float Health, float HealthDelta) override;
+	virtual void HandleDeath_Implementation(APawn* InstigatorPawn) override;
+
 public:
 	/* Events */
 };

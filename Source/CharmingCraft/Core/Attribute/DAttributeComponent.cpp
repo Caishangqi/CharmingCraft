@@ -50,23 +50,23 @@ void UDAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	// ... 
 }
 
-bool UDAttributeComponent::ApplyHealthChange(const float Delta)
+bool UDAttributeComponent::ApplyHealthChange(APawn* InstigatorPawn, const float Delta)
 {
 	Health += Delta;
 	//播放事件, 触发事件
 	UE_LOG(LogTemp, Display, TEXT("[+]  UDAttributeComponent::ApplyHealthChange: %f | Owner: %s"), Delta,
 	       *GetOwner()->GetName());
-	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+	OnHealthChanged.Broadcast(InstigatorPawn, this, Health, Delta);
 	return true;
 }
 
-bool UDAttributeComponent::ApplyManaChange(float Delta)
+bool UDAttributeComponent::ApplyManaChange(APawn* InstigatorPawn, float Delta)
 {
 	Mana += Delta;
-	OnManaChanged.Broadcast(nullptr, this, Mana, Delta);
+	OnManaChanged.Broadcast(InstigatorPawn, this, Mana, Delta);
 	return true;
 }
 

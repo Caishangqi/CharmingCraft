@@ -25,7 +25,7 @@ void ADTargetDummy::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ADTargetDummy::OnHealthChanged(AActor* InstigatorActor, UDAttributeComponent* OwningComp, float HewHealth,
+void ADTargetDummy::OnHealthChanged(APawn* InstigatorPawn, UDAttributeComponent* OwningComp, float HewHealth,
                                     float Delta)
 {
 	if (Delta < 0.0f)

@@ -27,6 +27,6 @@ UDAttributeComponent* UDamageHandler::GetOuterAttributeComponent()
 	return Cast<UDamageChain>(GetOuter())->AttributeComponent.Get();
 }
 
-void UDamageHandler::ApplyDataToAttribute(float Data)
+void UDamageHandler::ApplyDataToAttribute(APawn* InstigatorPawn, float Data)
 {
 }

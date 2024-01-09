@@ -24,12 +24,12 @@ void UPhysicalDamageHandler::HandleDamage(FHitData HitData)
 		                                                       HitData.CriticalDamage);
 		UE_LOG(LogTemp, Warning, TEXT("[!] UDamageHandler::HandleDamage Data: %d %f"), HitData.CriticalDamage,
 		       HitData.Damage);
-		ApplyDataToAttribute(-HitData.Damage);
+		ApplyDataToAttribute(HitData.InstigatorPawn, -HitData.Damage);
 	}
 	Super::HandleDamage(HitData);
 }
 
-void UPhysicalDamageHandler::ApplyDataToAttribute(const float Data)
+void UPhysicalDamageHandler::ApplyDataToAttribute(APawn* InstigatorPawn, const float Data)
 {
-	GetOuterAttributeComponent()->ApplyHealthChange(Data);
+	GetOuterAttributeComponent()->ApplyHealthChange(InstigatorPawn, Data);
 }

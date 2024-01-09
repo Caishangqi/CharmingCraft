@@ -3,6 +3,7 @@
 
 #include "Creature.h"
 
+#include "CharmingCraft/Core/UI/HealthIndicator.h"
 #include "CharmingCraft/Object/Components/UI/DamageIndicator.h"
 
 
@@ -14,6 +15,8 @@ ACreature::ACreature()
 	CreatureAttributeComponent = CreateDefaultSubobject<UDAttributeComponent>("Creature Attribute Component");
 	DamageIndicator = CreateDefaultSubobject<UDamageIndicator>("DamageIndicator");
 	DamageIndicator->SetupAttachment(GetRootComponent());
+	HealthIndicator = CreateDefaultSubobject<UHealthIndicator>("HealthIndicator");
+	HealthIndicator->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -39,8 +42,11 @@ void ACreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACreature::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
-	CreatureAttributeComponent->DamageChain->HandleDamage(HitData);
-	HitReaction(HitData.DamageResponse);
+	if (!CreatureAttributeComponent->IsDead)
+	{
+		CreatureAttributeComponent->DamageChain->HandleDamage(HitData);
+		HitReaction(HitData.DamageResponse);
+	}
 }
 
 void ACreature::HandleDamageIndicator_Implementation(FHitData HitData)
@@ -48,14 +54,14 @@ void ACreature::HandleDamageIndicator_Implementation(FHitData HitData)
 	IUIProcess::HandleDamageIndicator_Implementation(HitData);
 }
 
-void ACreature::HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp,
+void ACreature::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
                                                    float Health, float HealthDelta)
 {
-	IDamageable::HandleHealthChanged_Implementation(InstigatorActor, OwningComp, Health, HealthDelta);
+	IDamageable::HandleHealthChanged_Implementation(InstigatorPawn, OwningComp, Health, HealthDelta);
 }
 
 
-void ACreature::HandleDeath_Implementation()
+void ACreature::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
 }
 

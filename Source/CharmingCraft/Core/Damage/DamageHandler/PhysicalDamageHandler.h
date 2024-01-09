@@ -16,5 +16,5 @@ class CHARMINGCRAFT_API UPhysicalDamageHandler : public UDamageHandler
 
 public:
 	virtual void HandleDamage(FHitData HitData) override;
-	virtual void ApplyDataToAttribute(float Data) override;
+	virtual void ApplyDataToAttribute(APawn* InstigatorPawn, float Data) override;
 };

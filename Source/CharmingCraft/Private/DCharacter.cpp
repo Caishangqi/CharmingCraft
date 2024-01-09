@@ -294,13 +294,13 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	                                 &UDActionComponent::SkillStandbyReleased);
 }
 
-void ADCharacter::HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp,
+void ADCharacter::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
                                                      float Health, float HealthDelta)
 {
-	IDamageable::HandleHealthChanged_Implementation(InstigatorActor, OwningComp, Health, HealthDelta);
+	IDamageable::HandleHealthChanged_Implementation(InstigatorPawn, OwningComp, Health, HealthDelta);
 }
 
-void ADCharacter::HandleDeath_Implementation()
+void ADCharacter::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
-	IDamageable::HandleDeath_Implementation();
+	IDamageable::HandleDeath_Implementation(InstigatorPawn);
 }

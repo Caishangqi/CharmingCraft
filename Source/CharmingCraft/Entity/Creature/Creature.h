@@ -10,6 +10,7 @@
 #include "GameFramework/Character.h"
 #include "Creature.generated.h"
 
+class UHealthIndicator;
 class UDamageIndicator;
 /*!
  *	The Base Class in Editor is BP_Creature, it add more component
@@ -33,8 +34,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UI")
 	TObjectPtr<UDamageIndicator> DamageIndicator;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UI")
+	TObjectPtr<UHealthIndicator> HealthIndicator;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Attribute")
 	TObjectPtr<UDAttributeComponent> CreatureAttributeComponent;
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResponseMontage")
 	TMap<EDamageResponse, TObjectPtr<UAnimMontage>> HitResponseMontage;
@@ -56,12 +61,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void HandleDamageIndicator_Implementation(FHitData HitData) override;
 	UFUNCTION(BlueprintCallable)
-	virtual void HandleHealthChanged_Implementation(AActor* InstigatorActor, UDAttributeComponent* OwningComp,
+	virtual void HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
 	                                                float Health, float HealthDelta) override;
 	UFUNCTION(BlueprintCallable)
-	virtual void HandleDeath_Implementation() override;
+	virtual void HandleDeath_Implementation(APawn* InstigatorPawn) override;
 	UFUNCTION(BlueprintCallable)
 	virtual bool IsDead_Implementation() override;
-	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void HitReaction(EDamageResponse Response);
 };

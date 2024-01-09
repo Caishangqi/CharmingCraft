@@ -29,10 +29,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UDAttributeComponent* GetAttributeComponent();
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void HandleHealthChanged(AActor* InstigatorActor, UDAttributeComponent*
+	void HandleHealthChanged(APawn* InstigatorPawn, UDAttributeComponent*
 	                         OwningComp, float Health, float HealthDelta);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void HandleDeath();
+	void HandleDeath(APawn* InstigatorPawn);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool IsDead();
 };
