@@ -13,7 +13,7 @@
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Caishangqi/CharmingCraft">
 </p>
 
-### Select Other Language README: [Chinese](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/README_CN.md)
+#### Select Other Language README: [Chinese](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/README_CN.md)
 
 ## Introduction
 
