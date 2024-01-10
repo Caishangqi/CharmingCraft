@@ -131,6 +131,9 @@ public:
 	                                                float Health, float HealthDelta) override;
 	virtual void HandleDeath_Implementation(APawn* InstigatorPawn) override;
 
+	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
+
+	virtual UDAttributeComponent* GetAttributeComponent_Implementation() override;
 public:
 	/* Events */
 };

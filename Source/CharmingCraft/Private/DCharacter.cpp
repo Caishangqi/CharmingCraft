@@ -304,3 +304,16 @@ void ADCharacter::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
 	IDamageable::HandleDeath_Implementation(InstigatorPawn);
 }
+
+void ADCharacter::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
+{
+	if (!AttributeComp->IsDead)
+	{
+		AttributeComp->DamageChain->HandleDamage(HitData);
+	}
+}
+
+UDAttributeComponent* ADCharacter::GetAttributeComponent_Implementation()
+{
+	return AttributeComp;
+}
