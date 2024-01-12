@@ -36,7 +36,8 @@ public:
 	bool ExecuteInteractAction();
 	void LineTracingInteract() const;
 	void OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator);
-
+	bool ExecuteInteractWithCreature(AActor * TargetActor);
+	
 	/* Update Player Rotation */
 
 	FGameplayTag InteractTag;

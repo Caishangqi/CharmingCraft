@@ -6,6 +6,7 @@
 #include "../Interface/DGameplayInterface.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
+#include "CharmingCraft/Entity/Creature/Creature.h"
 #include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
 #include "CharmingCraft/Object/Components/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
@@ -49,7 +50,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 	{
 		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 		Player->ActionComponent->MainHandAction();
-		return false; 
+		return false;
 	}
 
 	if (HitActor)
@@ -63,6 +64,12 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
 			 */
 			AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
+		}
+
+		/* Handle Hit Creature Logic */
+		if (HitActor->Implements<UDamageable>())
+		{
+			return ExecuteInteractWithCreature(HitActor);
 		}
 
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
@@ -125,8 +132,9 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 
 bool UDInteractionComponent::ExecuteInteractAction()
 {
-	if (AIController->TargetActor.IsValid() && AIController->TargetActor->Implements<UDGameplayInterface>() && Cast<
-		ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())) //弱指针解引
+	/* Handle Interact Object Logic */
+	if (AIController->TargetActor->Implements<UDGameplayInterface>() && IsA(
+		ADAbstractInterObjectPrototype::StaticClass()))
 	{
 		if (Cast<ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())->bIsAllowToDamage)
 		{
@@ -136,6 +144,16 @@ bool UDInteractionComponent::ExecuteInteractAction()
 		}
 		IDGameplayInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
 		Player->InteractionComp->OnItemInteract(AIController->TargetActor.Get(), Player);
+	}
+	/* Handle Creature Interact */
+	else if (AIController->TargetActor.IsValid() && AIController->TargetActor->Implements<UDamageable>())
+	{
+		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
+		Player->ActionComponent->MainHandAction();
+
+		/* This should have future NPC interact, not damage them, interact with them */
+
+		return false;
 	}
 	Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 	return true;
@@ -223,4 +241,25 @@ void UDInteractionComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, 
 {
 	Player->InventoryComponent->OnItemInteract(TargetActor, Instigator);
 	UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInteractionComponent::OnItemInteract"));
+}
+
+bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
+{
+	TObjectPtr<ACreature> TargetCreature = Cast<ACreature>(TargetActor);
+	float Distance = FVector::DistXY(Player->GetActorLocation(), TargetCreature->GetActorLocation());
+	if (Distance < Player->AttributeComp->AttackRange)
+	{
+		/* 转向 */
+		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
+		Player->ActionComponent->MainHandAction();
+		return true;
+	}
+	else
+	{
+		// 给AI控制器类里面设置点击的目标, 传参到这个类
+		AIController->TargetActor = TargetCreature.Get();
+		AIController->MoveToActor(TargetCreature, Player->AttributeComp->AttackRange, true, true, true,
+		                          nullptr, true);
+		return false;
+	}
 }

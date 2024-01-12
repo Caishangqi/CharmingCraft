@@ -21,7 +21,6 @@ void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted! %s"), *Result.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted while moving ADPlayerAIController::OnMoveCompleted"));
-		TargetActor = nullptr; //释放资源
 	}
 	else
 	{
