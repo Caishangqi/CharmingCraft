@@ -66,12 +66,6 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
 		}
 
-		/* Handle Hit Creature Logic */
-		if (HitActor->Implements<UDamageable>())
-		{
-			return ExecuteInteractWithCreature(HitActor);
-		}
-
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 		{
@@ -124,6 +118,12 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 				AIController->TargetActor = HitActor;
 			}
 		}
+
+		/* Handle Hit Creature Logic */
+		if (HitActor->Implements<UDamageable>())
+		{
+			return ExecuteInteractWithCreature(HitActor);
+		}
 	}
 	Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 	return true;
@@ -133,7 +133,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 bool UDInteractionComponent::ExecuteInteractAction()
 {
 	/* Handle Interact Object Logic */
-	if (AIController->TargetActor->Implements<UDGameplayInterface>() && IsA(
+	if (AIController->TargetActor->Implements<UDGameplayInterface>() && AIController->TargetActor->IsA(
 		ADAbstractInterObjectPrototype::StaticClass()))
 	{
 		if (Cast<ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())->bIsAllowToDamage)

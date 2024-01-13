@@ -56,24 +56,23 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 	       *ItemStack->GetItemClass()->DisplayName.ToString(),
 	       ItemStack->Amount);
 	FReturnSuccessRemainQuantity Result;
-	UItemStack* CopiedItemStack = DuplicateObject<UItemStack>(ItemStack, this);
-	int32 LocalQuantity = CopiedItemStack->Amount;
+	int32 LocalQuantity = ItemStack->Amount;
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory LocalQuantity: %d bLocalHasFailed: %d"),
 	       LocalQuantity,
 	       bLocalHasFailed);
 	while (LocalQuantity > 0 && !bLocalHasFailed)
 	{
-		int32 SlotIndex = FindSlot(CopiedItemStack);
+		int32 SlotIndex = FindSlot(ItemStack);
 		UE_LOG(LogTemp, Warning, TEXT("FindSlot: %d"), SlotIndex);
 		if (SlotIndex != -1)
 		{
-			AddToStack(SlotIndex, 1, CopiedItemStack);
+			AddToStack(SlotIndex, 1, ItemStack);
 			LocalQuantity--;
 			UE_LOG(LogTemp, Warning, TEXT("AddToStack(%d, 1) LocalQuantity = %d"), SlotIndex, LocalQuantity);
 		}
 		else if (IsEmptySlotAvailable().Result)
 		{
-			if (CreateNewStack(CopiedItemStack, 1))
+			if (CreateNewStack(ItemStack, 1))
 			{
 				LocalQuantity--;
 			}
@@ -210,6 +209,8 @@ UDInventoryComponent::FReturnValue UDInventoryComponent::IsEmptySlotAvailable()
 
 bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 {
+	/* Fix 2024/1/13 Need initialize the ItemStack with amount 1*/
+	ItemStack->Amount = 1;
 	if (IsEmptySlotAvailable().Result)
 	{
 		Inventory[IsEmptySlotAvailable().Index] = ItemStack;

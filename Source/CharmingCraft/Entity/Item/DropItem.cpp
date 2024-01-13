@@ -89,7 +89,7 @@ void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 {
 	UE_LOG(LogTemp, Warning, TEXT("ADropItem::Interact_Implementation"));
 
-	Super::Interact_Implementation(InstigatorPawn);
+	//Super::Interact_Implementation(InstigatorPawn);
 	ADCharacter* Player = Cast<ADCharacter>(InstigatorPawn);
 
 	UE_LOG(LogTemp, Warning, TEXT("ADropItem::Interact_Implementation -> %s, %d"),

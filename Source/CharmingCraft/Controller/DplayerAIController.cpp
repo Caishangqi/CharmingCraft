@@ -26,6 +26,6 @@ void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Enter ADPlayerAIController::OnMoveCompleted"));
 		Player->InteractionComp->ExecuteInteractAction();
-		TargetActor = nullptr; // Reset the target actor
+		//TargetActor = nullptr; // Reset the target actor
 	}
 }

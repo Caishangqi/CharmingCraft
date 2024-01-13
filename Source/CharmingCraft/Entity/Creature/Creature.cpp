@@ -23,7 +23,11 @@ ACreature::ACreature()
 void ACreature::BeginPlay()
 {
 	Super::BeginPlay();
-	CreatureAttributeComponent->OnHealthChanged.AddDynamic(this, &ACreature::HandleHealthChanged);
+	/* Fix 2014/1/13 Bind Delegate multiply time when re stream the level */
+	if (!CreatureAttributeComponent->OnHealthChanged.IsBound())
+	{
+		CreatureAttributeComponent->OnHealthChanged.AddDynamic(this, &ACreature::HandleHealthChanged);
+	}
 }
 
 

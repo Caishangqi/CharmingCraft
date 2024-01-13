@@ -21,7 +21,7 @@ public:
 	void SetupCollision();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category= "Drop Item Properties")
-	UItemStack* ItemStack;
+	TObjectPtr<UItemStack> ItemStack;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* DropIconMesh;
