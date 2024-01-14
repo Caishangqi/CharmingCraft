@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ItemPreviewRender.h"
-#include "CharmingCraft/Entity/Item/ItemTargetRenderActor.h"
-#include "CharmingCraft/Entity/Item/model/SwordActor.h"
+#include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
+#include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Interface/Meta/ItemMeta.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "Components/SceneCaptureComponent2D.h"

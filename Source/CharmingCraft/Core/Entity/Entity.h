@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
-#include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
+#include "CharmingCraft/Interface/InteractObject.h"
 #include "Entity.generated.h"
 
 class UDamageIndicator;
 class UDAttributeComponent;
 
 UCLASS(Blueprintable,BlueprintType)
-class CHARMINGCRAFT_API AEntity : public ADAbstractInterObjectPrototype, public IDamageable
+class CHARMINGCRAFT_API AEntity : public AInteractObject, public IDamageable
 {
 	GENERATED_BODY()
 

@@ -3,7 +3,7 @@
 
 #include "DInventoryComponent.h"
 #include "ItemStack.h"
-#include "CharmingCraft/Entity/Item/DropItem.h"
+#include "CharmingCraft/Core/Entity/Item/DropItem.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
 #include "EquipModel/EquipmentManagerComponent.h"
 #include "Kismet/GameplayStatics.h"

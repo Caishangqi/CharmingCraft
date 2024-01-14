@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../Object/Class/Item/Item.h"
-#include "CharmingCraft/Entity/Item/model/SwordActor.h"
+#include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "Weapon.generated.h"
 
 /**

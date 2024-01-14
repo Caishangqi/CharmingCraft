@@ -3,7 +3,7 @@
 #include "DCharacter.h"
 #include "../Object/Components/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
-#include "CharmingCraft/Entity/Item/model/SwordActor.h"
+#include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "Components/ArrowComponent.h"

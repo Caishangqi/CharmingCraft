@@ -1,18 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
-#include "DAbstractObjectPrototype.h"
 #include "DGameplayInterface.h"
-#include "DAbstractInterObjectPrototype.generated.h"
+#include "InteractObject.generated.h"
 
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API ADAbstractInterObjectPrototype : public ADAbstractObjectPrototype, public IDGameplayInterface
+class CHARMINGCRAFT_API AInteractObject : public AActor, public IDGameplayInterface
 {
 	GENERATED_BODY()
 
@@ -38,7 +36,7 @@ public:
 	UActorComponent* ClickableComponent;
 
 	/* 方法 */
-	ADAbstractInterObjectPrototype();
+	AInteractObject();
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 

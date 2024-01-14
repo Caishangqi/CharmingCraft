@@ -4,10 +4,11 @@
 #include "DInteractionComponent.h"
 #include "DCharacter.h"
 #include "../Interface/DGameplayInterface.h"
+#include "CharmingCraft/CharmingCraft.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
-#include "CharmingCraft/Entity/Creature/Creature.h"
-#include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
+#include "CharmingCraft/Core/Entity/Creature/Creature.h"
+#include "CharmingCraft/Interface/InteractObject.h"
 #include "CharmingCraft/Object/Components/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 
@@ -66,10 +67,10 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
 		}
 
-		if (HitActor->Implements<UDGameplayInterface>() && Cast<ADAbstractInterObjectPrototype>(HitActor))
+		if (HitActor->Implements<UDGameplayInterface>() && Cast<AInteractObject>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 		{
-			ADAbstractInterObjectPrototype* CastedObject = Cast<ADAbstractInterObjectPrototype>(HitActor);
+			AInteractObject* CastedObject = Cast<AInteractObject>(HitActor);
 			UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
@@ -134,9 +135,9 @@ bool UDInteractionComponent::ExecuteInteractAction()
 {
 	/* Handle Interact Object Logic */
 	if (AIController->TargetActor->Implements<UDGameplayInterface>() && AIController->TargetActor->IsA(
-		ADAbstractInterObjectPrototype::StaticClass()))
+		AInteractObject::StaticClass()))
 	{
-		if (Cast<ADAbstractInterObjectPrototype>(AIController->TargetActor.Get())->bIsAllowToDamage)
+		if (Cast<AInteractObject>(AIController->TargetActor.Get())->bIsAllowToDamage)
 		{
 			Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 			Player->ActionComponent->MainHandAction();

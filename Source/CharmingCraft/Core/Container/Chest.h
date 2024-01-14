@@ -3,14 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
-#include "DChestContainer.generated.h"
+#include "Container.h"
+#include "Chest.generated.h"
 
+class UDInventoryComponent;
 /**
- * 
+ * TODO: Consider rewrite the Interface and Base Class of Both
+ * WorkBench and Container
  */
 UCLASS()
-class CHARMINGCRAFT_API ADChestContainer : public ADAbstractInterObjectPrototype
+class CHARMINGCRAFT_API AChest : public AContainer
 {
 	GENERATED_BODY()
 
@@ -19,11 +21,10 @@ public:
 	UPROPERTY(EditAnywhere) //现在可以在编辑器中编辑这个变量, 这个变量可以控制箱子开合pitch
 	float TargetPitch;
 
-
 	/* 方法 */
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
-	ADChestContainer();
+	AChest();
 
 protected:
 	/* 属性 */
@@ -36,4 +37,5 @@ protected:
 	UStaticMeshComponent* LidMesh;
 
 	/* 方法 */
+	/* 属性 */
 };

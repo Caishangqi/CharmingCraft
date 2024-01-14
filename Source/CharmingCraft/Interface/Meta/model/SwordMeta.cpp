@@ -3,7 +3,7 @@
 
 #include "SwordMeta.h"
 
-#include "CharmingCraft/Entity/Item/model/SwordActor.h"
+#include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/blade/EquipPartSwordBladeBasic.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/fuller/EquipPartSwordFullerReinforced.h"
 #include "CharmingCraft/Object/Components/EquipPart/model/sword/guard/EquipPartSwordGuardMakeShift.h"

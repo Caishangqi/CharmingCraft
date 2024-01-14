@@ -4,13 +4,13 @@
 #include "DActionComponent.h"
 #include "DAction.h"
 #include "DCharacter.h"
+#include "CharmingCraft/Core/Log/Logging.h"
 
-DEFINE_LOG_CATEGORY(CharmingCraft);
 // Sets default values for this component's properties
 UDActionComponent::UDActionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	UE_LOG(CharmingCraft, Display, TEXT("(+) UDActionComponent::UDActionComponent()"));
+	UE_LOG(LogChamingCraftItem, Display, TEXT("(+) UDActionComponent::UDActionComponent()"));
 
 	// ...
 }
@@ -58,7 +58,6 @@ void UDActionComponent::MainHandAction()
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::MainHandAction()");
 	// TODO 把每个武器对应的 Action 单独创建一个蓝图类，这个Action蓝图要与武器挂钩
 	this->StartActionByName(Cast<ADCharacter>(GetOwner()), "MainHand");
-
 }
 
 void UDActionComponent::OffHandAction()

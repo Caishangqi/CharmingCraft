@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Entry.h"
-#include "CharmingCraft/Interface/DAbstractInterObjectPrototype.h"
+#include "CharmingCraft/Interface/InteractObject.h"
 #include "Door.generated.h"
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API ADoor : public ADAbstractInterObjectPrototype
+class CHARMINGCRAFT_API ADoor : public AInteractObject
 {
 	GENERATED_BODY()
 

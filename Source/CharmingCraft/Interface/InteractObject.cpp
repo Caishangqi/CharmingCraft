@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DAbstractInterObjectPrototype.h"
+#include "InteractObject.h"
 
-ADAbstractInterObjectPrototype::ADAbstractInterObjectPrototype()
+AInteractObject::AInteractObject()
 {
 	MinimumInteractRange = 250;
 	bIgnoreRangeToInteract = false;
@@ -11,14 +11,14 @@ ADAbstractInterObjectPrototype::ADAbstractInterObjectPrototype()
 	FindClassBaseOnBluePrint();
 }
 
-void ADAbstractInterObjectPrototype::Interact_Implementation(APawn* InstigatorPawn)
+void AInteractObject::Interact_Implementation(APawn* InstigatorPawn)
 {
 	UE_LOG(LogTemp, Warning, TEXT("CALLED BACK!"));
 	IDGameplayInterface::Interact_Implementation(InstigatorPawn);
 }
 
 
-void ADAbstractInterObjectPrototype::BeginPlay()
+void AInteractObject::BeginPlay()
 {
 	Super::BeginPlay();
 	RegisterComponent();
@@ -32,7 +32,7 @@ void ADAbstractInterObjectPrototype::BeginPlay()
  *	@return void 
  */
 
-void ADAbstractInterObjectPrototype::FindClassBaseOnBluePrint()
+void AInteractObject::FindClassBaseOnBluePrint()
 {
 	static ConstructorHelpers::FClassFinder<UActorComponent> BlueprintComponentFinder(
 		TEXT(
@@ -44,7 +44,7 @@ void ADAbstractInterObjectPrototype::FindClassBaseOnBluePrint()
  * 在注册完蓝图类后,基于这个模板类型注册组件
  * @return	void
  */
-void ADAbstractInterObjectPrototype::RegisterComponent()
+void AInteractObject::RegisterComponent()
 {
 	if (BlueprintComponentClass != nullptr)
 	{

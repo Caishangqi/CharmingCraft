@@ -109,7 +109,7 @@ public:
 
 	/* 物品栏 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
-	UDInventoryComponent* InventoryComponent;
+	TObjectPtr<UDInventoryComponent> InventoryComponent;
 
 	/* 装备管理器 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")

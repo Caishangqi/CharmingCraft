@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Interface/DAbstractInterObjectPrototype.h"
+#include "../Interface/InteractObject.h"
 #include "WorkBench.generated.h"
 
 class UWorkBenchComponent;
@@ -11,7 +11,7 @@ class UWorkBenchComponent;
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API AWorkBench : public ADAbstractInterObjectPrototype
+class CHARMINGCRAFT_API AWorkBench : public AInteractObject
 {
 	GENERATED_BODY()
 
