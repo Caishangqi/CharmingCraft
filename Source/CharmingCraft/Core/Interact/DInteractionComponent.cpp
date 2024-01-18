@@ -9,7 +9,7 @@
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Entity/Creature/Creature.h"
 #include "CharmingCraft/Interface/InteractObject.h"
-#include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 
 

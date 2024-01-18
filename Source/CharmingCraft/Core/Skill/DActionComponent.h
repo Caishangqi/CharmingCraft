@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
+#include "Templates/Tuple.h"
 #include "DActionComponent.generated.h"
 
 /*
@@ -12,8 +13,8 @@
  *	The main goal of Action Component is to keep a list of actions
  */
 
-
 class UDAction;
+
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UDActionComponent : public UActorComponent
 {
@@ -33,7 +34,13 @@ public:
 	void AddAction(TSubclassOf<UDAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
+	void AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass);
+
+	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StartActionByName(AActor* Instigator, FName ActionName);
+
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	bool StartActionByIndex(AActor* Instigator, int32 index);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StopActionByName(AActor* Instigator, FName ActionName);
@@ -43,18 +50,20 @@ public:
 
 protected:
 	/** Granted abilities at game start */
-	UPROPERTY(EditAnywhere, Category = "Actions")
+	UPROPERTY(EditAnywhere, Category = "Editor Actions")
 	TArray<TSubclassOf<UDAction>> DefaultActions;
+
+	/* EDITOR ONLY: Default bind Action */
+	UPROPERTY(EditAnywhere, Category = "Editor Actions")
+	TMap<int32, TSubclassOf<UDAction>> DefaultBindAction;
 
 	// List of actions
 	UPROPERTY(BlueprintReadWrite) // When we deal with pointers to actions, we want to let UE handle
 	TArray<UDAction*> Actions;
 
-	// 1 技能释放 函数 - 技能名称 Action
-	// 2 技能释放 函数 - 技能名称 Action (SkillOne(), ActionName())
-	TMap<FName, FName> KeyBindings;
-	// 动态绑定按键到特定功能
-	auto BindSkillToAction(FName Skill, FName ActionName) -> void;
+	/* Bind Action for example q - Action1 */
+	UPROPERTY(EditAnywhere, Category = "Actions")
+	TMap<int32, TObjectPtr<UDAction>> BindAction;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -69,11 +78,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void MainHandAction();
 	void OffHandAction();
-
-	void SkillOne();
-	void SkillTwo();
-	void SkillThree();
-	void SkillFour();
 
 	void SkillStandbyPressed(); /* Shift */
 	void SkillStandbyReleased(); /* Shift */

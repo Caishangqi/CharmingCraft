@@ -3,7 +3,7 @@
 
 #include "DAction.h"
 
-#include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
 
 void UDAction::StartAction_Implementation(AActor* Instigator)
 {

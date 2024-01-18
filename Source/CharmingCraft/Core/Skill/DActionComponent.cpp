@@ -16,12 +16,6 @@ UDActionComponent::UDActionComponent()
 }
 
 
-void UDActionComponent::BindSkillToAction(FName Skill, FName ActionName)
-{
-	// 添加或更新绑定
-	KeyBindings.Add(Skill, ActionName);
-}
-
 // Called when the game starts
 void UDActionComponent::BeginPlay()
 {
@@ -32,6 +26,11 @@ void UDActionComponent::BeginPlay()
 	for (TSubclassOf<UDAction> ActionClass : DefaultActions)
 	{
 		AddAction(ActionClass);
+	}
+
+	for (auto Pair : DefaultBindAction)
+	{
+		AddBindAction(Pair.Key, Pair.Value);
 	}
 	// ...
 }
@@ -66,26 +65,6 @@ void UDActionComponent::OffHandAction()
 }
 
 
-void UDActionComponent::SkillOne()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillOne()");
-}
-
-void UDActionComponent::SkillTwo()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillTwo()");
-}
-
-void UDActionComponent::SkillThree()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillThree()");
-}
-
-void UDActionComponent::SkillFour()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::SkillFour()");
-}
-
 void UDActionComponent::SkillStandbyPressed()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::StandbyPressed()");
@@ -116,6 +95,17 @@ void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)
 	}
 }
 
+void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass)
+{
+	if (!ensure(ActionClass))
+	{
+		return;
+	}
+
+	UDAction* NewAction = NewObject<UDAction>(this, ActionClass);
+	BindAction.Add(index, NewAction);
+}
+
 bool UDActionComponent::StartActionByName(AActor* Instigator, const FName ActionName)
 {
 	for (UDAction* Action : Actions)
@@ -131,6 +121,21 @@ bool UDActionComponent::StartActionByName(AActor* Instigator, const FName Action
 			Action->StartAction(Instigator);
 			return true;
 		}
+	}
+	return false;
+}
+
+bool UDActionComponent::StartActionByIndex(AActor* Instigator, int32 index)
+{
+	if (Actions[index] != nullptr)
+	{
+		if (!Actions[index]->CanStart(Instigator))
+		{
+			FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *Actions[index]->ActionName.ToString());
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+		}
+		Actions[index]->StartAction(Instigator);
+		return true;
 	}
 	return false;
 }

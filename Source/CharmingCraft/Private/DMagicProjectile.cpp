@@ -4,7 +4,7 @@
 #include "DMagicProjectile.h"
 
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
-#include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"

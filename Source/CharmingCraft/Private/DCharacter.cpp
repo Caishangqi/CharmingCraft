@@ -10,7 +10,7 @@
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Interact/DInteractionComponent.h"
-#include "CharmingCraft/Object/Components/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "CharmingCraft/Object/Components/EquipModel/EquipmentManagerComponent.h"
 #include "Components/PostProcessComponent.h"
@@ -284,10 +284,6 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ADCharacter::PrintDebugMessage);
 
 	PlayerInputComponent->BindAction("OffHandAction", IE_Pressed, ActionComponent, &UDActionComponent::OffHandAction);
-	PlayerInputComponent->BindAction("SkillOne", IE_Pressed, ActionComponent, &UDActionComponent::SkillOne);
-	PlayerInputComponent->BindAction("SkillTwo", IE_Pressed, ActionComponent, &UDActionComponent::SkillTwo);
-	PlayerInputComponent->BindAction("SkillThree", IE_Pressed, ActionComponent, &UDActionComponent::SkillThree);
-	PlayerInputComponent->BindAction("SkillFour", IE_Pressed, ActionComponent, &UDActionComponent::SkillFour);
 	PlayerInputComponent->BindAction("Standby", IE_Pressed, ActionComponent,
 	                                 &UDActionComponent::SkillStandbyPressed);
 	PlayerInputComponent->BindAction("Standby", IE_Released, ActionComponent,
