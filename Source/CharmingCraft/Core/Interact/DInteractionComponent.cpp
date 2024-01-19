@@ -111,12 +111,11 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			}
 			else
 			{
+				// 给AI控制器类里面设置点击的目标, 传参到这个类
+				AIController->TargetActor = HitActor;
 				// 使用AI控制器移动Pawn
 				AIController->MoveToActor(HitActor, CastedObject->MinimumInteractRange, true, true, true,
 				                          nullptr, true);
-
-				// 给AI控制器类里面设置点击的目标, 传参到这个类
-				AIController->TargetActor = HitActor;
 			}
 		}
 

@@ -31,7 +31,7 @@ UItemPreviewRender* UItemPreviewRender::Get()
  */
 UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, UWorld* RenderWorld)
 {
-	FVector SpawnLocation(0.f, 0.f, -2000.f); // 设置生成位置为 (0,0,-2000)
+	FVector SpawnLocation(-2000.f, -2000.f, -2000.f); // 设置生成位置为 (0,0,-2000)
 	FRotator SpawnRotation(0.f, 0.f, 0.f); // 设置生成旋转为 (0,0,0)
 	FTransform SpawnTransform(SpawnRotation, SpawnLocation); // 使用位置和旋转创建FTransform
 
@@ -63,7 +63,7 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UItemMeta* InputMeta, U
  */
 UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UWeaponMeta* InputMeta, UWorld* RenderWorld)
 {
-	FVector SpawnLocation(0.f, 0.f, -2000.f); // 设置生成位置为 (0.f, 0.f, -2000.f)
+	FVector SpawnLocation(-20000.f, -20000.f, -2000.f); // 设置生成位置为 (0.f, 0.f, -2000.f)
 	// -4300.f, 2000.f, 450.f
 	FRotator SpawnRotation(0.f, 0.f, 0.f); // 设置生成旋转为 (0,0,0)
 	FTransform SpawnTransform(SpawnRotation, SpawnLocation); // 使用位置和旋转创建FTransform

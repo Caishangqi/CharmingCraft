@@ -8,7 +8,7 @@
 void UDAction::StartAction_Implementation(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));
-
+	StartCoolDown();
 	// Find the ActionComponent we belong to, and apply the tag to that
 
 	UDActionComponent* Comp = GetOwningComponent();
@@ -62,4 +62,26 @@ UDActionComponent* UDAction::GetOwningComponent() const
 bool UDAction::IsRunning() const
 {
 	return bIsRunning;
+}
+
+void UDAction::StartCoolDown()
+{
+	bIsCooling = true;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UDAction::CooldownFinished, CoolDown);
+}
+
+void UDAction::CooldownFinished()
+{
+	bIsCooling = false;
+	ResetCoolDown();
+}
+
+void UDAction::ResetCoolDown()
+{
+	GetWorld()->GetTimerManager().ClearTimer(TimerHandle_Cooldown);
+}
+
+float UDAction::GetRemainCooldown()
+{
+	return GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle_Cooldown);
 }

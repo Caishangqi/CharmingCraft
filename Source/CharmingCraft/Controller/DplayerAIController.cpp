@@ -16,16 +16,20 @@ void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
 	//Super::OnMoveCompleted(RequestID, Result);
 	ADCharacter* Player = Cast<ADCharacter>(GetPawn());
 
+	//TODO: SEVER! YOU MUST FIX DOUBLE INTERACT BUG
+	
 	// 如果被打断,没有成功
 	if (!Result.IsSuccess())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted! %s"), *Result.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted while moving ADPlayerAIController::OnMoveCompleted"));
+		//TargetActor = nullptr;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Enter ADPlayerAIController::OnMoveCompleted"));
 		Player->InteractionComp->ExecuteInteractAction();
 		//TargetActor = nullptr; // Reset the target actor
+		//TargetActor = nullptr;
 	}
 }

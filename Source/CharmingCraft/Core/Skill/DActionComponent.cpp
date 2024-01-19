@@ -32,6 +32,8 @@ void UDActionComponent::BeginPlay()
 	{
 		AddBindAction(Pair.Key, Pair.Value);
 	}
+
+	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwner());
 	// ...
 }
 
@@ -127,14 +129,22 @@ bool UDActionComponent::StartActionByName(AActor* Instigator, const FName Action
 
 bool UDActionComponent::StartActionByIndex(AActor* Instigator, int32 index)
 {
-	if (Actions[index] != nullptr)
+	if (BindAction[index])
 	{
-		if (!Actions[index]->CanStart(Instigator))
+		if (BindAction[index]->bIsCooling)
 		{
-			FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *Actions[index]->ActionName.ToString());
+			FString FailedMsg = FString::Printf(
+				TEXT("[x] Failed to run: %s Because it is cooling, Remain: %f"),
+				*BindAction[index]->ActionName.ToString(), BindAction[index]->GetRemainCooldown());
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 		}
-		Actions[index]->StartAction(Instigator);
+
+		if (!BindAction[index]->CanStart(Instigator))
+		{
+			FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *BindAction[index]->ActionName.ToString());
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+		}
+		BindAction[index]->StartAction(Instigator);
 		return true;
 	}
 	return false;
@@ -154,4 +164,9 @@ bool UDActionComponent::StopActionByName(AActor* Instigator, const FName ActionN
 		}
 	}
 	return false;
+}
+
+void UDActionComponent::CastActionOne()
+{
+	StartActionByIndex(GetOwner(), 1);
 }

@@ -27,6 +27,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Interaction")
 	bool bIsAllowToDamage;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Visiability")
+	bool bIsHighlighted;
+
 	/* 蓝图类,存放点击高亮的蓝图CLass,利用反射获取这个Class */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Interaction")
 	TSubclassOf<UActorComponent> BlueprintComponentClass;

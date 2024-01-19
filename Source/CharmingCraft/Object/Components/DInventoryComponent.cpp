@@ -357,6 +357,7 @@ void UDInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, AP
 	// 这里的判断符合逻辑应为InteractComponent触发了所有接触到的Actor实现的接口
 	if (TargetActor.Get() != nullptr && TargetActor->IsA(ADropItem::StaticClass()))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInventoryComponent::OnItemInteract -Internal"));
 		IDItemInteractInterface::Execute_Interact(
 			TargetActor.Get(), Instigator);
 	}

@@ -8,6 +8,7 @@ AInteractObject::AInteractObject()
 	MinimumInteractRange = 250;
 	bIgnoreRangeToInteract = false;
 	bIgnoreRangeToInteract = true;
+	bIsHighlighted = true;
 	FindClassBaseOnBluePrint();
 }
 
@@ -21,7 +22,10 @@ void AInteractObject::Interact_Implementation(APawn* InstigatorPawn)
 void AInteractObject::BeginPlay()
 {
 	Super::BeginPlay();
-	RegisterComponent();
+	if (bIsHighlighted)
+	{
+		RegisterComponent();
+	}
 }
 
 /*!

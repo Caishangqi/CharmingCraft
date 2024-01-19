@@ -45,6 +45,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StopActionByName(AActor* Instigator, FName ActionName);
 
+	UFUNCTION(BlueprintCallable, Category= "Cast")
+	void CastActionOne();
+	
 	// Sets default values for this component's properties
 	UDActionComponent();
 
