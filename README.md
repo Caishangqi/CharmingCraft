@@ -30,23 +30,33 @@ this repository.
 
 ### Equipment assembly
 
+https://github.com/Caishangqi/CharmingCraft/assets/39553613/aa4a85df-a49b-488b-8887-5868ce0d31ec
+
 - Just like how people make weapons, you can use any material to create different weapon parts and assemble them together
 
 ### Smart enemy AI
+
+https://github.com/Caishangqi/CharmingCraft/assets/39553613/5bc09e55-ef8d-457f-99bc-cf73020b48cf
 
 - Many enemies will interact with the scene and they will use their best advantage to try to defeat you
 - Current enemies: Slime, Skeleton, Skeleton Shaman
 
 ### Flexible action system
 
+https://github.com/Caishangqi/CharmingCraft/assets/39553613/e0d9ac26-1a67-4d21-806d-84155a471d44
+
 - Although it is a TopDown perspective game, you can click on the target to attack or hold down shift to attack to specify the click direction.
 - Different weapons have different attack animations, and the speed of these attack animations depends on your character and equipment attributes.
 
 ### Scene switching
 
+https://github.com/Caishangqi/CharmingCraft/assets/39553613/eda346ab-ff80-4fdc-a8c1-e8a36b4b55ba
+
 - When you walk into the room from the outside, the scene switching will be smooth and stylized.
 
 ### Inventory system
+
+https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b144-c87098bafe8e
 
 - The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
 
