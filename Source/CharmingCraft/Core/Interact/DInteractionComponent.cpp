@@ -8,6 +8,7 @@
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Entity/Creature/Creature.h"
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
@@ -44,6 +45,8 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocation)
 {
+	//AIController->TargetActor = nullptr;
+	UE_LOG(LogChamingCraftComponents, Warning, TEXT("[+] UDInteractionComponent::PrimaryInteract"));
 	FGameplayTag StandbyTag = FGameplayTag::RequestGameplayTag(FName("Status.Standby"));
 	Player->ActionComponent->ActiveGamePlayTags.AddTag(InteractTag);
 
@@ -51,30 +54,24 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 	{
 		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 		Player->ActionComponent->MainHandAction();
-		return false;
 	}
 
 	if (HitActor)
 	{
-		if (!AIController)
-		{
-			/*
-			 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
-			 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
-			 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
-			 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
-			 */
-			AIController = Cast<ADCharacter>(GetOwner())->PlayerAIController;
-		}
-
+		/*
+		 * AIController 的实例化首先不能在角色构造器中, 因为他需要在世界中生成
+		 * 你需要在玩家对象生成后在玩家类的BeingPlay()中初始化AI控制器,由于玩家
+		 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
+		 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
+		 */
 		if (HitActor->Implements<UDGameplayInterface>() && Cast<AInteractObject>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 		{
 			AInteractObject* CastedObject = Cast<AInteractObject>(HitActor);
-			UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
+			//UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
-			UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
+			//UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
 
 			/* 如果是执行攻击操作则开始判断人物身上的 AttackRange 属性 */
 			if (CastedObject->bIsAllowToDamage)
@@ -84,7 +81,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 					/* 转向 */
 					Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
 					Player->ActionComponent->MainHandAction();
-					return true; // If do not need extra MoveTo(), then return true
+					//return true; // If do not need extra MoveTo(), then return true
 				}
 
 				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
@@ -99,8 +96,6 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 				DrawDebugLine(Player->GetWorld(), HitActor->GetActorLocation(), HitActor->GetActorLocation(),
 				              FColor::Yellow, false, 2, ECC_Visibility,
 				              20.0f);
-
-				return false;
 			}
 
 			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
@@ -132,6 +127,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 
 bool UDInteractionComponent::ExecuteInteractAction()
 {
+	UE_LOG(LogChamingCraftComponents, Warning, TEXT("[+] UDInteractionComponent::ExecuteInteractAction"));
 	/* Handle Interact Object Logic */
 	if (AIController->TargetActor->Implements<UDGameplayInterface>() && AIController->TargetActor->IsA(
 		AInteractObject::StaticClass()))

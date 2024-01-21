@@ -23,13 +23,11 @@ void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted! %s"), *Result.ToString());
 		UE_LOG(LogTemp, Warning, TEXT("Interrupted while moving ADPlayerAIController::OnMoveCompleted"));
-		//TargetActor = nullptr;
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Enter ADPlayerAIController::OnMoveCompleted"));
 		Player->InteractionComp->ExecuteInteractAction();
 		//TargetActor = nullptr; // Reset the target actor
-		//TargetActor = nullptr;
 	}
 }
