@@ -137,6 +137,7 @@ bool UDActionComponent::StartActionByIndex(AActor* Instigator, int32 index)
 				TEXT("[x] Failed to run: %s Because it is cooling, Remain: %f"),
 				*BindAction[index]->ActionName.ToString(), BindAction[index]->GetRemainCooldown());
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+			return false;
 		}
 
 		if (!BindAction[index]->CanStart(Instigator))

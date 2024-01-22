@@ -47,11 +47,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category= "Cast")
 	void CastActionOne();
-	
+
 	// Sets default values for this component's properties
 	UDActionComponent();
 
-protected:
 	/** Granted abilities at game start */
 	UPROPERTY(EditAnywhere, Category = "Editor Actions")
 	TArray<TSubclassOf<UDAction>> DefaultActions;
@@ -65,7 +64,7 @@ protected:
 	TArray<UDAction*> Actions;
 
 	/* Bind Action for example q - Action1 */
-	UPROPERTY(EditAnywhere, Category = "Actions")
+	UPROPERTY(EditAnywhere, Category = "Actions", BlueprintReadWrite)
 	TMap<int32, TObjectPtr<UDAction>> BindAction;
 
 	// Called when the game starts

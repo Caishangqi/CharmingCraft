@@ -1,4 +1,5 @@
 # CharmingCraft: Journey (Unreal Build)
+
 ![project_title](https://github.com/Caishangqi/CharmingCraft/assets/39553613/afff6fe3-e541-455d-978c-84dfd8df58f3)
 <p align="center">
 <img src = "https://i.imgur.com/EF6t6WA.png">
@@ -18,8 +19,10 @@ Select Other Language README: [Chinese](https://github.com/Caishangqi/CharmingCr
 
 ## Introduction
 
-This project utilizes Unreal Engine 5.3 to create a Top-Down voxel RPG game. It draws inspiration from Minecraft, such as its inventory system and artistic style, as well as the Top-Down perspective, combat system, and isometric indoor scene design of the game Minecraft: Dungeon. CharmingCraft aims to offer a more relaxed gameplay experience, where players can freely explore the map, gather resources to craft weapons, complete quests, and more...
-
+This project utilizes Unreal Engine 5.3 to create a Top-Down voxel RPG game. It draws inspiration from Minecraft, such
+as its inventory system and artistic style, as well as the Top-Down perspective, combat system, and isometric indoor
+scene design of the game Minecraft: Dungeon. CharmingCraft aims to offer a more relaxed gameplay experience, where
+players can freely explore the map, gather resources to craft weapons, complete quests, and more...
 
 ## Build
 
@@ -32,7 +35,8 @@ this repository.
 
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/aa4a85df-a49b-488b-8887-5868ce0d31ec
 
-- Just like how people make weapons, you can use any material to create different weapon parts and assemble them together
+- Just like how people make weapons, you can use any material to create different weapon parts and assemble them
+  together
 
 ### Smart enemy AI
 
@@ -45,8 +49,10 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/5bc09e55-ef8d-457f-9
 
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/e0d9ac26-1a67-4d21-806d-84155a471d44
 
-- Although it is a TopDown perspective game, you can click on the target to attack or hold down shift to attack to specify the click direction.
-- Different weapons have different attack animations, and the speed of these attack animations depends on your character and equipment attributes.
+- Although it is a TopDown perspective game, you can click on the target to attack or hold down shift to attack to
+  specify the click direction.
+- Different weapons have different attack animations, and the speed of these attack animations depends on your character
+  and equipment attributes.
 
 ### Scene switching
 
@@ -60,10 +66,42 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 
 - The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
 
-### RPG elements
 
-- Use the chain of responsibility design pattern to handle multiple types of damage. The damage is packaged into HitData by struct.
+### GAS and RPG elements
+
+- Use the chain of responsibility design pattern to handle multiple types of damage. The damage is packaged into HitData
+  by struct.
 - Magic, arcane, and some weird stuff...
+
+#### The skill binding RPG HUD
+
+![2024-01-22 22-13-31](https://github.com/Caishangqi/CharmingCraft/assets/39553613/4bdc2f1f-f216-413e-92ca-e760df3e8223)
+
+#### Current Skills
+
+| Skill Name               | Can Level Up | Resource Cost  | CoolDown | Basic Damage             | Description                                                                                                                                                                  |
+|--------------------------|--------------|----------------|----------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Parry                    | Yes          | None           | `2`      | Depends on Projectile    | Parry and Reflect the ranged attack                                                                                                                                          |
+| Sword Draw Slash         | Yes          | **Mana** `20`  | `5`      | Depends on Weapon        | Draw weapon forward and perform a long-range slash, dealing 1.5 times weapon's hit damage.                                                                                   |
+| Sneak                    | Yes          | **Mana** `50`  | `5`      | `110%` **Critic Damage** | Causing the enemy to lose their target, ensuring a critical hit on the next attack.                                                                                          |
+| Sprint                   | Yes          | None           | `3`      | None                     | Dash a distance, and become immune to some damage during the dash.                                                                                                           |
+| Arcane Endowment         | Yes          | **Mana** `75`  | `10`     | Depends on Buff          | Randomly select 3 buffs from the enhancement pool, lasting for 30 seconds                                                                                                    |
+| Enhanced Arcane Missiles | Yes          | **Mana** `150` | `2`      | `30%`   **Magic Damage** | launch arcane missiles toward the mouse pointer direction, with increased damage for each shot, castable up to 3 times, with the third shot causing AOE damage and stunning. |
+
+### Levels
+![Spawn](https://github.com/Caishangqi/CharmingCraft/assets/39553613/b2fe8dd6-fe09-480e-84ab-e2dba4aedb46)
+<p align="center">
+World Spawn - Build using blender and Unreal Cube grid tool
+</p>
+<p align="center">
+<img src = "https://i.imgur.com/EF6t6WA.png">
+</p>
+
+![085b835d6aa2bbfdfa9b2f7ca4df50b8](https://github.com/Caishangqi/CharmingCraft/assets/39553613/98fb8dec-facb-40ec-b8a4-9ddd14db5ac8)
+<p align="center">
+Pub Interior - Build using blender and Unreal Cube grid tool, Design reference 《Unpacking》
+
+</p>
 
 ## Progress
 
@@ -87,29 +125,35 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 - Damage number animations based on player's attack direction
 - Comprehensive AI system, including EQS, Behavior Trees, Decorators, and Services
 - Scene transitions implemented using scene streaming
-
+- UI bind GAS system
 
 ## Content and Mechanism
 
 - [Attribute Multiplier and Damage Calculator](https://github.com/Caishangqi/CharmingCraft/wiki/Attribute-Multiplier-and-Damage-Calculator)
 
-## Coming Soon
+## Coming Soon / TODO
 
-- Complete attribute UI
-- Game serialization and saving
-- Refreshable areas: Respawn of monsters, resources, creatures
-- Reset inventory UI and drag method
-- Quest system with related NPCs and quest interfaces
-- Developing an engaging storyline (currently no ideas)
+- Game Start UI and World Select UI `(High Priority)`
+- Game serialization and saving `(High Priority)`
+- Quest system with related NPCs and quest interfaces `(Normal Priority)`
+- Complete attribute UI `(Normal Priority)`
+- Resource collection system, ores, trees, farmland `(Normal Priority)`
+- Expand the Level to 1000 x 1000 `(Lowest Priority)`
+- Spawn areas: Respawn of monsters, resources, creatures `(Lowest Priority)`
+- Reset inventory UI and drag method (Consider use click transfer item) `(Lowest Priority)`
+- Developing an engaging storyline `(currently no ideas)`
 
 ## Awaiting Improvement
 
 - Fixing stuck and jittery issues when interacting with items on high ground (**Fixed**)
 - Correct movement behind buildings when obstructed (Ray Tracing)
-- Dynamic pathfinding improvements, refreshing available routes when players destroy blocks or interact with items (**Fixed**)
+- Dynamic pathfinding improvements, refreshing available routes when players destroy blocks or interact with items (*
+  *Fixed**)
 - Changing item dropping from generation to a throwing action
-- Rendering 3D items into 2D images requires manual placement of RenderTargetActor in the world, otherwise it fails (**Fixed**)
-- The `OnHit()` method of weapons is determined by the weapon type, consider passing in a weapon class template for the interaction component to execute the template class method for **HitData** transmission (**Fixed**)
+- Rendering 3D items into 2D images requires manual placement of RenderTargetActor in the world, otherwise it fails (*
+  *Fixed**)
+- The `OnHit()` method of weapons is determined by the weapon type, consider passing in a weapon class template for the
+  interaction component to execute the template class method for **HitData** transmission (**Fixed**)
 
 ## Project Structure
 
@@ -125,7 +169,9 @@ Refactoring...
 
 ## Concepts, Design Patterns, and Implementation Principles
 
-The following content is written based on the technology used in the project. It does not cover all aspects of Unreal Engine. Unfinished records are not displayed on the main README but are shown in the project's [Wiki](https://github.com/Caishangqi/CharmingCraft/wiki).
+The following content is written based on the technology used in the project. It does not cover all aspects of Unreal
+Engine. Unfinished records are not displayed on the main README but are shown in the
+project's [Wiki](https://github.com/Caishangqi/CharmingCraft/wiki).
 
 - [Class Naming Conventions](https://github.com/Caishangqi/CharmingCraft/wiki/Class-Perfixes)
 - [Controllers](https://github.com/Caishangqi/CharmingCraft/wiki/Controller)
@@ -141,7 +187,6 @@ The following content is written based on the technology used in the project. It
 - [Skill System](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Combat Damage Transmission Chain](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Vector Multi-Damage Indicators](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
-
 
 ## WorkFlow
 

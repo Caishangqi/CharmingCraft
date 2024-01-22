@@ -13,7 +13,7 @@ void UDAction::StartAction_Implementation(AActor* Instigator)
 
 	UDActionComponent* Comp = GetOwningComponent();
 	Comp->ActiveGamePlayTags.AppendTags(GrantsTags);
-
+	CachedInstigator = Instigator;
 	bIsRunning = true;
 }
 
@@ -68,12 +68,14 @@ void UDAction::StartCoolDown()
 {
 	bIsCooling = true;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UDAction::CooldownFinished, CoolDown);
+	OnCoolStart.Broadcast(CachedInstigator);
 }
 
 void UDAction::CooldownFinished()
 {
 	bIsCooling = false;
 	ResetCoolDown();
+	OnCoolComplete.Broadcast(CachedInstigator);
 }
 
 void UDAction::ResetCoolDown()

@@ -16,6 +16,10 @@ class UWorld;
  *	not make child classes from as Action
  */
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoolComplete, AActor*, InstigatorPawn);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoolCStart, AActor*, InstigatorPawn);
+
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UDAction : public UObject
 {
@@ -26,8 +30,20 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Action", BlueprintReadWrite)
 	FName ActionName; // FName is hashed used in game, highly optimized
 
+	/* Resource:
+	 * https://www.reddit.com/r/PixelArt/comments/ikhnb8/16x16_ability_icons_based_off_dnd_i_really/
+	 * https://black-minecraft.com/resources/supreme-icons-pack-100-texture-icons.1910/
+	 */
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
+	UTexture2D* SkillIcon;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsCooling = false;
+
+	/* Default Cooldown */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float CoolDown = 5.0f;
 
 	UFUNCTION(BlueprintCallable, Category= "Action")
 	UDActionComponent* GetOwningComponent() const;
@@ -63,6 +79,14 @@ public:
 	void ResetCoolDown();
 	UFUNCTION(BlueprintCallable, Category= "Timer")
 	float GetRemainCooldown();
+
+	/* Event */
+	UPROPERTY(BlueprintAssignable)
+	FOnCoolComplete OnCoolComplete;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCoolComplete OnCoolStart;
+
 protected:
 	/* Tags added to owning actor when activated, removed when action stops */
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
@@ -72,8 +96,9 @@ protected:
 	FGameplayTagContainer BlockedTags;
 
 	FTimerHandle TimerHandle_Cooldown;
-	/* Default Cooldown */
-	float CoolDown = 5.0f;
+
+	UPROPERTY()
+	TObjectPtr<AActor> CachedInstigator;
 
 	bool bIsRunning;
 };
