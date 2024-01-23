@@ -103,6 +103,9 @@ public:
 
 	FPlayerAttribute GetPlayerAttributeData();
 
+	UFUNCTION(BlueprintCallable)
+	void SubmitHitData(FHitData HitData);
+
 	/*!
 	 *	PostInwardHitData receive HitData from PreInwardHitData and apply the HitData
 	 *	that was modified to the Attribute of the components, after the actual attribute

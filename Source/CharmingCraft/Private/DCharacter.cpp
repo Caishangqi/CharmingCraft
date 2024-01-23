@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
+#include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Interact/DInteractionComponent.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
@@ -43,6 +44,7 @@ ADCharacter::ADCharacter()
 	/* Attribute Settings */
 
 	AttributeComp = CreateDefaultSubobject<UDAttributeComponent>("AttributeComp");
+	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
 
 	/* Movement Settings */
 
@@ -305,7 +307,7 @@ void ADCharacter::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData Hit
 {
 	if (!AttributeComp->IsDead)
 	{
-		AttributeComp->DamageChain->HandleDamage(HitData);
+		AttributeComp->SubmitHitData(HitData);
 	}
 }
 

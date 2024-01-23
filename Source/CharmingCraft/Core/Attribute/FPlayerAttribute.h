@@ -10,6 +10,8 @@ struct FPlayerAttribute : public FTableRowBase
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attributes")
+	float AttackRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Attributes")
 	float Damage;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float Health;
@@ -33,6 +35,8 @@ public:
 	int CriticalDamageDefenseEnhance;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float AttackSpeedEnhance;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	int32 InteractRange;
 
 	/* Defense */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")

@@ -66,11 +66,11 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 
 - The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
 
-
-### GAS and RPG elements
+### GAS, Buff and RPG elements
 
 - Use the chain of responsibility design pattern to handle multiple types of damage. The damage is packaged into HitData
   by struct.
+- Use BuffInfo, BuffData, BuffHandler to callback BuffModels implement Buff System.
 - Magic, arcane, and some weird stuff...
 
 #### The skill binding RPG HUD
@@ -85,10 +85,11 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 | Sword Draw Slash         | Yes          | **Mana** `20`  | `5`      | Depends on Weapon        | Draw weapon forward and perform a long-range slash, dealing 1.5 times weapon's hit damage.                                                                                   |
 | Sneak                    | Yes          | **Mana** `50`  | `5`      | `110%` **Critic Damage** | Causing the enemy to lose their target, ensuring a critical hit on the next attack.                                                                                          |
 | Sprint                   | Yes          | None           | `3`      | None                     | Dash a distance, and become immune to some damage during the dash.                                                                                                           |
-| Arcane Endowment         | Yes          | **Mana** `75`  | `10`     | Depends on Buff          | Randomly select 3 buffs from the enhancement pool, lasting for 30 seconds                                                                                                    |
+| Arcane Endowment         | Yes          | **Mana** `75`  | `10`     | Depends on Buff          | Randomly select 3 `(+)`buffs from the Buff pool, lasting for 30 seconds                                                                                                      |
 | Enhanced Arcane Missiles | Yes          | **Mana** `150` | `2`      | `30%`   **Magic Damage** | launch arcane missiles toward the mouse pointer direction, with increased damage for each shot, castable up to 3 times, with the third shot causing AOE damage and stunning. |
 
 ### Levels
+
 ![Spawn](https://github.com/Caishangqi/CharmingCraft/assets/39553613/b2fe8dd6-fe09-480e-84ab-e2dba4aedb46)
 <p align="center">
 World Spawn - Build using blender and Unreal Cube grid tool
@@ -126,6 +127,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference ã
 - Comprehensive AI system, including EQS, Behavior Trees, Decorators, and Services
 - Scene transitions implemented using scene streaming
 - UI bind GAS system
+- Buff System Include BuffData, BuffInfo, BuffHandler, and BuffModel (Callback)
 
 ## Content and Mechanism
 
@@ -187,6 +189,7 @@ project's [Wiki](https://github.com/Caishangqi/CharmingCraft/wiki).
 - [Skill System](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Combat Damage Transmission Chain](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Vector Multi-Damage Indicators](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+- [Buff System](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 
 ## WorkFlow
 

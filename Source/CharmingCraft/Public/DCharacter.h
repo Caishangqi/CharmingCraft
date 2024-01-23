@@ -9,6 +9,7 @@
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
 
+class UBuffHandlerComponent;
 class UEquipmentManagerComponent;
 class UDInventoryComponent;
 class UPostProcessComponent;
@@ -103,6 +104,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UCharacterMovementComponent* MovementComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
+	TObjectPtr<UBuffHandlerComponent> BuffHandlerComponent;
+
 	/* 后期处理组件 */
 	//UPROPERTY(VisibleAnywhere)
 	//UPostProcessComponent* PostProcessComponent;
@@ -134,6 +138,7 @@ public:
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
 
 	virtual UDAttributeComponent* GetAttributeComponent_Implementation() override;
+
 public:
 	/* Events */
 };

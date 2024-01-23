@@ -48,7 +48,7 @@ void ACreature::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitDa
 {
 	if (!CreatureAttributeComponent->IsDead)
 	{
-		CreatureAttributeComponent->DamageChain->HandleDamage(HitData);
+		CreatureAttributeComponent->SubmitHitData(HitData);
 		HitReaction(HitData.DamageResponse);
 	}
 }

@@ -33,5 +33,5 @@ void AEntity::Interact_Implementation(APawn* InstigatorPawn)
 void AEntity::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
 	IDamageable::OnActionHit_Implementation(InstigatorPawn, HitData);
-	AttributeComponent->DamageChain->HandleDamage(HitData);
+	AttributeComponent->SubmitHitData(HitData);
 }

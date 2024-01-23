@@ -3,6 +3,7 @@
 
 #include "DAttributeComponent.h"
 
+#include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 
 // Sets default values for this component's properties
@@ -93,6 +94,39 @@ FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 	PlayerAttribute.KnockBackResistance = KnockBackResistance;
 	PlayerAttribute.CurrentLevelXP = CurrentLevelXP;
 	return PlayerAttribute;
+}
+
+void UDAttributeComponent::SubmitHitData(FHitData HitData)
+{
+	TObjectPtr<UBuffHandlerComponent> InstigatorBuffHandlerComponent = Cast<UBuffHandlerComponent>(
+		HitData.InstigatorPawn->GetComponentByClass(UBuffHandlerComponent::StaticClass()));
+	TObjectPtr<UBuffHandlerComponent> TargetBuffHandlerComponent = Cast<UBuffHandlerComponent>(
+		GetOwner()->GetComponentByClass(UBuffHandlerComponent::StaticClass()));
+
+	if (InstigatorBuffHandlerComponent) // Attcker
+	{
+		for (auto BuffInstance : InstigatorBuffHandlerComponent->BuffList)
+		{
+			// If the Buff do have OnHit Effect
+			if (BuffInstance->BuffData->OnHit)
+			{
+				BuffInstance->BuffData->OnHit.GetDefaultObject()->Apply(BuffInstance, HitData);
+			}
+		}
+	}
+
+	if (TargetBuffHandlerComponent) // Defender
+	{
+		for (auto BuffInstance : InstigatorBuffHandlerComponent->BuffList)
+		{
+			if (BuffInstance->BuffData->OnBeHit)
+			{
+				BuffInstance->BuffData->OnBeHit.GetDefaultObject()->Apply(BuffInstance, HitData);
+			}
+		}
+	}
+
+	DamageChain->HandleDamage(HitData);
 }
 
 

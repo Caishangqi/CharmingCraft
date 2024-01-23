@@ -85,7 +85,7 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 			// 这是解耦很重要的一环
 
 			/* Apply Damage Chain */
-			AttributeComp->DamageChain->HandleDamage(HitData);
+			AttributeComp->SubmitHitData(HitData);
 
 			Destroy(); //完成任务后就可以摧毁这个弹射物了
 		}
