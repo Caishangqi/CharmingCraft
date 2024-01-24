@@ -37,13 +37,13 @@ public:
 	void AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	bool StartActionByName(AActor* Instigator, FName ActionName);
+	bool StartActionByName(APawn* Instigator, FName ActionName);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	bool StartActionByIndex(AActor* Instigator, int32 index);
+	bool StartActionByIndex(APawn* Instigator, int32 index);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	bool StopActionByName(AActor* Instigator, FName ActionName);
+	bool StopActionByName(APawn* Instigator, FName ActionName);
 
 	UFUNCTION(BlueprintCallable, Category= "Cast")
 	void CastActionOne();

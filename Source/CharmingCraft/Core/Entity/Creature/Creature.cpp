@@ -3,6 +3,7 @@
 
 #include "Creature.h"
 
+#include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/UI/HealthIndicator.h"
 #include "CharmingCraft/Object/Components/UI/DamageIndicator.h"
 
@@ -17,6 +18,7 @@ ACreature::ACreature()
 	DamageIndicator->SetupAttachment(GetRootComponent());
 	HealthIndicator = CreateDefaultSubobject<UHealthIndicator>("HealthIndicator");
 	HealthIndicator->SetupAttachment(GetRootComponent());
+	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
 }
 
 // Called when the game starts or when spawned

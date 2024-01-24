@@ -12,6 +12,7 @@
 
 class UHealthIndicator;
 class UDamageIndicator;
+class UBuffHandlerComponent;
 /*!
  *	The Base Class in Editor is BP_Creature, it add more component
  *	- DClickableActionComponentBP
@@ -40,6 +41,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Attribute")
 	TObjectPtr<UDAttributeComponent> CreatureAttributeComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Buff")
+	TObjectPtr<UBuffHandlerComponent> BuffHandlerComponent;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResponseMontage")
 	TMap<EDamageResponse, TObjectPtr<UAnimMontage>> HitResponseMontage;

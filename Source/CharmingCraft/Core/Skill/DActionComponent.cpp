@@ -108,7 +108,7 @@ void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UDAction> ActionC
 	BindAction.Add(index, NewAction);
 }
 
-bool UDActionComponent::StartActionByName(AActor* Instigator, const FName ActionName)
+bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionName)
 {
 	for (UDAction* Action : Actions)
 	{
@@ -127,7 +127,7 @@ bool UDActionComponent::StartActionByName(AActor* Instigator, const FName Action
 	return false;
 }
 
-bool UDActionComponent::StartActionByIndex(AActor* Instigator, int32 index)
+bool UDActionComponent::StartActionByIndex(APawn* Instigator, int32 index)
 {
 	if (BindAction[index])
 	{
@@ -151,7 +151,7 @@ bool UDActionComponent::StartActionByIndex(AActor* Instigator, int32 index)
 	return false;
 }
 
-bool UDActionComponent::StopActionByName(AActor* Instigator, const FName ActionName)
+bool UDActionComponent::StopActionByName(APawn* Instigator, const FName ActionName)
 {
 	for (UDAction* Action : Actions)
 	{
@@ -169,5 +169,5 @@ bool UDActionComponent::StopActionByName(AActor* Instigator, const FName ActionN
 
 void UDActionComponent::CastActionOne()
 {
-	StartActionByIndex(GetOwner(), 1);
+	StartActionByIndex(Cast<APawn>(GetOwner()), 1);
 }

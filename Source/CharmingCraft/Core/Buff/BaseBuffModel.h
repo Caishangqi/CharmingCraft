@@ -8,6 +8,7 @@
 #include "BaseBuffModel.generated.h"
 
 class UBuffInfo;
+class UDAttributeComponent;
 /**
  * 
  */
@@ -17,6 +18,11 @@ class CHARMINGCRAFT_API UBaseBuffModel : public UObject
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UDAttributeComponent> AttributeComponent;
+
+	UBaseBuffModel();
+
 	/* */
 	UPROPERTY(BlueprintReadWrite)
 	int32 StackBounceModifer = 1;

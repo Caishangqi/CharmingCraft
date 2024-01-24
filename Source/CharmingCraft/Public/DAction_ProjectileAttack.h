@@ -37,7 +37,7 @@ protected:
 	void AttackDelay_Elapsed(ACharacter* InstigatorCharacter);
 
 public:
-	virtual void StartAction_Implementation(AActor* Instigator) override;
+	virtual void StartAction_Implementation(APawn* Instigator) override;
 
 	UDAction_ProjectileAttack();
 };

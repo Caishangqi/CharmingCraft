@@ -34,6 +34,10 @@ public: // Basic Information
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FGameplayTagContainer Tags;
 
+public: // Internal Value
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName, int32> InternalValue;
+
 public: // Temporal Information
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bIsForever;

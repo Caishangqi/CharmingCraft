@@ -7,11 +7,13 @@
 #include "CharmingCraft/Core/Buff/BuffInfo.h"
 
 
+UModifyPropertyBuffModel::UModifyPropertyBuffModel()
+{
+}
+
 void UModifyPropertyBuffModel::Apply_Implementation(UBuffInfo* BuffInfo, FHitData& HitData)
 {
 	Super::Apply_Implementation(BuffInfo, HitData);
-	AttributeComponent = Cast<UDAttributeComponent>(
-		BuffInfo->Target->GetComponentByClass(UDAttributeComponent::StaticClass()));
 	if (AttributeComponent)
 	{
 		/* TODO: Consider use operate override &= */

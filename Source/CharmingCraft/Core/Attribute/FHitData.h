@@ -4,6 +4,7 @@
 #include "Engine/DataTable.h"
 #include "FHitData.generated.h"
 
+class UBuffInfo;
 USTRUCT(BlueprintType)
 struct FHitData : public FTableRowBase
 {
@@ -17,6 +18,7 @@ struct FHitData : public FTableRowBase
 		  , CriticalDamage(0)
 		  , InstigatorPawn(nullptr)
 		  , DamageResponse(EDamageResponse::HitReaction) // 设置默认值
+		  , OnHitBuffList()
 	{
 	}
 
@@ -34,4 +36,6 @@ struct FHitData : public FTableRowBase
 	APawn* InstigatorPawn;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="DamageResponse")
 	EDamageResponse DamageResponse;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="BuffList")
+	TArray<UBuffInfo*> OnHitBuffList;
 };

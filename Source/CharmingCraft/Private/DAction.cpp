@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 
-void UDAction::StartAction_Implementation(AActor* Instigator)
+void UDAction::StartAction_Implementation(APawn* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));
 	StartCoolDown();
@@ -17,7 +17,7 @@ void UDAction::StartAction_Implementation(AActor* Instigator)
 	bIsRunning = true;
 }
 
-void UDAction::StopAction_Implementation(AActor* Instigator)
+void UDAction::StopAction_Implementation(APawn* Instigator)
 {
 	UDActionComponent* Comp = GetOwningComponent();
 	Comp->ActiveGamePlayTags.RemoveTags(GrantsTags);
@@ -25,7 +25,7 @@ void UDAction::StopAction_Implementation(AActor* Instigator)
 	bIsRunning = false;
 }
 
-bool UDAction::CanStart_Implementation(AActor* Instigator)
+bool UDAction::CanStart_Implementation(APawn* Instigator)
 {
 	if (IsRunning())
 	{

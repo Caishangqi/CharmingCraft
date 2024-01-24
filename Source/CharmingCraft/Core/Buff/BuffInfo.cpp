@@ -2,3 +2,5 @@
 
 
 #include "BuffInfo.h"
+
+#include "CharmingCraft/Core/Log/Logging.h"

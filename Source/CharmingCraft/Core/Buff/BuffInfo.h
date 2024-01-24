@@ -10,6 +10,8 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBuffInfoRemoved, UBuffInfo*, RemovedBuffInfo);
+
 UCLASS(Blueprintable, BlueprintType)
 class CHARMINGCRAFT_API UBuffInfo : public UObject
 {
@@ -19,13 +21,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UBuffData> BuffData;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<AActor> Instigator;
+	TObjectPtr<APawn> Instigator;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<AActor> Target;
+	TObjectPtr<APawn> Target;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Duration;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float TickTime;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 CurrentStack = 1;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnBuffInfoRemoved OnBuffInfoRemoved;
 };

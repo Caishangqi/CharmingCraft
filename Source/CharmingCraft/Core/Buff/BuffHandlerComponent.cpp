@@ -20,11 +20,14 @@ UBuffHandlerComponent::UBuffHandlerComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-UBuffInfo* UBuffHandlerComponent::CreateBuffInfo(TSubclassOf<UBuffData> BuffDataClass, AActor* BuffInstigator,
-                                                 AActor* BuffTarget, bool AddAfterCreate, FHitData HitData)
+UBuffInfo* UBuffHandlerComponent::CreateBuffInfo(TSubclassOf<UBuffData> BuffDataClass, APawn* BuffInstigator,
+                                                 APawn* BuffTarget, bool AddAfterCreate, FHitData HitData,
+                                                 TMap<FName, int32> InternalData)
 {
 	UBuffData* CreatedBuffData = NewObject<UBuffData>(this, BuffDataClass);
 	UBuffInfo* CreatedBuffInfo = NewObject<UBuffInfo>(this, UBuffInfo::StaticClass());
+
+	CreatedBuffData->InternalValue.Append(InternalData); // Append Internal Data
 
 	CreatedBuffInfo->BuffData = CreatedBuffData;
 	CreatedBuffInfo->Instigator = BuffInstigator;
@@ -34,10 +37,12 @@ UBuffInfo* UBuffHandlerComponent::CreateBuffInfo(TSubclassOf<UBuffData> BuffData
 	{
 		if (AddAfterCreate)
 		{
-			UE_LOG(LogChamingCraftBuff, Display, TEXT("[+] Create and Add BuffInfo: %p"), CreatedBuffInfo);
+			UE_LOG(LogChamingCraftBuff, Display, TEXT("[+] Create and Add BuffInfo: %s"),
+			       *CreatedBuffInfo->BuffData->BuffName.ToString());
 			AddBuff(CreatedBuffInfo, HitData);
 		}
-		UE_LOG(LogChamingCraftBuff, Display, TEXT("[+] Create BuffInfo: %p"), CreatedBuffInfo);
+		UE_LOG(LogChamingCraftBuff, Display, TEXT("[+] Create BuffInfo: %s"),
+		       *CreatedBuffInfo->BuffData->BuffName.ToString());
 		return CreatedBuffInfo;
 	}
 	UE_LOG(LogChamingCraftBuff, Error, TEXT("[x] Fail To Create BuffInfo:"));
@@ -53,27 +58,34 @@ void UBuffHandlerComponent::AddBuff(UBuffInfo* BuffInfo, FHitData HitData)
 		if (SearchedBuff->CurrentStack < SearchedBuff->BuffData->MaxStack)
 		{
 			SearchedBuff->CurrentStack++;
-			switch (SearchedBuff->BuffData->BuffTimeUpdate)
-			{
-			case EBuffTimeUpdate::Add:
-				SearchedBuff->Duration += SearchedBuff->BuffData->Duration;
-				break;
-			case EBuffTimeUpdate::Replace:
-				SearchedBuff->Duration = SearchedBuff->BuffData->Duration;
-				break;
-			}
-			SearchedBuff->BuffData->OnCreate.GetDefaultObject()->Apply(SearchedBuff, HitData);
+			UpdateBuffDuration(SearchedBuff);
+			BuffInfo->BuffData->OnCreate.GetDefaultObject()->Apply(BuffInfo, HitData);
 		}
 	}
 	else
 	{
 		// Buff Do not in the List
 		BuffInfo->Duration = BuffInfo->BuffData->Duration;
-		//BuffInfo->TickTime = BuffInfo->BuffData->TickTime; // Add Buff wait timer countdown trigger onTick
 		BuffInfo->BuffData->OnCreate.GetDefaultObject()->Apply(BuffInfo, HitData);
 		BuffList.Add(BuffInfo);
 		// Order the BuffList based on Priority
 		BuffList.Sort(FBuffInfoPriorityComparer());
+
+		// UI Envent: Add Buff that first time
+		OnBuffAddToBuffList.Broadcast(BuffInfo, HitData);
+	}
+}
+
+void UBuffHandlerComponent::UpdateBuffDuration(UBuffInfo* BuffInfo)
+{
+	switch (BuffInfo->BuffData->BuffTimeUpdate)
+	{
+	case EBuffTimeUpdate::Add:
+		BuffInfo->Duration += BuffInfo->BuffData->Duration;
+		break;
+	case EBuffTimeUpdate::Replace:
+		BuffInfo->Duration = BuffInfo->BuffData->Duration;
+		break;
 	}
 }
 
@@ -83,17 +95,24 @@ void UBuffHandlerComponent::RemoveBuff(UBuffInfo* BuffInfo, FHitData HitData)
 	{
 	case EBuffRemoveStackUpdate::Clear:
 		BuffInfo->BuffData->OnRemove.GetDefaultObject()->Apply(BuffInfo, HitData);
-		UE_LOG(LogChamingCraftBuff, Display, TEXT("[-] Remove BuffInfo: %p"), BuffInfo);
+		UE_LOG(LogChamingCraftBuff, Display, TEXT("[-] Remove BuffInfo: %s"), *BuffInfo->BuffData->BuffName.ToString());
+		BuffInfo->OnBuffInfoRemoved.Broadcast(BuffInfo); // Broadcast Remove Event
 		BuffList.Remove(BuffInfo);
 		break;
 	case EBuffRemoveStackUpdate::Reduce:
 		BuffInfo->CurrentStack--;
-		UE_LOG(LogChamingCraftBuff, Display, TEXT("[-] Reduce Stack BuffInfo: %p, Current Stack: %d"), BuffInfo,
+		UE_LOG(LogChamingCraftBuff, Display, TEXT("[-] Reduce Stack BuffInfo: %s, Current Stack: %d"),
+		       *BuffInfo->BuffData->BuffName.ToString(),
 		       BuffInfo->CurrentStack);
-		BuffInfo->BuffData->OnRemove.GetDefaultObject()->Apply(BuffInfo, HitData);
+		if (BuffInfo->BuffData->OnRemove)
+		{
+			BuffInfo->BuffData->OnRemove.GetDefaultObject()->Apply(BuffInfo, HitData);
+		}
 		if (BuffInfo->CurrentStack <= 0)
 		{
-			UE_LOG(LogChamingCraftBuff, Display, TEXT("[-] Remove BuffInfo Due to stack is 0: %p"), BuffInfo);
+			UE_LOG(LogChamingCraftBuff, Display, TEXT("[-] Remove BuffInfo Due to stack is 0: %s"),
+			       *BuffInfo->BuffData->BuffName.ToString());
+			BuffInfo->OnBuffInfoRemoved.Broadcast(BuffInfo); // Broadcast Remove Event
 			BuffList.Remove(BuffInfo);
 		}
 		else

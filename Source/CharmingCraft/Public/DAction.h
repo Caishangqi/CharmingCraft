@@ -59,13 +59,13 @@ public:
 	 *	@see UDAction::StartAction_Implementation(AActor* Instigator)
 	 */
 	UFUNCTION(BlueprintNativeEvent, Category= "Action")
-	void StartAction(AActor* Instigator); // Passing who is responsible for starting the action
+	void StartAction(APawn* Instigator); // Passing who is responsible for starting the action
 
 	UFUNCTION(BlueprintNativeEvent, Category= "Action")
-	bool CanStart(AActor* Instigator);
+	bool CanStart(APawn* Instigator);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "Action")
-	void StopAction(AActor* Instigator);
+	void StopAction(APawn* Instigator);
 
 	virtual UWorld* GetWorld() const override;
 

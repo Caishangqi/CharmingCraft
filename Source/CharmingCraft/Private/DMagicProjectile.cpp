@@ -4,6 +4,7 @@
 #include "DMagicProjectile.h"
 
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
+#include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -63,6 +64,10 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 		 */
 		UDActionComponent* ActionComp = Cast<UDActionComponent>(
 			OtherActor->GetComponentByClass(UDActionComponent::StaticClass()));
+
+		UBuffHandlerComponent* BuffHandlerComponent = Cast<UBuffHandlerComponent>(
+			OtherActor->GetComponentByClass(UBuffHandlerComponent::StaticClass()));
+
 		if (ActionComp && ActionComp->ActiveGamePlayTags.HasTag(ParryTag))
 		{
 			/* 反弹这次攻击,因为我们在 DMagicProjectiles.cpp 中设置了
@@ -73,6 +78,15 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 			/* 让这次攻击的煽动者成为玩家 */
 			SetInstigator(Cast<APawn>(OtherActor));
 			return;
+		}
+
+		if (BuffHandlerComponent)
+		{
+			for (auto BuffInstance : HitData.OnHitBuffList)
+			{
+				BuffInstance->Target = Cast<APawn>(OtherActor);
+				BuffHandlerComponent->AddBuff(BuffInstance, HitData);
+			}
 		}
 
 

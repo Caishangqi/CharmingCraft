@@ -56,7 +56,7 @@ void UDAction_ProjectileAttack::AttackDelay_Elapsed(ACharacter* InstigatorCharac
 	StopAction(InstigatorCharacter);
 }
 
-void UDAction_ProjectileAttack::StartAction_Implementation(AActor* Instigator)
+void UDAction_ProjectileAttack::StartAction_Implementation(APawn* Instigator)
 {
 	Super::StartAction_Implementation(Instigator);
 

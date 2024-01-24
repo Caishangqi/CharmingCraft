@@ -9,7 +9,12 @@
 
 /**
  * 
- */
+
+*/
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuffAddToBuffList, UBuffInfo*, BuffInfo, FHitData, HitData);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuffAddToBuffListRepeat, UBuffInfo*, BuffInfo, FHitData, HitData);
+
 UCLASS()
 class CHARMINGCRAFT_API UBuffHandlerComponent : public UActorComponent
 {
@@ -19,15 +24,17 @@ public:
 	UBuffHandlerComponent();
 
 	// Set of Buff Info
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<TObjectPtr<UBuffInfo>> BuffList;
 
 	UFUNCTION(BlueprintCallable)
-	UBuffInfo* CreateBuffInfo(TSubclassOf<UBuffData> BuffDataClass, AActor* BuffInstigator, AActor* BuffTarget,
-	                          bool AddAfterCreate, FHitData HitData);
+	UBuffInfo* CreateBuffInfo(TSubclassOf<UBuffData> BuffDataClass, APawn* BuffInstigator,
+	                          APawn* BuffTarget, bool AddAfterCreate, FHitData HitData,
+	                          TMap<FName, int32> InternalData);
 
 	UFUNCTION(Blueprintable, BlueprintCallable)
 	void AddBuff(UBuffInfo* BuffInfo, FHitData HitData);
+	void UpdateBuffDuration(UBuffInfo* BuffInfo);
 	UFUNCTION(Blueprintable, BlueprintCallable)
 	void RemoveBuff(UBuffInfo* BuffInfo, FHitData HitData);
 
@@ -36,6 +43,16 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	/* Event */
+	// UI
+	UPROPERTY(BlueprintAssignable)
+	FOnBuffAddToBuffList OnBuffAddToBuffList;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnBuffAddToBuffListRepeat OnBuffAddToBuffListRepeat;
+
+
 
 private:
 	TObjectPtr<UBuffInfo> SearchBuff(int32 Id);

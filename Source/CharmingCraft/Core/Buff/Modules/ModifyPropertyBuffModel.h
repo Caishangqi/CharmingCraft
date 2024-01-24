@@ -16,8 +16,9 @@ class CHARMINGCRAFT_API UModifyPropertyBuffModel : public UBaseBuffModel
 	GENERATED_BODY()
 
 public:
-	UPROPERTY()
-	TObjectPtr<UDAttributeComponent> AttributeComponent;
+	UModifyPropertyBuffModel();
+
+	
 
 	/* The Delta Value you want to apply to Target or Instigator Attribute */
 	UPROPERTY(BlueprintReadWrite)
