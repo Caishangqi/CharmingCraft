@@ -88,6 +88,31 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 | Arcane Endowment         | Yes          | **Mana** `75`  | `10`     | Depends on Buff          | Randomly select 3 `(+)`buffs from the Buff pool, lasting for 30 seconds                                                                                                      |
 | Enhanced Arcane Missiles | Yes          | **Mana** `150` | `2`      | `30%`   **Magic Damage** | launch arcane missiles toward the mouse pointer direction, with increased damage for each shot, castable up to 3 times, with the third shot causing AOE damage and stunning. |
 
+#### Buff System
+
+- Support Stack Buff, Forever Buff.
+- User could customize buff atttributes through Duration, Tick time, or pass a **TMap** contain [**internal Data
+  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L39).
+- 3 Buff time **update** choices: `Add`, `Replace`, and `Keep`.
+- 2 Buff **remove** Stack choices: `Clear` and `Reduce`.
+- 7 Customize [**Buff Callback
+  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L55): `On Create`, `On Remove`, `On Tick`, `On Hit`, `On Be Hit`, `On Kill`,
+  and `On Be Killed`.
+- User
+  could [implements different Callback](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/Modules/ModifyPropertyBuffModel.cpp#L14)
+  to customize buff behaviour.
+
+![BuffSystem](https://github.com/Caishangqi/CharmingCraft/assets/39553613/08a67844-f027-446a-a95f-02f6104415c1)
+
+| Buff Name           | Icon                                                                                                                                    | Allow Stack | Default Duration / Tick | Default Max Stack | Description                                                                                                                                                                      |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------|-------------|-------------------------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Burning             | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/710ec398-ff5b-45ef-a16f-6fc2059b838f" height="200%" width="200%"> | Yes         | 10    / 1               | 5                 | Inflicts magic damage over time on the tick unit and reduces the unit's life regeneration.                                                                                       |
+| Damage Enhance      | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/d5c8a7b5-9a32-4608-a8b6-7999d18cf8a3" height="200%" width="200%"> | No          | 10    / 0               | 1                 | Increases the bearer's attack power.                                                                                                                                             |
+| Stealth             | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/4aad4657-df58-4687-bc9e-6c22826b9391" height="200%" width="200%"> | No          | 20 / 1                  | 1                 | Cannot be detected by enemies; becomes ineffective after the bearer attacks.                                                                                                     |
+| Spawn Down          | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/29b838ff-c6b3-48b6-b4de-12b2483f24be" height="200%" width="200%"> | Yes         | 30 / 0                  | 5                 | Reduce Nearby Enemy Spawn Rate                                                                                                                                                   |
+| Negative Resistance | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/a8bdc125-cbb7-4e26-a644-764373c1f4b1" height="200%" width="200%"> | No          | 60 / 0                  | 1                 | Immune to Negative Effects, Excluding Control                                                                                                                                    |
+| Frozen              | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/0a3a42aa-100c-4c24-b4eb-bb34a6d86347" height="200%" width="200%"> | Yes         | 10 / 1                  | 5                 | Slow the bearer, freeze the bearer when the maximum stacks are reached. If damaged by physical attacks while frozen, it inflicts a percentage of maximum health as **magic** damage. |                                                                                            |
+
 ### Levels
 
 ![Spawn](https://github.com/Caishangqi/CharmingCraft/assets/39553613/b2fe8dd6-fe09-480e-84ab-e2dba4aedb46)
