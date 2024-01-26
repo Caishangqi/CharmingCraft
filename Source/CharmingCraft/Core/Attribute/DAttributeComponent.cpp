@@ -38,6 +38,7 @@ UDAttributeComponent::UDAttributeComponent()
 void UDAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	OnAttributeChange.AddDynamic(this, &UDAttributeComponent::ApplyAttributeChange);
 
 	// Apply DamageChain
 	DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
@@ -69,6 +70,26 @@ bool UDAttributeComponent::ApplyManaChange(APawn* InstigatorPawn, float Delta)
 	Mana += Delta;
 	OnManaChanged.Broadcast(InstigatorPawn, this, Mana, Delta);
 	return true;
+}
+
+void UDAttributeComponent::ApplyAttributeChange(FPlayerAttribute DeltaAttribute, UObject* Source)
+{
+	/* TODO: Consider use operate override &= */
+	this->AttackRange += DeltaAttribute.AttackRange;
+	this->Health += DeltaAttribute.Health;
+	this->Damage += DeltaAttribute.Damage;
+	this->HealthMax += DeltaAttribute.HealthMax;
+	this->AbilityPower += DeltaAttribute.AbilityPower;
+	this->Mana += DeltaAttribute.Mana;
+	this->CurrentLevelXP += DeltaAttribute.CurrentLevelXP;
+	this->Armour += DeltaAttribute.Armour;
+	this->MagicDefense += DeltaAttribute.MagicDefense;
+	this->KnockBackResistance += DeltaAttribute.KnockBackResistance;
+	this->CriticalChance += DeltaAttribute.CriticalChance;
+	this->CriticalDamageEnhance += DeltaAttribute.CriticalDamageEnhance;
+	this->CriticalDamageDefenseEnhance += DeltaAttribute.CriticalDamageDefenseEnhance;
+	this->AttackSpeedEnhance += DeltaAttribute.AttackSpeedEnhance;
+	this->InteractRange += DeltaAttribute.InteractRange;
 }
 
 void UDAttributeComponent::OnComponentDestroyed(bool bDestroyingHierarchy)

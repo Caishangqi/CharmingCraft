@@ -61,6 +61,13 @@ void UBuffHandlerComponent::AddBuff(UBuffInfo* BuffInfo, FHitData HitData)
 			UpdateBuffDuration(SearchedBuff);
 			BuffInfo->BuffData->OnCreate.GetDefaultObject()->Apply(BuffInfo, HitData);
 		}
+		// Buff Already in the List and Current stack equal max stack allowed
+		if (SearchedBuff->CurrentStack == SearchedBuff->BuffData->MaxStack)
+		{
+			UpdateBuffDuration(SearchedBuff);
+			/* should not call Apply()*/
+			//BuffInfo->BuffData->OnCreate.GetDefaultObject()->Apply(BuffInfo, HitData);
+		}
 	}
 	else
 	{
@@ -151,10 +158,11 @@ void UBuffHandlerComponent::BuffTickAndRemove(float DeltaTime)
 		{
 			BuffInstance->Duration -= DeltaTime;
 		}
-		for (auto DeleteBuffList : PrepareDeleteBuffList)
-		{
-			RemoveBuff(DeleteBuffList, HitData);
-		}
+		
+	}
+	for (auto DeleteBuffList : PrepareDeleteBuffList)
+	{
+		RemoveBuff(DeleteBuffList, HitData);
 	}
 }
 

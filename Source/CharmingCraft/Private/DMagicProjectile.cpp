@@ -5,6 +5,7 @@
 
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
+#include "CharmingCraft/Core/Buff/Lib/BuffLibrary.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -84,8 +85,7 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 		{
 			for (auto BuffInstance : HitData.OnHitBuffList)
 			{
-				BuffInstance->Target = Cast<APawn>(OtherActor);
-				BuffHandlerComponent->AddBuff(BuffInstance, HitData);
+				UBuffLibrary::AddBuffToTarget(BuffInstance, Cast<APawn>(OtherActor), HitData);
 			}
 		}
 

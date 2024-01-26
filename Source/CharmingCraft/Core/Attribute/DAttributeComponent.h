@@ -24,6 +24,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnManaChanged, AActor*, Instigato
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitDataApply, FHitData, InwardHitData);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributeChange, FPlayerAttribute, DeltaAttribute, UObject*, Source);
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
 class CHARMINGCRAFT_API UDAttributeComponent : public UActorComponent
 {
@@ -91,6 +93,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHitDataApply OnHitDataApply;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChange OnAttributeChange;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UDamageChain> DamageChain;
 
@@ -99,6 +104,10 @@ public:
 
 	bool ApplyManaChange(APawn* InstigatorPawn, float Delta); // whether or not change apply
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyAttributeChange(FPlayerAttribute DeltaAttribute, UObject* Source);
+
+	UFUNCTION(BlueprintCallable)
 	void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 
 	FPlayerAttribute GetPlayerAttributeData();
