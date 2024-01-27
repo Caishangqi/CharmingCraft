@@ -138,6 +138,13 @@ void UBuffHandlerComponent::BuffTickAndRemove(float DeltaTime)
 	TArray<TObjectPtr<UBuffInfo>> PrepareDeleteBuffList;
 	for (auto BuffInstance : BuffList)
 	{
+		/* Debug */
+		if (!BuffInstance)
+		{
+			return;
+		}
+		/* End of Debug */
+
 		if (BuffInstance->BuffData->OnTick != nullptr)
 		{
 			if (BuffInstance->TickTime < 0)
@@ -158,7 +165,6 @@ void UBuffHandlerComponent::BuffTickAndRemove(float DeltaTime)
 		{
 			BuffInstance->Duration -= DeltaTime;
 		}
-		
 	}
 	for (auto DeleteBuffList : PrepareDeleteBuffList)
 	{

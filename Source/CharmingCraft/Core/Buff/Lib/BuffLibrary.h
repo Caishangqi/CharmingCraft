@@ -28,13 +28,22 @@ public:
 	                                             float Duration,
 	                                             float TickTime)
 	{
-		UBuffData* CreatedBuffData = NewObject<UBuffData>(BuffInstigator, BuffDataClass);
+		UBuffData* CreatedBuffData;
+		if (BuffTarget) // Specify the parent of the buff instance object
+		{
+			CreatedBuffData = NewObject<UBuffData>(BuffTarget, BuffDataClass);
+		}
+		else // not Specify the parent of the buff instance object, for example AOE
+		{
+			CreatedBuffData = NewObject<UBuffData>(GetTransientPackage(), BuffDataClass);
+		}
+
 		CreatedBuffData->MaxStack = MaxStack;
 		CreatedBuffData->bIsForever = bIsForever;
 		CreatedBuffData->Duration = Duration;
 		CreatedBuffData->InternalValue.Append(InternalData); // Append Internal Data
 
-		UBuffInfo* CreatedBuffInfo = NewObject<UBuffInfo>(BuffInstigator, UBuffInfo::StaticClass());
+		UBuffInfo* CreatedBuffInfo = NewObject<UBuffInfo>(CreatedBuffData, UBuffInfo::StaticClass());
 		CreatedBuffInfo->BuffData = CreatedBuffData;
 		CreatedBuffInfo->Instigator = BuffInstigator;
 		CreatedBuffInfo->Target = BuffTarget;
@@ -54,8 +63,17 @@ public:
 	                                     APawn* BuffTarget, FHitData HitData
 	)
 	{
-		UBuffData* CreatedBuffData = NewObject<UBuffData>(BuffInstigator, BuffDataClass);
-		UBuffInfo* CreatedBuffInfo = NewObject<UBuffInfo>(BuffInstigator, UBuffInfo::StaticClass());
+		UBuffData* CreatedBuffData;
+		if (BuffTarget) // Specify the parent of the buff instance object
+		{
+			CreatedBuffData = NewObject<UBuffData>(BuffTarget, BuffDataClass);
+		}
+		else // not Specify the parent of the buff instance object, for example AOE
+		{
+			CreatedBuffData = NewObject<UBuffData>(GetTransientPackage(), BuffDataClass);
+		}
+
+		UBuffInfo* CreatedBuffInfo = NewObject<UBuffInfo>(CreatedBuffData, UBuffInfo::StaticClass());
 
 		CreatedBuffInfo->BuffData = CreatedBuffData;
 		CreatedBuffInfo->Instigator = BuffInstigator;

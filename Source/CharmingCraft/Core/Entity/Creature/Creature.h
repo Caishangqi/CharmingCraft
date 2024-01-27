@@ -71,6 +71,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual bool IsDead_Implementation() override;
 
+	/* Debug */
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void HitReaction(EDamageResponse Response);
 };

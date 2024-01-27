@@ -38,15 +38,11 @@ void ADoor::Interact_Implementation(APawn* InstigatorPawn)
 			UGameplayStatics::GetPlayerCameraManager(Player->GetWorld(), 0)->StartCameraFade(
 				1.0f, 0.0f, 2.0f, FColor::Black);
 			Player->SetCameraView();
-			UGameplayStatics::UnloadStreamLevel(this->GetWorld(), FName("SmallPubInterior"),
-			                                    LatentActionInfo,
-			                                    false);
+			UGameplayStatics::UnloadStreamLevel(this->GetWorld(), FName("SmallPubInterior"), LatentActionInfo, false);
 		}
 		else
 		{
-			UGameplayStatics::UnloadStreamLevel(this->GetWorld(), FName("WorldSpawn"),
-			                                    FLatentActionInfo(),
-			                                    false);
+			UGameplayStatics::UnloadStreamLevel(this->GetWorld(), FName("WorldSpawn"), FLatentActionInfo(), false);
 		}
 	}
 }

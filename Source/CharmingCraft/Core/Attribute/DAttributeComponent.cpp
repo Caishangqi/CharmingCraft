@@ -38,11 +38,18 @@ UDAttributeComponent::UDAttributeComponent()
 void UDAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	OnAttributeChange.AddDynamic(this, &UDAttributeComponent::ApplyAttributeChange);
+	if (!OnAttributeChange.IsBound())
+	{
+		OnAttributeChange.AddDynamic(this, &UDAttributeComponent::ApplyAttributeChange);
+	}
 
-	// Apply DamageChain
-	DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
-	// ...
+	if (!DamageChain)
+	{
+		// Apply DamageChain
+		DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
+	}
+
+
 }
 
 
@@ -119,12 +126,18 @@ FPlayerAttribute UDAttributeComponent::GetPlayerAttributeData()
 
 void UDAttributeComponent::SubmitHitData(FHitData HitData)
 {
-	TObjectPtr<UBuffHandlerComponent> InstigatorBuffHandlerComponent = Cast<UBuffHandlerComponent>(
-		HitData.InstigatorPawn->GetComponentByClass(UBuffHandlerComponent::StaticClass()));
+	TObjectPtr<UBuffHandlerComponent> InstigatorBuffHandlerComponent;
 	TObjectPtr<UBuffHandlerComponent> TargetBuffHandlerComponent = Cast<UBuffHandlerComponent>(
 		GetOwner()->GetComponentByClass(UBuffHandlerComponent::StaticClass()));
 
-	if (InstigatorBuffHandlerComponent) // Attcker
+	if (HitData.InstigatorPawn)
+	// Validation Check, because Instigator may unload (such as enemy in another level that is unload)
+	{
+		InstigatorBuffHandlerComponent = Cast<UBuffHandlerComponent>(
+			HitData.InstigatorPawn->GetComponentByClass(UBuffHandlerComponent::StaticClass()));
+	}
+
+	if (InstigatorBuffHandlerComponent) // Attacker
 	{
 		for (auto BuffInstance : InstigatorBuffHandlerComponent->BuffList)
 		{
@@ -138,7 +151,7 @@ void UDAttributeComponent::SubmitHitData(FHitData HitData)
 
 	if (TargetBuffHandlerComponent) // Defender
 	{
-		for (auto BuffInstance : InstigatorBuffHandlerComponent->BuffList)
+		for (auto BuffInstance : TargetBuffHandlerComponent->BuffList)
 		{
 			if (BuffInstance->BuffData->OnBeHit)
 			{
