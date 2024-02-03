@@ -2,6 +2,9 @@
 
 
 #include "CharmingCraftInstance.h"
+
+#include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "Engine/DataTable.h"
 
 UCharmingCraftInstance::UCharmingCraftInstance()
@@ -59,4 +62,14 @@ UCharmingCraftInstance::UCharmingCraftInstance()
 	{
 		PommelDecorativeMaterial = PommelDecorativeMaterialFinder.Object;
 	}
+
+	
 }
+
+void UCharmingCraftInstance::Init()
+{
+	Super::Init();
+	SaveManager = NewObject<UGameSaveManager>(this, UGameSaveManager::StaticClass());
+	UE_LOG(LogChamingCraftSave, Display, TEXT("[!] UCharmingCraftInstance::Init()"));
+}
+

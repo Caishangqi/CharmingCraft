@@ -13,7 +13,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftAssets, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCreature, Log, All);
 
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftBuff, Log, All);
-
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftSave, Log, All);
 class Logging
 {
 public:

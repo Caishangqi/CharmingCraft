@@ -140,5 +140,6 @@ public:
 	virtual UDAttributeComponent* GetAttributeComponent_Implementation() override;
 
 public:
-	/* Events */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGuid PlayerUUID;
 };

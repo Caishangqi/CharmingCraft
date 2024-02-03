@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "DCharacter.h"
-
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
@@ -12,6 +11,7 @@
 /**
  * 
  */
+class UGameSaveManager;
 class UDataTable;
 
 UCLASS()
@@ -39,4 +39,19 @@ public:
 	TObjectPtr<ADCharacter> PlayerCharacter;
 
 	UCharmingCraftInstance();
+
+	// 获取存档管理器实例
+	UFUNCTION(BlueprintCallable, Category = "Save")
+	UGameSaveManager* GetSaveManager() const { return SaveManager; }
+
+	// 重写GameInstance的初始化方法
+	virtual void Init() override;
+	
+	
+protected:
+	// 存档管理器实例
+	UPROPERTY()
+	UGameSaveManager* SaveManager;
+
+
 };

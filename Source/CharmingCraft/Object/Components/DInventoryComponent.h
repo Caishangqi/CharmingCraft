@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "CharmingCraft/Object/Structs/FDItemStack.h"
 #include "Components/ActorComponent.h"
 #include "DInventoryComponent.generated.h"
@@ -84,7 +83,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	int InventorySize;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Inventory Parameter")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	TArray<UItemStack*> Inventory; // Updated
 
 	UPROPERTY(EditAnywhere, Category = "MaterialData")

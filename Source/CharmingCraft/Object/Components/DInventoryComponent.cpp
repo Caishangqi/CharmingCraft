@@ -377,7 +377,7 @@ void UDInventoryComponent::BeginPlay()
 
 	InitializeItemStackWithMaterials();
 
-	// TODO 有点蠢, 可以优化为另一个世界生成，这个世界优先加载
+	// TODO 可以优化为另一个世界生成，这个世界优先加载
 	for (UItemStack* Items : Inventory)
 	{
 		if (Items != nullptr && Items->ItemMeta->bIsRenderItem)

@@ -23,16 +23,16 @@ class CHARMINGCRAFT_API UBuffHandlerComponent : public UActorComponent
 public:
 	UBuffHandlerComponent();
 
-	// Set of Buff Info
+	// Set of Buff Info, if Buff Instance > 50 consider use link-list
+	// and apply Quick Sort or Merge Sort
 	UPROPERTY(BlueprintReadWrite)
 	TArray<TObjectPtr<UBuffInfo>> BuffList;
 
-	UFUNCTION(BlueprintCallable)
-	UBuffInfo* CreateBuffInfo(TSubclassOf<UBuffData> BuffDataClass, APawn* BuffInstigator,
-	                          APawn* BuffTarget, bool AddAfterCreate, FHitData HitData,
-	                          TMap<FName, int32> InternalData);
-
-	UFUNCTION(Blueprintable, BlueprintCallable)
+	/*!
+	 * Add Buff to Buff List
+	 * @param BuffInfo The Buff instance
+	 * @param HitData The HitData that need handle
+	 */
 	void AddBuff(UBuffInfo* BuffInfo, FHitData HitData);
 	void UpdateBuffDuration(UBuffInfo* BuffInfo);
 	UFUNCTION(Blueprintable, BlueprintCallable)

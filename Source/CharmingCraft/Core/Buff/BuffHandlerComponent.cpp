@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Log/Logging.h"
 
-// 定义比较函数
+// operator that compare priority of BuffInstance base on int priority
 struct FBuffInfoPriorityComparer
 {
 	bool operator()(const TObjectPtr<UBuffInfo>& A, const TObjectPtr<UBuffInfo>& B) const
@@ -20,34 +20,6 @@ UBuffHandlerComponent::UBuffHandlerComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-UBuffInfo* UBuffHandlerComponent::CreateBuffInfo(TSubclassOf<UBuffData> BuffDataClass, APawn* BuffInstigator,
-                                                 APawn* BuffTarget, bool AddAfterCreate, FHitData HitData,
-                                                 TMap<FName, int32> InternalData)
-{
-	UBuffData* CreatedBuffData = NewObject<UBuffData>(this, BuffDataClass);
-	UBuffInfo* CreatedBuffInfo = NewObject<UBuffInfo>(this, UBuffInfo::StaticClass());
-
-	CreatedBuffData->InternalValue.Append(InternalData); // Append Internal Data
-
-	CreatedBuffInfo->BuffData = CreatedBuffData;
-	CreatedBuffInfo->Instigator = BuffInstigator;
-	CreatedBuffInfo->Target = BuffTarget;
-
-	if (CreatedBuffInfo)
-	{
-		if (AddAfterCreate)
-		{
-			UE_LOG(LogChamingCraftBuff, Display, TEXT("[+] Create and Add BuffInfo: %s"),
-			       *CreatedBuffInfo->BuffData->BuffName.ToString());
-			AddBuff(CreatedBuffInfo, HitData);
-		}
-		UE_LOG(LogChamingCraftBuff, Display, TEXT("[+] Create BuffInfo: %s"),
-		       *CreatedBuffInfo->BuffData->BuffName.ToString());
-		return CreatedBuffInfo;
-	}
-	UE_LOG(LogChamingCraftBuff, Error, TEXT("[x] Fail To Create BuffInfo:"));
-	return nullptr;
-}
 
 void UBuffHandlerComponent::AddBuff(UBuffInfo* BuffInfo, FHitData HitData)
 {
