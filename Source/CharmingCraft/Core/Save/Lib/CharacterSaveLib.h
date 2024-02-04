@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Render")
 	static UMaterial* FindPreviewMaterialFromCostumeId(UDataTable* DataTable, int32 CostumeId)
 	{
-		if (DataTable != nullptr)
+		if (DataTable)
 		{
 			FInternalCostume FoundCostume;
 			DataTable->ForeachRow<FInternalCostume>(
@@ -48,5 +48,12 @@ public:
 		{
 			return nullptr;
 		}
+	}
+
+	// If return true, indicate not a boundary Slot
+	UFUNCTION(BlueprintCallable, Category = "Render")
+	static bool UpdatePreviewMeshWithSlot()
+	{
+		return false;
 	}
 };

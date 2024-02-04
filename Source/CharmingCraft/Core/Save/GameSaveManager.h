@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/SkeletalMeshActor.h"
+#include "Containers/IntrusiveDoubleLinkedList.h"
 #include "Data/FSaveSlotInfo.h"
 #include "UObject/Object.h"
 #include "GameSaveManager.generated.h"
@@ -53,22 +54,28 @@ public:
 
 	/* Display */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<ASkeletalMeshActor> CharacterDisplayMain;
+	TObjectPtr<ASkeletalMeshActor> CharacterDisplayMiddle;
 
 	/* Display */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<ASkeletalMeshActor> CharacterDisplaySecond;
+	TObjectPtr<ASkeletalMeshActor> CharacterDisplayRight;
 
 	/* Display */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<ASkeletalMeshActor> CharacterDisplayThird;
+	TObjectPtr<ASkeletalMeshActor> CharacterDisplayLeft;
 
 	// 存储有效存档的信息
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TArray<FSaveSlotInfo> ValidSaveSlots;
 
+	// 创建一个存储整型的双向链表
+	TDoubleLinkedList<FSaveSlotInfo> ValidSaveSlotsRing;
+
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	FSaveSlotInfo CachedLoadSlots;
+
+	//Slot       0-1-2-*
+	//Mesh       M L R
 
 public:
 	// Initialize a new save game
@@ -80,4 +87,26 @@ public:
 	UFUNCTION(BlueprintCallable)
 	// Helper function to actually perform the load operation
 	void PerformLoadGameFromFile();
+
+
+	FSaveSlotInfo* CurrentSaveNode;
+
+	UFUNCTION(BlueprintCallable)
+	FSaveSlotInfo& GetCurrentSaveSlot();
+	// Should call on Initialize the UMG
+	UFUNCTION(BlueprintCallable)
+	bool SetCurrentSlot();
+	UFUNCTION(BlueprintCallable)
+	bool SetPreviewSlotAsCurrentSlot();
+	UFUNCTION(BlueprintCallable)
+	FSaveSlotInfo& GetPreviewSlot();
+	UFUNCTION(BlueprintCallable)
+	bool SetNextSlotAsCurrentSlot();
+	UFUNCTION(BlueprintCallable)
+	FSaveSlotInfo& GetNextSlot();
+	UFUNCTION(BlueprintCallable)
+	int32 GetValidSaveSlotsRingNumber();
+
+	UFUNCTION(BlueprintCallable)
+	bool DeleteCurrentSaveSlot();
 };
