@@ -13,4 +13,8 @@ UCLASS()
 class CHARMINGCRAFT_API ULevelData : public USaveGame
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
+	FGuid UniqueID;
 };

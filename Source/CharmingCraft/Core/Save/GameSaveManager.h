@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/SkeletalMeshActor.h"
-#include "Containers/IntrusiveDoubleLinkedList.h"
 #include "Data/FSaveSlotInfo.h"
+#include "Render/PlayerMeshRenderActor.h"
 #include "UObject/Object.h"
 #include "GameSaveManager.generated.h"
 
@@ -54,15 +53,15 @@ public:
 
 	/* Display */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<ASkeletalMeshActor> CharacterDisplayMiddle;
+	TObjectPtr<APlayerMeshRenderActor> CharacterDisplayMiddle;
 
 	/* Display */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<ASkeletalMeshActor> CharacterDisplayRight;
+	TObjectPtr<APlayerMeshRenderActor> CharacterDisplayRight;
 
 	/* Display */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TObjectPtr<ASkeletalMeshActor> CharacterDisplayLeft;
+	TObjectPtr<APlayerMeshRenderActor> CharacterDisplayLeft;
 
 	// 存储有效存档的信息
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
@@ -71,11 +70,9 @@ public:
 	// 创建一个存储整型的双向链表
 	TDoubleLinkedList<FSaveSlotInfo> ValidSaveSlotsRing;
 
+	// A Cached Slot for Create FSaveSlotInfo in BP UMG
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	FSaveSlotInfo CachedLoadSlots;
-
-	//Slot       0-1-2-*
-	//Mesh       M L R
 
 public:
 	// Initialize a new save game
@@ -88,7 +85,10 @@ public:
 	// Helper function to actually perform the load operation
 	void PerformLoadGameFromFile();
 
+	// Load single SaveSlot and add to the ValidSaveSlotsRing
+	void PerformLoadGameFromFile(const FSaveSlotInfo& SaveSlotName);
 
+	/* The Pointer that Point to the current select, In graphic: it is in center */
 	FSaveSlotInfo* CurrentSaveNode;
 
 	UFUNCTION(BlueprintCallable)
@@ -109,4 +109,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool DeleteCurrentSaveSlot();
+
+	UFUNCTION(BlueprintCallable)
+	void SetSelectStateForSlot();
+	bool RefreshSaveSlotRing();
+
+	/* Render Manipulation */
+	UFUNCTION(BlueprintCallable)
+	void UpdatePlayerMeshRenderActorInfo();
 };

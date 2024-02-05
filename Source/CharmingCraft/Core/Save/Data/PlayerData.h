@@ -16,7 +16,10 @@ class CHARMINGCRAFT_API UPlayerData : public USaveGame
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
+	FGuid UniqueID;
+
 	// Player Basic Info, typically decided when player creation
-	UPROPERTY(BlueprintReadWrite,VisibleAnywhere, Category = "PlayerInformation")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
 	FPlayerInfo PlayerInfo;
 };

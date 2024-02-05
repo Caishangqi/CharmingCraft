@@ -11,12 +11,16 @@ struct FSaveSlotInfo
 {
 	GENERATED_BODY()
 	FSaveSlotInfo(): SaveSlotID(0), SaveSlotPath(""), SaveSlotRelativePath(""), SaveSlotName(""), bPrepareDelete(false),
-	                 IsIndicateBound(false), PlayerData(nullptr), RealmData(nullptr), ProgressData(nullptr),
-	                 LevelData(nullptr)
+	                 IsIndicateBound(false),  PlayerData(nullptr), RealmData(nullptr),
+	                 ProgressData(nullptr), LevelData(nullptr)
 	{
 	}
 
 public:
+	// 存档的唯一标识符
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
+	FGuid UniqueID;
+
 	UPROPERTY(BlueprintReadWrite)
 	int32 SaveSlotID;
 	UPROPERTY(BlueprintReadWrite)

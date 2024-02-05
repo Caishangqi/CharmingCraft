@@ -9,7 +9,7 @@ struct FPlayerInfo : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	FPlayerInfo(): PlayerNickName(""), CostumeId(0)
+	FPlayerInfo(): PlayerNickName(""), CostumeId(0), IsSelected(false)
 	{
 	}
 
@@ -18,4 +18,6 @@ public:
 	FString PlayerNickName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PlayerInformation")
 	int32 CostumeId;
+	UPROPERTY(BlueprintReadWrite)
+	bool IsSelected;
 };

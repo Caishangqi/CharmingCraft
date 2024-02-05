@@ -95,7 +95,6 @@ void UGameSaveManager::UpdateSaveSlots()
 				                             SaveSlotInfo.SaveSlotName = DirName;
 				                             SaveSlotInfo.SaveSlotPath = FullPath;
 				                             SaveSlotInfo.SaveSlotID = 0;
-				                             ValidSaveSlots.Add(SaveSlotInfo);
 				                             // DLL
 				                             ValidSaveSlotsRing.AddTail(SaveSlotInfo);
 
@@ -142,35 +141,12 @@ bool UGameSaveManager::PerformSaveGameToFile(const FSaveSlotInfo& SaveSlotName)
 	UE_LOG(LogChamingCraftSave, Display, TEXT("	[📥] Save 1 files %s to Save Slot: %s"), *FString("LevelData.sav"),
 	       *SaveSlotName.SaveSlotName);
 
-	UpdateSaveSlots();
-	PerformLoadGameFromFile();
+	ValidSaveSlotsRing.AddTail(SaveSlotName);
 	return true;
 }
 
 void UGameSaveManager::PerformLoadGameFromFile()
 {
-	if (ValidSaveSlots.Num() != 0)
-	{
-		for (auto& SaveSlotName : ValidSaveSlots)
-		{
-			if (!IsValid(SaveSlotName.PlayerData))
-			{
-				SaveSlotName.PlayerData = Cast<UPlayerData>(UGameplayStatics::LoadGameFromSlot(
-					SaveSlotName.SaveSlotName + "/" + FString("PlayerData"),
-					0));
-				SaveSlotName.LevelData = Cast<ULevelData>(UGameplayStatics::LoadGameFromSlot(
-					SaveSlotName.SaveSlotName + "/" + FString("LevelData"),
-					0));
-				SaveSlotName.ProgressData = Cast<UProgressData>(UGameplayStatics::LoadGameFromSlot(
-					SaveSlotName.SaveSlotName + "/" + FString("ProgressData"),
-					0));
-				SaveSlotName.RealmData = Cast<URealmData>(UGameplayStatics::LoadGameFromSlot(
-					SaveSlotName.SaveSlotName + "/" + FString("RealmData"),
-					0));
-			}
-		}
-	}
-
 	if (ValidSaveSlotsRing.Num() > 1)
 	{
 		for (auto& SaveSlotName : ValidSaveSlotsRing)
@@ -184,18 +160,30 @@ void UGameSaveManager::PerformLoadGameFromFile()
 				SaveSlotName.PlayerData = Cast<UPlayerData>(UGameplayStatics::LoadGameFromSlot(
 					SaveSlotName.SaveSlotName + "/" + FString("PlayerData"),
 					0));
+				SaveSlotName.PlayerData->UniqueID = SaveSlotName.UniqueID; //
 				SaveSlotName.LevelData = Cast<ULevelData>(UGameplayStatics::LoadGameFromSlot(
 					SaveSlotName.SaveSlotName + "/" + FString("LevelData"),
 					0));
+				SaveSlotName.LevelData->UniqueID = SaveSlotName.UniqueID; //
 				SaveSlotName.ProgressData = Cast<UProgressData>(UGameplayStatics::LoadGameFromSlot(
 					SaveSlotName.SaveSlotName + "/" + FString("ProgressData"),
 					0));
+				SaveSlotName.ProgressData->UniqueID = SaveSlotName.UniqueID; //
 				SaveSlotName.RealmData = Cast<URealmData>(UGameplayStatics::LoadGameFromSlot(
 					SaveSlotName.SaveSlotName + "/" + FString("RealmData"),
 					0));
+				SaveSlotName.RealmData->UniqueID = SaveSlotName.UniqueID; //
+				if (SaveSlotName.PlayerData->PlayerInfo.IsSelected)
+				{
+					CurrentSaveNode = &SaveSlotName;
+				}
 			}
 		}
 	}
+}
+
+void UGameSaveManager::PerformLoadGameFromFile(const FSaveSlotInfo& SaveSlotName)
+{
 }
 
 FSaveSlotInfo& UGameSaveManager::GetCurrentSaveSlot()
@@ -323,6 +311,7 @@ bool UGameSaveManager::DeleteCurrentSaveSlot()
 	{
 		UE_LOG(LogChamingCraftSave, Display, TEXT("		[✔️] Complete Delete Save Slot Save Slot: %s"),
 		       *CurrentSaveNode->SaveSlotName);
+		CurrentSaveNode->bPrepareDelete = true;
 	}
 	else
 	{
@@ -330,11 +319,62 @@ bool UGameSaveManager::DeleteCurrentSaveSlot()
 		       *CurrentSaveNode->SaveSlotName);
 	}
 
-	auto NextSlot = GetNextSlot();
-	ValidSaveSlotsRing.RemoveNode(*CurrentSaveNode);
-	CurrentSaveNode = &NextSlot;
-
-	UpdateSaveSlots();
-	PerformLoadGameFromFile();
+	RefreshSaveSlotRing();
 	return true;
+}
+
+void UGameSaveManager::SetSelectStateForSlot()
+{
+	for (FSaveSlotInfo& ElementSaveSlotInfo : ValidSaveSlotsRing)
+	{
+		if (!ElementSaveSlotInfo.IsIndicateBound)
+		{
+			ElementSaveSlotInfo.PlayerData->PlayerInfo.IsSelected = false;
+		}
+		GetCurrentSaveSlot().PlayerData->PlayerInfo.IsSelected = true;
+	}
+
+	for (FSaveSlotInfo& ElementSaveSlotInfo : ValidSaveSlotsRing)
+	{
+		if (!ElementSaveSlotInfo.IsIndicateBound)
+		{
+			UE_LOG(LogChamingCraftSave, Display, TEXT("[📦] Saving Save Slot: %s"),
+			       *ElementSaveSlotInfo.SaveSlotName);
+			UGameplayStatics::SaveGameToSlot(ElementSaveSlotInfo.PlayerData,
+			                                 ElementSaveSlotInfo.SaveSlotName + "/" + FString("PlayerData"),
+			                                 0);
+			UE_LOG(LogChamingCraftSave, Display, TEXT("	[📥] Save 1 files %s to Save Slot: %s"),
+			       *FString("PlayerData.sav"),
+			       *ElementSaveSlotInfo.SaveSlotName);
+		}
+	}
+}
+
+bool UGameSaveManager::RefreshSaveSlotRing()
+{
+	for (const FSaveSlotInfo& ElementSaveSlotInfo : ValidSaveSlotsRing)
+	{
+		if (ElementSaveSlotInfo.bPrepareDelete)
+		{
+			if (ValidSaveSlotsRing.FindNode(ElementSaveSlotInfo)->GetNextNode() == nullptr)
+			{
+				CurrentSaveNode = &ValidSaveSlotsRing.GetHead()->GetValue();
+				ValidSaveSlotsRing.RemoveNode(ElementSaveSlotInfo);
+			}
+			else
+			{
+				CurrentSaveNode = &ValidSaveSlotsRing.FindNode(ElementSaveSlotInfo)->GetNextNode()->GetValue();
+				ValidSaveSlotsRing.RemoveNode(ElementSaveSlotInfo);
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+void UGameSaveManager::UpdatePlayerMeshRenderActorInfo()
+{
+	CharacterDisplayMiddle->UpdatePreviewBaseSaveManager();
+	CharacterDisplayLeft->UpdatePreviewBaseSaveManager();
+	CharacterDisplayRight->UpdatePreviewBaseSaveManager();
 }
