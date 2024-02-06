@@ -5,7 +5,7 @@
 #include "DCharacter.h"
 #include "../Object/Components/EquipModel/EquipmentRenderComponent.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
-#include "CharmingCraft/Object/Components/ItemStack.h"
+#include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Object/Components/EquipModel/EquipmentManagerComponent.h"
 #include "Kismet/GameplayStatics.h"
 

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ItemStack.h"
+#include "../Core/Item/ItemStack.h"
 
 #include "CharmingCraft/Interface/Meta/HelmetMeta.h"
 #include "CharmingCraft/Object/Class/Util/ItemRegistry.h"
@@ -27,9 +27,11 @@ UItemStack* UItemStack::Initialize(const EMaterial SetType, const int32 SetAmoun
 
 bool UItemStack::SynchronizeData()
 {
+	//MaterialMetaMapper
 	const FString AssetPath = TEXT(
 		"/Script/Engine.DataTable'/Game/CharmingCraft/Objects/DataTable/MaterialMetaMapper.MaterialMetaMapper'");
 	UDataTable* MaterialMetaMapper = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), nullptr, *AssetPath));
+
 
 	if (MaterialMetaMapper)
 	{
@@ -61,6 +63,18 @@ void UItemStack::PostInitProperties()
 UItem* UItemStack::GetItemClass() const
 {
 	return ItemClass.GetDefaultObject();
+}
+
+FItemStack UItemStack::Serialize()
+{
+	FItemStack ItemStackStruct;
+	return ItemStackStruct;
+}
+
+UItemStack* UItemStack::Deserialize(FItemStack ItemStackStruct)
+{
+	UItemStack* DeserializeInstance = NewObject<UItemStack>();
+	return DeserializeInstance;
 }
 
 UItemStack* UItemStack::CopyData()

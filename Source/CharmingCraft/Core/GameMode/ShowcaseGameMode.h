@@ -13,4 +13,7 @@ UCLASS()
 class CHARMINGCRAFT_API AShowcaseGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	AShowcaseGameMode();
 };

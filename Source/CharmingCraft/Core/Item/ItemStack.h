@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Save/Interface/ISerializable.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "CharmingCraft/Object/Structs/FDMaterial.h"
 #include "Components/ActorComponent.h"
+#include "Data/FItemStack.h"
 #include "ItemStack.generated.h"
 
 
@@ -33,7 +35,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	TSubclassOf<UItemMeta> ItemMetaClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
-	UItemMeta * ItemMeta;
+	UItemMeta* ItemMeta;
 
 protected:
 
@@ -48,4 +50,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UItem* GetItemClass() const;
+
+	/* Serialize and Deserialize */
+public:
+	UFUNCTION(BlueprintCallable)
+	virtual FItemStack Serialize();
+	UFUNCTION(BlueprintCallable)
+	virtual UItemStack* Deserialize(FItemStack ItemStackStruct);
 };

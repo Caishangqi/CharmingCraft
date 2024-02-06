@@ -4,7 +4,7 @@
 #include "CharacterSocket.h"
 
 #include "DCharacter.h"
-#include "CharmingCraft/Object/Components/ItemStack.h"
+#include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Object/Components/EquipModel/EquipmentManagerComponent.h"
 #include "CharmingCraft/Object/Components/EquipModel/EquipmentRenderComponent.h"
 

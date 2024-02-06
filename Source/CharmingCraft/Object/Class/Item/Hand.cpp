@@ -4,7 +4,7 @@
 #include "Hand.h"
 
 #include "DCharacter.h"
-#include "../Object/Components/ItemStack.h"
+#include "../Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"

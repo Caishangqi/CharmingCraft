@@ -91,15 +91,13 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 #### Buff System
 
 - Support Stack Buff, Forever Buff.
-- User could customize buff atttributes through Duration, Tick time, or pass a **TMap** contain [**internal Data
-  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L39).
+- User could customize buff atttributes through Duration, Tick time, or pass a **TMap** contain [**internal Data**](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L39).
 - 3 Buff time **update** choices: `Add`, `Replace`, and `Keep`.
 - 2 Buff **remove** Stack choices: `Clear` and `Reduce`.
-- 7 Customize [**Buff Callback
-  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L55): `On Create`, `On Remove`, `On Tick`, `On Hit`, `On Be Hit`, `On Kill`,
+- 7 Customize [**Buff Callback**](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L55): `On Create`, `On Remove`, `On Tick`, `On Hit`, `On Be Hit`, `On Kill`,
   and `On Be Killed`.
 - User
-  could [implements different Callback](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/Modules/ModifyPropertyBuffModel.cpp#L14)
+  could [**implements different Callback**](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/Modules/ModifyPropertyBuffModel.cpp#L14)
   to customize buff behaviour.
 
 ![BuffSystem](https://github.com/Caishangqi/CharmingCraft/assets/39553613/08a67844-f027-446a-a95f-02f6104415c1)
@@ -112,6 +110,25 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b
 | Spawn Down          | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/29b838ff-c6b3-48b6-b4de-12b2483f24be" height="200%" width="200%"> | Yes         | 30 / 0                  | 5                 | Reduce Nearby Enemy Spawn Rate                                                                                                                                                   |
 | Negative Resistance | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/a8bdc125-cbb7-4e26-a644-764373c1f4b1" height="200%" width="200%"> | No          | 60 / 0                  | 1                 | Immune to Negative Effects, Excluding Control                                                                                                                                    |
 | Frozen              | <img src="https://github.com/Caishangqi/CharmingCraft/assets/39553613/0a3a42aa-100c-4c24-b4eb-bb34a6d86347" height="200%" width="200%"> | Yes         | 10 / 1                  | 5                 | Slow the bearer, freeze the bearer when the maximum stacks are reached. If damaged by physical attacks while frozen, it inflicts a percentage of maximum health as **magic** damage. |                                                                                            |
+
+### Player Select Menu (Ring DLL)
+
+https://github.com/Caishangqi/CharmingCraft/assets/39553613/d3d29d4b-3049-4419-b735-747bfdb202fe
+
+- Use Ring Structure Double link list to manipulate player save slot and Update preview render.
+- Support player create, delete, select, and switch.
+
+#### Ring Double Link List
+
+![Render Ring DLL](https://github.com/Caishangqi/CharmingCraft/assets/39553613/db802d62-68db-451a-81e4-b621f2d87f9b)
+
+#### Save Slot Structure
+- SaveGames
+  - save - `uuid`
+    - _LevelData.sav_
+    - _PlayerData.sav_
+    - _ProgressData.sav_
+    - _RealmData.sav_
 
 ### Levels
 
@@ -130,29 +147,30 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 </p>
 
 ## Progress
-
-- Implementation of projectile blueprint templates based on C++
-- Interactive interface and character interaction functionality
-- Chest opening feature and animation implemented through the interactive interface
-- Health bar decay implemented using event binding and UI parameter exposure
-- Digital animations realized through the animation system
-- Dynamic materials based on mathematical functions
-- Implementation of chests and keys using GameTags
-- Block skill (R key) implemented using GameTags
-- Material highlight and glow upon impact
-- Interactive item highlight and player obstruction glow
-- Inventory system and item prototypes
-- Armor forging station
-- Rendering 3D items in 2D
-- Item assembly mechanism, crafting items from different materials
-- Weapon assembly, assembling different types and materials of parts for various weapon parts
-- Attack animations and ranges based on different weapon types
-- Dota-style mouse movement attack system, including character rotation and new stationary attacks
-- Damage number animations based on player's attack direction
-- Comprehensive AI system, including EQS, Behavior Trees, Decorators, and Services
-- Scene transitions implemented using scene streaming
-- UI bind GAS system
-- Buff System Include BuffData, BuffInfo, BuffHandler, and BuffModel (Callback)
+**Stability**: 🟩 Stable / 🟨 Unstable / ❔ Not Test / 🟥 Failed
+- Implementation of projectile blueprint templates based on C++ 🟩
+- Interactive interface and character interaction functionality 🟩
+- Chest opening feature and animation implemented through the interactive interface 🟩
+- Health bar decay implemented using event binding and UI parameter exposure 🟩
+- Digital animations realized through the animation system 🟨
+- Dynamic materials based on mathematical functions 🟩
+- Implementation of chests and keys using GameTags 🟩
+- Block skill (R key) implemented using GameTags 🟩
+- Material highlight and glow upon impact 🟩
+- Interactive item highlight and player obstruction glow 🟩
+- Inventory system and item prototypes 🟩
+- Armor forging station 🟩
+- Rendering 3D items in 2D 🟩
+- Item assembly mechanism, crafting items from different materials 🟩
+- Weapon assembly, assembling different types and materials of parts for various weapon parts ❔
+- Attack animations and ranges based on different weapon types 🟩
+- Dota-style mouse movement attack system, including character rotation and new stationary attacks 🟨
+- Damage number animations based on player's attack direction 🟩
+- Comprehensive AI system, including EQS, Behavior Trees, Decorators, and Services 🟩
+- Scene transitions implemented using scene streaming 🟩
+- UI bind GAS system 🟩
+- Buff System Include BuffData, BuffInfo, BuffHandler, and BuffModel (Callback) 🟩
+- Game Start UI and World Select UI 🟩
 
 ## Content and Mechanism
 
@@ -160,15 +178,17 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 
 ## Coming Soon / TODO
 
-- Game Start UI and World Select UI `(High Priority)`
-- Game serialization and saving `(High Priority)`
-- Quest system with related NPCs and quest interfaces `(Normal Priority)`
-- Complete attribute UI `(Normal Priority)`
-- Resource collection system, ores, trees, farmland `(Normal Priority)`
-- Expand the Level to 1000 x 1000 `(Lowest Priority)`
-- Spawn areas: Respawn of monsters, resources, creatures `(Lowest Priority)`
-- Reset inventory UI and drag method (Consider use click transfer item) `(Lowest Priority)`
-- Developing an engaging storyline `(currently no ideas)`
+| Context                                           | Priority | State |
+|:--------------------------------------------------|:--------:|:-----:|
+| Game Start UI and World Select UI                 | Highest  |   ✅    |
+| Game context serialization                        | Highest  |   📝    |
+| Complete attribute UI                             |  Normal  |   📌    |
+| Quest system with related NPCs                    |  Normal  |   📌    |
+| Resource collection system, ores, trees, farmland |  Normal  |   📌    |
+| Expand the Level to 1000 x 1000                   |   Low    |    📌     |
+| Biome: Respawn of monsters, resources, creatures  |     Low     |     📌      |
+| Developing an engaging storyline           |        Lowest        |   📌    |
+| Reset inventory UI and drag method  |      Lowest       |     📌      |
 
 ## Awaiting Improvement
 
@@ -189,10 +209,14 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Assets
     - models
     - textures
-
+  
 ### Code Structure
 
-Refactoring...
+- Source
+  - Core  (Game Logic and Mechanism)
+  - Controller (Different Controller)
+  - Camera (Different Camera)
+  - Content (Content that Extend from Core Mechanism)
 
 ## Concepts, Design Patterns, and Implementation Principles
 

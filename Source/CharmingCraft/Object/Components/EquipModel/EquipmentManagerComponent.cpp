@@ -4,7 +4,7 @@
 
 #include "DCharacter.h"
 #include "EquipmentRenderComponent.h"
-#include "../ItemStack.h"
+#include "../Core/Item/ItemStack.h"
 
 // Sets default values for this component's properties
 UEquipmentManagerComponent::UEquipmentManagerComponent()

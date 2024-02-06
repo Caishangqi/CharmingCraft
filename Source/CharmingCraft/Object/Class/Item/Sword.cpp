@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Sword.h"
 #include "DCharacter.h"
-#include "../Object/Components/ItemStack.h"
+#include "../Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
