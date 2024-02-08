@@ -3,8 +3,9 @@
 
 #include "../Core/Item/ItemStack.h"
 
-#include "CharmingCraft/Interface/Meta/HelmetMeta.h"
+#include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/Util/ItemRegistry.h"
+#include "CharmingCraft/Object/Structs/FDMaterial.h"
 
 // Sets default values for this component's properties
 UItemStack::UItemStack()
@@ -65,17 +66,25 @@ UItem* UItemStack::GetItemClass() const
 	return ItemClass.GetDefaultObject();
 }
 
-FItemStack UItemStack::Serialize()
+FString UItemStack::Serialize_Implementation()
 {
-	FItemStack ItemStackStruct;
-	return ItemStackStruct;
+	CREATE_JSON_OBJECT(SerilizeJson);
+	SET_JSON_FIELD_NUMBER(SerilizeJson, Amount, Amount);
+	SET_JSON_FIELD_ENUM(SerilizeJson, Material, EMaterial, Material);
+	EXPORT_JSON_OBJECT_AND_SERIALIZE(SerilizeJson, SerilizeString)
+	return SerilizeString;
 }
 
-UItemStack* UItemStack::Deserialize(FItemStack ItemStackStruct)
+
+UObject* UItemStack::Deserialize_Implementation(const FString& SerializeData)
 {
-	UItemStack* DeserializeInstance = NewObject<UItemStack>();
-	return DeserializeInstance;
+	UItemStack* NewInstance = NewObject<UItemStack>();
+	CREATE_JSON_OBJECT_FROM_STRING(JsonObject, SerializeData);
+	INJECT_JSON_FIELD_ENUM(JsonObject, Material, EMaterial, NewInstance->Material);
+	NewInstance->Amount = GET_JSON_FIELD_NUMBER(JsonObject, Amount);
+	return NewInstance;
 }
+
 
 UItemStack* UItemStack::CopyData()
 {

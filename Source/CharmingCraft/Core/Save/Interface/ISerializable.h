@@ -1,7 +1,9 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Save/Data/FSerializeData.h"
 #include "UObject/Interface.h"
 #include "ISerializable.generated.h"
+
 
 UINTERFACE()
 class USerializable : public UInterface
@@ -15,6 +17,10 @@ class CHARMINGCRAFT_API ISerializable
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	UStruct * Serialize();
-};
+	FString Serialize();
 
+	TSharedPtr<FJsonObject> SerializeToJson();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UObject* Deserialize(const FString& SerializeData);
+};

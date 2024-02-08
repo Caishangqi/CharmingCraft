@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Save/Interface/ISerializable.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
-#include "CharmingCraft/Object/Structs/FDMaterial.h"
 #include "Components/ActorComponent.h"
 #include "Data/FItemStack.h"
 #include "ItemStack.generated.h"
@@ -15,7 +14,7 @@ class UItem;
 class UItemMeta;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UItemStack : public UObject
+class CHARMINGCRAFT_API UItemStack : public UObject, public ISerializable
 {
 	GENERATED_BODY()
 
@@ -53,8 +52,6 @@ public:
 
 	/* Serialize and Deserialize */
 public:
-	UFUNCTION(BlueprintCallable)
-	virtual FItemStack Serialize();
-	UFUNCTION(BlueprintCallable)
-	virtual UItemStack* Deserialize(FItemStack ItemStackStruct);
+	virtual FString Serialize_Implementation() override;
+	virtual UObject* Deserialize_Implementation(const FString& SerializeData) override;
 };
