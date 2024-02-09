@@ -9,6 +9,8 @@ UINTERFACE()
 class USerializable : public UInterface
 {
 	GENERATED_BODY()
+
+public:
 };
 
 class CHARMINGCRAFT_API ISerializable
@@ -18,8 +20,6 @@ class CHARMINGCRAFT_API ISerializable
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	FString Serialize();
-
-	TSharedPtr<FJsonObject> SerializeToJson();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	UObject* Deserialize(const FString& SerializeData);

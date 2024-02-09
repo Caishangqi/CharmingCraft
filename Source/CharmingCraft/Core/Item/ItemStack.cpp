@@ -3,6 +3,7 @@
 
 #include "../Core/Item/ItemStack.h"
 
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/Util/ItemRegistry.h"
 #include "CharmingCraft/Object/Structs/FDMaterial.h"
@@ -66,23 +67,54 @@ UItem* UItemStack::GetItemClass() const
 	return ItemClass.GetDefaultObject();
 }
 
-FString UItemStack::Serialize_Implementation()
+TSharedPtr<FJsonObject> UItemStack::SerializeToJson()
 {
 	CREATE_JSON_OBJECT(SerilizeJson);
 	SET_JSON_FIELD_NUMBER(SerilizeJson, Amount, Amount);
 	SET_JSON_FIELD_ENUM(SerilizeJson, Material, EMaterial, Material);
-	EXPORT_JSON_OBJECT_AND_SERIALIZE(SerilizeJson, SerilizeString)
+	SET_JSON_FIELD_OBJECT(SerilizeJson, ItemMeta, ItemMeta->SerializeToJson());
+	return SerilizeJson;
+}
+
+UObject* UItemStack::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
+{
+	UItemStack* NewInstance = NewObject<UItemStack>();
+	INJECT_JSON_FIELD_ENUM(JsonObject, Material, EMaterial, NewInstance->Material);
+	NewInstance->Amount = GET_JSON_FIELD_NUMBER(JsonObject, Amount);
+
+	const TSharedPtr<FJsonObject> FItemMetaJsonObject = GET_JSON_FIELD_OBJECT(JsonObject, ItemMeta);
+	// Ensure ItemMeta Class
+	const TSubclassOf<UItemMeta> JsonConvertItemMetaClass = GET_CLASS_FROM_STRING(
+		GET_JSON_FIELD_STRING(FItemMetaJsonObject,Class));
+	// Call Class Specific Deserialize method
+	NewInstance->ItemMeta = Cast<UItemMeta>(
+		JsonConvertItemMetaClass.GetDefaultObject()->DeserializeFromJson(FItemMetaJsonObject)
+	);
+	return NewInstance;
+}
+
+
+/* TODO:
+ * - Try to move Serialize_Implementation() and Deserialize_Implementation() into base cass and implement it
+ * - After Implementation in Base Class, it could make code more clear and less redundant
+ */
+
+FString UItemStack::Serialize_Implementation()
+{
+	EXPORT_JSON_OBJECT_AND_SERIALIZE(SerializeToJson(), SerilizeString)
 	return SerilizeString;
 }
+
+/* TODO:
+ * - Try to move Serialize_Implementation() and Deserialize_Implementation() into base cass and implement it
+ * - After Implementation in Base Class, it could make code more clear and less redundant
+ */
 
 
 UObject* UItemStack::Deserialize_Implementation(const FString& SerializeData)
 {
-	UItemStack* NewInstance = NewObject<UItemStack>();
-	CREATE_JSON_OBJECT_FROM_STRING(JsonObject, SerializeData);
-	INJECT_JSON_FIELD_ENUM(JsonObject, Material, EMaterial, NewInstance->Material);
-	NewInstance->Amount = GET_JSON_FIELD_NUMBER(JsonObject, Amount);
-	return NewInstance;
+	CREATE_JSON_OBJECT_FROM_STRING(ItemStackReader, ItemStackJsonObject, SerializeData);
+	return DeserializeFromJson(ItemStackJsonObject);
 }
 
 

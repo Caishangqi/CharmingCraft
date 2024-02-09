@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "../Core/Save/Interface/ISerializable.h"
+#include "CharmingCraft/Core/Save/Data/PersistentDataContainer.h"
 #include "ItemMeta.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UItemMeta : public UObject
+class CHARMINGCRAFT_API UItemMeta : public UPersistentDataContainer, public ISerializable
 {
 	GENERATED_BODY()
 
@@ -36,9 +38,14 @@ public:
 	virtual void UpdateRender(UWorld* RenderWorld);
 
 protected:
-	// Called when the game starts
+	// Called when the game starts 
 	virtual void PostInitProperties() override;
 
 public:
-	// Called every frame
+	// Native C++ Serialization
+	virtual TSharedPtr<FJsonObject> SerializeToJson() override;
+	virtual UObject* DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject) override;
+	// Unreal BluePrint Serialization Interface Implementation
+	virtual FString Serialize_Implementation() override;
+	virtual UObject* Deserialize_Implementation(const FString& SerializeData) override;
 };

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemMeta.h"
+#include "../Core/Item/Meta/ItemMeta.h"
 #include "IntegratedMeta.generated.h"
 
 /**

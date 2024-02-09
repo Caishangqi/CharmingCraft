@@ -3,7 +3,7 @@
 #include "FItemMeta.generated.h"
 
 USTRUCT(BlueprintType)
-struct FItemMeta
+struct FItemMetaData
 {
 	GENERATED_BODY()
 

@@ -3,6 +3,7 @@
 
 #include "WeaponMeta.h"
 
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Util/ItemPreviewRender.h"
 
 
@@ -22,4 +23,12 @@ void UWeaponMeta::UpdateRender(UWorld* RenderWorld)
 UAnimMontage* UWeaponMeta::GetCurrentAttackAnimationMontage()
 {
 	return LoadedAnimMontage[CurrentAttackStage - 1];
+}
+
+UObject* UWeaponMeta::Deserialize_Implementation(const FString& SerializeData)
+{
+	UE_LOG(LogChamingCraftSerilization, Display, TEXT(
+		       "[~] UWeaponMeta::Deserialize_Implementation"
+	       ))
+	return nullptr;
 }

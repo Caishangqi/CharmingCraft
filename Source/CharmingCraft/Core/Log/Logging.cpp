@@ -7,3 +7,4 @@ DEFINE_LOG_CATEGORY(LogChamingCraftItem);
 DEFINE_LOG_CATEGORY(LogChamingCraftCreature);
 DEFINE_LOG_CATEGORY(LogChamingCraftBuff);
 DEFINE_LOG_CATEGORY(LogChamingCraftSave);
+DEFINE_LOG_CATEGORY(LogChamingCraftSerilization);

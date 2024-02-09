@@ -3,7 +3,7 @@
 #include "ItemPreviewRender.h"
 #include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
-#include "CharmingCraft/Interface/Meta/ItemMeta.h"
+#include "../Core/Item/Meta/ItemMeta.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/TextureRenderTarget2D.h"

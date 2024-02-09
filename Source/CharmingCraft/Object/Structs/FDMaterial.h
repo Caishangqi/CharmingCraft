@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
-#include "CharmingCraft/Interface/Meta/ItemMeta.h"
+#include "../Core/Item/Meta/ItemMeta.h"
 #include "Engine/DataTable.h"
 #include "../Object/Enum/MaterialType.h"
 #include "CharmingCraft/Object/Class/Item/Item.h"

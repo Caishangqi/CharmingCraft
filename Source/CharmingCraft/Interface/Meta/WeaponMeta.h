@@ -41,4 +41,7 @@ public:
 	/* AnimMontage */
 	UFUNCTION(BlueprintCallable)
 	UAnimMontage * GetCurrentAttackAnimationMontage();
+
+public:
+	virtual UObject* Deserialize_Implementation(const FString& SerializeData) override;
 };

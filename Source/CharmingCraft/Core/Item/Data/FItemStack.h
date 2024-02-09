@@ -1,10 +1,14 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "FItemMeta.h"
+#include "../Object/Enum/MaterialType.h"
+#include "../Object/Class/Item/Item.h"
+#include "../Core/Item/Meta/ItemMeta.h"
+#include "CharmingCraft/Core/Save/Data/FSerializeData.h"
 #include "FItemStack.generated.h"
 
 USTRUCT(BlueprintType)
-struct FItemStack
+struct FItemStackData : public FSerializeData
 {
 	GENERATED_BODY()
 
@@ -13,10 +17,10 @@ public:
 	int32 Amount;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	EMaterial Material; //
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="ItemStack Fields")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="ItemStack Fields")
 	TSubclassOf<UItem> ItemClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	TSubclassOf<UItemMeta> ItemMetaClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
-	FItemMeta ItemMeta;
+	FItemMetaData ItemMeta;
 };

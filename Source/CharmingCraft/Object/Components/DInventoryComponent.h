@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Object/Structs/FDItemStack.h"
 #include "Components/ActorComponent.h"
 #include "DInventoryComponent.generated.h"
 
 
+struct FItemStackData;
 class UItemStack;
 class UDataTable;
 class ADPlayerAIController;
@@ -69,7 +69,7 @@ public:
 	/* Editor Only */
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreloadMaterials")
-	TArray<FDItemStack> PreloadMaterials;
+	TArray<FItemStackData> PreloadMaterials;
 	void InitializeItemStackWithMaterials();
 	/* Event */
 

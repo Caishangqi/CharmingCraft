@@ -13,10 +13,10 @@ FString ClassName = this->GetClass()->GetName(); \
 JsonObjectName->SetStringField(TEXT("Class"), ClassName); \
 }
 
-#define CREATE_JSON_OBJECT_FROM_STRING(JsonObjectName, InputString) \
+#define CREATE_JSON_OBJECT_FROM_STRING(ReaderName, JsonObjectName, InputString) \
 TSharedPtr<FJsonObject> JsonObjectName;\
-TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(InputString);\
-FJsonSerializer::Deserialize(Reader, JsonObjectName)
+TSharedRef<TJsonReader<>> ReaderName = TJsonReaderFactory<>::Create(InputString);\
+FJsonSerializer::Deserialize(ReaderName, JsonObjectName)
 
 
 #define SET_JSON_FIELD_STRING(JsonObjectVariable, FieldName, FieldValue) \
@@ -28,7 +28,7 @@ JsonObjectVariable->GetStringField(TEXT(#FieldName))
 #define SET_JSON_FIELD_OBJECT(JsonObjectVariable, FieldName, FieldValue) \
 JsonObjectVariable->SetObjectField(TEXT(#FieldName), FieldValue)
 
-#define SET_JSON_FIELD_OBJECT(JsonObjectVariable, FieldName) \
+#define GET_JSON_FIELD_OBJECT(JsonObjectVariable, FieldName) \
 JsonObjectVariable->GetObjectField(TEXT(#FieldName))
 
 #define SET_JSON_FIELD_NUMBER(JsonObjectVariable, FieldName, FieldValue) \
@@ -40,13 +40,13 @@ JsonObjectVariable->GetNumberField(TEXT(#FieldName))
 #define SET_JSON_FIELD_ARRAY(JsonObjectVariable, FieldName, FieldValue) \
 JsonObjectVariable->SetArrayField(TEXT(#FieldName), FieldValue)
 
-#define SET_JSON_FIELD_ARRAY(JsonObjectVariable, FieldName) \
+#define GET_JSON_FIELD_ARRAY(JsonObjectVariable, FieldName) \
 JsonObjectVariable->GetArrayField(TEXT(#FieldName))
 
 #define SET_JSON_FIELD_BOOL(JsonObjectVariable, FieldName, FieldValue) \
 JsonObjectVariable->SetBoolField(TEXT(#FieldName), FieldValue)
 
-#define SET_JSON_FIELD_BOOL(JsonObjectVariable, FieldName) \
+#define GET_JSON_FIELD_BOOL(JsonObjectVariable, FieldName) \
 JsonObjectVariable->GetBoolField(TEXT(#FieldName))
 
 #define SET_JSON_FIELD_ENUM(JsonObjectVariable, FieldName, EnumType, FieldValue) \
@@ -61,6 +61,8 @@ FString OutputStringName; \
 TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&OutputStringName); \
 FJsonSerializer::Serialize(JsonObjectName.ToSharedRef(), Writer);
 
+#define GET_CLASS_FROM_STRING(InputString) \
+FindObject<UClass>(ANY_PACKAGE, *InputString)
 
 #define GET_ENUM_AS_STRING(EnumValue, EnumType, OutputString) \
 FString OutputString;\
