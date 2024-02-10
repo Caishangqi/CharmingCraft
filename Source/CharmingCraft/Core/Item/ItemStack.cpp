@@ -93,31 +93,6 @@ UObject* UItemStack::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-
-/* TODO:
- * - Try to move Serialize_Implementation() and Deserialize_Implementation() into base cass and implement it
- * - After Implementation in Base Class, it could make code more clear and less redundant
- */
-
-FString UItemStack::Serialize_Implementation()
-{
-	EXPORT_JSON_OBJECT_AND_SERIALIZE(SerializeToJson(), SerilizeString)
-	return SerilizeString;
-}
-
-/* TODO:
- * - Try to move Serialize_Implementation() and Deserialize_Implementation() into base cass and implement it
- * - After Implementation in Base Class, it could make code more clear and less redundant
- */
-
-
-UObject* UItemStack::Deserialize_Implementation(const FString& SerializeData)
-{
-	CREATE_JSON_OBJECT_FROM_STRING(ItemStackReader, ItemStackJsonObject, SerializeData);
-	return DeserializeFromJson(ItemStackJsonObject);
-}
-
-
 UItemStack* UItemStack::CopyData()
 {
 	UItemStack* NewInstance = NewObject<UItemStack>();

@@ -50,17 +50,6 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-FString UItemMeta::Serialize_Implementation()
-{
-	EXPORT_JSON_OBJECT_AND_SERIALIZE(SerializeToJson(), SerilizeString)
-	return SerilizeString;
-}
-
-UObject* UItemMeta::Deserialize_Implementation(const FString& SerializeData)
-{
-	CREATE_JSON_OBJECT_FROM_STRING(ItemMetaReader, ItemMetaJsonObject, SerializeData);
-	return DeserializeFromJson(ItemMetaJsonObject);
-}
 
 void UItemMeta::UpdateRender(UWorld* RenderWorld)
 {

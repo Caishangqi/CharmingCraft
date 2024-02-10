@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Save/Data/PersistentDataContainer.h"
-#include "CharmingCraft/Core/Save/Interface/ISerializable.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "Components/ActorComponent.h"
 #include "Data/FItemStack.h"
@@ -15,7 +14,7 @@ class UItem;
 class UItemMeta;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UItemStack : public UPersistentDataContainer, public ISerializable
+class CHARMINGCRAFT_API UItemStack : public UPersistentDataContainer
 {
 	GENERATED_BODY()
 
@@ -56,7 +55,4 @@ public:
 	// Native C++ Serialization
 	virtual TSharedPtr<FJsonObject> SerializeToJson() override;
 	virtual UObject* DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject) override;
-	// Unreal BluePrint Serialization Interface Implementation
-	virtual FString Serialize_Implementation() override;
-	virtual UObject* Deserialize_Implementation(const FString& SerializeData) override;
 };
