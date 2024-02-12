@@ -4,11 +4,10 @@
 #include "../Object/Enum/MaterialType.h"
 #include "../Object/Class/Item/Item.h"
 #include "../Core/Item/Meta/ItemMeta.h"
-#include "CharmingCraft/Core/Save/Data/FSerializeData.h"
 #include "FItemStack.generated.h"
 
 USTRUCT(BlueprintType)
-struct FItemStackData : public FSerializeData
+struct FItemStackData
 {
 	GENERATED_BODY()
 

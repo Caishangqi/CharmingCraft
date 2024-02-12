@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseSaveGame.h"
 #include "GameFramework/SaveGame.h"
 #include "RealmData.generated.h"
 
@@ -10,7 +11,7 @@
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API URealmData : public USaveGame
+class CHARMINGCRAFT_API URealmData : public UBaseSaveGame
 {
 	GENERATED_BODY()
 

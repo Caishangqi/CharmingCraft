@@ -8,6 +8,7 @@
 #include "CharmingCraftInstance.generated.h"
 
 
+class UWorldManager;
 /**
  * 
  */
@@ -44,14 +45,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Save")
 	UGameSaveManager* GetSaveManager() const { return SaveManager; }
 
+	// 获取存档管理器实例
+	UFUNCTION(BlueprintCallable, Category = "World")
+	UWorldManager* GetWorldManager() const { return WorldManager; }
+
+
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
-	
-	
+
 protected:
 	// 存档管理器实例
 	UPROPERTY()
 	UGameSaveManager* SaveManager;
 
-
+	UPROPERTY()
+	UWorldManager* WorldManager;
 };

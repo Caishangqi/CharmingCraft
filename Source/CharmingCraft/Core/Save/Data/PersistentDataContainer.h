@@ -7,8 +7,13 @@
 #include "UObject/Object.h"
 #include "PersistentDataContainer.generated.h"
 
-/**
- * 
+/*!
+  @author Shangqi Cai 
+  The Class indicated the UObject that can be serialize, user need implement
+  SerializeToJson(), and DeserializeFromJson() to support UObject serialization
+  
+  @note Deserialize_Implementation() and Serialize_Implementation() do not need
+  override by subclass, it call Native C++ Serialization and return String and Object
  */
 UCLASS()
 class CHARMINGCRAFT_API UPersistentDataContainer : public UObject, public ISerializable

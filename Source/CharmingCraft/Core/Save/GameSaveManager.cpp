@@ -114,10 +114,6 @@ void UGameSaveManager::UpdateSaveSlots()
 }
 
 
-void UGameSaveManager::InitializeNewSaveGame()
-{
-}
-
 bool UGameSaveManager::PerformSaveGameToFile(const FSaveSlotInfo& SaveSlotName)
 {
 	UE_LOG(LogChamingCraftSave, Display, TEXT("[📦] Saving Save Slot: %s"),
@@ -180,6 +176,21 @@ void UGameSaveManager::PerformLoadGameFromFile()
 			}
 		}
 	}
+}
+
+bool UGameSaveManager::SaveGameToGameSlot()
+{
+	if (!GetCurrentSaveSlot().IsIndicateBound)
+	{
+		// UPlayerData * PlayerData = GetCurrentSaveSlot().PlayerData;
+		// PlayerData->PlayerLocation.PlayerLocation = PlayerData->PlayerCharacter->GetActorLocation();
+		// PlayerData->PlayerLocation.LevelName = PlayerData->PlayerCharacter->GetLevel()->GetWorld()->GetMapName();
+		// UE_LOG(LogChamingCraftSave, Display, TEXT("	[📥] Save PlayerDataPlayer Location: %s, WorldName: %s"),
+		// 	   *PlayerData->PlayerLocation.PlayerLocation.ToString(), *PlayerData->PlayerLocation.LevelName);
+		GetCurrentSaveSlot().PlayerData->PerformInGameDataSave();
+	}
+
+	return false;
 }
 
 void UGameSaveManager::PerformLoadGameFromFile(const FSaveSlotInfo& SaveSlotName)

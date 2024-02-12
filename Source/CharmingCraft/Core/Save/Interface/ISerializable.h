@@ -1,6 +1,5 @@
 #pragma once
 #include "CoreMinimal.h"
-#include "CharmingCraft/Core/Save/Data/FSerializeData.h"
 #include "UObject/Interface.h"
 #include "ISerializable.generated.h"
 

@@ -3,19 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseSaveGame.h"
 #include "GameFramework/SaveGame.h"
-#include "LevelData.generated.h"
+#include "BaseSaveGame.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API ULevelData : public UBaseSaveGame
+class CHARMINGCRAFT_API UBaseSaveGame : public USaveGame
 {
 	GENERATED_BODY()
-
 public:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
-	FGuid UniqueID;
+	
+	virtual void PerformInGameDataSave();
 };

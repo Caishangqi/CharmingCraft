@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseSaveGame.h"
 #include "GameFramework/SaveGame.h"
 #include "ProgressData.generated.h"
 
@@ -10,11 +11,12 @@
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API UProgressData : public USaveGame
+class CHARMINGCRAFT_API UProgressData : public UBaseSaveGame
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
 	FGuid UniqueID;
+	
 };

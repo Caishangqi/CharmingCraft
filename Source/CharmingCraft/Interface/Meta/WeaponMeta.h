@@ -43,5 +43,8 @@ public:
 	UAnimMontage * GetCurrentAttackAnimationMontage();
 
 public:
-	virtual UObject* Deserialize_Implementation(const FString& SerializeData) override;
+	virtual TSharedPtr<FJsonObject> SerializeToJson() override;
+	virtual UObject* DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject) override;
+
+	
 };

@@ -8,8 +8,6 @@
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
 
-
-
 void UGameSaveWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();
@@ -20,6 +18,7 @@ void UGameSaveWidget::NativePreConstruct()
 	{
 		// 获取SaveManager实例
 		SaveManager = GameInstance->GetSaveManager();
+		WorldManager = GameInstance->GetWorldManager();
 		// 现在你可以使用SaveManager进行操作
 	}
 }

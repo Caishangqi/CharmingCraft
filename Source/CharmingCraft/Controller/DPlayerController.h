@@ -17,4 +17,6 @@ class CHARMINGCRAFT_API ADPlayerController : public APlayerController
 
 public:
 	ADPlayerController();
+
+	virtual void BeginPlay() override;
 };

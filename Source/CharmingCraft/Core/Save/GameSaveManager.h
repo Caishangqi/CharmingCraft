@@ -75,16 +75,15 @@ public:
 	FSaveSlotInfo CachedLoadSlots;
 
 public:
-	// Initialize a new save game
-	void InitializeNewSaveGame();
-
 	UFUNCTION(BlueprintCallable)
 	// Helper function to actually perform the save operation
 	bool PerformSaveGameToFile(const FSaveSlotInfo& SaveSlotName);
 	UFUNCTION(BlueprintCallable)
 	// Helper function to actually perform the load operation
 	void PerformLoadGameFromFile();
-
+	// Save Game Information to current select GameSlot and PerformSaveGameToFile()
+	UFUNCTION(BlueprintCallable)
+	bool SaveGameToGameSlot();
 	// Load single SaveSlot and add to the ValidSaveSlotsRing
 	void PerformLoadGameFromFile(const FSaveSlotInfo& SaveSlotName);
 
