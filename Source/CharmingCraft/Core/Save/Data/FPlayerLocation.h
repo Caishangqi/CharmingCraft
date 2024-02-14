@@ -8,7 +8,7 @@ struct FPlayerLocation
 	GENERATED_BODY()
 
 public:
-	FPlayerLocation(): PlayerLocation(0, 0, 0), LevelName("WorldSpawn")
+	FPlayerLocation(): PlayerLocation(0, 0, 0), LevelName("WorldSpawn"), bIsSpawnPoint(true)
 	{
 	}
 
@@ -18,4 +18,6 @@ public:
 	// 在PlayerData.h中添加
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "LevelData")
 	FString LevelName;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SpawnData")
+	bool bIsSpawnPoint;
 };

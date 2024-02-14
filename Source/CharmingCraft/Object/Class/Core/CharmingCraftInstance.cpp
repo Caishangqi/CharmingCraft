@@ -4,6 +4,7 @@
 #include "CharmingCraftInstance.h"
 
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
 #include "Engine/DataTable.h"
@@ -70,5 +71,15 @@ void UCharmingCraftInstance::Init()
 	Super::Init();
 	SaveManager = NewObject<UGameSaveManager>(this, UGameSaveManager::StaticClass());
 	WorldManager = NewObject<UWorldManager>(this, UWorldManager::StaticClass());
+	RuntimeGameData = NewObject<URuntimeGameData>(this, URuntimeGameData::StaticClass());
+
+	GamePlayLogicManager = NewObject<UGamePlayLogicManager>(this, UGamePlayLogicManager::StaticClass());
+
 	UE_LOG(LogChamingCraftSave, Display, TEXT("[!] UCharmingCraftInstance::Init()"));
+}
+
+void UCharmingCraftInstance::OnStart()
+{
+	Super::OnStart();
+	WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGamePlayLogicManager::OnPlayerJoinBegin);
 }

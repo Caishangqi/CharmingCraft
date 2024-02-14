@@ -74,21 +74,31 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	FSaveSlotInfo CachedLoadSlots;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	FSaveSlotInfo PrepareSaveSlot;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	// Helper function to actually perform the save operation
 	bool PerformSaveGameToFile(const FSaveSlotInfo& SaveSlotName);
 	UFUNCTION(BlueprintCallable)
+	// Helper function to actually perform the save operation
+	bool PerformSaveGamesToFile();
+	UFUNCTION(BlueprintCallable)
 	// Helper function to actually perform the load operation
-	void PerformLoadGameFromFile();
+	void PerformLoadGamesFromFile();
 	// Save Game Information to current select GameSlot and PerformSaveGameToFile()
 	UFUNCTION(BlueprintCallable)
 	bool SaveGameToGameSlot();
 	// Load single SaveSlot and add to the ValidSaveSlotsRing
-	void PerformLoadGameFromFile(const FSaveSlotInfo& SaveSlotName);
+	UFUNCTION(BlueprintCallable)
+	bool CreateNewSlotAndSave(FSaveSlotInfo SaveSlotName);
+	UFUNCTION(BlueprintCallable)
+	void PerformLoadGameFromFile(FSaveSlotInfo& SaveSlotName);
 
 	/* The Pointer that Point to the current select, In graphic: it is in center */
-	FSaveSlotInfo* CurrentSaveNode;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	FSaveSlotInfo CurrentSaveNode;
 
 	UFUNCTION(BlueprintCallable)
 	FSaveSlotInfo& GetCurrentSaveSlot();

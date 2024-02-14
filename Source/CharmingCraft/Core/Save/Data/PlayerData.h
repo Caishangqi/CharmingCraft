@@ -6,7 +6,7 @@
 #include "BaseSaveGame.h"
 #include "FPlayerInfo.h"
 #include "FPlayerLocation.h"
-#include "GameFramework/SaveGame.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "PlayerData.generated.h"
 
 /**
@@ -20,7 +20,6 @@ class CHARMINGCRAFT_API UPlayerData : public UBaseSaveGame
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
 	FGuid UniqueID;
-
 	// Player Basic Info, typically decided when player creation
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
 	FPlayerInfo PlayerInfo;
@@ -28,10 +27,7 @@ public:
 	FPlayerLocation PlayerLocation;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
 	TArray<FString> PlayerInventoryItems;
-
 	// RunTimePlayer Information
-	// UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "RunTimePlayer Information")
-	// TObjectPtr<APawn> PlayerCharacter;
-
-	virtual void PerformInGameDataSave() override;
+	UFUNCTION(BlueprintCallable)
+	bool PerformSavePlayerDataToSlot(const UCharmingCraftInstance* GameInstance);
 };

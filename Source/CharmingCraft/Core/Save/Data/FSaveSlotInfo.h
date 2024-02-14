@@ -11,7 +11,7 @@ struct FSaveSlotInfo
 {
 	GENERATED_BODY()
 	FSaveSlotInfo(): SaveSlotID(0), SaveSlotPath(""), SaveSlotRelativePath(""), SaveSlotName(""), bPrepareDelete(false),
-	                 IsIndicateBound(false),  PlayerData(nullptr), RealmData(nullptr),
+	                 IsIndicateBound(false), PlayerData(nullptr), RealmData(nullptr),
 	                 ProgressData(nullptr), LevelData(nullptr)
 	{
 	}
@@ -34,13 +34,13 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool IsIndicateBound;
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UPlayerData> PlayerData;
+	UPlayerData* PlayerData;
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<URealmData> RealmData;
+	URealmData* RealmData;
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UProgressData> ProgressData;
+	UProgressData* ProgressData;
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<ULevelData> LevelData;
+	ULevelData* LevelData;
 
 	friend bool operator==(const FSaveSlotInfo& Lhs, const FSaveSlotInfo& RHS)
 	{

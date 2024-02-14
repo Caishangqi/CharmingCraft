@@ -49,7 +49,8 @@ bool APlayerMeshRenderActor::UpdatePreviewBaseSaveManager()
 			if (IsPreviewLocationValidSlot())
 			{
 				PreviewMaterial = UCharacterSaveLib::FindPreviewMaterialFromCostumeId(
-					GameSaveManager->InternalCostume, GameSaveManager->GetNextSlot().PlayerData->PlayerInfo.CostumeId);
+					GameSaveManager->InternalCostume,
+					GameSaveManager->GetPreviewSlot().PlayerData->PlayerInfo.CostumeId);
 				UCharacterSaveLib::ApplyPreviewCostumeToPlayer(this, PreviewMaterial);
 				ShowActor();
 			}

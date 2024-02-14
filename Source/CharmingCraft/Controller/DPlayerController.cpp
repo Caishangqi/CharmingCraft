@@ -14,9 +14,9 @@ ADPlayerController::ADPlayerController()
 void ADPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	// TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetGameInstance());
-	// if (!GameInstance->GetSaveManager()->GetCurrentSaveSlot().IsIndicateBound)
-	// {
-	// 	GameInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData->PlayerCharacter = GetCharacter();
-	// }
+	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetGameInstance());
+	if (!GameInstance->GetSaveManager()->GetCurrentSaveSlot().IsIndicateBound)
+	{
+		GameInstance->GetRuntimeGameData()->PlayerCharacter = GetCharacter();
+	}
 }

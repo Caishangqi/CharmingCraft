@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Animation/SkeletalMeshActor.h"
 #include "CharmingCraft/Core/Save/Data/FInternalCostume.h"
+#include "GameFramework/Character.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "CharacterSaveLib.generated.h"
 
@@ -21,6 +22,14 @@ public:
 	static void ApplyPreviewCostumeToPlayer(ASkeletalMeshActor* SkeletalMeshActor, UMaterial* PreviewMaterial)
 	{
 		USkeletalMeshComponent* MeshComp = SkeletalMeshActor->GetSkeletalMeshComponent();
+		MeshComp->SetMaterial(0, PreviewMaterial);
+	}
+
+	
+	UFUNCTION(BlueprintCallable, Category = "Render")
+	static void ApplyCostumeToPlayer(ACharacter* Character, UMaterial* PreviewMaterial)
+	{
+		USkeletalMeshComponent* MeshComp = Character->GetMesh();
 		MeshComp->SetMaterial(0, PreviewMaterial);
 	}
 

@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "DCharacter.h"
+#include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
 
+class UGamePlayLogicManager;
 class UWorldManager;
 /**
  * 
@@ -49,9 +51,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "World")
 	UWorldManager* GetWorldManager() const { return WorldManager; }
 
+	UFUNCTION(BlueprintCallable, Category = "GamePlayLogic")
+	UGamePlayLogicManager* GetGamePlayLogicManager() const { return GamePlayLogicManager; }
+
+	UFUNCTION(BlueprintCallable, Category = "RuntimeGameData")
+	URuntimeGameData* GetRuntimeGameData() const { return RuntimeGameData; }
 
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
+
+	virtual void OnStart() override;
 
 protected:
 	// 存档管理器实例
@@ -60,4 +69,10 @@ protected:
 
 	UPROPERTY()
 	UWorldManager* WorldManager;
+
+	UPROPERTY()
+	UGamePlayLogicManager* GamePlayLogicManager;
+
+	UPROPERTY()
+	URuntimeGameData* RuntimeGameData;
 };
