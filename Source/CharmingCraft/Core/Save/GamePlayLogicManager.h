@@ -22,6 +22,9 @@ class CHARMINGCRAFT_API UGamePlayLogicManager : public UObject
 
 public:
 
+	// Global Variable
+	
+
 	FOnPlayerJoinDelegate OnPlayerJoin;
 
 	UPROPERTY(EditAnywhere)

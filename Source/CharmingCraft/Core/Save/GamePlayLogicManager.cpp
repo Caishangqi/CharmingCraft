@@ -30,6 +30,7 @@ void UGamePlayLogicManager::OnPlayerJoinBegin()
 {
 	//GetWorld()->SpawnActor<AActor>(BlueprintCharacterClassReference, Location, Rotation);
 
+
 	APlayerStart* DesiredPlayerStart = nullptr;
 
 	for (TActorIterator<APlayerStart> It(GetWorld()); It; ++It)
@@ -44,22 +45,33 @@ void UGamePlayLogicManager::OnPlayerJoinBegin()
 	}
 
 	TObjectPtr<UCharmingCraftInstance> CharmingCraftInstance = Cast<UCharmingCraftInstance>(GetOuter());
+	UPlayerData* PlayerData = CharmingCraftInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData;
+	TObjectPtr<ACharacter> InGamePlayerCharacter = CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter;
+	// Set Player Hidden First
+	CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter->SetActorHiddenInGame(true);
+
 	UE_LOG(LogChamingCraftGameLogic, Display, TEXT("[📨] UGamePlayLogicManager::OnPlayerJoinBegin()"));
 	TObjectPtr<UMaterial> PlayerSkin = UCharacterSaveLib::FindPreviewMaterialFromCostumeId(
 		CharmingCraftInstance->GetSaveManager()->InternalCostume,
-		CharmingCraftInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData->PlayerInfo.CostumeId);
+		PlayerData->PlayerInfo.CostumeId);
+
 	UCharacterSaveLib::ApplyCostumeToPlayer(
-		CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter, PlayerSkin);
+		InGamePlayerCharacter, PlayerSkin);
 
 	// Handle Player Location
-	if (!CharmingCraftInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData->PlayerLocation.bIsSpawnPoint)
+	if (!PlayerData->PlayerLocation.bIsSpawnPoint)
 	{
-		GetWorld()->SpawnActor<ADCharacter>(BlueprintCharacterClassReference,
-		                                    CharmingCraftInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData->
-		                                                           PlayerLocation.PlayerLocation, FRotator());
-		CharmingCraftInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData->PlayerLocation.bIsSpawnPoint = false;
+		InGamePlayerCharacter->TeleportTo(
+			PlayerData->PlayerLocation.PlayerLocation,
+			PlayerData->PlayerLocation.PlayerRotation);
+		PlayerData->PlayerLocation.bIsSpawnPoint = false;
 	}
 	else
 	{
+		PlayerData->PlayerLocation.bIsSpawnPoint = false;
 	}
+
+
+	// Set Player Visible After Load Location
+	CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter->SetActorHiddenInGame(false);
 }

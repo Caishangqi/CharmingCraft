@@ -9,7 +9,7 @@
 
 bool UPlayerData::PerformSavePlayerDataToSlot(const UCharmingCraftInstance* GameInstance)
 {
-	URuntimeGameData * RuntimeGameData = GameInstance->GetRuntimeGameData();
+	URuntimeGameData* RuntimeGameData = GameInstance->GetRuntimeGameData();
 	if (RuntimeGameData->PlayerCharacter && RuntimeGameData->PlayerCharacter
 	                                                       ->
 	                                                       GetLevel() && RuntimeGameData->PlayerCharacter->GetLevel()->
@@ -17,6 +17,7 @@ bool UPlayerData::PerformSavePlayerDataToSlot(const UCharmingCraftInstance* Game
 	)
 	{
 		PlayerLocation.PlayerLocation = RuntimeGameData->PlayerCharacter->GetActorLocation();
+		PlayerLocation.PlayerRotation = RuntimeGameData->PlayerCharacter->GetActorRotation();
 		PlayerLocation.LevelName = RuntimeGameData->PlayerCharacter->GetLevel()->GetName();
 		UE_LOG(LogChamingCraftSave, Display, TEXT("[📥] Save PlayerDataPlayer Location: %s, WorldName: %s"),
 		       *PlayerLocation.PlayerLocation.ToString(), *PlayerLocation.LevelName);

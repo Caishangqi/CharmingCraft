@@ -171,6 +171,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - UI bind GAS system 🟩
 - Buff System Include BuffData, BuffInfo, BuffHandler, and BuffModel (Callback) 🟩
 - Game Start UI and World Select UI 🟩
+- Game Serialization System (Json, FString) to UObject ❔
 
 ## Content and Mechanism
 
@@ -181,10 +182,10 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 | Context                                           | Priority | State |
 |:--------------------------------------------------|:--------:|:-----:|
 | Game Start UI and World Select UI                 | Highest  |   ✅    |
-| Game context serialization                        | Highest  |   📝    |
-| Complete attribute UI                             |  Normal  |   📌    |
+| Game context serialization                        | Highest  |   ✅    |
+| Complete attribute UI                             |  Normal  |   📝    |
 | Quest system with related NPCs                    |  Normal  |   📌    |
-| Resource collection system, ores, trees, farmland |  Normal  |   📌    |
+| Resource collection system, ores, trees, farmland |  Normal  |   📝    |
 | Expand the Level to 1000 x 1000                   |   Low    |    📌     |
 | Biome: Respawn of monsters, resources, creatures  |     Low     |     📌      |
 | Developing an engaging storyline           |        Lowest        |   📌    |
@@ -194,11 +195,9 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 
 - Fixing stuck and jittery issues when interacting with items on high ground (**Fixed**)
 - Correct movement behind buildings when obstructed (Ray Tracing)
-- Dynamic pathfinding improvements, refreshing available routes when players destroy blocks or interact with items (*
-  *Fixed**)
+- Dynamic pathfinding improvements, refreshing available routes when players destroy blocks or interact with items (**Fixed**)
 - Changing item dropping from generation to a throwing action
-- Rendering 3D items into 2D images requires manual placement of RenderTargetActor in the world, otherwise it fails (*
-  *Fixed**)
+- Rendering 3D items into 2D images requires manual placement of RenderTargetActor in the world, otherwise it fails (**Fixed**)
 - The `OnHit()` method of weapons is determined by the weapon type, consider passing in a weapon class template for the
   interaction component to execute the template class method for **HitData** transmission (**Fixed**)
 
@@ -239,6 +238,11 @@ project's [Wiki](https://github.com/Caishangqi/CharmingCraft/wiki).
 - [Combat Damage Transmission Chain](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Vector Multi-Damage Indicators](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
 - [Buff System](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/impl-meel-attack.md)
+
+### Errors and Solutions
+
+- [GameSave DEP (ZH_CN)](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/gamesave-dep.md)
+
 
 ## WorkFlow
 
