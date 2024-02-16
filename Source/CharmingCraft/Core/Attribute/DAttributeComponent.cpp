@@ -4,6 +4,7 @@
 #include "DAttributeComponent.h"
 
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
+#include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 
 // Sets default values for this component's properties
@@ -48,8 +49,6 @@ void UDAttributeComponent::BeginPlay()
 		// Apply DamageChain
 		DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
 	}
-
-
 }
 
 
@@ -168,4 +167,52 @@ FHitData UDAttributeComponent::PostInwardHitData(FHitData ModifiedHitData)
 {
 	OnHitDataApply.Broadcast(ModifiedHitData);
 	return ModifiedHitData;
+}
+
+TSharedPtr<FJsonObject> UDAttributeComponent::SerializeToJson()
+{
+	TSharedPtr<FJsonObject> SerializeJson = Super::SerializeToJson();
+	SET_JSON_FIELD_NUMBER(SerializeJson, AttackRange, AttackRange);
+	SET_JSON_FIELD_NUMBER(SerializeJson, Damage, Damage);
+	SET_JSON_FIELD_NUMBER(SerializeJson, AbilityPower, AbilityPower);
+	SET_JSON_FIELD_NUMBER(SerializeJson, Health, Health);
+	SET_JSON_FIELD_NUMBER(SerializeJson, HealthMax, HealthMax);
+	SET_JSON_FIELD_NUMBER(SerializeJson, Mana, Mana);
+	SET_JSON_FIELD_NUMBER(SerializeJson, Level, Level);
+	SET_JSON_FIELD_NUMBER(SerializeJson, CurrentLevelXP, CurrentLevelXP);
+	SET_JSON_FIELD_NUMBER(SerializeJson, Armour, Armour);
+	SET_JSON_FIELD_NUMBER(SerializeJson, MagicDefense, MagicDefense);
+	SET_JSON_FIELD_NUMBER(SerializeJson, KnockBackResistance, KnockBackResistance);
+	SET_JSON_FIELD_NUMBER(SerializeJson, CriticalChance, CriticalChance);
+	SET_JSON_FIELD_NUMBER(SerializeJson, CriticalDamageEnhance, CriticalDamageEnhance);
+	SET_JSON_FIELD_NUMBER(SerializeJson, CriticalDamageDefenseEnhance, CriticalDamageDefenseEnhance);
+	SET_JSON_FIELD_NUMBER(SerializeJson, AttackSpeedEnhance, AttackSpeedEnhance);
+	SET_JSON_FIELD_NUMBER(SerializeJson, InteractRange, InteractRange);
+	SET_JSON_FIELD_BOOL(SerializeJson, IsDead, IsDead);
+	return SerializeJson;
+}
+
+UObject* UDAttributeComponent::LoadDataFromJson(TSharedPtr<FJsonObject> JsonObject)
+{
+	if (JsonObject)
+	{
+		AttackRange = GET_JSON_FIELD_NUMBER(JsonObject, AttackRange);
+		Damage = GET_JSON_FIELD_NUMBER(JsonObject, Damage);
+		AbilityPower = GET_JSON_FIELD_NUMBER(JsonObject, AbilityPower);
+		Health = GET_JSON_FIELD_NUMBER(JsonObject, Health);
+		HealthMax = GET_JSON_FIELD_NUMBER(JsonObject, HealthMax);
+		Mana = GET_JSON_FIELD_NUMBER(JsonObject, Mana);
+		Level = GET_JSON_FIELD_NUMBER(JsonObject, Level);
+		CurrentLevelXP = GET_JSON_FIELD_NUMBER(JsonObject, CurrentLevelXP);
+		Armour = GET_JSON_FIELD_NUMBER(JsonObject, Armour);
+		MagicDefense = GET_JSON_FIELD_NUMBER(JsonObject, MagicDefense);
+		KnockBackResistance = GET_JSON_FIELD_NUMBER(JsonObject, KnockBackResistance);
+		CriticalChance = GET_JSON_FIELD_NUMBER(JsonObject, CriticalChance);
+		CriticalDamageEnhance = GET_JSON_FIELD_NUMBER(JsonObject, CriticalDamageEnhance);
+		AttackSpeedEnhance = GET_JSON_FIELD_NUMBER(JsonObject, AttackSpeedEnhance);
+		InteractRange = GET_JSON_FIELD_NUMBER(JsonObject, InteractRange);
+		IsDead = GET_JSON_FIELD_BOOL(JsonObject, IsDead);
+	}
+
+	return this;
 }

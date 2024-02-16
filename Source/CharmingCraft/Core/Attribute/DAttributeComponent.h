@@ -6,6 +6,7 @@
 #include "CharmingCraft/Core/Attribute/FHitData.h"
 #include "CharmingCraft/Core/Attribute/FPlayerAttribute.h"
 #include "CharmingCraft/Core/Damage/DamageHandler/DamageChain.h"
+#include "CharmingCraft/Core/Save/Data/PersistentDataComponent.h"
 #include "Components/ActorComponent.h"
 #include "DAttributeComponent.generated.h"
 
@@ -27,7 +28,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitDataApply, FHitData, InwardHit
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributeChange, FPlayerAttribute, DeltaAttribute, UObject*, Source);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
-class CHARMINGCRAFT_API UDAttributeComponent : public UActorComponent
+class CHARMINGCRAFT_API UDAttributeComponent : public UPersistentDataComponent
 {
 	GENERATED_BODY()
 
@@ -127,4 +128,10 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	FHitData PostInwardHitData(FHitData ModifiedHitData);
+
+	//Serialization
+public:
+	virtual TSharedPtr<FJsonObject> SerializeToJson() override;
+	
+	virtual UObject* LoadDataFromJson(TSharedPtr<FJsonObject> JsonObject) override;
 };

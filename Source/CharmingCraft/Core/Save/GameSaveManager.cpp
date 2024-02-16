@@ -114,7 +114,7 @@ void UGameSaveManager::UpdateSaveSlots()
 
 bool UGameSaveManager::PerformSaveGameToFile(const FSaveSlotInfo& SaveSlotName)
 {
-	UE_LOG(LogChamingCraftSave, Display, TEXT("[📦] Saving Save Slot: %s"),
+	UE_LOG(LogChamingCraftSave, Display, TEXT("[💾] Saving Save Slot to Disk: %s"),
 	       *SaveSlotName.SaveSlotName);
 	UGameplayStatics::SaveGameToSlot(SaveSlotName.PlayerData,
 	                                 SaveSlotName.SaveSlotName + "/" + FString("PlayerData"),

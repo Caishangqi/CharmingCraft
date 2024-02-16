@@ -27,6 +27,9 @@ public:
 	FPlayerLocation PlayerLocation;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
 	TArray<FString> PlayerInventoryItems;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "AttributeComponentData")
+	FString AttributeComponentData;
+
 	// RunTimePlayer Information
 	UFUNCTION(BlueprintCallable)
 	bool PerformSavePlayerDataToSlot(const UCharmingCraftInstance* GameInstance);
