@@ -11,8 +11,13 @@
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerJoinDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerJoinDelegate, ACharacter*, PlayerCharacter);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerLeaveDelegate);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
+
+// TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS()
 class CHARMINGCRAFT_API UGamePlayLogicManager : public UObject
 {
@@ -21,17 +26,18 @@ class CHARMINGCRAFT_API UGamePlayLogicManager : public UObject
 	UGamePlayLogicManager();
 
 public:
-
 	// Global Variable
-	
+
 
 	FOnPlayerJoinDelegate OnPlayerJoin;
+	FOnPlayerLeaveDelegate OnPlayerLeave;
+	FOnPlayerSaveDelegate OnPlayerSave;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ADCharacter> BlueprintCharacterClassReference;
 
 	UFUNCTION(BlueprintCallable)
-	void OnPlayerJoinCallback();
+	void OnPlayerJoinEvent();
 	UFUNCTION(BlueprintCallable)
-	void OnPlayerJoinBegin();
+	void OnPlayerLeaveEvent();
 };

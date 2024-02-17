@@ -2,10 +2,14 @@
 
 
 #include "DAttributeComponent.h"
-
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
+#include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
+#include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UDAttributeComponent::UDAttributeComponent()
@@ -49,6 +53,7 @@ void UDAttributeComponent::BeginPlay()
 		// Apply DamageChain
 		DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
 	}
+	GameInstance->GamePlayLogicManager->OnPlayerJoin.AddDynamic(this, &UDAttributeComponent::OnPlayerJoin);
 }
 
 
@@ -215,4 +220,14 @@ UObject* UDAttributeComponent::LoadDataFromJson(TSharedPtr<FJsonObject> JsonObje
 	}
 
 	return this;
+}
+
+void UDAttributeComponent::OnPlayerJoin(ACharacter* PlayerCharacter)
+{
+	if (GetOwner() == PlayerCharacter)
+	{
+		Deserialize_Implementation(GameInstance->GetSaveManager()->CurrentSaveNode.PlayerData->AttributeComponentData);
+		UE_LOG(LogChamingCraftSave, Display, TEXT("	[📤] Load AttributeComponentData to Player: %s, Health: %f"),
+		       *GetOwner()->GetName(), Health);
+	}
 }

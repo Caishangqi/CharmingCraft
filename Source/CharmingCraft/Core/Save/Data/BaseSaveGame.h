@@ -16,5 +16,4 @@ class CHARMINGCRAFT_API UBaseSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-
 };

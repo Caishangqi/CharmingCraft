@@ -62,7 +62,7 @@ public:
 
 	virtual void OnStart() override;
 
-protected:
+public:
 	// 存档管理器实例
 	UPROPERTY()
 	UGameSaveManager* SaveManager;

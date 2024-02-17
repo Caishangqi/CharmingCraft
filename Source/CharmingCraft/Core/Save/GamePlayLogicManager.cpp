@@ -22,14 +22,10 @@ UGamePlayLogicManager::UGamePlayLogicManager()
 	}
 }
 
-void UGamePlayLogicManager::OnPlayerJoinCallback()
+void UGamePlayLogicManager::OnPlayerJoinEvent()
 {
-}
-
-void UGamePlayLogicManager::OnPlayerJoinBegin()
-{
-	UE_LOG(LogChamingCraftGameLogic, Display, TEXT("[📍]  Event trigger at UGamePlayLogicManager::OnPlayerJoinBegin()"));
-
+	UE_LOG(LogChamingCraftGameLogic, Display,
+	       TEXT("[📍]  Event trigger at UGamePlayLogicManager::OnPlayerJoinBegin()"));
 
 	APlayerStart* DesiredPlayerStart = nullptr;
 
@@ -51,7 +47,7 @@ void UGamePlayLogicManager::OnPlayerJoinBegin()
 	// Set Player Hidden First
 	CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter->SetActorHiddenInGame(true);
 
-	
+
 	TObjectPtr<UMaterial> PlayerSkin = UCharacterSaveLib::FindPreviewMaterialFromCostumeId(
 		CharmingCraftInstance->GetSaveManager()->InternalCostume,
 		PlayerData->PlayerInfo.CostumeId);
@@ -72,11 +68,14 @@ void UGamePlayLogicManager::OnPlayerJoinBegin()
 		PlayerData->PlayerLocation.bIsSpawnPoint = false;
 	}
 
-	// Load Player Attribute Data
-	InGamePlayerCharacter->AttributeComp->Deserialize_Implementation(PlayerData->AttributeComponentData);
-	UE_LOG(LogChamingCraftSave, Display, TEXT("	[📤] Load AttributeComponentData to Player: %s"),
-	       *InGamePlayerCharacter.GetName())
+	// BoardCast Global Event
+	OnPlayerJoin.Broadcast(InGamePlayerCharacter);
 
 	// Set Player Visible After Load Location
 	CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter->SetActorHiddenInGame(false);
+}
+
+void UGamePlayLogicManager::OnPlayerLeaveEvent()
+{
+	OnPlayerSave.Broadcast();
 }

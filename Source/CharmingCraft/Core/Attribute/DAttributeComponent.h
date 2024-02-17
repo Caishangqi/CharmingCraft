@@ -9,7 +9,6 @@
 #include "CharmingCraft/Core/Save/Data/PersistentDataComponent.h"
 #include "Components/ActorComponent.h"
 #include "DAttributeComponent.generated.h"
-
 //创建并且定义这个事件
 /*
  *	在C++中，delegate（委托）是一种用于实现事件、回调和多播委托的编程模式。它允许您
@@ -28,6 +27,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHitDataApply, FHitData, InwardHit
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributeChange, FPlayerAttribute, DeltaAttribute, UObject*, Source);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, Blueprintable))
+
 class CHARMINGCRAFT_API UDAttributeComponent : public UPersistentDataComponent
 {
 	GENERATED_BODY()
@@ -132,6 +132,10 @@ public:
 	//Serialization
 public:
 	virtual TSharedPtr<FJsonObject> SerializeToJson() override;
-	
+
 	virtual UObject* LoadDataFromJson(TSharedPtr<FJsonObject> JsonObject) override;
+
+protected: // Global Event
+	UFUNCTION()
+	virtual void OnPlayerJoin(ACharacter* PlayerCharacter);
 };

@@ -81,5 +81,5 @@ void UCharmingCraftInstance::Init()
 void UCharmingCraftInstance::OnStart()
 {
 	Super::OnStart();
-	WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGamePlayLogicManager::OnPlayerJoinBegin);
+	WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGamePlayLogicManager::OnPlayerJoinEvent);
 }

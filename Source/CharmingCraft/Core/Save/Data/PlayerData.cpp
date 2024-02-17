@@ -36,8 +36,8 @@ bool UPlayerData::PerformSavePlayerDataToSlot(const UCharmingCraftInstance* Game
 	if (PlayerCharacter)
 	{
 		AttributeComponentData = PlayerCharacter->AttributeComp->Serialize_Implementation();
-		UE_LOG(LogChamingCraftSave, Display, TEXT("	[✅] Save AttributeComponentData to Player: %s"),
-		       *PlayerCharacter.GetName())
+		UE_LOG(LogChamingCraftSave, Display, TEXT("	[✅] Save AttributeComponentData to Player: %s, Health: %f"),
+		       *PlayerCharacter.GetName(), PlayerCharacter->AttributeComp->Health)
 	}
 
 	UE_LOG(LogChamingCraftSave, Display, TEXT("	[✅] UPlayerDataSaveModel::Save()"))

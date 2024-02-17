@@ -8,12 +8,17 @@
 #include "PersistentDataComponent.generated.h"
 
 
+class UCharmingCraftInstance;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UPersistentDataComponent : public UActorComponent, public ISerializable
 {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UCharmingCraftInstance> GameInstance;
+
 	// Sets default values for this component's properties
 	UPersistentDataComponent();
 

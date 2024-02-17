@@ -99,7 +99,7 @@ public:
 	/* The Pointer that Point to the current select, In graphic: it is in center */
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	FSaveSlotInfo CurrentSaveNode;
-
+	
 	UFUNCTION(BlueprintCallable)
 	FSaveSlotInfo& GetCurrentSaveSlot();
 	// Should call on Initialize the UMG
@@ -126,4 +126,8 @@ public:
 	/* Render Manipulation */
 	UFUNCTION(BlueprintCallable)
 	void UpdatePlayerMeshRenderActorInfo();
+protected: // override
+
+	// Avoid save glitching when shutdown editor or crash
+	// virtual void BeginDestroy() override;
 };

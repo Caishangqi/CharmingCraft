@@ -4,6 +4,8 @@
 #include "PersistentDataComponent.h"
 
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values for this component's properties
@@ -39,7 +41,7 @@ FString UPersistentDataComponent::Serialize_Implementation()
 void UPersistentDataComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	GameInstance = Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	// ...
 }
 

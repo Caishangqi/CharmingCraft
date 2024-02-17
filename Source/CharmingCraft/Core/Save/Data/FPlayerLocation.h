@@ -8,7 +8,7 @@ struct FPlayerLocation
 	GENERATED_BODY()
 
 public:
-	FPlayerLocation(): PlayerLocation(0, 0, 0), PlayerRotation(0, 0, 0), LevelName("WorldSpawn"), bIsSpawnPoint(true)
+	FPlayerLocation(): PlayerRotation(0, 0, 0), PlayerLocation(0, 0, 0), LevelName("WorldSpawn"), bIsSpawnPoint(true)
 	{
 	}
 
