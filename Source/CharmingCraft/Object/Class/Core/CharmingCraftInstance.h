@@ -9,6 +9,7 @@
 #include "CharmingCraftInstance.generated.h"
 
 
+class UPlayerModeManager;
 class UGamePlayLogicManager;
 class UWorldManager;
 /**
@@ -57,6 +58,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "RuntimeGameData")
 	URuntimeGameData* GetRuntimeGameData() const { return RuntimeGameData; }
 
+	UFUNCTION(BlueprintCallable, Category = "PlayerModeManager")
+	UPlayerModeManager* GetPlayerModeManager() const { return PlayerModeManager; }
+
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
 
@@ -75,4 +79,7 @@ public:
 
 	UPROPERTY()
 	URuntimeGameData* RuntimeGameData;
+
+	UPROPERTY()
+	UPlayerModeManager* PlayerModeManager;
 };

@@ -3,6 +3,7 @@
 
 #include "CharmingCraftInstance.h"
 
+#include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
@@ -74,6 +75,7 @@ void UCharmingCraftInstance::Init()
 	RuntimeGameData = NewObject<URuntimeGameData>(this, URuntimeGameData::StaticClass());
 
 	GamePlayLogicManager = NewObject<UGamePlayLogicManager>(this, UGamePlayLogicManager::StaticClass());
+	PlayerModeManager = NewObject<UPlayerModeManager>(this, UPlayerModeManager::StaticClass());
 
 	UE_LOG(LogChamingCraftSave, Display, TEXT("[!] UCharmingCraftInstance::Init()"));
 }
