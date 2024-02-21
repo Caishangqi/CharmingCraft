@@ -29,4 +29,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	// Use for update information in widget manually,or use event broadcast trigger this function
 	void UpdateWidgetContext();
+	//
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool CreateWidgetAddToChild(UOverlay* Overlay, TSubclassOf<UUserWidget> WidgetClass);
 };

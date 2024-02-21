@@ -34,7 +34,7 @@ UHelmetMeta::UHelmetMeta()
 	bIsRenderItem = true;
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> WidgetClassFinder(TEXT(
-		"/Script/UMGEditor.WidgetBlueprint'/Game/CharmingCraft/UI/Container/WorkBench/LayOut/W_WorkBench_LayOut_Helmet.W_WorkBench_LayOut_Helmet_C'"));
+		"/Script/UMGEditor.WidgetBlueprint'/Game/CharmingCraft/UI/container/WorkBench/LayOut/W_WorkBench_LayOut_Helmet.W_WorkBench_LayOut_Helmet_C'"));
 	if (WidgetClassFinder.Succeeded())
 	{
 		Layout = WidgetClassFinder.Class;

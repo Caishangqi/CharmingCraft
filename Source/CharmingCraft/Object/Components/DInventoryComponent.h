@@ -79,6 +79,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnInventoryUpdateIndex OnInventoryUpdateIndex;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	int32 InventorySlotSelectIndex = 1;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Inventory Parameter")
 	int InventorySize;
