@@ -7,6 +7,8 @@
 #include "DPlayerController.generated.h"
 
 class ADPlayerAIController;
+class UCharmingCraftInstance;
+class UGamePlayLogicManager;
 /**
  * 
  */
@@ -17,6 +19,11 @@ class CHARMINGCRAFT_API ADPlayerController : public APlayerController
 
 public:
 	ADPlayerController();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCharmingCraftInstance> GameInstance;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<UGamePlayLogicManager> GamePlayLogicManager;
 
 	virtual void BeginPlay() override;
 };

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "CharmingCraft/Core/UI/Holder/WidgetHolder.h"
 #include "ContainerWidget.generated.h"
 
 class UDInventoryComponent;
@@ -11,7 +11,7 @@ class UDInventoryComponent;
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API UContainerWidget : public UUserWidget
+class CHARMINGCRAFT_API UContainerWidget : public UWidgetHolder
 {
 	GENERATED_BODY()
 

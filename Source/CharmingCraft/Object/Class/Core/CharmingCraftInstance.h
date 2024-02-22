@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DCharacter.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
+#include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
@@ -61,6 +62,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PlayerModeManager")
 	UPlayerModeManager* GetPlayerModeManager() const { return PlayerModeManager; }
 
+	UUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
 
@@ -82,4 +84,7 @@ public:
 
 	UPROPERTY()
 	UPlayerModeManager* PlayerModeManager;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidgetEventHandler> UserWidgetEventHandler;
 };

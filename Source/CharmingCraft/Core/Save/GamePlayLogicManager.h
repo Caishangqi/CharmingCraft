@@ -13,6 +13,8 @@
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerJoinDelegate, ACharacter*, PlayerCharacter);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerOpenInventoryDelegate, ACharacter*, PlayerCharacter);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerLeaveDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
@@ -33,6 +35,8 @@ public:
 	FOnPlayerLeaveDelegate OnPlayerLeave;
 	FOnPlayerSaveDelegate OnPlayerSave;
 
+	FOnPlayerOpenInventoryDelegate OnPlayerOpenInventory;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ADCharacter> BlueprintCharacterClassReference;
 
@@ -40,4 +44,6 @@ public:
 	void OnPlayerJoinEvent();
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerLeaveEvent();
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerOpenInventoryEvent(ACharacter* Instigator);
 };

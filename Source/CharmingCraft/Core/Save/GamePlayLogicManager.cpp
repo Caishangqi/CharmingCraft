@@ -79,3 +79,8 @@ void UGamePlayLogicManager::OnPlayerLeaveEvent()
 {
 	OnPlayerSave.Broadcast();
 }
+
+void UGamePlayLogicManager::OnPlayerOpenInventoryEvent(ACharacter* Instigator)
+{
+	OnPlayerOpenInventory.Broadcast(Instigator);
+}

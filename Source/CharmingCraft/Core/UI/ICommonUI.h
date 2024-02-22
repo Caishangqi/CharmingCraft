@@ -32,4 +32,6 @@ public:
 	//
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool CreateWidgetAddToChild(UOverlay* Overlay, TSubclassOf<UUserWidget> WidgetClass);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool RemoveWidget(); // Remove Widget from Widget holder, mainly remove from UserWidgetEventHandler
 };

@@ -8,7 +8,7 @@
 void UContainerWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwningPlayer()->GetPawn());
+	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwningLocalPlayer());
 	if (Player)
 	{
 		ContainInventory = Player->InventoryComponent;

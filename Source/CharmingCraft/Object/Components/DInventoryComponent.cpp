@@ -46,7 +46,9 @@ void UDInventoryComponent::InitializeItemStackWithMaterials()
 	{
 		UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
 			PreloadMaterials[Index].Material, PreloadMaterials[Index].Amount);
-		Inventory.Insert(ItemStack, Index);
+		//Inventory.Add(ItemStack);
+		Inventory[Index] = ItemStack;
+		//Inventory.Insert(ItemStack, Index);
 	}
 }
 
@@ -90,6 +92,7 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
 	Result.bIsSuccess = !bLocalHasFailed;
 	Result.RemainQuantity = LocalQuantity;
 
+	OnInventoryUpdate.Broadcast();
 	return Result;
 }
 
@@ -373,7 +376,7 @@ void UDInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// 设置背包大小
-	Inventory.SetNum(8);
+	Inventory.SetNum(InventorySize);
 	// 启用ActionBar UI组件 不是很美观,暂时封印
 
 	InitializeItemStackWithMaterials();

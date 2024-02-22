@@ -7,9 +7,15 @@
 
 void UPlayerInventoryWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
 	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwningPlayer()->GetPawn());
 	if (Player)
 	{
 		ContainInventory = Player->InventoryComponent;
 	}
+}
+
+void UPlayerInventoryWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
 }
