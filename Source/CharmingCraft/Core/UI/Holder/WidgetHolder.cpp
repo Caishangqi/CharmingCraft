@@ -11,6 +11,11 @@ UUserWidgetEventHandler* UWidgetHolder::GetWidgetHolder()
 	return UserWidgetEventHandler;
 }
 
+UObject* UWidgetHolder::GetCreator()
+{
+	return Creator;
+}
+
 bool UWidgetHolder::RemoveWidget_Implementation()
 {
 	bool bIsRemoveLeastOne = false;

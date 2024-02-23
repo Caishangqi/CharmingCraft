@@ -3,6 +3,8 @@
 
 #include "Chest.h"
 
+#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Components/DInventoryComponent.h"
 
 void AChest::Interact_Implementation(APawn* InstigatorPawn)
@@ -12,7 +14,11 @@ void AChest::Interact_Implementation(APawn* InstigatorPawn)
 	 *	SetRelativeRotation 中的Relative是相对于LidMesh 连接的组件这里相对的应该是BaseMesh
 	 *	FRotator(TargetPitch,0,0) 对应的是旋转向量旋转向量的仰角为Pitch也就是Y (绿色的)
 	 */
+	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetGameInstance());
 	LidMesh->SetRelativeRotation(FRotator(0, 0, TargetPitch));
+	GameInstance->GamePlayLogicManager->OnPlayerOpenContainerEvent(
+		Cast<ACharacter>(InstigatorPawn), InventoryComponent, InstigatorPawn);
+	//GameInstance->GamePlayLogicManager->OnPlayerOpenInventoryEvent(Cast<ACharacter>(InstigatorPawn));
 }
 
 AChest::AChest()
@@ -27,6 +33,4 @@ AChest::AChest()
 	LidMesh->SetupAttachment(BaseMesh);
 
 	TargetPitch = -40; //初始化,默认变量
-
-	
 }

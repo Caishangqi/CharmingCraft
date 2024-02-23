@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DCharacter.h"
 #include "Blueprint/UserWidget.h"
+#include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "UserWidgetEventHandler.generated.h"
 
 class UGamePlayLogicManager;
@@ -30,5 +31,12 @@ public:
 	TArray<TObjectPtr<UUserWidget>> LoadedUserWidget;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnPlayerOpenInventoryEvent(ACharacter* Instigator);
+	void OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UDInventoryComponent* TargetContainer, UObject* Creator);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnItemDetailDisplay(UItemStack* ItemToDisplay, UObject* Creator);
 };

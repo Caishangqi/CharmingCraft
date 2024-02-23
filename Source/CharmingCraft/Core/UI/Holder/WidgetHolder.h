@@ -19,7 +19,16 @@ class CHARMINGCRAFT_API UWidgetHolder : public UUserWidget, public ICommonUI
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UUserWidgetEventHandler> UserWidgetEventHandler;
-
+	/*
+	 *	Creator tell UI system who create this Widget, in some case, the container invoke
+	 *	Player's inventory is different from Player invoke PlayerOpen Event
+	 *
+	 *	更新说明，这里是逻辑处理属性，比如说玩家可以打开物品背包但是方法有很多种，有由Container
+	 *	执行函数开启的也可以他们自己使用tab键开启的，这里记录逻辑上而言UI的创建者
+	 */
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<UObject> Creator;
+	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
 
@@ -32,7 +41,10 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	UUserWidgetEventHandler* GetWidgetHolder();
-
+	
+	UFUNCTION(BlueprintCallable)
+	UObject * GetCreator();
+	
 	virtual bool RemoveWidget_Implementation() override;
 	
 	virtual void NativeConstruct() override;

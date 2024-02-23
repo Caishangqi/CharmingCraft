@@ -3,6 +3,7 @@
 
 #include "UserWidgetEventHandler.h"
 
+#include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
@@ -14,10 +15,37 @@ void UUserWidgetEventHandler::NativeConstruct()
 	GamePlayLogicManager = GameInstance->GamePlayLogicManager;
 
 	GamePlayLogicManager->OnPlayerOpenInventory.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenInventoryEvent);
+	GamePlayLogicManager->OnPlayerOpenContainer.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenContainerEvent);
+	GamePlayLogicManager->OnPlayerClickMove.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerClickMoveEvent);
+	GamePlayLogicManager->OnItemDetailDisplay.AddDynamic(this, &UUserWidgetEventHandler::OnItemDetailDisplay);
+
 	GameInstance->UserWidgetEventHandler = this;
 }
 
-void UUserWidgetEventHandler::OnPlayerOpenInventoryEvent_Implementation(ACharacter* Instigator)
+void UUserWidgetEventHandler::OnItemDetailDisplay_Implementation(UItemStack* ItemToDisplay, UObject* Creator)
+{
+	UE_LOG(LogChamingCraftWidgetHandler, Display,
+	       TEXT("[❕] OnItemDetailDisplayEvent trigger by: %s Target Item: %s"),
+	       *Creator->GetName(), *ItemToDisplay->ItemMeta->DisplayName);
+}
+
+void UUserWidgetEventHandler::OnPlayerClickMoveEvent_Implementation(ACharacter* Instigator, FVector TargetLocation)
+{
+	// UE_LOG(LogChamingCraftWidgetHandler, Display,
+	//        TEXT("[🔍] OnPlayerClickMoveEvent trigger by: %s Target Location: %s"),
+	//        *Instigator->GetName(), *TargetLocation.ToString());
+}
+
+void UUserWidgetEventHandler::OnPlayerOpenContainerEvent_Implementation(ACharacter* Instigator,
+                                                                        UDInventoryComponent* TargetContainer,
+                                                                        UObject* Creator)
+{
+	UE_LOG(LogChamingCraftWidgetHandler, Display,
+	       TEXT("[🔍] OnPlayerOpenContainerEvent trigger by: %s Target Container: %s"),
+	       *Instigator->GetName(), *TargetContainer->GetName());
+}
+
+void UUserWidgetEventHandler::OnPlayerOpenInventoryEvent_Implementation(ACharacter* Instigator, UObject* Creator)
 {
 	UE_LOG(LogChamingCraftWidgetHandler, Display, TEXT("[🔍] OnPlayerOpenInventoryEvent trigger by: %s"),
 	       *Instigator->GetName());

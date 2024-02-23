@@ -4,15 +4,18 @@
 #include "PlayerInventoryWidget.h"
 
 #include "DCharacter.h"
+#include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void UPlayerInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwningPlayer()->GetPawn());
-	if (Player)
-	{
-		ContainInventory = Player->InventoryComponent;
-	}
+	UE_LOG(LogChamingCraftWidgetHandler, Display,
+		   TEXT("[✅]  Add Inventory: %s to Widget %s "), *ContainInventory->GetName(), *this->GetName());
+	 
+	
 }
 
 void UPlayerInventoryWidget::NativeDestruct()

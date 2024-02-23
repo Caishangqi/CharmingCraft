@@ -80,7 +80,23 @@ void UGamePlayLogicManager::OnPlayerLeaveEvent()
 	OnPlayerSave.Broadcast();
 }
 
-void UGamePlayLogicManager::OnPlayerOpenInventoryEvent(ACharacter* Instigator)
+void UGamePlayLogicManager::OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator)
 {
-	OnPlayerOpenInventory.Broadcast(Instigator);
+	OnPlayerOpenInventory.Broadcast(Instigator, Creator);
+}
+
+void UGamePlayLogicManager::OnPlayerOpenContainerEvent(ACharacter* Instigator, UDInventoryComponent* TargetContainer,
+                                                       UObject* Creator)
+{
+	OnPlayerOpenContainer.Broadcast(Instigator, TargetContainer, Creator);
+}
+
+void UGamePlayLogicManager::OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation)
+{
+	OnPlayerClickMove.Broadcast(Instigator, TargetLocation);
+}
+
+void UGamePlayLogicManager::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
+{
+	OnItemDetailDisplay.Broadcast(ItemToDisplay, Creator);
 }
