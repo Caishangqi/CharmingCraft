@@ -21,10 +21,7 @@ class CHARMINGCRAFT_API UItemStack : public UPersistentDataContainer
 public:
 	// Sets default values for this component's properties
 	UItemStack();
-
-	UFUNCTION(BlueprintCallable)
-	UItemStack* Initialize(EMaterial Type, int32 Amount);
-
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	int32 Amount;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
@@ -32,21 +29,38 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="ItemStack InternalData")
 	TSubclassOf<UItem> ItemClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
-	TSubclassOf<UItemMeta> ItemMetaClass;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	UItemMeta* ItemMeta;
 
+	
 protected:
 
 
 public:
-	UFUNCTION(BlueprintCallable)
-	bool SynchronizeData();
+	
 	UItemStack* CopyData();
 
+	// Factory Method
+	/*!
+	 * 
+	 * @param Outer The Outer of the ItemStack Object
+	 * @param ItemMaterial Base On ItemMaterial Create ItemStack
+	 * @param SetAmount Init ItemStack with correspond amount
+	 * @return UItemStack 
+	 */
+	UFUNCTION(BlueprintCallable)
+	static UItemStack* CreateItemStackFromMaterial(UObject* Outer, const EMaterial ItemMaterial, const int32 SetAmount);
+	/*!
+	 * 
+	 * @param Outer The Outer of the ItemStack Object
+	 * @param ItemClassName Base On ItemClass Create ItemStack
+	 * @param SetAmount Init ItemStack with correspond amount
+	 * @return UItemStack 
+	 */
+	UFUNCTION(BlueprintCallable)
+	static UItemStack* CreateItemStackFromItemClass(UObject* Outer, TSubclassOf<UItem> ItemClassName,
+	                                                const int32 SetAmount);
 public:
-	virtual void PostInitProperties() override;
-
+	
 	UFUNCTION(BlueprintCallable)
 	UItem* GetItemClass() const;
 

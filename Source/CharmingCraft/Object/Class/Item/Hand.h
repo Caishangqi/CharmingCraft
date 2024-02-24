@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Weapon.h"
+#include "../Core/Item/Meta/ItemMeta.h"
 #include "Hand.generated.h"
 
 class ADCharacter;

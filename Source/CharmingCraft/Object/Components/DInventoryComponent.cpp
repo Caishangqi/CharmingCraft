@@ -15,44 +15,45 @@ UDInventoryComponent::UDInventoryComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	
+
 	// ...
 }
 
-
-#if WITH_EDITOR
-void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-{
-	Super::PostEditChangeProperty(PropertyChangedEvent);
-	// 检查更改的属性是否是我们关心的属性
-	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == GET_MEMBER_NAME_CHECKED(
-		UDInventoryComponent, Inventory))
-	{
-		for (UItemStack* & ItemStack : Inventory)
-		{
-			// 如果元素是nullptr，为其分配默认的UItem对象
-			if (!ItemStack)
-			{
-				ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass());
-				ItemStack->Initialize(EMaterial::APPLE, 32);
-			}
-		}
-	}
-}
+/*
+// #if WITH_EDITOR
+// void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+// {
+// 	Super::PostEditChangeProperty(PropertyChangedEvent);
+// 	// 检查更改的属性是否是我们关心的属性
+// 	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == GET_MEMBER_NAME_CHECKED(
+// 		UDInventoryComponent, Inventory))
+// 	{
+// 		for (UItemStack* & ItemStack : Inventory)
+// 		{
+// 			// 如果元素是nullptr，为其分配默认的UItem对象
+// 			if (!ItemStack)
+// 			{
+// 				ItemStack = UItemStack::CreateItemStackFromMaterial()
+// 				ItemStack->Initialize(EMaterial::APPLE, 32);
+// 			}
+// 		}
+// 	}
+// }
+// #endif
+*/
 
 void UDInventoryComponent::InitializeItemStackWithMaterials()
 {
 	for (int32 Index = 0; Index < PreloadMaterials.Num(); ++Index)
+
 	{
-		UItemStack* ItemStack = NewObject<UItemStack>(this, UItemStack::StaticClass())->Initialize(
-			PreloadMaterials[Index].Material, PreloadMaterials[Index].Amount);
-		//Inventory.Add(ItemStack);
+		UItemStack* ItemStack = UItemStack::CreateItemStackFromMaterial(this, PreloadMaterials[Index].Material,
+		                                                                PreloadMaterials[Index].Amount);
 		Inventory[Index] = ItemStack;
-		//Inventory.Insert(ItemStack, Index);
 	}
 }
 
-#endif
+
 UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
 {
 	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"),
@@ -389,6 +390,7 @@ void UDInventoryComponent::BeginPlay()
 			Items->ItemMeta->UpdateRender(GetWorld());
 		}
 	}
+	
 }
 
 /*

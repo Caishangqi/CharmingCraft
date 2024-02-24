@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Item.h"
+#include "../Core/Item/Meta/ItemMeta.h"
 #include "Cobalt.generated.h"
 
 /**
  * 
  */
+class UItemMeta;
+
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UCobalt : public UItem
 {

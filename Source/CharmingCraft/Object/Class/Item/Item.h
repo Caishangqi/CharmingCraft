@@ -3,12 +3,14 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Item/Enum/EItemType.h"
+#include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "Item.generated.h"
 
 /**
  * 
  */
 class UItemStack;
+class UItemMeta;
 
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UItem : public UObject
@@ -31,10 +33,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	EItemType ItemType;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
+	EMaterial Material;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
+	TSubclassOf<UItemMeta> ItemMetaClass;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Description")
 	FText DescribeText;
 
 public: // Methods
+
+	UItem();
 	UFUNCTION(BlueprintCallable)
 	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity);
 	UFUNCTION(BlueprintCallable)

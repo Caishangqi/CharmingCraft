@@ -6,13 +6,15 @@
 #include "DCharacter.h"
 #include "../Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
-#include "CharmingCraft/Interface/Meta/WeaponMeta.h"
+#include "CharmingCraft/Interface/Meta/character/HandMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 
 UHand::UHand()
 {
 	DisplayName = FText::FromString("Hand");
 	ItemType = EItemType::EQUIPMENT;
+	Material = EMaterial::HAND;
+	ItemMetaClass = UHandMeta::StaticClass();
 	MaxStackSize = 1;
 }
 

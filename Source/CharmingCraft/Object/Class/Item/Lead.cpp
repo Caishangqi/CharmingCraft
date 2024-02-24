@@ -2,12 +2,16 @@
 
 
 #include "Lead.h"
+#include "../Core/Item/Meta/ItemMeta.h"
+#include "AppleItem.h"
 
 ULead::ULead()
 {
 	DisplayName = FText::FromString("Lead");
 	MaxStackSize = 64;
 	ItemType = EItemType::MATERIAL;
+	Material = EMaterial::LEAD;
+	ItemMetaClass = UItemMeta::StaticClass();
 	DescribeText = FText::FromString("It is a heavy metal that is denser than most common materials.");
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/lead_ingot.lead_ingot'"));

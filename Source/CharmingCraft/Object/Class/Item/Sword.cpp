@@ -5,6 +5,7 @@
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
+#include "CharmingCraft/Interface/Meta/model/SwordMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "Components/ArrowComponent.h"
 
@@ -15,6 +16,8 @@ USword::USword()
 	DisplayName = FText::FromString("Sword");
 	MaxStackSize = 1;
 	ItemType = EItemType::EQUIPMENT;
+	Material = EMaterial::SWORD;
+	ItemMetaClass = USwordMeta::StaticClass();
 	DescribeText = FText::FromString("A sword is an edged, bladed weapon intended for manual cutting or thrusting.");
 }
 

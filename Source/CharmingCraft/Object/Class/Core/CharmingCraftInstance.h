@@ -39,7 +39,8 @@ public:
 	UDataTable* HiltBasicMaterial;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
 	UDataTable* PommelDecorativeMaterial;
-
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
+	UDataTable* RegisteredItems;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
 	TObjectPtr<ADCharacter> PlayerCharacter;
 

@@ -65,6 +65,13 @@ UCharmingCraftInstance::UCharmingCraftInstance()
 	{
 		PommelDecorativeMaterial = PommelDecorativeMaterialFinder.Object;
 	}
+	static ConstructorHelpers::FObjectFinder<UDataTable> RegisteredItemsFinder(
+		TEXT(
+			"DataTable'/Game/CharmingCraft/Objects/DataTable/MaterialMetaMapper.MaterialMetaMapper'"));
+	if (PommelDecorativeMaterialFinder.Succeeded())
+	{
+		RegisteredItems = RegisteredItemsFinder.Object;
+	}
 }
 
 void UCharmingCraftInstance::Init()

@@ -8,7 +8,10 @@ UCobalt::UCobalt()
 	DisplayName = FText::FromString("Cobalt");
 	MaxStackSize = 64;
 	ItemType = EItemType::MATERIAL;
-	DescribeText = FText::FromString("Cobalt is a lustrous very hard silvery metal belonging to a group called the \"transition metals\".");
+	Material = EMaterial::COBALT;
+	ItemMetaClass = UItemMeta::StaticClass();
+	DescribeText = FText::FromString(
+		"Cobalt is a lustrous very hard silvery metal belonging to a group called the \"transition metals\".");
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/cobalt_ingot.cobalt_ingot'"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(

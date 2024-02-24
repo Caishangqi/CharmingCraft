@@ -8,8 +8,12 @@
 #include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
 #include "WidgetHolder.generated.h"
 
-/**
- * 
+/*!
+ * @author Shangqi Cai
+ * WidgetHolder is subclass of UUserWidget, mainly handle the max amount widget can
+ * appear on the screen, WidgetHolder can be control by event in UserWidgetEventHandler
+ * For example, if you want to player click move event destroy all WidgetHolder who's
+ * creator is "craft-table" you can set Creator "craft-table" and bind new event on UserWidgetEventHandler
  */
 UCLASS()
 class CHARMINGCRAFT_API UWidgetHolder : public UUserWidget, public ICommonUI
@@ -28,7 +32,7 @@ public:
 	 */
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UObject> Creator;
-	
+
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
 
@@ -41,12 +45,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	UUserWidgetEventHandler* GetWidgetHolder();
-	
+
 	UFUNCTION(BlueprintCallable)
-	UObject * GetCreator();
-	
+	UObject* GetCreator();
+
 	virtual bool RemoveWidget_Implementation() override;
-	
+
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
 };

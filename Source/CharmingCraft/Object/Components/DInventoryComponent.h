@@ -67,7 +67,7 @@ public:
 	static FVector RandomUnitVectorInConeInDegrees(const FVector& ConeDir, float ConeHalfAngleInDegrees);
 
 	/* Editor Only */
-	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+	// virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PreloadMaterials")
 	TArray<FItemStackData> PreloadMaterials;
 	void InitializeItemStackWithMaterials();

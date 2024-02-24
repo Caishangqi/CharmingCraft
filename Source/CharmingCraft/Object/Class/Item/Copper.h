@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Item.h"
+#include "../Core/Item/Meta/ItemMeta.h"
 #include "Copper.generated.h"
 
 /**

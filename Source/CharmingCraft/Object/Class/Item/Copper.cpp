@@ -9,6 +9,8 @@ UCopper::UCopper()
 	DisplayName = FText::FromString("Copper");
 	MaxStackSize = 64;
 	ItemType = EItemType::MATERIAL;
+	Material = EMaterial::COPPER;
+	ItemMetaClass = UItemMeta::StaticClass();
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/copper_ingot.copper_ingot'"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(
