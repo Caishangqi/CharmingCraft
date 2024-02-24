@@ -25,6 +25,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerClickMoveDelegate, ACharac
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDetailDisplayDelegate, UItemStack*, ItemToDisplay,
                                              UObject *, Creator);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator,
+                                             UUserWidget *, TargetWidget);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerLeaveDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
@@ -46,6 +49,7 @@ public:
 	FOnPlayerSaveDelegate OnPlayerSave;
 	// InGame
 	FOnPlayerOpenInventoryDelegate OnPlayerOpenInventory;
+	FOnCloseWidgetDelegate OnCloseWidget;
 	FOnPlayerOpenContainerDelegate OnPlayerOpenContainer;
 	FOnPlayerClickMoveDelegate OnPlayerClickMove;
 
@@ -67,4 +71,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
+	UFUNCTION(BlueprintCallable)
+	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
 };

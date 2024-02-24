@@ -7,7 +7,7 @@ UAppleItem::UAppleItem()
 {
 	// 设置苹果的默认属性
 	DisplayName = FText::FromString("Apple");
-	MaxStackSize = 64;
+	DescribeText = FText::FromString("Apples are a good source of nutrients, including fiber, vitamin C");
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/apple.apple'"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(

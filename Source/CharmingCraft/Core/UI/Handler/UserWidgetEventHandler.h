@@ -38,5 +38,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnItemDetailDisplay(UItemStack* ItemToDisplay, UObject* Creator);
+	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+	
 };

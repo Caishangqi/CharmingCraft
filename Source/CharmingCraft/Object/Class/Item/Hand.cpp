@@ -12,6 +12,7 @@
 UHand::UHand()
 {
 	DisplayName = FText::FromString("Hand");
+	ItemType = EItemType::EQUIPMENT;
 	MaxStackSize = 1;
 }
 

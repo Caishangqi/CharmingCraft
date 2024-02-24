@@ -2,6 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Item/Enum/EItemType.h"
 #include "Item.generated.h"
 
 /**
@@ -26,6 +27,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UStaticMesh* StaticMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
+	EItemType ItemType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Description")
+	FText DescribeText;
 
 public: // Methods
 	UFUNCTION(BlueprintCallable)

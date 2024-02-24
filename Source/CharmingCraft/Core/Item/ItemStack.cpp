@@ -48,6 +48,7 @@ bool UItemStack::SynchronizeData()
 			this->ItemMeta = NewObject<UItemMeta>(this, RowData->ItemMeta, FName(RowData->ItemMeta->GetName()));
 			// 基于类引用创建对应类型的ItemMeta
 			this->ItemClass = RowData->ItemClass;
+			this->ItemMeta->DisplayName = ItemClass.GetDefaultObject()->DisplayName.ToString();
 			return true;
 		}
 	}

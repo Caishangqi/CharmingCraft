@@ -12,17 +12,17 @@ struct FDMaterial : public FTableRowBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere,
-		meta=(DisplayName="Material", MakeStructureDefaultValue="None"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Material", MakeStructureDefaultValue="None"))
 	EMaterial Material;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere,
-		meta=(DisplayName="ItemMeta", MakeStructureDefaultValue="None"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="ItemType", MakeStructureDefaultValue="None"))
+	EItemType ItemType;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="ItemMeta", MakeStructureDefaultValue="None"))
 	TSubclassOf<UItemMeta> ItemMeta;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="Color", MakeStructureDefaultValue= NULL))
 	FColor Color;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere,
-		meta=(DisplayName="ItemClass", MakeStructureDefaultValue="None"))
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(DisplayName="ItemClass", MakeStructureDefaultValue="None"))
 	TSubclassOf<UItem> ItemClass;
 };

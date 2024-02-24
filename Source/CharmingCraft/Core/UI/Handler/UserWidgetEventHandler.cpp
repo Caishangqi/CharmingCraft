@@ -17,12 +17,22 @@ void UUserWidgetEventHandler::NativeConstruct()
 	GamePlayLogicManager->OnPlayerOpenInventory.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenInventoryEvent);
 	GamePlayLogicManager->OnPlayerOpenContainer.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenContainerEvent);
 	GamePlayLogicManager->OnPlayerClickMove.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerClickMoveEvent);
-	GamePlayLogicManager->OnItemDetailDisplay.AddDynamic(this, &UUserWidgetEventHandler::OnItemDetailDisplay);
+	GamePlayLogicManager->OnItemDetailDisplay.AddDynamic(this, &UUserWidgetEventHandler::OnItemDetailDisplayEvent);
+	GamePlayLogicManager->OnCloseWidget.AddDynamic(this, &UUserWidgetEventHandler::OnCloseWidgetEvent);
 
 	GameInstance->UserWidgetEventHandler = this;
 }
 
-void UUserWidgetEventHandler::OnItemDetailDisplay_Implementation(UItemStack* ItemToDisplay, UObject* Creator)
+void UUserWidgetEventHandler::OnCloseWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)
+{
+	UE_LOG(LogChamingCraftWidgetHandler, Display,
+	       TEXT("[❕] OnCloseWidgetEvent trigger by: %s Target Widget: %s"),
+	       *Instigator->GetName(), *TargetWidget->GetName());
+	TargetWidget->RemoveFromParent();
+	LoadedUserWidget.Remove(TargetWidget);
+}
+
+void UUserWidgetEventHandler::OnItemDetailDisplayEvent_Implementation(UItemStack* ItemToDisplay, UObject* Creator)
 {
 	UE_LOG(LogChamingCraftWidgetHandler, Display,
 	       TEXT("[❕] OnItemDetailDisplayEvent trigger by: %s Target Item: %s"),

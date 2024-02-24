@@ -14,6 +14,8 @@ USword::USword()
 	// 设置苹果的默认属性
 	DisplayName = FText::FromString("Sword");
 	MaxStackSize = 1;
+	ItemType = EItemType::EQUIPMENT;
+	DescribeText = FText::FromString("A sword is an edged, bladed weapon intended for manual cutting or thrusting.");
 }
 
 

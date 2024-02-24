@@ -8,6 +8,7 @@ UCopper::UCopper()
 	// 设置苹果的默认属性
 	DisplayName = FText::FromString("Copper");
 	MaxStackSize = 64;
+	ItemType = EItemType::MATERIAL;
 	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
 		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/copper_ingot.copper_ingot'"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(

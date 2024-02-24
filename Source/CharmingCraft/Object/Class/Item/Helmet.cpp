@@ -8,6 +8,7 @@ UHelmet::UHelmet()
 	// 设置苹果的默认属性
 	DisplayName = FText::FromString("Helmet");
 	MaxStackSize = 1;
+	ItemType = EItemType::EQUIPMENT;
 }
 
 void UHelmet::OnEquipped()

@@ -100,3 +100,8 @@ void UGamePlayLogicManager::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, 
 {
 	OnItemDetailDisplay.Broadcast(ItemToDisplay, Creator);
 }
+
+void UGamePlayLogicManager::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget)
+{
+	OnCloseWidget.Broadcast(Instigator, TargetWidget);
+}
