@@ -5,10 +5,10 @@
 #include "CoreMinimal.h"
 #include "DCharacter.h"
 #include "Blueprint/UserWidget.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 #include "UserWidgetEventHandler.generated.h"
 
-class UGamePlayLogicManager;
+class UGameEventHandler;
 class UCharmingCraftInstance;
 /**
  * 
@@ -23,7 +23,7 @@ public:
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UGamePlayLogicManager> GamePlayLogicManager;
+	TObjectPtr<UGameEventHandler> GamePlayLogicManager;
 
 	virtual void NativeConstruct() override;
 
@@ -34,7 +34,7 @@ public:
 	void OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UDInventoryComponent* TargetContainer, UObject* Creator);
+	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

@@ -6,7 +6,7 @@
 #include "Container.h"
 #include "Chest.generated.h"
 
-class UDInventoryComponent;
+class UInventoryComponent;
 /**
  * TODO: Consider rewrite the Interface and Base Class of Both
  * WorkBench and Container

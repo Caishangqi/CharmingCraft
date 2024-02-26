@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "DInventoryComponent.generated.h"
+#include "InventoryComponent.generated.h"
 
 
 struct FItemStackData;
@@ -16,8 +16,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdateIndex, int32, Index);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UDInventoryComponent : public UActorComponent
+UCLASS(Blueprintable,ClassGroup=(Inventory, Common),ShowCategories=(Mobility), editinlinenew, meta=(BlueprintSpawnableComponent))
+class CHARMINGCRAFT_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -35,7 +35,7 @@ class CHARMINGCRAFT_API UDInventoryComponent : public UActorComponent
 
 public:
 	// Sets default values for this component's properties
-	UDInventoryComponent();
+	UInventoryComponent();
 
 	/* 将物品添加到物品栏函数 ItemStack 版本 */
 	virtual FReturnSuccessRemainQuantity AddToInventory(UItemStack* ItemStack);
@@ -56,7 +56,7 @@ public:
 	virtual bool CreateNewStack(UItemStack* ItemStack, int32 Quantity);
 
 	UFUNCTION(BlueprintCallable)
-	virtual void TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory, int32 DestinationIndex);
+	virtual void TransferSlots(int32 SourceIndex, UInventoryComponent* SourceInventory, int32 DestinationIndex);
 	UFUNCTION(BlueprintCallable)
 	virtual void Drop(UItemStack* ItemStack, int32 Quantity);
 
@@ -113,4 +113,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void OnComponentCreated() override;
 };

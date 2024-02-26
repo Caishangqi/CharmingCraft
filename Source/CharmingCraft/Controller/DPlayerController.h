@@ -8,7 +8,7 @@
 
 class ADPlayerAIController;
 class UCharmingCraftInstance;
-class UGamePlayLogicManager;
+class UGameEventHandler;
 /**
  * 
  */
@@ -23,7 +23,7 @@ public:
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UGamePlayLogicManager> GamePlayLogicManager;
+	TObjectPtr<UGameEventHandler> GamePlayLogicManager;
 
 	virtual void BeginPlay() override;
 };

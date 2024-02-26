@@ -1,17 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GamePlayLogicManager.h"
+#include "GameEventHandler.h"
 
 #include "EngineUtils.h"
-#include "GameSaveManager.h"
+#include "../Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "GameFramework/PlayerStart.h"
-#include "Lib/CharacterSaveLib.h"
+#include "../Core/Save/Lib/CharacterSaveLib.h"
 
-UGamePlayLogicManager::UGamePlayLogicManager()
+UGameEventHandler::UGameEventHandler()
 {
+	// /Script/Engine.Blueprint'/Game/CharmingCraft/PlayerCharacter.PlayerCharacter'
 	///Script/Engine.Blueprint'/Game/CharmingCraft/PlayerCharacter.PlayerCharacter'
 	static ConstructorHelpers::FClassFinder<ADCharacter> BlueprintClass(
 		TEXT("/Game/CharmingCraft/PlayerCharacter.PlayerCharacter"));
@@ -22,10 +23,10 @@ UGamePlayLogicManager::UGamePlayLogicManager()
 	}
 }
 
-void UGamePlayLogicManager::OnPlayerJoinEvent()
+void UGameEventHandler::OnPlayerJoinEvent()
 {
 	UE_LOG(LogChamingCraftGameLogic, Display,
-	       TEXT("[📍]  Event trigger at UGamePlayLogicManager::OnPlayerJoinBegin()"));
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnPlayerJoinBegin()"));
 
 	APlayerStart* DesiredPlayerStart = nullptr;
 
@@ -75,33 +76,33 @@ void UGamePlayLogicManager::OnPlayerJoinEvent()
 	CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter->SetActorHiddenInGame(false);
 }
 
-void UGamePlayLogicManager::OnPlayerLeaveEvent()
+void UGameEventHandler::OnPlayerLeaveEvent()
 {
 	OnPlayerSave.Broadcast();
 }
 
-void UGamePlayLogicManager::OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator)
+void UGameEventHandler::OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator)
 {
 	OnPlayerOpenInventory.Broadcast(Instigator, Creator);
 }
 
-void UGamePlayLogicManager::OnPlayerOpenContainerEvent(ACharacter* Instigator, UDInventoryComponent* TargetContainer,
+void UGameEventHandler::OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer,
                                                        UObject* Creator)
 {
 	OnPlayerOpenContainer.Broadcast(Instigator, TargetContainer, Creator);
 }
 
-void UGamePlayLogicManager::OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation)
+void UGameEventHandler::OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation)
 {
 	OnPlayerClickMove.Broadcast(Instigator, TargetLocation);
 }
 
-void UGamePlayLogicManager::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
+void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
 {
 	OnItemDetailDisplay.Broadcast(ItemToDisplay, Creator);
 }
 
-void UGamePlayLogicManager::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget)
+void UGameEventHandler::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget)
 {
 	OnCloseWidget.Broadcast(Instigator, TargetWidget);
 }

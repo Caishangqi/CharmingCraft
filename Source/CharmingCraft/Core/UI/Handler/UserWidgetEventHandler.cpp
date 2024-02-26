@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
 void UUserWidgetEventHandler::NativeConstruct()
@@ -34,9 +34,12 @@ void UUserWidgetEventHandler::OnCloseWidgetEvent_Implementation(UObject* Instiga
 
 void UUserWidgetEventHandler::OnItemDetailDisplayEvent_Implementation(UItemStack* ItemToDisplay, UObject* Creator)
 {
-	UE_LOG(LogChamingCraftWidgetHandler, Display,
-	       TEXT("[❕] OnItemDetailDisplayEvent trigger by: %s Target Item: %s"),
-	       *Creator->GetName(), *ItemToDisplay->ItemMeta->DisplayName);
+	if (ItemToDisplay)
+	{
+		UE_LOG(LogChamingCraftWidgetHandler, Display,
+		       TEXT("[❕] OnItemDetailDisplayEvent trigger by: %s Target Item: %s"),
+		       *Creator->GetName(), *ItemToDisplay->ItemMeta->DisplayName);
+	}
 }
 
 void UUserWidgetEventHandler::OnPlayerClickMoveEvent_Implementation(ACharacter* Instigator, FVector TargetLocation)
@@ -47,12 +50,15 @@ void UUserWidgetEventHandler::OnPlayerClickMoveEvent_Implementation(ACharacter* 
 }
 
 void UUserWidgetEventHandler::OnPlayerOpenContainerEvent_Implementation(ACharacter* Instigator,
-                                                                        UDInventoryComponent* TargetContainer,
+                                                                        UInventoryComponent* TargetContainer,
                                                                         UObject* Creator)
 {
-	UE_LOG(LogChamingCraftWidgetHandler, Display,
-	       TEXT("[🔍] OnPlayerOpenContainerEvent trigger by: %s Target Container: %s"),
-	       *Instigator->GetName(), *TargetContainer->GetName());
+	if (Instigator && TargetContainer)
+	{
+		UE_LOG(LogChamingCraftWidgetHandler, Display,
+		       TEXT("[🔍] OnPlayerOpenContainerEvent trigger by: %s Target Container: %s"),
+		       *Instigator->GetName(), *TargetContainer->GetName());
+	}
 }
 
 void UUserWidgetEventHandler::OnPlayerOpenInventoryEvent_Implementation(ACharacter* Instigator, UObject* Creator)

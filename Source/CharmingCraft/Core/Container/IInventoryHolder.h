@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 #include "IInventoryHolder.generated.h"
 
 // This class does not need to be modified.
@@ -24,8 +24,8 @@ class CHARMINGCRAFT_API IInventoryHolder
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	UDInventoryComponent* getInventory();
+	UInventoryComponent* getInventory();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	UDInventoryComponent* getSnapshotInventory();
+	UInventoryComponent* getSnapshotInventory();
 };

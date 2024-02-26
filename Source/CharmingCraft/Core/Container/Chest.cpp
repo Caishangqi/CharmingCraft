@@ -3,9 +3,9 @@
 
 #include "Chest.h"
 
-#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 
 void AChest::Interact_Implementation(APawn* InstigatorPawn)
 {
@@ -18,14 +18,12 @@ void AChest::Interact_Implementation(APawn* InstigatorPawn)
 	LidMesh->SetRelativeRotation(FRotator(0, 0, TargetPitch));
 	GameInstance->GamePlayLogicManager->OnPlayerOpenContainerEvent(
 		Cast<ACharacter>(InstigatorPawn), InventoryComponent, InstigatorPawn);
-	//GameInstance->GamePlayLogicManager->OnPlayerOpenInventoryEvent(Cast<ACharacter>(InstigatorPawn));
 }
 
 AChest::AChest()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
 	RootComponent = BaseMesh;
 

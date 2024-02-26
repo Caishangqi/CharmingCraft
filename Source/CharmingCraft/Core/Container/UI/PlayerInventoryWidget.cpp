@@ -6,7 +6,7 @@
 #include "DCharacter.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 void UPlayerInventoryWidget::NativeConstruct()

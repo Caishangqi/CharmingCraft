@@ -9,8 +9,7 @@
 
 
 class UBuffHandlerComponent;
-class UEquipmentManagerComponent;
-class UDInventoryComponent;
+class UInventoryComponent;
 class UPostProcessComponent;
 class ADPlayerAIController;
 //便于编译效率
@@ -111,12 +110,9 @@ public:
 	//UPostProcessComponent* PostProcessComponent;
 
 	/* 物品栏 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
-	TObjectPtr<UDInventoryComponent> InventoryComponent;
+	UPROPERTY(BlueprintReadOnly,  EditAnywhere, Category="Components")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 
-	/* 装备管理器 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Components")
-	UEquipmentManagerComponent* EquipmentManagerComponent;
 
 	/* 槽位管理器 (可以考虑)*/
 	// TODO 添加槽位管理组件，这些组件包括格雷StaticMeshComponent 对应的骨骼Socket

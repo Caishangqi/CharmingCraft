@@ -11,6 +11,6 @@ void UContainerWidget::NativeConstruct()
 	// TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwningLocalPlayer());
 	// if (Player)
 	// {
-	// 	ContainInventory = Player->InventoryComponent;
+	// 	ContainInventory = Player->UInventoryComponent;
 	// }
 }

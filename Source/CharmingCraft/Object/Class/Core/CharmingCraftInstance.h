@@ -11,7 +11,7 @@
 
 
 class UPlayerModeManager;
-class UGamePlayLogicManager;
+class UGameEventHandler;
 class UWorldManager;
 /**
  * 
@@ -55,7 +55,7 @@ public:
 	UWorldManager* GetWorldManager() const { return WorldManager; }
 
 	UFUNCTION(BlueprintCallable, Category = "GamePlayLogic")
-	UGamePlayLogicManager* GetGamePlayLogicManager() const { return GamePlayLogicManager; }
+	UGameEventHandler* GetGamePlayLogicManager() const { return GamePlayLogicManager; }
 
 	UFUNCTION(BlueprintCallable, Category = "RuntimeGameData")
 	URuntimeGameData* GetRuntimeGameData() const { return RuntimeGameData; }
@@ -78,7 +78,7 @@ public:
 	UWorldManager* WorldManager;
 
 	UPROPERTY()
-	UGamePlayLogicManager* GamePlayLogicManager;
+	UGameEventHandler* GamePlayLogicManager;
 
 	UPROPERTY()
 	URuntimeGameData* RuntimeGameData;

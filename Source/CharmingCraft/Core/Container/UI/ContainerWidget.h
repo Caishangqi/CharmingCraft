@@ -6,7 +6,7 @@
 #include "CharmingCraft/Core/UI/Holder/WidgetHolder.h"
 #include "ContainerWidget.generated.h"
 
-class UDInventoryComponent;
+class UInventoryComponent;
 /**
  * 
  */
@@ -17,7 +17,7 @@ class CHARMINGCRAFT_API UContainerWidget : public UWidgetHolder
 
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDInventoryComponent> ContainInventory;
+	TObjectPtr<UInventoryComponent> ContainInventory;
 
 	virtual void NativeConstruct() override;
 };

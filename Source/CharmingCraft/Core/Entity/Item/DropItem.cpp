@@ -3,8 +3,8 @@
 #include "DropItem.h"
 #include "DCharacter.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 

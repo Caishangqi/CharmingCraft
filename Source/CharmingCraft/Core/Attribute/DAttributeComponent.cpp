@@ -4,7 +4,7 @@
 #include "DAttributeComponent.h"
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"

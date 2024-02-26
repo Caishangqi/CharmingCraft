@@ -11,7 +11,7 @@
  * TODO: Consider rewrite the Interface and Base Class of Both
  * WorkBench and Container
  */
-class UDInventoryComponent;
+class UInventoryComponent;
 
 UCLASS()
 class CHARMINGCRAFT_API AContainer : public AInteractObject, public IInventoryHolder
@@ -26,8 +26,8 @@ public:
 
 	AContainer();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-	TObjectPtr<UDInventoryComponent> InventoryComponent;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Inventory")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 
 protected:
 	/* 方法 */

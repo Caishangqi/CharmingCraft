@@ -1,48 +1,25 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DInventoryComponent.h"
+#include "InventoryComponent.h"
 #include "../Core/Item/ItemStack.h"
 #include "../Core/Item/Data/FItemStack.h"
 #include "CharmingCraft/Core/Entity/Item/DropItem.h"
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
-#include "EquipModel/EquipmentManagerComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
-UDInventoryComponent::UDInventoryComponent()
+UInventoryComponent::UInventoryComponent(): InventorySize(0), MaterialData(nullptr), RFILocalQuantity(0),
+                                            LocalItemStack(nullptr)
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
 	// ...
 }
 
-/*
-// #if WITH_EDITOR
-// void UDInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-// {
-// 	Super::PostEditChangeProperty(PropertyChangedEvent);
-// 	// 检查更改的属性是否是我们关心的属性
-// 	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == GET_MEMBER_NAME_CHECKED(
-// 		UDInventoryComponent, Inventory))
-// 	{
-// 		for (UItemStack* & ItemStack : Inventory)
-// 		{
-// 			// 如果元素是nullptr，为其分配默认的UItem对象
-// 			if (!ItemStack)
-// 			{
-// 				ItemStack = UItemStack::CreateItemStackFromMaterial()
-// 				ItemStack->Initialize(EMaterial::APPLE, 32);
-// 			}
-// 		}
-// 	}
-// }
-// #endif
-*/
-
-void UDInventoryComponent::InitializeItemStackWithMaterials()
+void UInventoryComponent::InitializeItemStackWithMaterials()
 {
 	for (int32 Index = 0; Index < PreloadMaterials.Num(); ++Index)
 
@@ -54,14 +31,14 @@ void UDInventoryComponent::InitializeItemStackWithMaterials()
 }
 
 
-UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToInventory(UItemStack* ItemStack)
+UInventoryComponent::FReturnSuccessRemainQuantity UInventoryComponent::AddToInventory(UItemStack* ItemStack)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory %s | %d"),
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::AddToInventory %s | %d"),
 	       *ItemStack->GetItemClass()->DisplayName.ToString(),
 	       ItemStack->Amount);
 	FReturnSuccessRemainQuantity Result;
 	int32 LocalQuantity = ItemStack->Amount;
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::AddToInventory LocalQuantity: %d bLocalHasFailed: %d"),
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::AddToInventory LocalQuantity: %d bLocalHasFailed: %d"),
 	       LocalQuantity,
 	       bLocalHasFailed);
 	while (LocalQuantity > 0 && !bLocalHasFailed)
@@ -102,7 +79,7 @@ UDInventoryComponent::FReturnSuccessRemainQuantity UDInventoryComponent::AddToIn
  * @param RemoveWholeStack 是否移除整组物品还只是一个
  * @param IsConsumed 是否是消耗物品
  */
-void UDInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
+void UInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed)
 {
 	LocalItemStack = Inventory[Index];
 	if (LocalItemStack->Amount == 1 || RemoveWholeStack)
@@ -131,7 +108,7 @@ void UDInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, b
 }
 
 
-int32 UDInventoryComponent::FindSlot(UItemStack* ItemStack)
+int32 UInventoryComponent::FindSlot(UItemStack* ItemStack)
 {
 	int32 SaveIndex = -1; // 默认-1
 	bool bCanStack = false; // 是否叠加
@@ -149,7 +126,7 @@ int32 UDInventoryComponent::FindSlot(UItemStack* ItemStack)
 			if (bIDEqual && bQuantityValid)
 			{
 				bLocalHasFailed = false;
-				UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot %d"), Index);
+				UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::FindSlot %d"), Index);
 				SaveIndex = Index; // 返回找到的Index
 				bCanStack = true; // 说明可以叠加, 设置 SaveIndex = Index
 			}
@@ -159,12 +136,12 @@ int32 UDInventoryComponent::FindSlot(UItemStack* ItemStack)
 			return SaveIndex;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::FindSlot =  FALSE"));
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::FindSlot =  FALSE"));
 	return -1; // 如果没有找到合适的Slot，返回-1或其他指示值
 }
 
 
-int32 UDInventoryComponent::GetMaxStackSize(UItemStack* ItemStack)
+int32 UInventoryComponent::GetMaxStackSize(UItemStack* ItemStack)
 {
 	if (MaterialData)
 	{
@@ -173,12 +150,12 @@ int32 UDInventoryComponent::GetMaxStackSize(UItemStack* ItemStack)
 	{
 		return ItemStack->GetItemClass()->MaxStackSize;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::GetMaxStackSize NO ITEM DATA FOUND"));
 	return -1;
 }
 
 /* 这个方法还是可以改进的 */
-void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, UItemStack* ItemStack)
+void UInventoryComponent::AddToStack(int32 Index, int32 Quantity, UItemStack* ItemStack)
 {
 	if (Inventory.IsValidIndex(Index))
 	{
@@ -195,7 +172,7 @@ void UDInventoryComponent::AddToStack(int32 Index, int32 Quantity, UItemStack* I
 	}
 }
 
-UDInventoryComponent::FReturnValue UDInventoryComponent::IsEmptySlotAvailable()
+UInventoryComponent::FReturnValue UInventoryComponent::IsEmptySlotAvailable()
 {
 	FReturnValue Result;
 	for (int32 Index = 0; Index < Inventory.Num(); ++Index)
@@ -212,7 +189,7 @@ UDInventoryComponent::FReturnValue UDInventoryComponent::IsEmptySlotAvailable()
 	return Result;
 }
 
-bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
+bool UInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 {
 	/* Fix 2024/1/13 Need initialize the ItemStack with amount 1*/
 	ItemStack->Amount = 1;
@@ -224,8 +201,8 @@ bool UDInventoryComponent::CreateNewStack(UItemStack* ItemStack, int32 Quantity)
 	return false;
 }
 
-void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent* SourceInventory,
-                                         int32 DestinationIndex)
+void UInventoryComponent::TransferSlots(int32 SourceIndex, UInventoryComponent* SourceInventory,
+                                        int32 DestinationIndex)
 {
 	LocalItemStack = SourceInventory->Inventory[SourceIndex];
 	if (DestinationIndex < 0)
@@ -241,7 +218,7 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 			int32 MaxStackSize = GetMaxStackSize(Inventory[DestinationIndex]);
 			UE_LOG(LogTemp, Warning,
 			       TEXT(
-				       "UDInventoryComponent::TransferSlots -> LocalItemStack: %d Inventory[DestinationIndex]: %d MaxStackSize: %d"
+				       "UInventoryComponent::TransferSlots -> LocalItemStack: %d Inventory[DestinationIndex]: %d MaxStackSize: %d"
 			       ),
 			       LocalItemStack->Amount, Inventory[DestinationIndex]->Amount, MaxStackSize);
 			if (LocalItemStack->Amount + Inventory[DestinationIndex]->Amount > MaxStackSize)
@@ -271,17 +248,12 @@ void UDInventoryComponent::TransferSlots(int32 SourceIndex, UDInventoryComponent
 			SourceInventory->OnInventoryUpdate.Broadcast();
 		}
 	}
-	/* Event BroadCast for Equipment Inventory*/
-	if (SourceInventory->IsA(UEquipmentManagerComponent::StaticClass())) // Inside this Inventory Use OnInventoryUpdate
-	{
-		OnInventoryUpdateIndex.Broadcast(SourceIndex);
-	}
 }
 
 
-void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
+void UInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::Drop -0"));
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::Drop -0"));
 	FVector Location = GetDropLocation();
 	FTransform SpawnTransform(Location);
 
@@ -301,7 +273,7 @@ void UDInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 	}
 }
 
-FVector UDInventoryComponent::GetDropLocation()
+FVector UInventoryComponent::GetDropLocation()
 {
 	FHitResult Hit;
 	FCollisionQueryParams QueryParams;
@@ -314,9 +286,9 @@ FVector UDInventoryComponent::GetDropLocation()
 }
 
 
-void UDInventoryComponent::PrintDebugMessage()
+void UInventoryComponent::PrintDebugMessage()
 {
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::PrintDebugMessage"));
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::PrintDebugMessage"));
 	UE_LOG(LogTemp, Warning, TEXT("Content Size is %d"), Inventory.Num());
 	for (int32 Index = 0; Index < Inventory.Num(); ++Index)
 	{
@@ -335,7 +307,7 @@ void UDInventoryComponent::PrintDebugMessage()
 /*
  * 随机圆锥方向向量生成
  */
-FVector UDInventoryComponent::RandomUnitVectorInConeInDegrees(const FVector& ConeDir, float ConeHalfAngleInDegrees)
+FVector UInventoryComponent::RandomUnitVectorInConeInDegrees(const FVector& ConeDir, float ConeHalfAngleInDegrees)
 {
 	// 随机生成一个角度和方位角
 	float RandAngle = FMath::RandRange(0.f, FMath::DegreesToRadians(ConeHalfAngleInDegrees));
@@ -356,23 +328,23 @@ FVector UDInventoryComponent::RandomUnitVectorInConeInDegrees(const FVector& Con
 	return ResultVector;
 }
 
-void UDInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
+void UInventoryComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator)
 {
 	// 修复普通交互方块触发物品掉落类的逻辑 -> 只有时掉落物类型才执行物品交互
 	// 这里的判断符合逻辑应为InteractComponent触发了所有接触到的Actor实现的接口
 	if (TargetActor.Get() != nullptr && TargetActor->IsA(ADropItem::StaticClass()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInventoryComponent::OnItemInteract -Internal"));
+		UE_LOG(LogTemp, Warning, TEXT("Call Back from UInventoryComponent::OnItemInteract -Internal"));
 		IDItemInteractInterface::Execute_Interact(
 			TargetActor.Get(), Instigator);
 	}
 
 	// TODO 更好的解决方案是把判断抽象出来，Handler基于接触Actor类型再分配调用
-	UE_LOG(LogTemp, Warning, TEXT("Call Back from UDInventoryComponent::OnItemInteract"));
+	UE_LOG(LogTemp, Warning, TEXT("Call Back from UInventoryComponent::OnItemInteract"));
 }
 
 // Called when the game starts
-void UDInventoryComponent::BeginPlay()
+void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -390,25 +362,24 @@ void UDInventoryComponent::BeginPlay()
 			Items->ItemMeta->UpdateRender(GetWorld());
 		}
 	}
-	
 }
 
 /*
-* 很好，你已经找到了解决方法。从你提供的代码中，我可以看出，你首先确保UDInventoryComponent::PostInitProperties()被调
-* 用来初始化Inventory数组，然后再在UDInventoryComponent::OnRegister()中添加物品。这样的调用顺序使得你能够保证在添加物品之前，Inventory数组已经被正确地初始化。
+* 很好，你已经找到了解决方法。从你提供的代码中，我可以看出，你首先确保UInventoryComponent::PostInitProperties()被调
+* 用来初始化Inventory数组，然后再在UInventoryComponent::OnRegister()中添加物品。这样的调用顺序使得你能够保证在添加物品之前，Inventory数组已经被正确地初始化。
 * 在UE4中，生命周期的理解是很关键的。特定的函数会在特定的时间点被调用，这会影响到对象的初始化和其他逻辑。例如：
 * PostInitProperties()：这个函数在属性被初始化之后调用。这是初始化默认属性值的好地方。
 * OnRegister()：当一个对象被注册到游戏的逻辑中时，这个函数被调用。这通常发生在物件已经创建和初始化，但在它开始交互或更新之前。
 * 确保正确地初始化和设置你的数据是非常重要的，这样可以防止未定义的行为和潜在的崩溃。
 */
 
-void UDInventoryComponent::OnRegister()
+void UInventoryComponent::OnRegister()
 {
 	Super::OnRegister();
-	UE_LOG(LogTemp, Warning, TEXT("UDInventoryComponent::OnRegister()"));
+	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::OnRegister()"));
 }
 
-void UDInventoryComponent::PostInitProperties()
+void UInventoryComponent::PostInitProperties()
 {
 	Super::PostInitProperties();
 	Inventory.SetNum(InventorySize);
@@ -416,10 +387,17 @@ void UDInventoryComponent::PostInitProperties()
 
 
 // Called every frame
-void UDInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                         FActorComponentTickFunction* ThisTickFunction)
+void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                        FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UInventoryComponent::OnComponentCreated()
+{
+	Super::OnComponentCreated();
+	UE_LOG(LogChamingCraftComponents, Warning, TEXT("UInventoryComponent::OnComponentCreated(),  Created By: %s"),
+	       *GetOwner()->GetName());
 }

@@ -11,7 +11,7 @@
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 
 
 // Sets default values for this component's properties

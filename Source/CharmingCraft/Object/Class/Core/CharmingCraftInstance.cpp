@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Core/Save/GamePlayLogicManager.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
 #include "Engine/DataTable.h"
@@ -81,7 +81,7 @@ void UCharmingCraftInstance::Init()
 	WorldManager = NewObject<UWorldManager>(this, UWorldManager::StaticClass());
 	RuntimeGameData = NewObject<URuntimeGameData>(this, URuntimeGameData::StaticClass());
 
-	GamePlayLogicManager = NewObject<UGamePlayLogicManager>(this, UGamePlayLogicManager::StaticClass());
+	GamePlayLogicManager = NewObject<UGameEventHandler>(this, UGameEventHandler::StaticClass());
 	PlayerModeManager = NewObject<UPlayerModeManager>(this, UPlayerModeManager::StaticClass());
 
 	UE_LOG(LogChamingCraftSave, Display, TEXT("[!] UCharmingCraftInstance::Init()"));
@@ -90,5 +90,5 @@ void UCharmingCraftInstance::Init()
 void UCharmingCraftInstance::OnStart()
 {
 	Super::OnStart();
-	WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGamePlayLogicManager::OnPlayerJoinEvent);
+	WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGameEventHandler::OnPlayerJoinEvent);
 }

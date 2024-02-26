@@ -12,8 +12,7 @@
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Interact/DInteractionComponent.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
-#include "CharmingCraft/Object/Components/DInventoryComponent.h"
-#include "CharmingCraft/Object/Components/EquipModel/EquipmentManagerComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
 #include "Components/PostProcessComponent.h"
 // Sets default values
 ADCharacter::ADCharacter()
@@ -67,10 +66,7 @@ ADCharacter::ADCharacter()
 	//PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
 
 	/* 物品栏 */
-	InventoryComponent = CreateDefaultSubobject<UDInventoryComponent>("InventoryComponent");
-	/* 装备管理器 */
-	EquipmentManagerComponent = CreateDefaultSubobject<UEquipmentManagerComponent>("EquipmentManagerComponent")->
-		SetupDependency(InventoryComponent);
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory Component");
 }
 
 // Called when the game starts or when spawned
@@ -188,7 +184,7 @@ void ADCharacter::PrintDebugMessage()
 {
 	// /* 测试背包 */
 	// UE_LOG(LogTemp, Warning, TEXT("should print something"));
-	// InventoryComponent->PrintDebugMessage();
+	// UInventoryComponent->PrintDebugMessage();
 }
 
 void ADCharacter::SetCameraView()

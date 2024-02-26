@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Object/Components/DInventoryComponent.h"
+#include "../Core/Container/Inventory/InventoryComponent.h"
+#include "CharmingCraft/Core/Container/UI/PlayerInventoryWidget.h"
 
 #include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "WorkBenchComponent.generated.h"
@@ -14,7 +15,7 @@ class UEquipPartComponent;
  * 
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UWorkBenchComponent : public UDInventoryComponent
+class CHARMINGCRAFT_API UWorkBenchComponent : public UInventoryComponent
 {
 	GENERATED_BODY()
 
