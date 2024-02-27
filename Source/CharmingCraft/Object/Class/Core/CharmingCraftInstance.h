@@ -55,7 +55,7 @@ public:
 	UWorldManager* GetWorldManager() const { return WorldManager; }
 
 	UFUNCTION(BlueprintCallable, Category = "GamePlayLogic")
-	UGameEventHandler* GetGamePlayLogicManager() const { return GamePlayLogicManager; }
+	UGameEventHandler* GetGameEventHandler() const { return GamePlayLogicManager; }
 
 	UFUNCTION(BlueprintCallable, Category = "RuntimeGameData")
 	URuntimeGameData* GetRuntimeGameData() const { return RuntimeGameData; }

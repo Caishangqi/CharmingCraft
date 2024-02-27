@@ -9,6 +9,7 @@
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "GameFramework/PlayerStart.h"
 #include "../Core/Save/Lib/CharacterSaveLib.h"
+#include "CharmingCraft/Core/Item/ItemStack.h"
 
 UGameEventHandler::UGameEventHandler()
 {
@@ -25,7 +26,7 @@ UGameEventHandler::UGameEventHandler()
 
 void UGameEventHandler::OnPlayerJoinEvent()
 {
-	UE_LOG(LogChamingCraftGameLogic, Display,
+	UE_LOG(LogChamingCraftGameEvent, Display,
 	       TEXT("[📍]  Event trigger at UGameEventHandler::OnPlayerJoinBegin()"));
 
 	APlayerStart* DesiredPlayerStart = nullptr;
@@ -87,7 +88,7 @@ void UGameEventHandler::OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObje
 }
 
 void UGameEventHandler::OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer,
-                                                       UObject* Creator)
+                                                   UObject* Creator)
 {
 	OnPlayerOpenContainer.Broadcast(Instigator, TargetContainer, Creator);
 }
@@ -95,6 +96,28 @@ void UGameEventHandler::OnPlayerOpenContainerEvent(ACharacter* Instigator, UInve
 void UGameEventHandler::OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation)
 {
 	OnPlayerClickMove.Broadcast(Instigator, TargetLocation);
+}
+
+void UGameEventHandler::OnContainerItemTransferEvent(UObject* Instigator, UInventoryComponent* SourceContainer,
+                                                     int32 SourceIndex, UInventoryComponent* TargetContainer,
+                                                     int32 TargetIndex, UItemStack* ItemBeingTransfer)
+{
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnContainerItemTransferEvent()"));
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT(
+		       "		 [I] Instigator =			%s							owner = %s\n"
+		       "		 [S] SourceContainer =		%s			index = %d		owner = %s\n"
+		       "		 [T] TargetContainer =		%s			index = %d		owner = %s\n"
+		       "		 [C] ItemBeingTransfer =	%s"
+	       ),
+	       *Instigator->GetName(), *Cast<UActorComponent>(Instigator)->GetOwner()->GetName(),
+	       *SourceContainer->GetName(), SourceIndex, * SourceContainer->GetOwner()->GetName(),
+	       *TargetContainer->GetName(), TargetIndex, * TargetContainer->GetOwner()->GetName(),
+	       *ItemBeingTransfer->ItemMeta->DisplayName
+	);
+	OnContainerItemTransfer.Broadcast(Instigator, SourceContainer, SourceIndex, TargetContainer, TargetIndex,
+	                                  ItemBeingTransfer);
 }
 
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)

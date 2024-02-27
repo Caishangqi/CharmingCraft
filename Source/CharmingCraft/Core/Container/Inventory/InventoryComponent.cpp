@@ -4,9 +4,11 @@
 #include "InventoryComponent.h"
 #include "../Core/Item/ItemStack.h"
 #include "../Core/Item/Data/FItemStack.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Entity/Item/DropItem.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -248,6 +250,9 @@ void UInventoryComponent::TransferSlots(int32 SourceIndex, UInventoryComponent* 
 			SourceInventory->OnInventoryUpdate.Broadcast();
 		}
 	}
+
+	Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance())->GetGameEventHandler()->OnContainerItemTransferEvent(
+		SourceInventory, SourceInventory, SourceIndex, this, DestinationIndex, LocalItemStack);
 }
 
 

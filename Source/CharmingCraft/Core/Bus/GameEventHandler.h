@@ -28,6 +28,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDetailDisplayDelegate, UItem
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator,
                                              UUserWidget *, TargetWidget);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnContainerItemTransferDelegate, UObject*, Instigator,
+                                             UInventoryComponent*, SourceContainer, int32, SourceIndex,
+                                             UInventoryComponent*, TargetContainer, int32, TargetIndex, UItemStack *,
+                                             ItemBeingTransfer);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerLeaveDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
@@ -52,6 +57,8 @@ public:
 	FOnCloseWidgetDelegate OnCloseWidget;
 	FOnPlayerOpenContainerDelegate OnPlayerOpenContainer;
 	FOnPlayerClickMoveDelegate OnPlayerClickMove;
+	UPROPERTY(BlueprintAssignable)
+	FOnContainerItemTransferDelegate OnContainerItemTransfer;
 
 	FOnItemDetailDisplayDelegate OnItemDetailDisplay;
 
@@ -68,6 +75,10 @@ public:
 	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation);
+	UFUNCTION(BlueprintCallable)
+	void OnContainerItemTransferEvent(UObject* Instigator, UInventoryComponent* SourceContainer, int32 SourceIndex,
+	                                  UInventoryComponent* TargetContainer, int32 TargetIndex,
+	                                  UItemStack* ItemBeingTransfer);
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);

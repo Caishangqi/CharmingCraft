@@ -8,5 +8,5 @@ DEFINE_LOG_CATEGORY(LogChamingCraftCreature);
 DEFINE_LOG_CATEGORY(LogChamingCraftBuff);
 DEFINE_LOG_CATEGORY(LogChamingCraftSave);
 DEFINE_LOG_CATEGORY(LogChamingCraftSerilization);
-DEFINE_LOG_CATEGORY(LogChamingCraftGameLogic);
+DEFINE_LOG_CATEGORY(LogChamingCraftGameEvent);
 DEFINE_LOG_CATEGORY(LogChamingCraftWidgetHandler);

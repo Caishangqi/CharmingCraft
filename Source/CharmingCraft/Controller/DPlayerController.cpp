@@ -15,7 +15,7 @@ void ADPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	GameInstance = Cast<UCharmingCraftInstance>(GetGameInstance());
-	GamePlayLogicManager = GameInstance->GetGamePlayLogicManager();
+	GamePlayLogicManager = GameInstance->GetGameEventHandler();
 	if (!GameInstance->GetSaveManager()->GetCurrentSaveSlot().IsIndicateBound)
 	{
 		GameInstance->GetRuntimeGameData()->PlayerCharacter = GetCharacter();
