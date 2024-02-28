@@ -6,6 +6,7 @@
 #include "DCharacter.h"
 #include "../Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
+#include "CharmingCraft/Core/Item/RenderActor/Equipment/SwordEntityActorP5.h"
 #include "CharmingCraft/Interface/Meta/character/HandMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 
@@ -76,7 +77,7 @@ void UHand::OnWeaponUse()
 	}
 }
 
-void UHand::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity)
+void UHand::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AItemEntityActor* ItemActorEntity, AActor* HitEntity)
 {
 	Super::OnWeaponHit(WeaponHit, Instigator, ItemActorEntity, HitEntity);
 	FPlayerAttribute PlayerAttribute = Character->AttributeComp->GetPlayerAttributeData();

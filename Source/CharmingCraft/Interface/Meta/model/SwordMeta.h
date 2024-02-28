@@ -38,11 +38,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Sword Pommel")
 	UEquipPartSwordPommel* SwordPommel;
+	
 
 	/* 渲染2D */
-	
+	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject) override;
 
 public:
 	void SetDefaultAssemble();
-	virtual bool AssembleComponent(AActor* Actor) override;
 };

@@ -3,9 +3,11 @@
 
 #include "ItemMeta.h"
 
+#include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/Util/ItemPreviewRender.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UItemMeta::UItemMeta()
@@ -62,4 +64,15 @@ void UItemMeta::UpdateRender(UWorld* RenderWorld)
 
 		this->DynamicRenderingInstance = RenderedTexture;
 	}
+}
+
+AItemEntityActor* UItemMeta::CreateItemEntityActor(const UObject* WorldContextObject)
+{
+	FTransform DefaultTransform;
+	TObjectPtr<AItemEntityActor> AttachedActor = Cast<AItemEntityActor>(
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject, this->ItemEntityActorClass,
+		                                                   DefaultTransform));
+	UGameplayStatics::FinishSpawningActor(AttachedActor, DefaultTransform);
+	//ItemEntityActor = AttachedActor;
+	return AttachedActor;
 }

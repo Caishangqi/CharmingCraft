@@ -18,13 +18,27 @@ public:
 	UEquipmentComponent();
 
 	// 1st parameter is the index, second is slot allowed ItemMeta
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) // Editor Modified Only
 	TMap<int32, TSubclassOf<UItemMeta>> EquipmentSlotAllowedType;
 
 	UFUNCTION()
 	void OnContainerItemTransferListener(UObject* Instigator, UInventoryComponent* SourceContainer, int32 SourceIndex,
 	                                     UInventoryComponent* TargetContainer, int32 TargetIndex,
 	                                     UItemStack* ItemBeingTransfer);
+
+	UFUNCTION(BlueprintCallable)
+	bool UpdateEquipmentModelToEntity(UObject* Instigator, UInventoryComponent* SourceContainer,
+	                                  int32 SourceIndex,
+	                                  UInventoryComponent* TargetContainer, int32 TargetIndex,
+	                                  UItemStack* ItemBeingTransfer);
+	/*!
+	 * Create ItemEntityActor and attach to specify socket, no
+	 * duplication attachment check
+	 * @param UpdateIndex The updated index in the EquipmentComponent
+	 * @return whether or not is successful
+	 */
+	UFUNCTION(BlueprintCallable)
+	bool AttachNewEquipmentModelToEntity(int32 UpdateIndex);
 
 protected:
 	// Called when the game starts

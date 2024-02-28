@@ -3,7 +3,7 @@
 #include "DCharacter.h"
 #include "../Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
-#include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
+#include "CharmingCraft/Core/Item/RenderActor/Equipment/SwordEntityActorP5.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Interface/Meta/model/SwordMeta.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
@@ -18,6 +18,7 @@ USword::USword()
 	ItemType = EItemType::EQUIPMENT;
 	Material = EMaterial::SWORD;
 	ItemMetaClass = USwordMeta::StaticClass();
+	Socket = EEquipmentSocket::HAND;
 	DescribeText = FText::FromString("A sword is an edged, bladed weapon intended for manual cutting or thrusting.");
 }
 
@@ -25,7 +26,7 @@ USword::USword()
 void USword::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator, ItemActorEntity);
-	SwordActor = Cast<ASwordActor>(ItemActorEntity);
+	SwordActor = Cast<ASwordEntityActorP5>(InteractItemStack->ItemMeta->ItemEntityActor);
 	Player = Instigator;
 	MappingItemStack = InteractItemStack;
 
@@ -83,7 +84,7 @@ void USword::OnWeaponUse()
 	}
 }
 
-void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity, AActor* HitEntity)
+void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AItemEntityActor* ItemActorEntity, AActor* HitEntity)
 {
 	Super::OnWeaponHit(WeaponHit, Instigator, ItemActorEntity, HitEntity);
 

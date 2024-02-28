@@ -7,8 +7,10 @@
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "../Core/Item/Meta/ItemMeta.h"
+#include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
-
+#include "CharmingCraft/Object/Class/Item/Equipment.h"
 
 // Sets default values for this component's properties
 UEquipmentComponent::UEquipmentComponent()
@@ -27,6 +29,99 @@ void UEquipmentComponent::OnContainerItemTransferListener(UObject* Instigator, U
 {
 	UE_LOG(LogChamingCraftGameEvent, Display,
 	       TEXT("[📍]  Event Listener at UGameEventHandler::OnContainerItemTransferEvent()"));
+
+	/* Update The Render of Equipment on socket call when Transfer successful */
+	UpdateEquipmentModelToEntity(Instigator, SourceContainer, SourceIndex, TargetContainer, TargetIndex,
+	                             ItemBeingTransfer);
+}
+
+bool UEquipmentComponent::UpdateEquipmentModelToEntity(UObject* Instigator, UInventoryComponent* SourceContainer,
+                                                       int32 SourceIndex,
+                                                       UInventoryComponent* TargetContainer, int32 TargetIndex,
+                                                       UItemStack* ItemBeingTransfer)
+{
+	/* Update Other Slot, Delete or change */
+	if (TargetContainer->IsA(UEquipmentComponent::StaticClass()))
+	{
+		if (Inventory[TargetIndex]->ItemMeta->ItemEntityActor)
+		{
+			Inventory[TargetIndex]->ItemMeta->ItemEntityActor->Destroy();
+		}
+	}
+	else if (TargetContainer->IsA(UInventoryComponent::StaticClass()))
+	{
+		if (TargetContainer->Inventory[TargetIndex]->ItemMeta->ItemEntityActor)
+		{
+			TargetContainer->Inventory[TargetIndex]->ItemMeta->ItemEntityActor->Destroy();
+		}
+	}
+
+	if (TargetContainer == SourceContainer)
+	{
+		if (Inventory[TargetIndex])
+		{
+			Inventory[TargetIndex]->ItemMeta->ItemEntityActor->Destroy();
+		}
+
+		if (Inventory[SourceIndex])
+		{
+			Inventory[SourceIndex]->ItemMeta->ItemEntityActor->Destroy();
+		}
+
+		AttachNewEquipmentModelToEntity(TargetIndex);
+		AttachNewEquipmentModelToEntity(SourceIndex);
+		return true;
+	}
+
+	return AttachNewEquipmentModelToEntity(TargetIndex);
+}
+
+bool UEquipmentComponent::AttachNewEquipmentModelToEntity(int32 UpdateIndex)
+{
+	if (Inventory[UpdateIndex])
+	{
+		TObjectPtr<UItemStack> EquipmentItemStack;
+		EquipmentItemStack = Inventory[UpdateIndex];
+		TObjectPtr<UEquipment> EquipmentClass = Cast<UEquipment>(EquipmentItemStack->ItemClass.GetDefaultObject());
+
+		FString EquipmentSocket = StaticEnum<EEquipmentSocket>()->GetNameStringByValue(
+			static_cast<int64>(EquipmentClass->Socket));
+
+		if (EquipmentSocket == "HAND")
+		{
+			switch (UpdateIndex)
+			{
+			case 3:
+
+				EquipmentSocket = FString("LEFT_").Append(EquipmentSocket);
+
+				break;
+			case 5:
+				EquipmentSocket = FString("RIGHT_").Append(EquipmentSocket);
+				break;
+			default: break;
+			}
+		}
+
+		TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
+			this->GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+
+
+		if (Inventory[UpdateIndex]->ItemMeta->IsA(UWeaponMeta::StaticClass()))
+		{
+			TObjectPtr<AItemEntityActor> AttachedActor = Inventory[UpdateIndex]->ItemMeta->CreateItemEntityActor(this);
+			Inventory[UpdateIndex]->ItemMeta->ItemEntityActor = AttachedActor;
+
+			AttachedActor->AttachToComponent(SkeletalMeshComponent, FAttachmentTransformRules::KeepRelativeTransform,
+			                                 *EquipmentSocket);
+			UE_LOG(LogChamingCraftGameEvent, Display,
+			       TEXT("[📍]  Event Listener at UEquipmentComponent::UpdateEquipmentModelToEntity Socket = %s"),
+			       *EquipmentSocket);
+		}
+
+		return true;
+	}
+	return false;
 }
 
 
@@ -48,6 +143,11 @@ void UEquipmentComponent::TransferSlots(int32 SourceIndex, UInventoryComponent* 
 		EquipmentSlotAllowedType.Find(DestinationIndex)->Get()))
 	{
 		Super::TransferSlots(SourceIndex, SourceInventory, DestinationIndex);
+
+		/* Apply Equipment Attribute Through Event
+		 *  - Use this Component to Store Equipment Attribute Separately and
+		 *  pass the Attribute Data to Attribute Component when needed
+		 */
 	}
 }
 

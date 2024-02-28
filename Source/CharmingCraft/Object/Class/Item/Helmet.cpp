@@ -13,6 +13,7 @@ UHelmet::UHelmet()
 	ItemType = EItemType::EQUIPMENT;
 	Material = EMaterial::HELMET;
 	ItemMetaClass = UHelmetMeta::StaticClass();
+	Socket = EEquipmentSocket::HEAD;
 }
 
 void UHelmet::OnEquipped()

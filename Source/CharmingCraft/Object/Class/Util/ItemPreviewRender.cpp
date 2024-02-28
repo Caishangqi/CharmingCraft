@@ -2,8 +2,8 @@
 
 #include "ItemPreviewRender.h"
 #include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
-#include "CharmingCraft/Core/Entity/Item/model/SwordActor.h"
 #include "../Core/Item/Meta/ItemMeta.h"
+#include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/TextureRenderTarget2D.h"
@@ -67,23 +67,22 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UWeaponMeta* InputMeta,
 	// -4300.f, 2000.f, 450.f
 	FRotator SpawnRotation(0.f, 0.f, 0.f); // 设置生成旋转为 (0,0,0)
 	FTransform SpawnTransform(SpawnRotation, SpawnLocation); // 使用位置和旋转创建FTransform
-	FTransform DefaultTransform;
 	/* Fist Spawn Render Actor Prepare for Render 3D Object */
 	AItemTargetRenderActor* RenderActor = Cast<AItemTargetRenderActor>(
 		UGameplayStatics::BeginDeferredActorSpawnFromClass(RenderWorld,
 		                                                   AItemTargetRenderActor::StaticClass(), SpawnTransform));
-	/* Prepare Spawn Weapon Actor form Meta, spawn from static class */
-	AActor* WeaponActor = Cast<AActor>(
-		UGameplayStatics::BeginDeferredActorSpawnFromClass(RenderWorld,
-		                                                   InputMeta->WeaponActor, DefaultTransform));
 
+
+	
+	/* Prepare Spawn Weapon Actor form Meta, spawn from static class */
+	 AItemEntityActor* WeaponActor = Cast<AItemEntityActor>(InputMeta->CreateItemEntityActor(RenderWorld));
 	// Modify the Actor's properties here
-	InputMeta->AssembleComponent(WeaponActor);
 	// Modify the Actor's Position that fit the camera
 	WeaponActor->SetActorRelativeLocation(FVector(-60.0f, -30.0f, -15.0f));
 	WeaponActor->SetActorRelativeRotation(FRotator3d(0.0f, 350.0f, 0.0f));
+	WeaponActor->SetActorTransform(SpawnTransform);
 	// Finish spawning the Actor
-	UGameplayStatics::FinishSpawningActor(WeaponActor, SpawnTransform); // KeepWorldTransform
+	//UGameplayStatics::FinishSpawningActor(WeaponActor, SpawnTransform); // KeepWorldTransform
 	WeaponActor->AttachToComponent(RenderActor->Root, FAttachmentTransformRules::KeepWorldTransform);
 	// Tip: 在附加时保持组件的世界变换不变。不应该使用 FAttachmentTransformRules::KeepRelativeTransform
 
@@ -96,7 +95,7 @@ UMaterialInstanceDynamic* UItemPreviewRender::RenderItem(UWeaponMeta* InputMeta,
 		RenderActor->SceneCaptureComponent->CaptureScene();
 		RenderActor->Destroy();
 		WeaponActor->Destroy();
-		UE_LOG(LogTemp, Warning, TEXT("(!) Successfully destroy RenderItem Actor"))
+		//UE_LOG(LogTemp, Warning, TEXT("(!) Successfully destroy RenderItem Actor"))
 		return RenderMaterial;
 	}
 	return nullptr;

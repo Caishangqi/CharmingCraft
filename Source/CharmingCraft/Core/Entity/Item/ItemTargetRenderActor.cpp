@@ -25,8 +25,10 @@ AItemTargetRenderActor::AItemTargetRenderActor()
 	PrimaryActorTick.bCanEverTick = true;
 	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCaptureComponent");
 	SceneCaptureComponent->SetupAttachment(RootComponent);
+	SceneCaptureComponent->ProjectionType = ECameraProjectionMode::Orthographic;
+	SceneCaptureComponent->OrthoWidth = 164;
 	SceneCaptureComponent->SetRelativeRotation(FRotator3d(-10.0, -120.0, 0));
-	SceneCaptureComponent->SetRelativeLocation(FVector3d(50.0, 90.0, 60.0));
+	SceneCaptureComponent->SetRelativeLocation(FVector3d(70.0, 90.0, 60.0));
 	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = true;
 	SceneCaptureComponent->ShowFlags.SetLighting(false);

@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "SwordActor.generated.h"
-class UArrowComponent;
+#include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
+#include "Components/ArrowComponent.h"
+#include "SwordEntityActorP5.generated.h"
 /*!
  * This Class is for Integrate Sword, the sword have 5 parts, each parts is
  * StaticMeshComponent, player could modify each parts into different subpart
@@ -20,13 +20,13 @@ class UArrowComponent;
  * filed StaticMesh to assemble Sword Actor
  */
 UCLASS()
-class CHARMINGCRAFT_API ASwordActor : public AActor
+class CHARMINGCRAFT_API ASwordEntityActorP5 : public AEquipmentEntityActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ASwordActor();
+	ASwordEntityActorP5();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	USceneComponent* Root;

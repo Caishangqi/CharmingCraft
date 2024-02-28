@@ -33,8 +33,15 @@ public:
 	UTextureRenderTarget2D* TextureRenderTarget2D;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Model Mesh")
 	UStaticMesh* ItemModelMesh;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Entity Actor Class")
+	TSubclassOf<AItemEntityActor> ItemEntityActorClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Entity Actor")
+	TObjectPtr<AItemEntityActor> ItemEntityActor;
 
 	virtual void UpdateRender(UWorld* RenderWorld);
+
+	UFUNCTION(Blueprintable)
+	virtual AItemEntityActor * CreateItemEntityActor(const UObject* WorldContextObject);
 
 protected:
 	// Called when the game starts 

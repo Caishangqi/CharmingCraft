@@ -12,9 +12,9 @@ UHandMeta::UHandMeta()
 			"EquipmentComponentAnimation'/Game/CharmingCraft/Assets/models/entity/Character/Animation/attack/punch/basic_punch_component_animation.basic_punch_component_animation'"));
 	if (EquipmentComponentAnimationFinder.Succeeded())
 	{
-		LoadedAnimMontage = EquipmentComponentAnimationFinder.Object->AttackStageAnimation;
+		LoadedAnimMontage = EquipmentComponentAnimationFinder.Object;
 		UE_LOG(LogTemp, Warning,
 		       TEXT("(+) UHandMeta::UHandMeta() AnimationDataAsset Loaded"))
-		CurrentAttackStage = LoadedAnimMontage.Num();
+		CurrentAttackStage = LoadedAnimMontage->AttackStageAnimations.Num();
 	}
 }

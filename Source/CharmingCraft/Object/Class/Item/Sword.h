@@ -23,7 +23,7 @@ public:
 
 	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity) override;
 	virtual void OnWeaponUse() override;
-	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AActor* ItemActorEntity,
+	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AItemEntityActor* ItemActorEntity,
 	                         AActor* HitEntity) override;
 	virtual void EndItemInteract() override;
 };

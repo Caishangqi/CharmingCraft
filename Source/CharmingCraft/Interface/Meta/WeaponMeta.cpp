@@ -5,6 +5,7 @@
 
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/Util/ItemPreviewRender.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
 
 
 bool UWeaponMeta::AssembleComponent(AActor* Actor)
@@ -20,9 +21,9 @@ void UWeaponMeta::UpdateRender(UWorld* RenderWorld)
 	this->DynamicRenderingInstance = RenderedTexture;
 }
 
-UAnimMontage* UWeaponMeta::GetCurrentAttackAnimationMontage()
+FAttackStageAnimation UWeaponMeta::GetCurrentAttackAnimationMontage()
 {
-	return LoadedAnimMontage[CurrentAttackStage - 1];
+	return LoadedAnimMontage->AttackStageAnimations[CurrentAttackStage - 1];
 }
 
 TSharedPtr<FJsonObject> UWeaponMeta::SerializeToJson()

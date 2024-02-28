@@ -10,6 +10,9 @@
 /**
  * 
  */
+struct FAttackStageAnimation;
+class UEquipmentComponentAnimation;
+
 UCLASS()
 class CHARMINGCRAFT_API UWeaponMeta : public UIntegratedMeta
 {
@@ -35,16 +38,14 @@ public:
 
 	/* Animation and Attack Stage */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "LoadedAnimMontage")
-	TArray<TObjectPtr<UAnimMontage>> LoadedAnimMontage;
+	TObjectPtr<UEquipmentComponentAnimation> LoadedAnimMontage;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "CurrentAttackStage")
 	int CurrentAttackStage;
 	/* AnimMontage */
 	UFUNCTION(BlueprintCallable)
-	UAnimMontage * GetCurrentAttackAnimationMontage();
+	FAttackStageAnimation GetCurrentAttackAnimationMontage();
 
 public:
 	virtual TSharedPtr<FJsonObject> SerializeToJson() override;
 	virtual UObject* DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject) override;
-
-	
 };

@@ -5,6 +5,7 @@
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
+#include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -48,23 +49,15 @@ void ADropItem::PostInitializeComponents()
 // bRenderingResourcesInitialized
 void ADropItem::Initialize(UItemStack* PassItemStack)
 {
-	//ItemStack = DuplicateObject<UItemStack>(PassItemStack, this);
 	ItemStack = PassItemStack;
-
 	if (ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass()))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass())"));
-		UWeaponMeta* WeaponMeta = Cast<UWeaponMeta>(ItemStack->ItemMeta);
-
 		FVector WeaponLocation(0.0f, -50.0f, 5.0f);
 		FRotator WeaponRotation = FRotator(0.0f, 90.0f, -30.0f);
 		FTransform DefaultTransform(WeaponRotation, WeaponLocation);
-
-		AActor* WeaponActor = Cast<AActor>(
-			UGameplayStatics::BeginDeferredActorSpawnFromClass(this,
-			                                                   WeaponMeta->WeaponActor, DefaultTransform));
-		WeaponMeta->AssembleComponent(WeaponActor);
-		UGameplayStatics::FinishSpawningActor(WeaponActor, DefaultTransform);
+		ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this);
+		AItemEntityActor* WeaponActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
 		WeaponActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 	else if (ItemStack->ItemMeta->bIsRenderItem)
