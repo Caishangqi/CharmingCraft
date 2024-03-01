@@ -4,8 +4,6 @@
 #include "WeaponMeta.h"
 
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
-#include "CharmingCraft/Object/Class/Util/ItemPreviewRender.h"
-#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
 
 
 bool UWeaponMeta::AssembleComponent(AActor* Actor)

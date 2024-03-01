@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "../Object/Components/Container/WorkBenchComponent.h"
+
+#include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Interface/EquipPartComponent.h"
 #include "CharmingCraft/Interface/Meta/IntegratedMeta.h"
-#include "CharmingCraft/Object/Class/Util/ItemPreviewRender.h"
 
 UWorkBenchComponent::UWorkBenchComponent()
 {
@@ -49,7 +50,7 @@ bool UWorkBenchComponent::SetPartMaterial(UEquipPartComponent* Component, EMater
 	       ), Component->ComponentMaterial)
 
 	UItemMeta* Meta = Cast<UItemMeta>(Component->GetOuter());
-	UItemPreviewRender::Get()->UpdateMeshMaterialSlot(Meta->ItemModelMesh,
+	UItemEntityUtilityLibrary::UpdateMeshMaterialSlot(Meta->ItemModelMesh,
 	                                                  Component->MaterialSlotIndex, Component->PartMaterial);
 	UE_LOG(LogTemp, Warning, TEXT(
 		       "Manipulate Information: %hhd"
