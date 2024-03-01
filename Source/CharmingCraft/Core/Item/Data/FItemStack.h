@@ -21,5 +21,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	TSubclassOf<UItemMeta> ItemMetaClass;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
+	bool bCustomizeItemMeta;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	FItemMetaData ItemMeta;
 };

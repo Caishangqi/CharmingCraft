@@ -54,7 +54,8 @@ bool UWorkBenchComponent::SetPartMaterial(UEquipPartComponent* Component, EMater
 	UE_LOG(LogTemp, Warning, TEXT(
 		       "Manipulate Information: %hhd"
 	       ), Meta->bIsRenderItem);
-	Meta->UpdateRender(GetWorld());
+	// TODO: Temporally Disable
+	//Meta->UpdateRender(GetWorld());
 
 	return true;
 }

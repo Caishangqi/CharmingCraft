@@ -26,7 +26,7 @@ USword::USword()
 void USword::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator, ItemActorEntity);
-	SwordActor = Cast<ASwordEntityActorP5>(InteractItemStack->ItemMeta->ItemEntityActor);
+	SwordActor = Cast<AEquipmentEntityActor>(InteractItemStack->ItemMeta->ItemEntityActor);
 	Player = Instigator;
 	MappingItemStack = InteractItemStack;
 
@@ -41,8 +41,8 @@ void USword::OnWeaponUse()
 	Super::OnWeaponUse();
 
 	// TODO 考虑是否让武器只能对敌人造成一次伤害 蒙太奇 + 动画通知
-	FVector Start = SwordActor->SwordTopArrow->GetComponentLocation();
-	FVector End = SwordActor->SwordTopArrow->GetComponentLocation();
+	FVector Start = SwordActor->EquipmentTopArrow->GetComponentLocation();
+	FVector End = SwordActor->EquipmentTopArrow->GetComponentLocation();
 
 	TArray<FHitResult> HitResults;
 
@@ -90,7 +90,7 @@ void USword::OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AItemEntityAc
 
 	FPlayerAttribute PlayerAttribute = Cast<ADCharacter>(Instigator)->AttributeComp->GetPlayerAttributeData();
 
-	FEquipmentAttribute EquipmentAttribute = Cast<UWeaponMeta>(WeaponHit->ItemMeta)->WeaponAttribute;
+	FEquipmentAttribute EquipmentAttribute = Cast<UWeaponMeta>(WeaponHit->ItemMeta)->EquipmentAttribute;
 
 	FHitData HitData;
 

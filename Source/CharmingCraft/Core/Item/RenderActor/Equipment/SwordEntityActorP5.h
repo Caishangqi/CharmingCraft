@@ -50,11 +50,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UStaticMeshComponent* Pommel;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UArrowComponent* SwordTopArrow;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UArrowComponent* SwordBottomArrow;
 
 protected:
 	// Called when the game starts or when spawned

@@ -1,7 +1,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "FItemMeta.generated.h"
-
+// #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+class AItemEntityActor;
 USTRUCT(BlueprintType)
 struct FItemMetaData
 {
@@ -19,4 +20,6 @@ public:
 	int32 Durability; //
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Rendering")
 	bool bIsRenderItem;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Entity Actor Class")
+	TSubclassOf<AItemEntityActor> ItemEntityActorClass;
 };

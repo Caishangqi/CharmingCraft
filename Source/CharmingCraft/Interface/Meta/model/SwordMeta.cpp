@@ -21,13 +21,22 @@ USwordMeta::USwordMeta()
 
 AItemEntityActor* USwordMeta::CreateItemEntityActor(const UObject* WorldContextObject)
 {
+	
 	ASwordEntityActorP5* SwordActor = Cast<ASwordEntityActorP5>(Super::CreateItemEntityActor(WorldContextObject));
-	SwordActor->Blade->SetStaticMesh(SwordBlade->PartMesh);
-	SwordActor->Fuller->SetStaticMesh(SwordFuller->PartMesh);
-	SwordActor->Guard->SetStaticMesh(SwordGuard->PartMesh);
-	SwordActor->Hilt->SetStaticMesh(SwordHilt->PartMesh);
-	SwordActor->Pommel->SetStaticMesh(SwordPommel->PartMesh);
-	return SwordActor;
+	if (SwordActor)
+	{
+		SwordActor->Blade->SetStaticMesh(SwordBlade->PartMesh);
+		SwordActor->Fuller->SetStaticMesh(SwordFuller->PartMesh);
+		SwordActor->Guard->SetStaticMesh(SwordGuard->PartMesh);
+		SwordActor->Hilt->SetStaticMesh(SwordHilt->PartMesh);
+		SwordActor->Pommel->SetStaticMesh(SwordPommel->PartMesh);
+		return SwordActor;
+	}
+	else
+	{
+		return Super::CreateItemEntityActor(WorldContextObject);
+	}
+	
 }
 
 void USwordMeta::SetDefaultAssemble()
@@ -38,8 +47,8 @@ void USwordMeta::SetDefaultAssemble()
 	SwordHilt = CreateDefaultSubobject<UEquipPartSwordHiltBasic>("Hilt Basic");
 	SwordPommel = CreateDefaultSubobject<UEquipPartSwordPommelDecorative>("Pommel Decorative");
 	/* Test Data */
-	WeaponAttribute.Damage = 10;
-	WeaponAttribute.AttackSpeed = 1.5;
-	WeaponAttribute.CriticalChance = 50;
-	WeaponAttribute.CriticalDamage = 150;
+	EquipmentAttribute.Damage = 10;
+	EquipmentAttribute.AttackSpeed = 1.5;
+	EquipmentAttribute.CriticalChance = 50;
+	EquipmentAttribute.CriticalDamage = 150;
 }

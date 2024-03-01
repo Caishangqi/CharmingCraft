@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "EquipmentEntityActor.generated.h"
-
+class UBoxComponent;
+class UArrowComponent;
 UCLASS()
 class CHARMINGCRAFT_API AEquipmentEntityActor : public AItemEntityActor
 {
@@ -15,6 +16,13 @@ public:
 	// Sets default values for this actor's properties
 	AEquipmentEntityActor();
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UArrowComponent* EquipmentTopArrow;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UArrowComponent* EquipmentBottomArrow;
+
+	TObjectPtr<UBoxComponent> EquipmentBoxComponent;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

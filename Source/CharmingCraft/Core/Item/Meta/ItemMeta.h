@@ -38,8 +38,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Entity Actor")
 	TObjectPtr<AItemEntityActor> ItemEntityActor;
 
-	virtual void UpdateRender(UWorld* RenderWorld);
-
 	UFUNCTION(Blueprintable)
 	virtual AItemEntityActor * CreateItemEntityActor(const UObject* WorldContextObject);
 

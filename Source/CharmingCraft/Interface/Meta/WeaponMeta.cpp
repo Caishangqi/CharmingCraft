@@ -13,29 +13,17 @@ bool UWeaponMeta::AssembleComponent(AActor* Actor)
 	return false;
 }
 
-void UWeaponMeta::UpdateRender(UWorld* RenderWorld)
-{
-	UMaterialInstanceDynamic* RenderedTexture = DuplicateObject<UMaterialInstanceDynamic>(
-		UItemPreviewRender::Get()->RenderItem(this, RenderWorld), this);
-
-	this->DynamicRenderingInstance = RenderedTexture;
-}
-
-FAttackStageAnimation UWeaponMeta::GetCurrentAttackAnimationMontage()
-{
-	return LoadedAnimMontage->AttackStageAnimations[CurrentAttackStage - 1];
-}
 
 TSharedPtr<FJsonObject> UWeaponMeta::SerializeToJson()
 {
 	TSharedPtr<FJsonObject> ItemWeaponMetaJsonObject = Super::SerializeToJson();
 	CREATE_JSON_OBJECT(WeaponAttributeJsonObject);
-	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Damage, WeaponAttribute.Damage);
-	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, MagicDamage, WeaponAttribute.MagicDamage);
-	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, AttackSpeed, WeaponAttribute.AttackSpeed);
-	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Durability, WeaponAttribute.Durability);
-	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalChance, WeaponAttribute.CriticalChance);
-	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalDamage, WeaponAttribute.CriticalDamage);
+	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Damage, EquipmentAttribute.Damage);
+	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, MagicDamage, EquipmentAttribute.MagicDamage);
+	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, AttackSpeed, EquipmentAttribute.AttackSpeed);
+	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Durability, EquipmentAttribute.Durability);
+	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalChance, EquipmentAttribute.CriticalChance);
+	SET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalDamage, EquipmentAttribute.CriticalDamage);
 	// Put WeaponJsonObject into BaseItemMetaJsonObject
 	SET_JSON_FIELD_OBJECT(ItemWeaponMetaJsonObject, WeaponAttribute, WeaponAttributeJsonObject);
 	SET_JSON_FIELD_NUMBER(ItemWeaponMetaJsonObject, CurrentAttackStage, CurrentAttackStage);
@@ -48,11 +36,11 @@ UObject* UWeaponMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	CurrentAttackStage = GET_JSON_FIELD_NUMBER(JsonObject, CurrentAttackStage);
 	// Deserialize WeaponAttribute From WeaponAttributeJsonObject
 	const TSharedPtr<FJsonObject> WeaponAttributeJsonObject = GET_JSON_FIELD_OBJECT(JsonObject, WeaponAttribute);
-	WeaponAttribute.Damage = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Damage);
-	WeaponAttribute.MagicDamage = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, MagicDamage);
-	WeaponAttribute.AttackSpeed = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, AttackSpeed);
-	WeaponAttribute.Durability = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Durability);
-	WeaponAttribute.CriticalChance = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalChance);
-	WeaponAttribute.CriticalDamage = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalDamage);
+	EquipmentAttribute.Damage = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Damage);
+	EquipmentAttribute.MagicDamage = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, MagicDamage);
+	EquipmentAttribute.AttackSpeed = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, AttackSpeed);
+	EquipmentAttribute.Durability = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, Durability);
+	EquipmentAttribute.CriticalChance = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalChance);
+	EquipmentAttribute.CriticalDamage = GET_JSON_FIELD_NUMBER(WeaponAttributeJsonObject, CriticalDamage);
 	return WeaponMeta;
 }

@@ -52,20 +52,6 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-
-void UItemMeta::UpdateRender(UWorld* RenderWorld)
-{
-	// 如果是需要渲染的物品
-	if (bIsRenderItem)
-	{
-		ItemModelMesh->InitResources();
-		UMaterialInstanceDynamic* RenderedTexture = DuplicateObject<UMaterialInstanceDynamic>(
-			UItemPreviewRender::Get()->RenderItem(this, RenderWorld), this);
-
-		this->DynamicRenderingInstance = RenderedTexture;
-	}
-}
-
 AItemEntityActor* UItemMeta::CreateItemEntityActor(const UObject* WorldContextObject)
 {
 	FTransform DefaultTransform;

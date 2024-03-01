@@ -7,7 +7,7 @@
 #include "../Object/Class/Item/Item.h"
 #include "Weapon.generated.h"
 class AItemEntityActor;
-class ASwordEntityActorP5;
+class AEquipmentEntityActor;
 /**
  * 
  */
@@ -20,7 +20,7 @@ protected:
 	/* 计时器 */
 	FTimerHandle SwordTraceTimer;
 	UPROPERTY()
-	ASwordEntityActorP5* SwordActor;
+	TObjectPtr<AEquipmentEntityActor> SwordActor;
 	UPROPERTY()
 	APawn* Player;
 	UPROPERTY()

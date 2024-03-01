@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "../Core/Item/Meta/ItemMeta.h"
+#include "CharmingCraft/Object/Structs/model/FEquipmentAttribute.h"
 #include "IntegratedMeta.generated.h"
 
 /**
  * 
  */
+class UEquipmentComponentAnimation;
 UCLASS()
 class CHARMINGCRAFT_API UIntegratedMeta : public UItemMeta
 {
@@ -17,6 +19,19 @@ class CHARMINGCRAFT_API UIntegratedMeta : public UItemMeta
 public:
 	UIntegratedMeta();
 
+	UPROPERTY()
+	FEquipmentAttribute EquipmentAttribute;
+	
+	/* Animation and Attack Stage */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "LoadedAnimMontage")
+	TObjectPtr<UEquipmentComponentAnimation> LoadedAnimMontage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "CurrentAttackStage")
+	int CurrentAttackStage;
+
+	/* AnimMontage */
+	UFUNCTION(BlueprintCallable)
+	virtual FAttackStageAnimation GetCurrentAttackAnimationMontage();
+	
 	// Layout for UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
 	TSubclassOf<UUserWidget> Layout;

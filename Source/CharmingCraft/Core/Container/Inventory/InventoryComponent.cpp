@@ -5,6 +5,7 @@
 #include "../Core/Item/ItemStack.h"
 #include "../Core/Item/Data/FItemStack.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Core/Entity/Item/DropItem.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
@@ -28,6 +29,11 @@ void UInventoryComponent::InitializeItemStackWithMaterials()
 	{
 		UItemStack* ItemStack = UItemStack::CreateItemStackFromMaterial(this, PreloadMaterials[Index].Material,
 		                                                                PreloadMaterials[Index].Amount);
+		if (PreloadMaterials[Index].bCustomizeItemMeta)
+		{
+			ItemStack->ItemMeta->ItemEntityActorClass = PreloadMaterials[Index].ItemMeta.ItemEntityActorClass;
+			ItemStack->ItemMeta->bIsRenderItem = PreloadMaterials[Index].ItemMeta.bIsRenderItem;
+		}
 		Inventory[Index] = ItemStack;
 	}
 }
@@ -360,12 +366,9 @@ void UInventoryComponent::BeginPlay()
 	InitializeItemStackWithMaterials();
 
 	// TODO 可以优化为另一个世界生成，这个世界优先加载
-	for (UItemStack* Items : Inventory)
+	for (UItemStack* Item : Inventory)
 	{
-		if (Items != nullptr && Items->ItemMeta->bIsRenderItem)
-		{
-			Items->ItemMeta->UpdateRender(GetWorld());
-		}
+		UItemEntityUtilityLibrary::SetItem2DIconFromItemEntity(Item,GetWorld());
 	}
 }
 
