@@ -9,6 +9,7 @@
 /**
  * 
  */
+class AItemEntityActor;
 class UItemStack;
 class UItemMeta;
 
@@ -38,6 +39,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	TSubclassOf<UItemMeta> ItemMetaClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
+	TSubclassOf<AItemEntityActor> DefaultItemEntityActorClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Description")
 	FText DescribeText;

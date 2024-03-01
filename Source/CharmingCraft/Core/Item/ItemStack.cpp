@@ -7,6 +7,7 @@
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Object/Class/Util/ItemRegistry.h"
 #include "CharmingCraft/Object/Structs/FDMaterial.h"
+#include "RenderActor/ItemEntityActor.h"
 // Sets default values for this component's properties
 UItemStack::UItemStack()
 {
@@ -60,7 +61,7 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 	 *	WARNNING: The outer should be Inventory/Something else when create ItemStack, fail / incorrect assign outer
 	 *	will cause serious implicit bug
 	 */
-	
+
 	TObjectPtr<UItemStack> ItemStack = NewObject<UItemStack>(Outer, UItemStack::StaticClass());
 	ItemStack->Material = ItemMaterial;
 	//MaterialMetaMapper
@@ -73,7 +74,9 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 	{
 		UEnum* MapperEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
 		FString MaterialString = MapperEnum->GetNameStringByValue(static_cast<int64>(ItemMaterial));
-		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),TEXT("[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
+		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),
+		                                                              TEXT(
+			                                                              "[x] Can not find corresponding material from MaterialMetaMapper DataTable"));
 		if (RowData)
 		{
 			TSubclassOf<UItemMeta> ItemMetaClass = RowData->ItemClass.GetDefaultObject()->ItemMetaClass;
@@ -87,6 +90,10 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 
 			ItemStack->ItemMeta = NewObject<UItemMeta>(ItemStack, ItemMetaClass, FName(RowData->ItemMeta->GetName()));
 			ItemStack->ItemMeta->DisplayName = ItemClass->DisplayName.ToString();
+			if (ItemClass->DefaultItemEntityActorClass)
+			{
+				ItemStack->ItemMeta->ItemEntityActorClass = ItemClass->DefaultItemEntityActorClass;
+			}
 			if (ItemClass->MaxStackSize < SetAmount)
 			{
 				ItemStack->Amount = ItemClass->MaxStackSize;

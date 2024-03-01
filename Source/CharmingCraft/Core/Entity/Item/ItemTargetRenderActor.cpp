@@ -27,8 +27,8 @@ AItemTargetRenderActor::AItemTargetRenderActor()
 	SceneCaptureComponent->SetupAttachment(RootComponent);
 	SceneCaptureComponent->ProjectionType = ECameraProjectionMode::Orthographic;
 	SceneCaptureComponent->OrthoWidth = 164;
-	SceneCaptureComponent->SetRelativeRotation(FRotator3d(-10.0, -120.0, 0));
-	SceneCaptureComponent->SetRelativeLocation(FVector3d(70.0, 90.0, 60.0));
+	SceneCaptureComponent->SetRelativeRotation(FRotator3d(0, -120.0, 0));
+	SceneCaptureComponent->SetRelativeLocation(FVector3d(100.0, 85.0, 70.0)); // 100 85 70
 	SceneCaptureComponent->bCaptureEveryFrame = false;
 	SceneCaptureComponent->bCaptureOnMovement = true;
 	SceneCaptureComponent->ShowFlags.SetLighting(false);

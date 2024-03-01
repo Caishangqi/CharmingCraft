@@ -107,11 +107,12 @@ bool UEquipmentComponent::AttachNewEquipmentModelToEntity(int32 UpdateIndex)
 			this->GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
 
 
-		if (Inventory[UpdateIndex]->ItemMeta->IsA(UWeaponMeta::StaticClass()))
+		if (EquipmentClass->IsA(UEquipment::StaticClass()))
 		{
 			TObjectPtr<AItemEntityActor> AttachedActor = Inventory[UpdateIndex]->ItemMeta->CreateItemEntityActor(this);
 			Inventory[UpdateIndex]->ItemMeta->ItemEntityActor = AttachedActor;
-
+			// 微调
+			AttachedActor->SetActorTransform(AttachedActor->ItemEntityActorTransform);
 			AttachedActor->AttachToComponent(SkeletalMeshComponent, FAttachmentTransformRules::KeepRelativeTransform,
 			                                 *EquipmentSocket);
 			UE_LOG(LogChamingCraftGameEvent, Display,

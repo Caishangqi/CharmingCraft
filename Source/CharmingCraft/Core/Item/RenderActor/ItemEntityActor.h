@@ -19,7 +19,9 @@ public:
 	// The Owner of this ItemActor, typically belong to An ItemMeta
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UItemMeta> OwnItemMeta;
-
+	// Currently use for alter binding equipment on player character socket
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FTransform ItemEntityActorTransform;
 
 protected:
 	// Called when the game starts or when spawned

@@ -11,7 +11,7 @@ enum class EMaterial: uint8
 	COBALT UMETA(DisplayName = "Cobalt"),
 	HELMET UMETA(DisplayName = "Helmet"),
 	SWORD UMETA(DisplayName = "Sword"),
+	PICKAXE UMETA(DisplayName = "Pickaxe"),
 	HAND UMETA(DisplayName = "Hand")
 	// ... 其他材料
-	
 };
