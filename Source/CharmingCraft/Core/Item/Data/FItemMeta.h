@@ -3,6 +3,7 @@
 #include "FItemMeta.generated.h"
 // #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 class AItemEntityActor;
+
 USTRUCT(BlueprintType)
 struct FItemMetaData
 {

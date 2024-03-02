@@ -15,7 +15,6 @@ AProcessUnit::AProcessUnit()
 void AProcessUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -23,4 +22,3 @@ void AProcessUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

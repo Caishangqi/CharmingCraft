@@ -103,14 +103,11 @@ public:
 			       *BuffInstance->BuffData->BuffName.ToString(), *Target->GetName());
 			return true;
 		}
-		else
-		{
-			UE_LOG(LogChamingCraftBuff, Error, TEXT("[x] Fail To Add Buff [%s] to Target [%s]"),
-			       *BuffInstance->BuffData->BuffName.ToString(), *Target->GetName());
-			UE_LOG(LogChamingCraftBuff, Error, TEXT("	 [I] Because Target [%s] Do not have BuffHandlerComponent"),
-			       *Target->GetName());
-			return false;
-		}
+		UE_LOG(LogChamingCraftBuff, Error, TEXT("[x] Fail To Add Buff [%s] to Target [%s]"),
+		       *BuffInstance->BuffData->BuffName.ToString(), *Target->GetName());
+		UE_LOG(LogChamingCraftBuff, Error, TEXT("	 [I] Because Target [%s] Do not have BuffHandlerComponent"),
+		       *Target->GetName());
+		return false;
 		return true;
 	}
 };

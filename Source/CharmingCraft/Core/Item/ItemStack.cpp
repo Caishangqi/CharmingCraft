@@ -62,7 +62,7 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 	 *	will cause serious implicit bug
 	 */
 
-	TObjectPtr<UItemStack> ItemStack = NewObject<UItemStack>(Outer, UItemStack::StaticClass());
+	TObjectPtr<UItemStack> ItemStack = NewObject<UItemStack>(Outer, StaticClass());
 	ItemStack->Material = ItemMaterial;
 	//MaterialMetaMapper
 	const FString AssetPath = TEXT(
@@ -114,7 +114,7 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 UItemStack* UItemStack::CreateItemStackFromItemClass(UObject* Outer, TSubclassOf<UItem> ItemClassName,
                                                      const int32 SetAmount)
 {
-	TObjectPtr<UItemStack> ItemStack = NewObject<UItemStack>(Outer, UItemStack::StaticClass());
+	TObjectPtr<UItemStack> ItemStack = NewObject<UItemStack>(Outer, StaticClass());
 	ItemStack->ItemClass = ItemClassName;
 	ItemStack->Material = Cast<UItem>(ItemClassName.GetDefaultObject())->Material;
 	ItemStack->ItemMeta = NewObject<UItemMeta>(ItemStack, ItemStack->ItemClass.GetDefaultObject()->ItemMetaClass,

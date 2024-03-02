@@ -18,5 +18,4 @@ class CHARMINGCRAFT_API UProgressData : public UBaseSaveGame
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")
 	FGuid UniqueID;
-	
 };

@@ -4,10 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Equipment.h"
-#include "../Object/Class/Item/Item.h"
 #include "Weapon.generated.h"
-class AItemEntityActor;
-class AEquipmentEntityActor;
 /**
  * 
  */
@@ -18,19 +15,5 @@ class CHARMINGCRAFT_API UWeapon : public UEquipment
 
 protected:
 	/* 计时器 */
-	FTimerHandle SwordTraceTimer;
-	UPROPERTY()
-	TObjectPtr<AEquipmentEntityActor> SwordActor;
-	UPROPERTY()
-	APawn* Player;
-	UPROPERTY()
-	UItemStack* MappingItemStack;
-	UPROPERTY()
-	TSet<AActor*> HitActors;
-
 public:
-	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity) override;
-	virtual void OnWeaponUse();
-	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AItemEntityActor* ItemActorEntity, AActor* HitEntity);
-	virtual void EndItemInteract() override;
 };

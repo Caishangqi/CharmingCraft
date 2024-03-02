@@ -266,11 +266,8 @@ bool UGameSaveManager::SetCurrentSlot()
 		CurrentSaveNode = ValidSaveSlotsRing.GetTail()->GetValue();
 		return true;
 	}
-	else
-	{
-		CurrentSaveNode = ValidSaveSlotsRing.GetHead()->GetValue();
-		return false;
-	}
+	CurrentSaveNode = ValidSaveSlotsRing.GetHead()->GetValue();
+	return false;
 }
 
 bool UGameSaveManager::SetPreviewSlotAsCurrentSlot()
@@ -280,18 +277,12 @@ bool UGameSaveManager::SetPreviewSlotAsCurrentSlot()
 		CurrentSaveNode = ValidSaveSlotsRing.FindNode(CurrentSaveNode)->GetPrevNode()->GetValue();
 		return true;
 	}
-	else
+	if (ValidSaveSlotsRing.GetTail())
 	{
-		if (ValidSaveSlotsRing.GetTail())
-		{
-			CurrentSaveNode = ValidSaveSlotsRing.GetTail()->GetValue();
-			return false;
-		}
-		else
-		{
-			return false;
-		}
+		CurrentSaveNode = ValidSaveSlotsRing.GetTail()->GetValue();
+		return false;
 	}
+	return false;
 }
 
 FSaveSlotInfo& UGameSaveManager::GetPreviewSlot()
@@ -305,10 +296,7 @@ FSaveSlotInfo& UGameSaveManager::GetPreviewSlot()
 	// {
 	// 	return ValidSaveSlotsRing.FindNode(CurrentSaveNode)->GetPrevNode()->GetValue();
 	// }
-	else
-	{
-		return ValidSaveSlotsRing.GetTail()->GetValue();
-	}
+	return ValidSaveSlotsRing.GetTail()->GetValue();
 }
 
 bool UGameSaveManager::SetNextSlotAsCurrentSlot()
@@ -318,18 +306,12 @@ bool UGameSaveManager::SetNextSlotAsCurrentSlot()
 		CurrentSaveNode = ValidSaveSlotsRing.FindNode(CurrentSaveNode)->GetNextNode()->GetValue();
 		return true;
 	}
-	else
+	if (ValidSaveSlotsRing.GetHead())
 	{
-		if (ValidSaveSlotsRing.GetHead())
-		{
-			CurrentSaveNode = ValidSaveSlotsRing.GetHead()->GetValue();
-			return false;
-		}
-		else
-		{
-			return false;
-		}
+		CurrentSaveNode = ValidSaveSlotsRing.GetHead()->GetValue();
+		return false;
 	}
+	return false;
 }
 
 FSaveSlotInfo& UGameSaveManager::GetNextSlot()
@@ -338,10 +320,7 @@ FSaveSlotInfo& UGameSaveManager::GetNextSlot()
 	{
 		return ValidSaveSlotsRing.FindNode(CurrentSaveNode)->GetNextNode()->GetValue();
 	}
-	else
-	{
-		return ValidSaveSlotsRing.GetHead()->GetValue();
-	}
+	return ValidSaveSlotsRing.GetHead()->GetValue();
 }
 
 int32 UGameSaveManager::GetValidSaveSlotsRingNumber()

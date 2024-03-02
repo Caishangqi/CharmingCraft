@@ -52,8 +52,6 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnBuffAddToBuffListRepeat OnBuffAddToBuffListRepeat;
 
-
-
 private:
 	TObjectPtr<UBuffInfo> SearchBuff(int32 Id);
 };

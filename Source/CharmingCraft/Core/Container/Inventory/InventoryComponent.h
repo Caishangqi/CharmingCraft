@@ -16,7 +16,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInventoryUpdateIndex, int32, Index);
 
-UCLASS(Blueprintable,ClassGroup=(Inventory, Common),ShowCategories=(Mobility), editinlinenew, meta=(BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup=(Inventory, Common), ShowCategories=(Mobility), editinlinenew,
+	meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()

@@ -41,5 +41,4 @@ public:
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
-	
 };

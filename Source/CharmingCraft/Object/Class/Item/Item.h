@@ -50,7 +50,7 @@ public: // Methods
 
 	UItem();
 	UFUNCTION(BlueprintCallable)
-	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity);
+	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator);
 	UFUNCTION(BlueprintCallable)
 	virtual void EndItemInteract();
 };

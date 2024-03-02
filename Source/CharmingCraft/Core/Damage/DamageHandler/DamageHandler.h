@@ -24,6 +24,6 @@ public:
 	virtual void HandleDamage(FHitData HitData);
 	virtual void SetNextHandler(UDamageHandler* NewNextHandler);
 	virtual UDAttributeComponent* GetOuterAttributeComponent();
-	
+
 	virtual void ApplyDataToAttribute(APawn* InstigatorPawn, float Data);
 };

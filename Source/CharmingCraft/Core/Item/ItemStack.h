@@ -21,7 +21,7 @@ class CHARMINGCRAFT_API UItemStack : public UPersistentDataContainer
 public:
 	// Sets default values for this component's properties
 	UItemStack();
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	int32 Amount;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
@@ -31,12 +31,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	UItemMeta* ItemMeta;
 
-	
 protected:
 
 
 public:
-	
 	UItemStack* CopyData();
 
 	// Factory Method
@@ -59,8 +57,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static UItemStack* CreateItemStackFromItemClass(UObject* Outer, TSubclassOf<UItem> ItemClassName,
 	                                                const int32 SetAmount);
+
 public:
-	
 	UFUNCTION(BlueprintCallable)
 	UItem* GetItemClass() const;
 

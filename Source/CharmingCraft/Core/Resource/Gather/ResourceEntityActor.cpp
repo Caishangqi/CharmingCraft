@@ -10,15 +10,13 @@ AResourceEntityActor::AResourceEntityActor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	HitBox =  CreateDefaultSubobject<UBoxComponent>("HitBox");
+	HitBox = CreateDefaultSubobject<UBoxComponent>("HitBox");
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>("DefaultSceneRoot");
 	RootComponent = DefaultSceneRoot;
 	HitBox->SetupAttachment(RootComponent);
 
 	// Data
 	CurrentStage = 0;
-	
-	
 }
 
 // Called when the game starts or when spawned
@@ -32,4 +30,3 @@ void AResourceEntityActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

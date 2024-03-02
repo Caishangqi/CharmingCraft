@@ -59,7 +59,6 @@ ASwordEntityActorP5::ASwordEntityActorP5()
 void ASwordEntityActorP5::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -67,4 +66,3 @@ void ASwordEntityActorP5::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

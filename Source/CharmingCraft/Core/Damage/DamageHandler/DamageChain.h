@@ -43,5 +43,4 @@ public:
 
 protected:
 	static const TObjectPtr<UDamageHandler> CreateDamageHandler(EDamageHandlerType HandlerType, UObject* Outer);
-	
 };

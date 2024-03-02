@@ -14,6 +14,7 @@ UCLASS()
 class CHARMINGCRAFT_API UPlayerInventoryWidget : public UContainerWidget
 {
 	GENERATED_BODY()
+
 public:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;

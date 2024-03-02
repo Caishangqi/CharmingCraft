@@ -25,7 +25,7 @@ public:
 		MeshComp->SetMaterial(0, PreviewMaterial);
 	}
 
-	
+
 	UFUNCTION(BlueprintCallable, Category = "Render")
 	static void ApplyCostumeToPlayer(ACharacter* Character, UMaterial* PreviewMaterial)
 	{
@@ -53,10 +53,7 @@ public:
 			TObjectPtr<UMaterial> FoundMaterial = FoundCostume.CostumeMaterial;
 			return FoundMaterial;
 		}
-		else
-		{
-			return nullptr;
-		}
+		return nullptr;
 	}
 
 	// If return true, indicate not a boundary Slot

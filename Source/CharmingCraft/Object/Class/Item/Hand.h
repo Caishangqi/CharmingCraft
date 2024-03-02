@@ -4,10 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Weapon.h"
-#include "../Core/Item/Meta/ItemMeta.h"
 #include "Hand.generated.h"
-
-class ADCharacter;
 /**
  * 
  */
@@ -18,12 +15,4 @@ class CHARMINGCRAFT_API UHand : public UWeapon
 
 public:
 	UHand();
-
-	TObjectPtr<ADCharacter> Character;
-
-	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity) override;
-	virtual void OnWeaponUse() override;
-	virtual void OnWeaponHit(UItemStack* WeaponHit, APawn* Instigator, AItemEntityActor* ItemActorEntity,
-	                         AActor* HitEntity) override;
-	virtual void EndItemInteract() override;
 };

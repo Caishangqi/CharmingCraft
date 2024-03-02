@@ -368,7 +368,7 @@ void UInventoryComponent::BeginPlay()
 	// TODO 可以优化为另一个世界生成，这个世界优先加载
 	for (UItemStack* Item : Inventory)
 	{
-		UItemEntityUtilityLibrary::SetItem2DIconFromItemEntity(Item,GetWorld());
+		UItemEntityUtilityLibrary::SetItem2DIconFromItemEntity(Item, GetWorld());
 	}
 }
 

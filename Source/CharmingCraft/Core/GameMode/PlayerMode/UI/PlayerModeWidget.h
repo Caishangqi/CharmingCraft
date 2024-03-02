@@ -19,9 +19,9 @@ class CHARMINGCRAFT_API UPlayerModeWidget : public UUserWidget
 public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UPlayerModeManager> PlayerModeManager;
-	
+
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-	void OnPlayerModeChangeEvent(ACharacter * Instigator, EPlayerMode ToMode);
+	void OnPlayerModeChangeEvent(ACharacter* Instigator, EPlayerMode ToMode);
 };

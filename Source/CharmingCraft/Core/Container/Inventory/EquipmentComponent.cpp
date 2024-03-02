@@ -41,20 +41,6 @@ bool UEquipmentComponent::UpdateEquipmentModelToEntity(UObject* Instigator, UInv
                                                        UItemStack* ItemBeingTransfer)
 {
 	/* Update Other Slot, Delete or change */
-	if (TargetContainer->IsA(UEquipmentComponent::StaticClass()))
-	{
-		if (Inventory[TargetIndex]->ItemMeta->ItemEntityActor)
-		{
-			Inventory[TargetIndex]->ItemMeta->ItemEntityActor->Destroy();
-		}
-	}
-	else if (TargetContainer->IsA(UInventoryComponent::StaticClass()))
-	{
-		if (TargetContainer->Inventory[TargetIndex]->ItemMeta->ItemEntityActor)
-		{
-			TargetContainer->Inventory[TargetIndex]->ItemMeta->ItemEntityActor->Destroy();
-		}
-	}
 
 	if (TargetContainer == SourceContainer)
 	{
@@ -72,6 +58,17 @@ bool UEquipmentComponent::UpdateEquipmentModelToEntity(UObject* Instigator, UInv
 		AttachNewEquipmentModelToEntity(SourceIndex);
 		return true;
 	}
+
+	if (TargetContainer->Inventory[TargetIndex] && TargetContainer->Inventory[TargetIndex]->ItemMeta->ItemEntityActor)
+	{
+		TargetContainer->Inventory[TargetIndex]->ItemMeta->ItemEntityActor->Destroy();
+	}
+
+	if (SourceContainer->Inventory[SourceIndex] && SourceContainer->Inventory[SourceIndex]->ItemMeta->ItemEntityActor)
+	{
+		SourceContainer->Inventory[SourceIndex]->ItemMeta->ItemEntityActor->Destroy();
+	}
+
 
 	return AttachNewEquipmentModelToEntity(TargetIndex);
 }

@@ -250,12 +250,9 @@ bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 		Player->ActionComponent->MainHandAction();
 		return true;
 	}
-	else
-	{
-		// 给AI控制器类里面设置点击的目标, 传参到这个类
-		AIController->TargetActor = TargetCreature.Get();
-		AIController->MoveToActor(TargetCreature, Player->AttributeComp->AttackRange, true, true, true,
-		                          nullptr, true);
-		return false;
-	}
+	// 给AI控制器类里面设置点击的目标, 传参到这个类
+	AIController->TargetActor = TargetCreature.Get();
+	AIController->MoveToActor(TargetCreature, Player->AttributeComp->AttackRange, true, true, true,
+	                          nullptr, true);
+	return false;
 }

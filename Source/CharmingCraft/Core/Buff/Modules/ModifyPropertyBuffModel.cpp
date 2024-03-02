@@ -14,5 +14,5 @@ UModifyPropertyBuffModel::UModifyPropertyBuffModel()
 void UModifyPropertyBuffModel::Apply_Implementation(UBuffInfo* BuffInfo, FHitData& HitData)
 {
 	Super::Apply_Implementation(BuffInfo, HitData);
-	AttributeComponent->OnAttributeChange.Broadcast(PlayerAttributeDelta,BuffInfo);
+	AttributeComponent->OnAttributeChange.Broadcast(PlayerAttributeDelta, BuffInfo);
 }

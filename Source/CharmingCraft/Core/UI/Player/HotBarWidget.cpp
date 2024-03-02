@@ -14,4 +14,3 @@ void UHotBarWidget::NativeConstruct()
 	PlayerModeManager = GameInstance->GetPlayerModeManager();
 	PlayerModeManager->OnPlayerModeChangeDelegate.AddDynamic(this, &UHotBarWidget::DisplayHotBarByGameMode);
 }
-

@@ -29,7 +29,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Inventory")
 	TObjectPtr<UInventoryComponent> InventoryComponent;
 
-	
 protected:
 	/* 方法 */
 };

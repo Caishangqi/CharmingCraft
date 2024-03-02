@@ -21,16 +21,14 @@ void UHealthIndicator::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
 // Called every frame
 void UHealthIndicator::TickComponent(float DeltaTime, ELevelTick TickType,
-                                             FActorComponentTickFunction* ThisTickFunction)
+                                     FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
-

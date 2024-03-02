@@ -18,7 +18,6 @@ class CHARMINGCRAFT_API UModifyPropertyBuffModel : public UBaseBuffModel
 public:
 	UModifyPropertyBuffModel();
 
-	
 
 	/* The Delta Value you want to apply to Target or Instigator Attribute */
 	UPROPERTY(BlueprintReadWrite)

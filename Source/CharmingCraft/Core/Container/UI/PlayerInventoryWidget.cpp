@@ -13,9 +13,7 @@ void UPlayerInventoryWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	UE_LOG(LogChamingCraftWidgetHandler, Display,
-		   TEXT("[✅]  Add Inventory: %s to Widget %s "), *ContainInventory->GetName(), *this->GetName());
-	 
-	
+	       TEXT("[✅]  Add Inventory: %s to Widget %s "), *ContainInventory->GetName(), *this->GetName());
 }
 
 void UPlayerInventoryWidget::NativeDestruct()

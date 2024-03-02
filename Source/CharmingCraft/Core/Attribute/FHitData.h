@@ -5,6 +5,7 @@
 #include "FHitData.generated.h"
 
 class UBuffInfo;
+
 USTRUCT(BlueprintType)
 struct FHitData : public FTableRowBase
 {

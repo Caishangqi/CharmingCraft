@@ -39,7 +39,7 @@ public:
 	TObjectPtr<AItemEntityActor> ItemEntityActor;
 
 	UFUNCTION(Blueprintable)
-	virtual AItemEntityActor * CreateItemEntityActor(const UObject* WorldContextObject);
+	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject);
 
 protected:
 	// Called when the game starts 

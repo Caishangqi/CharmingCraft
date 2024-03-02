@@ -18,7 +18,7 @@ UGameEventHandler::UGameEventHandler()
 	static ConstructorHelpers::FClassFinder<ADCharacter> BlueprintClass(
 		TEXT("/Game/CharmingCraft/PlayerCharacter.PlayerCharacter"));
 
-	if (BlueprintClass.Class != NULL)
+	if (BlueprintClass.Class != nullptr)
 	{
 		BlueprintCharacterClassReference = BlueprintClass.Class;
 	}

@@ -8,7 +8,7 @@ UItem::UItem()
 	MaxStackSize = 64;
 }
 
-void UItem::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator, AActor* ItemActorEntity)
+void UItem::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)
 {
 }
 

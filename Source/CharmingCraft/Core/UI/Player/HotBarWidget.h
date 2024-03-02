@@ -27,7 +27,6 @@ public:
 
 	virtual void NativeConstruct() override;
 
-
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void DisplayHotBarByGameMode(ACharacter* Character, EPlayerMode TargetMode);

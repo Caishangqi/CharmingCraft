@@ -19,13 +19,10 @@ bool UWorldManager::LoadGameLevel(FName LevelName)
 		UGameplayStatics::LoadStreamLevel(this, LevelName, true, true, LatentInfo);
 		return false;
 	}
-	else
-	{
-		UGameplayStatics::OpenLevel(this, FName("L_PersistentLevel"));
-		// 异步加载关卡
-		UGameplayStatics::LoadStreamLevel(this, LevelName, true, true, LatentInfo);
-		return true;
-	}
+	UGameplayStatics::OpenLevel(this, FName("L_PersistentLevel"));
+	// 异步加载关卡
+	UGameplayStatics::LoadStreamLevel(this, LevelName, true, true, LatentInfo);
+	return true;
 }
 
 void UWorldManager::OnLevelLoadedCallback()

@@ -15,7 +15,6 @@ AWorldStaticBiome::AWorldStaticBiome()
 void AWorldStaticBiome::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -23,4 +22,3 @@ void AWorldStaticBiome::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

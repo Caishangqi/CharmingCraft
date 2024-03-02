@@ -7,7 +7,7 @@ AShowcaseGameMode::AShowcaseGameMode()
 {
 	DefaultPawnClass = nullptr;
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerClassFinder(
-	TEXT("/Game/CharmingCraft/Controller/DPlayerController.DPlayerController_C"));
+		TEXT("/Game/CharmingCraft/Controller/DPlayerController.DPlayerController_C"));
 	if (PlayerControllerClassFinder.Succeeded())
 	{
 		PlayerControllerClass = PlayerControllerClassFinder.Class;

@@ -109,7 +109,7 @@ public:
 	void ApplyAttributeChange(FPlayerAttribute DeltaAttribute, UObject* Source);
 
 	UFUNCTION(BlueprintCallable)
-	void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 
 	FPlayerAttribute GetPlayerAttributeData();
 
