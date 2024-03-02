@@ -7,7 +7,7 @@
 #include "CharmingCraft/Object/Structs/FDMaterial.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
-#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentAnimation.h"
 #include "EquipPartComponent.generated.h"
 
 
@@ -60,7 +60,7 @@ public:
 
 	/* Animation */
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UEquipmentComponentAnimation> EquipmentComponentAnimationDataAsset;
+	TObjectPtr<UEquipmentAnimation> EquipmentAnimationDataAsset;
 
 protected:
 	// Called when the game starts

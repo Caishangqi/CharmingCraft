@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentAnimation.h"
 #include "EquipmentEntityActor.generated.h"
 class UBoxComponent;
 class UArrowComponent;
+
 UCLASS()
 class CHARMINGCRAFT_API AEquipmentEntityActor : public AItemEntityActor
 {
@@ -17,12 +19,20 @@ public:
 	AEquipmentEntityActor();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UArrowComponent* EquipmentTopArrow;
+	TObjectPtr<UArrowComponent> EquipmentTopArrow;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UArrowComponent* EquipmentBottomArrow;
+	TObjectPtr<UArrowComponent> EquipmentBottomArrow;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TObjectPtr<USceneComponent> SceneComponent;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UBoxComponent> EquipmentBoxComponent;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TObjectPtr<UEquipmentAnimation> EquipmentAnimation;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

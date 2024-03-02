@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "EquipmentComponentAnimation.generated.h"
+#include "EquipmentAnimation.generated.h"
 
 USTRUCT(Blueprintable)
 struct FAttackStageAnimation
@@ -23,7 +23,7 @@ class UEquipPartComponent;
  * 
  */
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API UEquipmentComponentAnimation : public UPrimaryDataAsset
+class CHARMINGCRAFT_API UEquipmentAnimation : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 	/* 这是映射表,映射Material和ItemMeta之间的关系 */

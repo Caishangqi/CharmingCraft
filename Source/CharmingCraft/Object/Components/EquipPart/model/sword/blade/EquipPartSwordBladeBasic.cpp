@@ -2,7 +2,7 @@
 
 #include "EquipPartSwordBladeBasic.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
-#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentAnimation.h"
 
 // Sets default values for this component's properties
 UEquipPartSwordBladeBasic::UEquipPartSwordBladeBasic()
@@ -27,12 +27,12 @@ UEquipPartSwordBladeBasic::UEquipPartSwordBladeBasic()
 		PartMesh = PartMeshFinder.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UEquipmentComponentAnimation> EquipmentComponentAnimationFinder(
+	static ConstructorHelpers::FObjectFinder<UEquipmentAnimation> EquipmentComponentAnimationFinder(
 		TEXT(
 			"EquipmentComponentAnimation'/Game/CharmingCraft/Assets/models/sword/blade/basic/basic_blade_component_animation.basic_blade_component_animation'"));
 	if (EquipmentComponentAnimationFinder.Succeeded())
 	{
-		EquipmentComponentAnimationDataAsset = EquipmentComponentAnimationFinder.Object;
+		EquipmentAnimationDataAsset = EquipmentComponentAnimationFinder.Object;
 		UE_LOG(LogTemp, Warning,
 		       TEXT("(+) UEquipPartSwordBladeBasic::UEquipPartSwordBladeBasic() AnimationDataAsset Loaded"))
 	}

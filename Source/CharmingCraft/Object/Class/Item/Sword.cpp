@@ -20,6 +20,13 @@ USword::USword()
 	ItemMetaClass = USwordMeta::StaticClass();
 	Socket = EEquipmentSocket::HAND;
 	DescribeText = FText::FromString("A sword is an edged, bladed weapon intended for manual cutting or thrusting.");
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ActorBlueprint(TEXT("Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Sword/Sword.Sword'"));
+	if (ActorBlueprint.Succeeded())
+	{
+		// 蓝图加载成功，你可以使用ActorBlueprint.Object来做进一步的操作，比如创建Actor实例
+		DefaultItemEntityActorClass = ActorBlueprint.Object->GeneratedClass;
+		// 然后你可以使用ActorClass来在游戏世界中创建这个Actor的实例
+	}
 }
 
 
@@ -41,7 +48,7 @@ void USword::OnWeaponUse()
 	Super::OnWeaponUse();
 
 	// TODO 考虑是否让武器只能对敌人造成一次伤害 蒙太奇 + 动画通知
-	FVector Start = SwordActor->EquipmentTopArrow->GetComponentLocation();
+	FVector Start = SwordActor->EquipmentBottomArrow->GetComponentLocation();
 	FVector End = SwordActor->EquipmentTopArrow->GetComponentLocation();
 
 	TArray<FHitResult> HitResults;

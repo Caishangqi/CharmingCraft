@@ -10,7 +10,7 @@
 /**
  * 
  */
-class UEquipmentComponentAnimation;
+class UEquipmentAnimation;
 UCLASS()
 class CHARMINGCRAFT_API UIntegratedMeta : public UItemMeta
 {
@@ -24,7 +24,7 @@ public:
 	
 	/* Animation and Attack Stage */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "LoadedAnimMontage")
-	TObjectPtr<UEquipmentComponentAnimation> LoadedAnimMontage;
+	TObjectPtr<UEquipmentAnimation> LoadedAnimMontage;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "CurrentAttackStage")
 	int CurrentAttackStage;
 

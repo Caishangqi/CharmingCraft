@@ -2,11 +2,14 @@
 
 
 #include "IntegratedMeta.h"
-#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
+
+#include "CharmingCraft/Core/Item/ItemStack.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentAnimation.h"
 
 UIntegratedMeta::UIntegratedMeta()
 {
 	bIsRenderItem = true;
+	
 }
 
 FAttackStageAnimation UIntegratedMeta::GetCurrentAttackAnimationMontage()

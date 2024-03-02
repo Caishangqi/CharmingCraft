@@ -7,7 +7,7 @@
 #include "EquipPartSwordBlade.generated.h"
 
 
-class UEquipmentComponentAnimation;
+class UEquipmentAnimation;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipPartSwordBlade : public UEquipPartComponent

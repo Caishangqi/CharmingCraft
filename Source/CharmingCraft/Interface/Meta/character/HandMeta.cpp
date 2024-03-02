@@ -3,11 +3,11 @@
 
 #include "HandMeta.h"
 
-#include "CharmingCraft/Object/Structs/model/EquipmentComponentAnimation.h"
+#include "CharmingCraft/Object/Structs/model/EquipmentAnimation.h"
 
 UHandMeta::UHandMeta()
 {
-	static ConstructorHelpers::FObjectFinder<UEquipmentComponentAnimation> EquipmentComponentAnimationFinder(
+	static ConstructorHelpers::FObjectFinder<UEquipmentAnimation> EquipmentComponentAnimationFinder(
 		TEXT(
 			"EquipmentComponentAnimation'/Game/CharmingCraft/Assets/models/entity/Character/Animation/attack/punch/basic_punch_component_animation.basic_punch_component_animation'"));
 	if (EquipmentComponentAnimationFinder.Succeeded())

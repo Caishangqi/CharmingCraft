@@ -14,8 +14,8 @@ UPickaxe::UPickaxe()
 	ItemMetaClass = UIntegratedMeta::StaticClass();
 	Socket = EEquipmentSocket::HAND;
 	DescribeText = FText::FromString("A pickaxe, pick-axe, or pick is a generally T-shaped hand tool used for prying.");
-	///Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Pickaxe.Pickaxe'
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ActorBlueprint(TEXT("Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Pickaxe.Pickaxe'"));
+	// /Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Pickaxe/Pickaxe.Pickaxe'
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ActorBlueprint(TEXT("Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Pickaxe/Pickaxe.Pickaxe'"));
 	if (ActorBlueprint.Succeeded())
 	{
 		// 蓝图加载成功，你可以使用ActorBlueprint.Object来做进一步的操作，比如创建Actor实例
