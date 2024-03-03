@@ -120,6 +120,21 @@ void UGameEventHandler::OnContainerItemTransferEvent(UObject* Instigator, UInven
 	                                  ItemBeingTransfer);
 }
 
+void UGameEventHandler::OnResourceEntityBreakEvent(APawn* Instigator, AResourceEntityActor* TargetResourceEntity)
+{
+	OnResourceEntityBreak.Broadcast(Instigator, TargetResourceEntity);
+	UE_LOG(LogChamingCraftCraftResource, Display,
+	       TEXT("[⛏️]  Resource Entity Actor Has been Destroy"));
+	UE_LOG(LogChamingCraftCraftResource, Display,
+	       TEXT(
+		       "		 [I] Instigator =		%s\n"
+		       "		 [T] Target Resource Actor =		%s"
+	       ),
+	       *Instigator->GetName(), *TargetResourceEntity->GetName());
+	// On resource drop crates
+	TargetResourceEntity->OnResourceDestroy();
+}
+
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
 {
 	OnItemDetailDisplay.Broadcast(ItemToDisplay, Creator);

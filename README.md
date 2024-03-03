@@ -31,6 +31,17 @@ this repository.
 
 ## Feature
 
+### Inventory system (Reformated version)
+
+![Inventory System](https://github.com/Caishangqi/CharmingCraft/assets/39553613/fc5dc7c2-f917-46b6-8202-8f1a388e62ed)
+
+- Quick hotbar allow player siwtch different modes (**`Z`-battle**, **`X`-inventory hotbar**, **`C`-building**, **`V`-team**)
+- The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
+- Detailed item pannel show item attributes and icon
+- Quickly close and open container, support player open inventory when moving
+- Auto open player inventory when open any container, close both pannel when player inventory is opened by container not by player. (else close only container)
+- 10 Equipment slot with equip model binding.
+
 ### Equipment assembly
 
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/aa4a85df-a49b-488b-8887-5868ce0d31ec
@@ -59,12 +70,6 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/e0d9ac26-1a67-4d21-8
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/eda346ab-ff80-4fdc-a8c1-e8a36b4b55ba
 
 - When you walk into the room from the outside, the scene switching will be smooth and stylized.
-
-### Inventory system
-
-https://github.com/Caishangqi/CharmingCraft/assets/39553613/4c8520cc-7074-4e26-b144-c87098bafe8e
-
-- The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
 
 ### GAS, Buff and RPG elements
 
@@ -133,6 +138,12 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/d3d29d4b-3049-4419-b
         - _PlayerData.sav_
         - _ProgressData.sav_
         - _RealmData.sav_
+        - 
+### Resource Gathering System
+
+The Resource Gathering System enables players to collect various resources in the game by inheriting from [ResourceEntityActor](https://github.com/Caishangqi/CharmingCraft/blob/main/Source/CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h) to define resource entities that appear in the game. Additionally, the game's Biome system will refresh resources within a specified area over a period of time, ensuring a certain quantity is maintained. Structure See [here](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/resource-system-structure.md).
+
+![Resource Gathering System](https://github.com/Caishangqi/CharmingCraft/assets/39553613/b4e8b2ca-508e-4b02-b186-36732db0fd0f)
 
 ### Levels
 
@@ -178,6 +189,8 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Buff System Include BuffData, BuffInfo, BuffHandler, and BuffModel (Callback) 🟩
 - Game Start UI and World Select UI 🟩
 - Game Serialization System (Json, FString) to UObject ❔
+- Game resource system with regenerated resource 🟩
+- Resource fracture mechanism implement by Chaos Destruction system 🟩
 
 ## Content and Mechanism
 
@@ -190,12 +203,12 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 | Game Start UI and World Select UI                         | Highest  |   ✅   |
 | Game context serialization                                | Highest  |   ✅   |
 | Chunk and build system                                    |   High   |  📝   |
-| Complete attribute UI                                     |  Normal  |  📝   |
+| Complete attribute UI                                     |  Normal  |  ✅   |
 | Quest system with related NPCs                            |  Normal  |  📌   |
 | Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📌   |
 | Resource collection system, ores, trees, farmland         |  Normal  |  📝   |
 | Expand the Level to 1000 x 1000                           |   Low    |  📌   |
-| Biome: Respawn of monsters, resources, creatures          |   Low    |  📌   |
+| Biome: Respawn of monsters, resources, creatures          |   Low    |  📝   |
 | Developing an engaging storyline                          |  Lowest  |  📌   |
 | Reset inventory UI and drag method                        |  Lowest  |   ✅   |
 
@@ -236,6 +249,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
       - Skill (RPG skill system)
       - UI (UI handler and UI template)
       - World (World system)
+      - Resource (Resource System)
     - Controller (Different Controller)
     - Camera (Different Camera)
     - **Content** (**Content** that Extend from **Core** Mechanism)

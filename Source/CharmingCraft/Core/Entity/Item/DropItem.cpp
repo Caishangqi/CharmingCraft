@@ -6,6 +6,7 @@
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -50,25 +51,18 @@ void ADropItem::PostInitializeComponents()
 void ADropItem::Initialize(UItemStack* PassItemStack)
 {
 	ItemStack = PassItemStack;
-	if (ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass()))
+
+
+	if (ItemStack->ItemMeta->IsA(UIntegratedMeta::StaticClass()))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass())"));
 		FVector WeaponLocation(0.0f, -50.0f, 5.0f);
 		FRotator WeaponRotation = FRotator(0.0f, 90.0f, -30.0f);
 		FTransform DefaultTransform(WeaponRotation, WeaponLocation);
 		ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this);
-		AItemEntityActor* WeaponActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
-		WeaponActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-	}
-	else if (ItemStack->ItemMeta->bIsRenderItem)
-	{
-		if (IsValid(ItemStack->ItemMeta->ItemModelMesh))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("ADropItem::Initialize Mesh Ready"));
-		}
-		FRotator DropIconRotation = FRotator(0.0f, -90.0f, 0.0f); // Pitch, Yaw, Roll
-		DropIconMesh->SetRelativeRotation(DropIconRotation);
-		DropIconMesh->SetStaticMesh(ItemStack->ItemMeta->ItemModelMesh);
+		AItemEntityActor* ItemEntityActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
+		//ItemEntityActor->AttachToComponent(DropModelMesh, FAttachmentTransformRules::KeepRelativeTransform);
+		ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 	else
 	{

@@ -241,8 +241,7 @@ void UDInteractionComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, 
 
 bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 {
-	TObjectPtr<ACreature> TargetCreature = Cast<ACreature>(TargetActor);
-	float Distance = FVector::DistXY(Player->GetActorLocation(), TargetCreature->GetActorLocation());
+	float Distance = FVector::DistXY(Player->GetActorLocation(), TargetActor->GetActorLocation());
 	if (Distance < Player->AttributeComp->AttackRange)
 	{
 		/* 转向 */
@@ -251,8 +250,8 @@ bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 		return true;
 	}
 	// 给AI控制器类里面设置点击的目标, 传参到这个类
-	AIController->TargetActor = TargetCreature.Get();
-	AIController->MoveToActor(TargetCreature, Player->AttributeComp->AttackRange, true, true, true,
+	AIController->TargetActor = TargetActor;
+	AIController->MoveToActor(TargetActor, Player->AttributeComp->AttackRange, true, true, true,
 	                          nullptr, true);
 	return false;
 }

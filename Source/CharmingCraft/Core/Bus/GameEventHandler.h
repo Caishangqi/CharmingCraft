@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DCharacter.h"
 #include "../Core/Save/Data/FSaveSlotInfo.h"
+#include "CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h"
 #include "UObject/Object.h"
 #include "GameEventHandler.generated.h"
 
@@ -37,6 +38,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerLeaveDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityBreakDelegate, APawn*, Instigator,
+                                             AResourceEntityActor*, TargetResourceEntity);
+
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
 class CHARMINGCRAFT_API UGameEventHandler : public UObject
@@ -59,6 +63,8 @@ public:
 	FOnPlayerClickMoveDelegate OnPlayerClickMove;
 	UPROPERTY(BlueprintAssignable)
 	FOnContainerItemTransferDelegate OnContainerItemTransfer;
+	UPROPERTY(BlueprintAssignable)
+	FOnResourceEntityBreakDelegate OnResourceEntityBreak;
 
 	FOnItemDetailDisplayDelegate OnItemDetailDisplay;
 
@@ -79,6 +85,8 @@ public:
 	void OnContainerItemTransferEvent(UObject* Instigator, UInventoryComponent* SourceContainer, int32 SourceIndex,
 	                                  UInventoryComponent* TargetContainer, int32 TargetIndex,
 	                                  UItemStack* ItemBeingTransfer);
+	UFUNCTION(BlueprintCallable)
+	void OnResourceEntityBreakEvent(APawn* Instigator, AResourceEntityActor* TargetResourceEntity);
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);

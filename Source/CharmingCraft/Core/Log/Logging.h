@@ -21,6 +21,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftSerilization, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftGameEvent, Log, All);
 
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftWidgetHandler, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftResource, Log, All);
 
 class Logging
 {

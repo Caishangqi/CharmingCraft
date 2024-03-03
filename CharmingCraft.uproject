@@ -13,7 +13,8 @@
 				"CoreUObject",
 				"GamePlayTags",
 				"AIModule",
-				"UMG"
+				"UMG",
+				"GeometryCollectionEngine"
 			]
 		}
 	],
