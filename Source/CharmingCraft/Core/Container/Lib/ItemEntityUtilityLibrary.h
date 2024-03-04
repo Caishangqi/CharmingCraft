@@ -74,6 +74,15 @@ public:
 			/* Prepare Render material copy it to variable*/
 			UMaterialInstanceDynamic* RenderMaterial = DuplicateObject<UMaterialInstanceDynamic>(
 				RenderActor->OutPutMaterialInstanceDynamic, InputMeta);
+			// Read Render Data from ItemClass
+			TObjectPtr<UItemStack> OuterItemStack = Cast<UItemStack>(InputMeta->GetOuter());
+
+			FTransform RenderSpecifyTransform = OuterItemStack->ItemClass.GetDefaultObject()->RenderSpecifyTransform;
+
+			RenderActor->SceneCaptureComponent->SetRelativeRotation(RenderSpecifyTransform.GetRotation());
+			RenderActor->SceneCaptureComponent->SetRelativeLocation(RenderSpecifyTransform.GetLocation()); // 100 85 70
+			RenderActor->SceneCaptureComponent->OrthoWidth = OuterItemStack->ItemClass.GetDefaultObject()->OrthoWidth;
+
 			RenderActor->SceneCaptureComponent->CaptureScene();
 			RenderActor->Destroy();
 			ItemEntityActor->Destroy();

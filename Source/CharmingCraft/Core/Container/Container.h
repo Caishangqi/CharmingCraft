@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "IInventoryHolder.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "Container.generated.h"
 
 /**
@@ -14,7 +14,7 @@
 class UInventoryComponent;
 
 UCLASS()
-class CHARMINGCRAFT_API AContainer : public AInteractObject, public IInventoryHolder
+class CHARMINGCRAFT_API AContainer : public ABlockEntityActor, public IInventoryHolder
 {
 	GENERATED_BODY()
 

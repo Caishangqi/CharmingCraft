@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h"
+#include "CharmingCraft/Core/Entity/Creature/Creature.h"
 #include "FBiomeData.generated.h"
 
 USTRUCT(BlueprintType)
@@ -9,8 +10,8 @@ struct FBiomeData
 	GENERATED_BODY()
 
 public:
-	FBiomeData(): BiomeDataName(), MaxPerBiome(0), MinPerBiome(0), RegenerateTick(0),
-	              SuccessRate(0)
+	FBiomeData(): BiomeDataName(), CreatureEntityActorClass(nullptr), MaxPerBiome(0), MinPerBiome(0),
+	              RegenerateTick(0), SuccessRate(0)
 	{
 	}
 

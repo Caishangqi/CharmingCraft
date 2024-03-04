@@ -46,6 +46,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Description")
 	FText DescribeText;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Render")
+	FTransform RenderSpecifyTransform;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Render")
+	int32 OrthoWidth;
+
 public: // Methods
 
 	UItem();

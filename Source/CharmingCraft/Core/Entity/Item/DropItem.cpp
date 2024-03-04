@@ -5,6 +5,7 @@
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
+#include "CharmingCraft/Core/Item/Meta/BlockMeta.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
 #include "Components/BoxComponent.h"
@@ -12,6 +13,7 @@
 
 ADropItem::ADropItem()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	// Create the invisible collision box and attach it to the RootComponent of the actor
 	InvisibleCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("InvisibleCollision"));
 	RootComponent = InvisibleCollision;
@@ -33,19 +35,8 @@ ADropItem::ADropItem()
 	DropIconMesh->SetRelativeRotation(DropIconRotation);
 	DropIconMesh->SetCastShadow(false);
 	DropIconMesh->SetReceivesDecals(false);
-	SetupCollision();
 }
 
-void ADropItem::SetupCollision()
-{
-	// 设置Pawn通道的碰撞响应为ECR_Ignore
-	DropIconMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
-}
-
-void ADropItem::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-}
 
 // bRenderingResourcesInitialized
 void ADropItem::Initialize(UItemStack* PassItemStack)
@@ -59,14 +50,25 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 		FVector WeaponLocation(0.0f, -50.0f, 5.0f);
 		FRotator WeaponRotation = FRotator(0.0f, 90.0f, -30.0f);
 		FTransform DefaultTransform(WeaponRotation, WeaponLocation);
-		ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this);
-		AItemEntityActor* ItemEntityActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
-		//ItemEntityActor->AttachToComponent(DropModelMesh, FAttachmentTransformRules::KeepRelativeTransform);
+		if (ItemStack->ItemMeta->ItemEntityActorClass)
+		{
+			ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this);
+			AItemEntityActor* ItemEntityActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
+			//ItemEntityActor->AttachToComponent(DropModelMesh, FAttachmentTransformRules::KeepRelativeTransform);
+			ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		}
+	}
+	else if (ItemStack->ItemMeta->IsA(UBlockMeta::StaticClass())) // Handle Block Item Drop
+	{
+		AItemEntityActor* ItemEntityActor = Cast<UBlockMeta>(ItemStack->ItemMeta)->CreateItemEntityActor(this);
+		FVector Scale(0.75, 0.75, 0.75);
 		ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		ItemEntityActor->SetActorTransform(FTransform(GetActorRotation(), GetActorLocation(), Scale));
 	}
 	else
 	{
 		DropIconMesh->SetStaticMesh(ItemStack->GetItemClass()->StaticMesh);
+		DropIconMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	}
 }
 
@@ -101,5 +103,27 @@ void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 void ADropItem::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("ADropItem::BeginPlay()"));
+	// 旋转
+	TArray<TObjectPtr<AActor>> OutActors;
+	GetAttachedActors(OutActors);
+	for (auto OutActor : OutActors)
+	{
+		TObjectPtr<UStaticMeshComponent> StaticMeshComponent = Cast<UStaticMeshComponent>(
+			OutActor->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+		StaticMeshComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	}
+}
+
+void ADropItem::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	FRotator NewRotation = GetActorRotation();
+	NewRotation.Yaw += DeltaSeconds * RotationSpeed; // 逆时针旋转，如果你想顺时针旋转，可以减少Yaw值
+	SetActorRotation(NewRotation);
+
+	// 上下波动
+	FVector NewLocation = GetActorLocation();
+	BobbingPhase += DeltaSeconds * BobbingSpeed;
+	NewLocation.Z += FMath::Sin(BobbingPhase) * BobbingAmplitude;
+	SetActorLocation(NewLocation);
 }

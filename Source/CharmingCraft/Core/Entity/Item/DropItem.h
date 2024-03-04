@@ -18,7 +18,6 @@ class CHARMINGCRAFT_API ADropItem : public AInteractObject
 
 public:
 	ADropItem();
-	void SetupCollision();
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category= "Drop Item Properties")
 	TObjectPtr<UItemStack> ItemStack;
@@ -32,10 +31,26 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
 	UBoxComponent* InvisibleCollision;
 
-	virtual void PostInitializeComponents() override;
+	// 用于控制旋转速度的变量
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
+	float RotationSpeed = 30.0f;
+
+	// 用于控制上下移动速度的变量
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
+	float BobbingSpeed = 4.0f;
+
+	// 用于控制上下移动幅度的变量
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
+	float BobbingAmplitude = 1.0f;
+	
 
 	void Initialize(UItemStack* PassItemStack);
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+private:
+	// 内部变量，用于追踪上下移动的相位
+	float BobbingPhase = 0.0f;
 };
