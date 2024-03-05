@@ -15,6 +15,6 @@ void UPlayerModeWidget::NativeConstruct()
 	PlayerModeManager->OnPlayerModeChangeDelegate.AddDynamic(this, &UPlayerModeWidget::OnPlayerModeChangeEvent);
 }
 
-void UPlayerModeWidget::OnPlayerModeChangeEvent(ACharacter* Instigator, EPlayerMode ToMode)
+void UPlayerModeWidget::OnPlayerModeChangeEvent(EPlayerMode FromMode, ACharacter* Instigator, EPlayerMode ToMode)
 {
 }

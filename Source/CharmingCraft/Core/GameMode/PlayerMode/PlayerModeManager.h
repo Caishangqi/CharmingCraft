@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "EPlayerMode.h"
+#include "../Core/GameMode/Enum/EPlayerMode.h"
+#include "Mode/PlayerModeBase.h"
 #include "UObject/Object.h"
 #include "PlayerModeManager.generated.h"
 
@@ -11,8 +12,9 @@ class ADCharacter;
 /**
  * 
  */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerModeChangeDelegate, ACharacter *, Instigator, EPlayerMode,
-                                             ToMode);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerModeChangeDelegate, EPlayerMode, FromGameMode, ACharacter *,
+                                               Instigator, EPlayerMode,
+                                               ToMode);
 
 UCLASS()
 class CHARMINGCRAFT_API UPlayerModeManager : public UObject
@@ -22,11 +24,14 @@ class CHARMINGCRAFT_API UPlayerModeManager : public UObject
 public:
 	UPlayerModeManager();
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	EPlayerMode CurrentPlayerMode;
+	TObjectPtr<UPlayerModeBase> CurrentPlayerMode;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, BlueprintAssignable)
 	FOnPlayerModeChangeDelegate OnPlayerModeChangeDelegate;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TMap<EPlayerMode, TObjectPtr<UPlayerModeBase>> LoadedPlayerMods;
+
 	UFUNCTION(BlueprintCallable)
-	void ChangePlayerMode(ACharacter* Instigator, EPlayerMode NewPlayerMode);
+	void ChangePlayerMode(EPlayerMode FromGameMode, ACharacter* Instigator, EPlayerMode NewPlayerMode);
 };

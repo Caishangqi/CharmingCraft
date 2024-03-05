@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "InputMappingContext.h"
 #include "DPlayerController.generated.h"
+
 
 class ADPlayerAIController;
 class UCharmingCraftInstance;
@@ -24,6 +26,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UGameEventHandler> GamePlayLogicManager;
+
+	/** Please add a variable description */
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="MappingContext")
+	TObjectPtr<UInputMappingContext> GlobalMappingContext;
 
 	virtual void BeginPlay() override;
 };

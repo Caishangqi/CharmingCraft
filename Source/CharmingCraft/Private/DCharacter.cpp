@@ -287,8 +287,6 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	                                 &UDActionComponent::SkillStandbyPressed);
 	PlayerInputComponent->BindAction("Standby", IE_Released, ActionComponent,
 	                                 &UDActionComponent::SkillStandbyReleased);
-
-	PlayerInputComponent->BindAction("ActionOne", IE_Released, ActionComponent, &UDActionComponent::CastActionOne);
 }
 
 void ADCharacter::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,

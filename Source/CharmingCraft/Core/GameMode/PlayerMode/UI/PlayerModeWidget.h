@@ -23,5 +23,5 @@ public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION(BlueprintCallable)
-	void OnPlayerModeChangeEvent(ACharacter* Instigator, EPlayerMode ToMode);
+	void OnPlayerModeChangeEvent(EPlayerMode FromMode, ACharacter* Instigator, EPlayerMode ToMode);
 };

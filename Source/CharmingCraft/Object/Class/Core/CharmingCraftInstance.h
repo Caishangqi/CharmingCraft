@@ -9,7 +9,6 @@
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
-
 class UPlayerModeManager;
 class UGameEventHandler;
 class UWorldManager;
@@ -44,6 +43,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
 	TObjectPtr<ADCharacter> PlayerCharacter;
 
+
 	UCharmingCraftInstance();
 
 	// 获取存档管理器实例
@@ -64,6 +64,7 @@ public:
 	UPlayerModeManager* GetPlayerModeManager() const { return PlayerModeManager; }
 
 	UUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
+	
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
 
@@ -88,4 +89,5 @@ public:
 
 	UPROPERTY()
 	TObjectPtr<UUserWidgetEventHandler> UserWidgetEventHandler;
+
 };

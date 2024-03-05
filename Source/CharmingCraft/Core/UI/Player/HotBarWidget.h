@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CharmingCraft/Core/GameMode/PlayerMode/EPlayerMode.h"
+#include "CharmingCraft/Core/GameMode/Enum/EPlayerMode.h"
 #include "CharmingCraft/Core/UI/ICommonUI.h"
 #include "HotBarWidget.generated.h"
 
@@ -29,5 +29,5 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void DisplayHotBarByGameMode(ACharacter* Character, EPlayerMode TargetMode);
+	void DisplayHotBarByGameMode(EPlayerMode FromMode, ACharacter* Character, EPlayerMode TargetMode);
 };
