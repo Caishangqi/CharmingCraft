@@ -9,6 +9,7 @@
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
+class UBuildModuleManager;
 class UPlayerModeManager;
 class UGameEventHandler;
 class UWorldManager;
@@ -62,9 +63,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "PlayerModeManager")
 	UPlayerModeManager* GetPlayerModeManager() const { return PlayerModeManager; }
+	UFUNCTION(BlueprintCallable, Category = "BuildModuleManager")
+	UBuildModuleManager* GetBuildModuleManager() const { return BuildModuleManager; }
 
 	UUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
-	
+
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
 
@@ -90,4 +93,6 @@ public:
 	UPROPERTY()
 	TObjectPtr<UUserWidgetEventHandler> UserWidgetEventHandler;
 
+	UPROPERTY()
+	UBuildModuleManager* BuildModuleManager;
 };

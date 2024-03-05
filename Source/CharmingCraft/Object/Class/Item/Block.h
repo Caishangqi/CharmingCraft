@@ -20,4 +20,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Block")
 	TSubclassOf<ABlockEntityActor> DefaultBlockEntityActorClass;
+
+	
 };

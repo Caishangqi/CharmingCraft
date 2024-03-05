@@ -5,8 +5,8 @@
 
 UBlock::UBlock()
 {
-	// 位置
-	FVector Position(70, 85, 140);
+	// 位置 70, 85, 80
+	FVector Position(100, 115, 115);
 	// 旋转，这里使用欧拉角创建四元数旋转，假设只绕Z轴旋转90度
 	//							green		blue		red
 	FRotator3d Rotation(FRotator3d(325, 230, 0));

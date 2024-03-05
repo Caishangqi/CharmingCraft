@@ -22,4 +22,9 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void DisableBlockCollision();
+	UFUNCTION(BlueprintCallable)
+	void EnableBlockCollision();
 };

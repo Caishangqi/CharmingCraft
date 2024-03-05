@@ -15,7 +15,6 @@ ABlockEntityActor::ABlockEntityActor()
 void ABlockEntityActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -24,3 +23,26 @@ void ABlockEntityActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void ABlockEntityActor::DisableBlockCollision()
+{
+	TArray<TObjectPtr<AActor>> OutActors;
+	GetAttachedActors(OutActors);
+	for (auto OutActor : OutActors)
+	{
+		TObjectPtr<UStaticMeshComponent> StaticMeshComponent = Cast<UStaticMeshComponent>(
+			OutActor->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+		StaticMeshComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+	}
+}
+
+void ABlockEntityActor::EnableBlockCollision()
+{
+	TArray<TObjectPtr<AActor>> OutActors;
+	GetAttachedActors(OutActors);
+	for (auto OutActor : OutActors)
+	{
+		TObjectPtr<UStaticMeshComponent> StaticMeshComponent = Cast<UStaticMeshComponent>(
+			OutActor->GetComponentByClass(UStaticMeshComponent::StaticClass()));
+		StaticMeshComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	}
+}

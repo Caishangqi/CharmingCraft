@@ -29,3 +29,23 @@ AItemEntityActor* UBlockMeta::CreateItemEntityActor(const UObject* WorldContextO
 	UGameplayStatics::FinishSpawningActor(BlockEntityActor, DefaultTransform);
 	return static_cast<AItemEntityActor*>(BlockEntityActor);
 }
+
+ABlockEntityActor* UBlockMeta::PrepareCreateBlockEntityActor(const UObject* WorldContextObject)
+{
+	FTransform DefaultTransform;
+	TObjectPtr<UItemStack> OuterItemStack = Cast<UItemStack>(this->GetOuter());
+	TObjectPtr<ABlockEntityActor> BlockEntityActor = Cast<ABlockEntityActor>(
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject,
+		                                                   Cast<UBlock>(OuterItemStack->ItemClass.GetDefaultObject())->
+		                                                   DefaultBlockEntityActorClass,
+		                                                   DefaultTransform));
+	return BlockEntityActor;
+}
+
+ABlockEntityActor* UBlockMeta::CreateBlockEntityActor(const UObject* WorldContextObject)
+{
+	FTransform DefaultTransform;
+	TObjectPtr<ABlockEntityActor> BlockEntityActor = PrepareCreateBlockEntityActor(WorldContextObject);
+	UGameplayStatics::FinishSpawningActor(BlockEntityActor, DefaultTransform);
+	return BlockEntityActor;
+}

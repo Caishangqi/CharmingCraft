@@ -8,6 +8,7 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
+#include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "Engine/DataTable.h"
 
 UCharmingCraftInstance::UCharmingCraftInstance()
@@ -83,8 +84,7 @@ void UCharmingCraftInstance::Init()
 
 	GamePlayLogicManager = NewObject<UGameEventHandler>(this, UGameEventHandler::StaticClass());
 	PlayerModeManager = NewObject<UPlayerModeManager>(this, UPlayerModeManager::StaticClass());
-
-	UE_LOG(LogChamingCraftSave, Display, TEXT("[!] UCharmingCraftInstance::Init()"));
+	BuildModuleManager = NewObject<UBuildModuleManager>(this, UBuildModuleManager::StaticClass());
 }
 
 void UCharmingCraftInstance::OnStart()

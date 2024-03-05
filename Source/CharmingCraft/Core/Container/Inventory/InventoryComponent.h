@@ -44,6 +44,9 @@ public:
 	/* 将物品从到物品栏移除函数 ItemStack 版本 */
 	UFUNCTION(BlueprintCallable)
 	virtual void RemoveInventory(int32 Index, bool RemoveWholeStack, bool IsConsumed);
+	/* 将物品从到物品栏移除函数 ItemStack 版本 */
+	UFUNCTION(BlueprintCallable)
+	virtual void RemoveInventoryByItemStack(UItemStack * RemovedItemStack, int32 Amount);
 	/* 找到物品栏可以堆叠物品的slot ItemStack 版本 */
 	UFUNCTION(BlueprintCallable)
 	virtual int32 FindSlot(UItemStack* ItemID);

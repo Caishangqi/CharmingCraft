@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DCharacter.h"
 #include "../Core/Save/Data/FSaveSlotInfo.h"
+#include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h"
 #include "UObject/Object.h"
 #include "GameEventHandler.generated.h"
@@ -28,6 +29,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDetailDisplayDelegate, UItem
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator,
                                              UUserWidget *, TargetWidget);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuildPreviewTraceDelegate, UItemStack *, PreviewItemStack, ACharacter*,
+                                             Instigator);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnBlockPlaceDelegate, UItemStack*, PreviewItemStack, ABlockEntityActor*,
+                                               BlockEntityActor, ACharacter*, Instigator);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnContainerItemTransferDelegate, UObject*, Instigator,
                                              UInventoryComponent*, SourceContainer, int32, SourceIndex,
@@ -68,6 +75,12 @@ public:
 
 	FOnItemDetailDisplayDelegate OnItemDetailDisplay;
 
+	// Building System
+	UPROPERTY(BlueprintAssignable)
+	FOnBuildPreviewTraceDelegate OnBuildPreviewTrace;
+	UPROPERTY(BlueprintAssignable)
+	FOnBlockPlaceDelegate OnBlockPlace;
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ADCharacter> BlueprintCharacterClassReference;
 
@@ -87,6 +100,11 @@ public:
 	                                  UItemStack* ItemBeingTransfer);
 	UFUNCTION(BlueprintCallable)
 	void OnResourceEntityBreakEvent(APawn* Instigator, AResourceEntityActor* TargetResourceEntity);
+	// Building
+	UFUNCTION(BlueprintCallable)
+	void OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator);
+	UFUNCTION(BlueprintCallable)
+	void OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEntityActor* BlockEntityActor, ACharacter* Instigator);
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);

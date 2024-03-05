@@ -27,7 +27,7 @@ public:
 
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="默认")
-	TSoftObjectPtr<UInputMappingContext> ModeMappingContext;
+	TSoftObjectPtr<UInputMappingContext> ModeMappingContext; // Need use TSoftObjectPtr
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UPlayerModeManager> ParentModeManager;
 	UFUNCTION(BlueprintCallable)

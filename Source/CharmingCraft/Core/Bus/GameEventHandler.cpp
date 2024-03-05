@@ -135,6 +135,27 @@ void UGameEventHandler::OnResourceEntityBreakEvent(APawn* Instigator, AResourceE
 	TargetResourceEntity->OnResourceDestroy();
 }
 
+void UGameEventHandler::OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator)
+{
+	OnBuildPreviewTrace.Broadcast(PreviewItemStack, Instigator);
+	UE_LOG(LogChamingCraftCraftBuild, Display,
+	       TEXT("[📦]  BuildModuleManager start build trace\n"
+		       "		 [I] Cached ItemStack =			%s\n"
+		       "		 [I] Instigator =				%s"), *PreviewItemStack->ItemMeta->DisplayName, *Instigator->GetName());
+}
+
+void UGameEventHandler::OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEntityActor* BlockEntityActor,
+                                          ACharacter* Instigator)
+{
+	OnBlockPlace.Broadcast(PreviewItemStack, BlockEntityActor, Instigator);
+	UE_LOG(LogChamingCraftCraftBuild, Display,
+	       TEXT("[📦]  BuildModuleManager place a block\n"
+		       "		 [I] Cached ItemStack =			%s\n"
+		       "		 [I] Instigator =				%s\n"
+		       "		 [B] BlockEntityActor =				%s"), *PreviewItemStack->ItemMeta->DisplayName, *Instigator->GetName(),
+	       *BlockEntityActor->GetName());
+}
+
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
 {
 	OnItemDetailDisplay.Broadcast(ItemToDisplay, Creator);
