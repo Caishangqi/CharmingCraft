@@ -31,7 +31,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	TObjectPtr<UPlayerModeManager> ParentModeManager;
 	UFUNCTION(BlueprintCallable)
-	void UpdateControllerMappingContext(EPlayerMode FromGameMode, ACharacter* Instigator, EPlayerMode NewPlayerMode);
+	virtual void UpdateControllerMappingContext(EPlayerMode FromGameMode, ACharacter* Instigator,
+	                                            EPlayerMode NewPlayerMode);
 	UFUNCTION(BlueprintCallable)
 	UPlayerModeBase* BindDelegate();
 

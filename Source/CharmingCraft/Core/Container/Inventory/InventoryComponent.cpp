@@ -115,14 +115,21 @@ void UInventoryComponent::RemoveInventory(int32 Index, bool RemoveWholeStack, bo
 	OnInventoryUpdate.Broadcast();
 }
 
-void UInventoryComponent::RemoveInventoryByItemStack(UItemStack* RemovedItemStack, int32 Amount)
+int32 UInventoryComponent::RemoveInventoryByItemStack(UItemStack* RemovedItemStack, int32 Amount)
 {
 	RemovedItemStack->Amount -= Amount;
 	if (RemovedItemStack->Amount <= 0)
 	{
 		Inventory[FindSlot(RemovedItemStack)] = nullptr;
+
+		OnInventoryUpdate.Broadcast();
+		return 0;
 	}
-	OnInventoryUpdate.Broadcast();
+	else
+	{
+		OnInventoryUpdate.Broadcast();
+		return RemovedItemStack->Amount;
+	}
 }
 
 

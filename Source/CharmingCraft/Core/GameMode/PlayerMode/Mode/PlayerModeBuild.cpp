@@ -3,7 +3,10 @@
 
 #include "PlayerModeBuild.h"
 
+#include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "GameFramework/Character.h"
 
 UPlayerModeBuild::UPlayerModeBuild()
 {
@@ -17,5 +20,16 @@ UPlayerModeBuild::UPlayerModeBuild()
 		ModeMappingContext = MappingContextFinder.Object;
 		UE_LOG(LogChamingCraftCraftGameMode, Display,
 		       TEXT("[🎮]  GameMode %s MappingContext  is Loaded"), *EnumClassToString(ModeName));
+	}
+}
+
+void UPlayerModeBuild::UpdateControllerMappingContext(EPlayerMode FromGameMode, ACharacter* Instigator,
+                                                      EPlayerMode NewPlayerMode)
+{
+	Super::UpdateControllerMappingContext(FromGameMode, Instigator, NewPlayerMode);
+	if (ModeName != NewPlayerMode)
+	{
+		// Reset Build System
+		Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetBuildModuleManager()->StopBuildPreview();
 	}
 }

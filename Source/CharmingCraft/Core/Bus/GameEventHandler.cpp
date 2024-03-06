@@ -154,6 +154,8 @@ void UGameEventHandler::OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEn
 		       "		 [I] Instigator =				%s\n"
 		       "		 [B] BlockEntityActor =				%s"), *PreviewItemStack->ItemMeta->DisplayName, *Instigator->GetName(),
 	       *BlockEntityActor->GetName());
+	// When Block is placed, it should init block OnPlace life cycle function
+	BlockEntityActor->OnBlockPlace();
 }
 
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
