@@ -131,11 +131,13 @@ void ABlockEntityActor::ChangeValidationCollidedType(EBuildCollidedType NewType,
 void ABlockEntityActor::EnablePreviewScaleBox()
 {
 	Scale->SetVisibility(true);
+	IVisualEnhancementInterface::Execute_SetObjectTranslucent(this, 0.0f);
 }
 
 void ABlockEntityActor::DisablePreviewScaleBox()
 {
 	Scale->SetVisibility(false);
+	IVisualEnhancementInterface::Execute_SetObjectTranslucent(this, 1.0f);
 }
 
 bool ABlockEntityActor::OnBlockPlace()

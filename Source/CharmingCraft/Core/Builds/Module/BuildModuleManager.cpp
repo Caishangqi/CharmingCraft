@@ -4,19 +4,34 @@
 #include "BuildModuleManager.h"
 
 #include "CharmingCraft/Controller/DPlayerController.h"
+#include "CharmingCraft/Core/Builds/Block/FrameActor.h"
 #include "CharmingCraft/Core/Builds/Lib/BuildModuleLib.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Item/Meta/BlockMeta.h"
-#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 UBuildModuleManager::UBuildModuleManager()
 {
 	LoadMaterialToPlaceValidation();
+	static ConstructorHelpers::FObjectFinder<UBlueprint> FrameActor(
+		TEXT("/Script/Engine.Blueprint'/Game/CharmingCraft/Block/Module/FrameActor.FrameActor'"));
+	if (FrameActor.Succeeded())
+	{
+		// 蓝图加载成功，你可以使用ActorBlueprint.Object来做进一步的操作，比如创建Actor实例
+		FrameActorClass = FrameActor.Object->GeneratedClass;
+		// 然后你可以使用ActorClass来在游戏世界中创建这个Actor的实例
+	}
 }
 
 bool UBuildModuleManager::StartBuildPreviewTrace(UItemStack* PreviewItemStack, ACharacter* Instigator)
 {
+	if (BlockEntityActor)
+	{
+		BlockEntityActor->Destroy();
+		CachedBuildItemStack = PreviewItemStack;
+	}
+
 	if (PreviewItemStack)
 	{
 		CachedBuildItemStack = PreviewItemStack;
@@ -24,82 +39,99 @@ bool UBuildModuleManager::StartBuildPreviewTrace(UItemStack* PreviewItemStack, A
 			Instigator->GetWorld());
 	}
 
-	SaveBlockInteractProperties();	// Save InteractObject Data
-	//	Settings that avoid player interact with block while building
-	BlockEntityActor->bIsAllowToInteract = false;
-	BlockEntityActor->bIsHighlighted = false;
-	//	Enhance visual, set default VALID that show green grid
-	BlockEntityActor->EnablePreviewScaleBox();
-	BlockEntityActor->ChangeValidationCollidedType(EBuildCollidedType::VALID, PlaceValidation);
-
-	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetOuter());
-	GameInstance->GetGameEventHandler()->OnBuildPreviewTraceEvent(CachedBuildItemStack, Instigator);
-	TObjectPtr<ADPlayerController> PlayerController = Cast<ADPlayerController>(Instigator->GetController());
-
-	// Initialize the preview block on player cursor
-	bool bHit = PlayerController->
-		GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
-	if (bHit)
+	if (PreviewItemStack && CachedBuildItemStack)
 	{
-		BlockEntityActor->SetActorLocation(HitResult.Location);
-		BlockEntityActor->DisableBlockCollision();
-	}
+		SaveBlockInteractProperties(); // Save InteractObject Data
+		//	Settings that avoid player interact with block while building
+		BlockEntityActor->bIsAllowToInteract = false;
+		BlockEntityActor->bIsHighlighted = false;
+		//	Enhance visual, set default VALID that show green grid
+		BlockEntityActor->EnablePreviewScaleBox();
+		BlockEntityActor->ChangeValidationCollidedType(EBuildCollidedType::VALID, PlaceValidation);
 
-	// Direct Linetrace
+		TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetOuter());
+		GameInstance->GetGameEventHandler()->OnBuildPreviewTraceEvent(CachedBuildItemStack, Instigator);
+		TObjectPtr<ADPlayerController> PlayerController = Cast<ADPlayerController>(Instigator->GetController());
 
-	// GetWorld()->GetTimerManager().SetTimer(InternalTimer, [this, PlayerController]()
-	//                                        {
-	// 	                                       bool bHit = PlayerController->
-	// 		                                       GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
-	// 	                                       if (bHit)
-	// 	                                       {
-	// 		                                       // UE_LOG(LogChamingCraftCraftBuild, Display,
-	// 		                                       //        TEXT("[📦]  BuildModuleManager Hit a Object\n"
-	// 		                                       //         "		 [A] Actor Name =			%s\n"
-	// 		                                       //         "		 [B] Is Collied =			%hhd"
-	// 		                                       //        ), *HitResult.GetActor()->GetName(),
-	// 		                                       //        BlockEntityActor->bIsCollied);
-	// 		                                       if (HitResult.GetActor() != BlockEntityActor)
-	// 		                                       {
-	// 			                                       BlockEntityActor->SetActorLocation(
-	// 				                                       UBuildModuleLib::SnapToGrid(HitResult.Location, GridSize));
-	// 		                                       }
-	// 	                                       }
-	//                                        },
-	//                                        UpdateTick, true);
-
-	// Line Trace from camera
-
-	GetWorld()->GetTimerManager().SetTimer(InternalTimer, [this, PlayerController]()
-	{
-		FVector CameraLocation;
-		FRotator CameraRotation;
-		FVector WorldLocation, WorldDirection;
-		if (PlayerController->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
+		// Initialize the preview block on player cursor
+		bool bHit = PlayerController->
+			GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
+		if (bHit)
 		{
-			PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
-			// 沿着鼠标方向的射线的结束位置（你可以自定义射线长度）
-			FVector End = CameraLocation + (WorldDirection * 10000.f);
-			bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECC_WorldStatic);
+			BlockEntityActor->SetActorLocation(HitResult.Location);
+			BlockEntityActor->DisableBlockCollision();
+		}
 
-			if (bHit)
+
+		// Line Trace from camera
+
+		GetWorld()->GetTimerManager().SetTimer(InternalTimer, [this, PlayerController]()
+		{
+			FVector CameraLocation;
+			FRotator CameraRotation;
+			FVector WorldLocation, WorldDirection;
+			if (PlayerController->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
 			{
-				if (HitResult.GetActor() != BlockEntityActor)
+				PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
+				// 沿着鼠标方向的射线的结束位置（你可以自定义射线长度）
+				FVector End = CameraLocation + (WorldDirection * 10000.f);
+				bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECC_WorldStatic);
+
+				if (bHit)
 				{
-					BlockEntityActor->SetActorLocation(
-						UBuildModuleLib::SnapToGrid(HitResult.Location, GridSize));
-					if (BlockEntityActor->bIsCollied)
+					if (HitResult.GetActor() != BlockEntityActor)
 					{
-						BlockEntityActor->ChangeValidationCollidedType(EBuildCollidedType::COLLIDED, PlaceValidation);
-					}
-					else
-					{
-						BlockEntityActor->ChangeValidationCollidedType(EBuildCollidedType::VALID, PlaceValidation);
+						BlockEntityActor->SetActorLocation(
+							UBuildModuleLib::SnapToGrid(HitResult.Location, GridSize));
+						if (BlockEntityActor->bIsCollied)
+						{
+							BlockEntityActor->ChangeValidationCollidedType(
+								EBuildCollidedType::COLLIDED, PlaceValidation);
+						}
+						else
+						{
+							BlockEntityActor->ChangeValidationCollidedType(EBuildCollidedType::VALID, PlaceValidation);
+						}
 					}
 				}
 			}
-		}
-	}, UpdateTick, true);
+		}, UpdateTick, true);
+	}
+
+
+	return true;
+}
+
+bool UBuildModuleManager::StartBreakPreviewTrace(ACharacter* Instigator)
+{
+	if (FrameActorClass)
+	{
+		FTransform DefaultTransform;
+		HighlightFrameActor = Cast<AFrameActor>(
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(Instigator->GetWorld(),
+			                                                   FrameActorClass,
+			                                                   DefaultTransform));
+		UGameplayStatics::FinishSpawningActor(HighlightFrameActor, DefaultTransform);
+		HighlightFrameActor->SetFrameDestroyState();
+		HighlightFrameActor->BuildModuleManager = this;
+		TObjectPtr<ADPlayerController> PlayerController = Cast<ADPlayerController>(Instigator->GetController());
+
+		GetWorld()->GetTimerManager().SetTimer(InternalTimer, [this, PlayerController]()
+		                                       {
+			                                       bool bHit = PlayerController->
+				                                       GetHitResultUnderCursor(ECC_WorldStatic, false, HitResult);
+			                                       if (bHit)
+			                                       {
+				                                       if (HitResult.GetActor() != HighlightFrameActor)
+				                                       {
+					                                       HighlightFrameActor->SetActorLocation(
+						                                       UBuildModuleLib::SnapToGrid(
+							                                       HitResult.Location, GridSize));
+				                                       }
+			                                       }
+		                                       },
+		                                       UpdateTick, true);
+	}
 
 	return true;
 }
@@ -131,12 +163,88 @@ bool UBuildModuleManager::PlaceBuildPreview(ACharacter* Instigator)
 	return false;
 }
 
+bool UBuildModuleManager::BreakBlockPreview(ACharacter* Instigator)
+{
+	if (HighlightFrameActor && HighlightFrameActor->ColliedActor != nullptr)
+	{
+		if (HighlightFrameActor->ColliedActor.IsA(ABlockEntityActor::StaticClass()))
+		{
+			HighlightFrameActor->ColliedActor->Destroy();
+			HighlightFrameActor->ColliedActor = nullptr;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return false;
+}
+
 void UBuildModuleManager::StopBuildPreview()
 {
 	GetWorld()->GetTimerManager().PauseTimer(InternalTimer);
 	if (BlockEntityActor)
 	{
 		BlockEntityActor->Destroy();
+		BlockEntityActor = nullptr;
+	}
+}
+
+void UBuildModuleManager::StopBreakPreview()
+{
+	GetWorld()->GetTimerManager().PauseTimer(InternalTimer);
+	if (HighlightFrameActor)
+	{
+		HighlightFrameActor->Destroy();
+		HighlightFrameActor = nullptr;
+	}
+}
+
+void UBuildModuleManager::OnPlaceModeChange(ACharacter* Instigator, EBuildMode ToMode)
+{
+	if (CurrentBuildMode == EBuildMode::BREAK)
+	{
+		CurrentBuildMode = EBuildMode::PLACE;
+		Cast<UCharmingCraftInstance>(GetOuter())->GetGameEventHandler()->OnPlaceModeChangeEvent(
+			Instigator, CurrentBuildMode);
+		StopBreakPreview();
+		StartBuildPreviewTrace(CachedBuildItemStack, Instigator);
+		return;
+	}
+	if (CurrentBuildMode == EBuildMode::PLACE)
+	{
+		CurrentBuildMode = EBuildMode::BREAK;
+		Cast<UCharmingCraftInstance>(GetOuter())->GetGameEventHandler()->OnPlaceModeChangeEvent(
+			Instigator, CurrentBuildMode);
+		StopBuildPreview();
+		StartBreakPreviewTrace(Instigator);
+		return;
+	}
+	return;
+}
+
+void UBuildModuleManager::RotatePreviewBlockLeft()
+{
+	if (BlockEntityActor)
+	{
+		// //(Pitch = 0.000000, Yaw = 17.999950, Roll = 0.000000)
+		FRotator ActorRotation = BlockEntityActor->GetActorRotation();
+		ActorRotation.Yaw += 90.0f;
+		BlockEntityActor->SetActorRotation(ActorRotation);
+		BlockEntityActor->SetActorLocation(UBuildModuleLib::SnapToGrid(HitResult.Location, GridSize));
+	}
+}
+
+void UBuildModuleManager::RotatePreviewBlockRight()
+{
+	if (BlockEntityActor)
+	{
+		// //(Pitch = 0.000000, Yaw = 17.999950, Roll = 0.000000)
+		FRotator ActorRotation = BlockEntityActor->GetActorRotation();
+		ActorRotation.Yaw -= 90.0f;
+		BlockEntityActor->SetActorRotation(ActorRotation);
+		BlockEntityActor->SetActorLocation(UBuildModuleLib::SnapToGrid(HitResult.Location, GridSize));
 	}
 }
 

@@ -13,8 +13,6 @@
 
 UGameEventHandler::UGameEventHandler()
 {
-	// /Script/Engine.Blueprint'/Game/CharmingCraft/PlayerCharacter.PlayerCharacter'
-	///Script/Engine.Blueprint'/Game/CharmingCraft/PlayerCharacter.PlayerCharacter'
 	static ConstructorHelpers::FClassFinder<ADCharacter> BlueprintClass(
 		TEXT("/Game/CharmingCraft/PlayerCharacter.PlayerCharacter"));
 
@@ -156,6 +154,11 @@ void UGameEventHandler::OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEn
 	       *BlockEntityActor->GetName());
 	// When Block is placed, it should init block OnPlace life cycle function
 	BlockEntityActor->OnBlockPlace();
+}
+
+void UGameEventHandler::OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMode ToMode)
+{
+	OnPlaceModeChange.Broadcast(Instigator, ToMode);
 }
 
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)

@@ -9,9 +9,19 @@
 #include "UObject/Object.h"
 #include "BuildModuleManager.generated.h"
 
+UENUM(BlueprintType)
+enum class EBuildMode: uint8
+{
+	PLACE UMETA(DisplayName = "Place"),
+	BREAK UMETA(DisplayName = "Break"),
+};
+
+
 /**
  * 
  */
+class AFrameActor;
+
 UCLASS()
 class CHARMINGCRAFT_API UBuildModuleManager : public UObject
 {
@@ -28,9 +38,14 @@ public:
 	FHitResult HitResult;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category= "GridSize")
 	float GridSize = 100.0f; // Do not change grid size
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category= "Build Mode")
+	EBuildMode CurrentBuildMode = EBuildMode::PLACE;
 
 	UPROPERTY()
 	TObjectPtr<ABlockEntityActor> BlockEntityActor;
+	UPROPERTY()
+	TObjectPtr<AFrameActor> HighlightFrameActor;
+	TSubclassOf<AFrameActor> FrameActorClass;
 
 	float UpdateTick = 0.1f; // Internal Timer Update Tick
 
@@ -49,6 +64,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool StartBuildPreviewTrace(UItemStack* PreviewItemStack, ACharacter* Instigator);
+	UFUNCTION(BlueprintCallable)
+	bool StartBreakPreviewTrace(ACharacter* Instigator);
 	/*!
 	 * Handle the place logic for Build Module system, check collision, if no collision occured
 	 * place the block to world and decrease item amount in player inventory.
@@ -59,12 +76,22 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool PlaceBuildPreview(ACharacter* Instigator);
+	UFUNCTION(BlueprintCallable)
+	bool BreakBlockPreview(ACharacter* Instigator);
 	/*!
 	 * Stop the timer and freeze the trace function
 	 * Destroy the BlockEntityActor cache if it exist
 	 */
 	UFUNCTION(BlueprintCallable)
 	void StopBuildPreview();
+	UFUNCTION(BlueprintCallable)
+	void StopBreakPreview();
+	UFUNCTION(BlueprintCallable)
+	void OnPlaceModeChange(ACharacter* Instigator, EBuildMode ToMode);
+	UFUNCTION(BlueprintCallable)
+	void RotatePreviewBlockLeft();
+	UFUNCTION(BlueprintCallable)
+	void RotatePreviewBlockRight();
 
 private:
 	/*!

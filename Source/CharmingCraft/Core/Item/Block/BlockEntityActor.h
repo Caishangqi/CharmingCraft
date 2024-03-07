@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Builds/Interface/UVisualEnhancement.h"
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "BlockEntityActor.generated.h"
 class UBoxComponent;
 
 UCLASS()
-class CHARMINGCRAFT_API ABlockEntityActor : public AInteractObject
+class CHARMINGCRAFT_API ABlockEntityActor : public AInteractObject, public IVisualEnhancementInterface
 {
 	GENERATED_BODY()
 
