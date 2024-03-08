@@ -33,3 +33,14 @@ void UPlayerModeBuild::UpdateControllerMappingContext(EPlayerMode FromGameMode, 
 		Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetBuildModuleManager()->StopBuildPreview();
 	}
 }
+
+void UPlayerModeBuild::OnPlayerModeChangeEvent(EPlayerMode FromGameMode, ACharacter* Instigator,
+                                               EPlayerMode NewPlayerMode)
+{
+	Super::OnPlayerModeChangeEvent(FromGameMode, Instigator, NewPlayerMode);
+	if (ModeName != NewPlayerMode)
+	{
+		TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(ParentModeManager.GetOuter());
+		GameInstance->BuildModuleManager->RestToDefault();
+	}
+}

@@ -2,7 +2,8 @@
 
 
 #include "BuildModuleManager.h"
-
+#include "CharmingCraft/Core/Builds/Interface/UBreakable.h"
+#include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Core/Builds/Block/FrameActor.h"
 #include "CharmingCraft/Core/Builds/Lib/BuildModuleLib.h"
@@ -112,7 +113,7 @@ bool UBuildModuleManager::StartBreakPreviewTrace(ACharacter* Instigator)
 			                                                   FrameActorClass,
 			                                                   DefaultTransform));
 		UGameplayStatics::FinishSpawningActor(HighlightFrameActor, DefaultTransform);
-		HighlightFrameActor->SetFrameDestroyState();
+		HighlightFrameActor->CurrentFrameActorType = EFrameType::DESTROY;
 		HighlightFrameActor->BuildModuleManager = this;
 		TObjectPtr<ADPlayerController> PlayerController = Cast<ADPlayerController>(Instigator->GetController());
 
@@ -146,6 +147,7 @@ bool UBuildModuleManager::PlaceBuildPreview(ACharacter* Instigator)
 		GetWorld()->GetTimerManager().PauseTimer(InternalTimer);
 		BlockEntityActor->DisablePreviewScaleBox();
 		BlockEntityActor->EnableBlockCollision();
+		IBreakableInterface::Execute_OnBlockPlace(BlockEntityActor, Instigator, BlockEntityActor);
 		BlockEntityActor->bIsPlaced = true;
 		TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(Instigator);
 		if (Player->InventoryComponent->RemoveInventoryByItemStack(CachedBuildItemStack, 1) != 0)
@@ -165,12 +167,13 @@ bool UBuildModuleManager::PlaceBuildPreview(ACharacter* Instigator)
 
 bool UBuildModuleManager::BreakBlockPreview(ACharacter* Instigator)
 {
-	if (HighlightFrameActor && HighlightFrameActor->ColliedActor != nullptr)
+	if (HighlightFrameActor && HighlightFrameActor->ColliedResult.ColliedActor != nullptr)
 	{
-		if (HighlightFrameActor->ColliedActor.IsA(ABlockEntityActor::StaticClass()))
+		if (HighlightFrameActor->ColliedResult.bIsValidCollied)
 		{
-			HighlightFrameActor->ColliedActor->Destroy();
-			HighlightFrameActor->ColliedActor = nullptr;
+			AActor* ColliedActor = HighlightFrameActor->ColliedResult.ColliedActor;
+			IBreakableInterface::Execute_OnBlockBreak(ColliedActor, Instigator, ColliedActor);
+			HighlightFrameActor->ColliedResult.ColliedActor = nullptr;
 			return true;
 		}
 		else
@@ -245,6 +248,22 @@ void UBuildModuleManager::RotatePreviewBlockRight()
 		ActorRotation.Yaw -= 90.0f;
 		BlockEntityActor->SetActorRotation(ActorRotation);
 		BlockEntityActor->SetActorLocation(UBuildModuleLib::SnapToGrid(HitResult.Location, GridSize));
+	}
+}
+
+void UBuildModuleManager::RestToDefault()
+{
+	if (BlockEntityActor)
+	{
+		BlockEntityActor->Destroy();
+	}
+	if (HighlightFrameActor)
+	{
+		HighlightFrameActor->Destroy();
+	}
+	if (CachedBuildItemStack)
+	{
+		CachedBuildItemStack = nullptr;
 	}
 }
 

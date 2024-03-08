@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Builds/Data/FPlaceValidation.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
-#include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "UObject/Object.h"
 #include "BuildModuleManager.generated.h"
 
@@ -20,6 +19,7 @@ enum class EBuildMode: uint8
 /**
  * 
  */
+class ABlockEntityActor;
 class AFrameActor;
 
 UCLASS()
@@ -28,12 +28,14 @@ class CHARMINGCRAFT_API UBuildModuleManager : public UObject
 	GENERATED_BODY()
 
 public:
+	// CachedItemStack, it must contain build meta, should pass through inventory
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<UItemStack> CachedBuildItemStack;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Timer")
 	FTimerHandle InternalTimer; // Internal Timer for line trace
 
+	// Hit result of LineTrace, Class internal use only
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResult")
 	FHitResult HitResult;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category= "GridSize")
@@ -41,8 +43,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category= "Build Mode")
 	EBuildMode CurrentBuildMode = EBuildMode::PLACE;
 
+	// The BlockEntityActor generate from CachedBuildItemStack
+	// Destroy when change mode and depletion of Item
 	UPROPERTY()
 	TObjectPtr<ABlockEntityActor> BlockEntityActor;
+	// The HighlightFrameActor is Visual only Actor used for
+	// Delete collision detect and visual indicator of different place mode
 	UPROPERTY()
 	TObjectPtr<AFrameActor> HighlightFrameActor;
 	TSubclassOf<AFrameActor> FrameActorClass;
@@ -64,6 +70,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool StartBuildPreviewTrace(UItemStack* PreviewItemStack, ACharacter* Instigator);
+	/*!
+	 * Trace from top to place mouse world position, create FrameActor at the location
+	 * Check the FrameActor collied BlockAEntityActor to decided whether remove or not
+	 * @param Instigator Who Break or Start the trace
+	 * @return Whether call successful
+	 */
 	UFUNCTION(BlueprintCallable)
 	bool StartBreakPreviewTrace(ACharacter* Instigator);
 	/*!
@@ -76,6 +88,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool PlaceBuildPreview(ACharacter* Instigator);
+	/*!
+	 * Handle the break logic of build system, when break successful, it should call OnBlockBreak
+	 * in BlockEntityActor and terminate block tick
+	 * @param Instigator Who Break the block
+	 * @return Whether break successful or not
+	 */
 	UFUNCTION(BlueprintCallable)
 	bool BreakBlockPreview(ACharacter* Instigator);
 	/*!
@@ -92,6 +110,9 @@ public:
 	void RotatePreviewBlockLeft();
 	UFUNCTION(BlueprintCallable)
 	void RotatePreviewBlockRight();
+	// Rest BuildModuleManager to default state, clear cached ItemStack
+	UFUNCTION(BlueprintCallable)
+	void RestToDefault();
 
 private:
 	/*!

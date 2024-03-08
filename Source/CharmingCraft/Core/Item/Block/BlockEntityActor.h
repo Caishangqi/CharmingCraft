@@ -3,13 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Builds/Interface/UBreakable.h"
 #include "CharmingCraft/Core/Builds/Interface/UVisualEnhancement.h"
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "BlockEntityActor.generated.h"
 class UBoxComponent;
+UENUM(BlueprintType)
+enum class EBlockManipulationType: uint8
+{
+	BUILD_SYSTEM UMETA(DisplayName = "Build System"),
+	GENERATED UMETA(DisplayName = "Generated")
+};
 
 UCLASS()
-class CHARMINGCRAFT_API ABlockEntityActor : public AInteractObject, public IVisualEnhancementInterface
+class CHARMINGCRAFT_API ABlockEntityActor : public AInteractObject, public IBreakableInterface,
+                                            public IVisualEnhancementInterface
 {
 	GENERATED_BODY()
 
@@ -69,6 +77,7 @@ public:
 public:
 	// Life cycle of On Block place
 	// Start block function at this place
-	UFUNCTION(BlueprintCallable)
-	virtual bool OnBlockPlace();
+	virtual bool OnBlockBreak_Implementation(ACharacter* Instigator, AActor* BlockBreak
+	                                         ) override;
+	virtual bool OnBlockPlace_Implementation(ACharacter* Instigator, AActor* BlockPlaced) override;
 };

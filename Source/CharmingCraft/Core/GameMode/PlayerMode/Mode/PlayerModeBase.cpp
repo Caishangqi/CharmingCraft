@@ -51,5 +51,12 @@ void UPlayerModeBase::UpdateControllerMappingContext(EPlayerMode FromGameMode, A
 UPlayerModeBase* UPlayerModeBase::BindDelegate()
 {
 	ParentModeManager->OnPlayerModeChangeDelegate.AddDynamic(this, &UPlayerModeBase::UpdateControllerMappingContext);
+	ParentModeManager->OnPlayerModeChangeDelegate.AddDynamic(this, &UPlayerModeBase::OnPlayerModeChangeEvent);
+
 	return this;
+}
+
+void UPlayerModeBase::OnPlayerModeChangeEvent(EPlayerMode FromGameMode, ACharacter* Instigator,
+                                              EPlayerMode NewPlayerMode)
+{
 }

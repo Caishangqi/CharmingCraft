@@ -16,4 +16,5 @@ class CHARMINGCRAFT_API UPlayerModeBuild : public UPlayerModeBase
 public:
 	UPlayerModeBuild();
 	virtual void UpdateControllerMappingContext(EPlayerMode FromGameMode, ACharacter* Instigator, EPlayerMode NewPlayerMode) override;
+	virtual void OnPlayerModeChangeEvent(EPlayerMode FromGameMode, ACharacter* Instigator, EPlayerMode NewPlayerMode) override;
 };

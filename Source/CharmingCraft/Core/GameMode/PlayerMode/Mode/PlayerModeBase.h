@@ -36,6 +36,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UPlayerModeBase* BindDelegate();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void OnPlayerModeChangeEvent(EPlayerMode FromGameMode, ACharacter* Instigator,
+												EPlayerMode NewPlayerMode);
+
 protected:
 	FString EnumClassToString(EPlayerMode EnumValue)
 	{

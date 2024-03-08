@@ -4,7 +4,9 @@
 #include "BlockEntityActor.h"
 
 #include "CharmingCraft/Core/Builds/Data/FPlaceValidation.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Components/BoxComponent.h"
 
 
@@ -140,7 +142,16 @@ void ABlockEntityActor::DisablePreviewScaleBox()
 	IVisualEnhancementInterface::Execute_SetObjectTranslucent(this, 1.0f);
 }
 
-bool ABlockEntityActor::OnBlockPlace()
+bool ABlockEntityActor::OnBlockBreak_Implementation(ACharacter* InstigatorCharacter, AActor* BlockBreak)
 {
-	return true;
+	Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->
+	                                                 OnBlockBreakEvent(this, InstigatorCharacter);
+	BlockBreak->Destroy();
+	return IBreakableInterface::OnBlockBreak_Implementation(InstigatorCharacter, BlockBreak);
+}
+
+bool ABlockEntityActor::OnBlockPlace_Implementation(ACharacter* InstigatorCharacter, AActor* BlockPlaced)
+{
+	// Event already called by UBuildModuleManager::PlaceBuildPreview()
+	return IBreakableInterface::OnBlockPlace_Implementation(InstigatorCharacter, BlockPlaced);
 }

@@ -36,6 +36,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuildPreviewTraceDelegate, UItem
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlaceModeChangeDelegate, ACharacter*,
                                              Instigator, EBuildMode, ToMode);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBlockBreakDelegate, AActor*, BlockActor, ACharacter*, Instigator);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnBlockPlaceDelegate, UItemStack*, PreviewItemStack, ABlockEntityActor*,
                                                BlockEntityActor, ACharacter*, Instigator);
 
@@ -84,6 +86,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnBlockPlaceDelegate OnBlockPlace;
 	UPROPERTY(BlueprintAssignable)
+	FOnBlockBreakDelegate OnBlockBreak;
+	UPROPERTY(BlueprintAssignable)
 	FOnPlaceModeChangeDelegate OnPlaceModeChange;
 
 	UPROPERTY(EditAnywhere)
@@ -110,6 +114,9 @@ public:
 	void OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator);
 	UFUNCTION(BlueprintCallable)
 	void OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEntityActor* BlockEntityActor, ACharacter* Instigator);
+	UFUNCTION(BlueprintCallable)
+	void OnBlockBreakEvent(AActor* BlockActor, ACharacter* Instigator);
+
 	void OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMode ToMode);
 
 	UFUNCTION(BlueprintCallable)
