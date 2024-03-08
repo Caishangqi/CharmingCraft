@@ -8,6 +8,7 @@
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "BlockEntityActor.generated.h"
 class UBoxComponent;
+
 UENUM(BlueprintType)
 enum class EBlockManipulationType: uint8
 {
@@ -46,7 +47,10 @@ public:
 	// Scale box used for visual enhance, usually invisible in World
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Scale")
 	TObjectPtr<UStaticMeshComponent> Scale;
-
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
+	TObjectPtr<UDropTableData> DropTableData;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
+	bool bDropSelf = true;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bIsPlaced = false;
@@ -78,6 +82,8 @@ public:
 	// Life cycle of On Block place
 	// Start block function at this place
 	virtual bool OnBlockBreak_Implementation(ACharacter* Instigator, AActor* BlockBreak
-	                                         ) override;
+	) override;
 	virtual bool OnBlockPlace_Implementation(ACharacter* Instigator, AActor* BlockPlaced) override;
+
+	virtual bool OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableDataContext) override;
 };

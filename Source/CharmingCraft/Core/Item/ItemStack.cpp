@@ -89,11 +89,8 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 			 */
 
 			ItemStack->ItemMeta = NewObject<UItemMeta>(ItemStack, ItemMetaClass, FName(RowData->ItemMeta->GetName()));
-			ItemStack->ItemMeta->DisplayName = ItemClass->DisplayName.ToString();
-			if (ItemClass->DefaultItemEntityActorClass)
-			{
-				ItemStack->ItemMeta->ItemEntityActorClass = ItemClass->DefaultItemEntityActorClass;
-			}
+			ItemStack->ItemMeta->InitializeItemMetaData(ItemClass);
+
 			if (ItemClass->MaxStackSize < SetAmount)
 			{
 				ItemStack->Amount = ItemClass->MaxStackSize;
@@ -102,8 +99,6 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 			{
 				ItemStack->Amount = SetAmount;
 			}
-			// UE_LOG(LogChamingCraftSave, Display, TEXT("[🔍] ItemDisplayName is: %s Container is: %s"),
-			//        *ItemStack->ItemMeta->DisplayName, *Outer->GetName());
 
 			return ItemStack;
 		}
@@ -120,6 +115,6 @@ UItemStack* UItemStack::CreateItemStackFromItemClass(UObject* Outer, TSubclassOf
 	ItemStack->ItemMeta = NewObject<UItemMeta>(ItemStack, ItemStack->ItemClass.GetDefaultObject()->ItemMetaClass,
 	                                           FName(ItemStack->ItemClass.GetDefaultObject()->ItemMetaClass->
 	                                                            GetName()));
-	ItemStack->ItemMeta->DisplayName = ItemStack->ItemClass.GetDefaultObject()->DisplayName.ToString();
+	ItemStack->ItemMeta->InitializeItemMetaData(ItemStack->ItemClass.GetDefaultObject());
 	return ItemStack;
 }

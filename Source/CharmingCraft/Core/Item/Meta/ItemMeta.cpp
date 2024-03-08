@@ -60,3 +60,12 @@ AItemEntityActor* UItemMeta::CreateItemEntityActor(const UObject* WorldContextOb
 	//ItemEntityActor = AttachedActor;
 	return AttachedActor;
 }
+
+void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
+{
+	DisplayName = ItemClass->DisplayName.ToString();
+	if (ItemClass->DefaultItemEntityActorClass)
+	{
+		ItemEntityActorClass = ItemClass->DefaultItemEntityActorClass;
+	}
+}

@@ -35,13 +35,19 @@ this repository.
 
 ![Inventory System](https://github.com/Caishangqi/CharmingCraft/assets/39553613/fc5dc7c2-f917-46b6-8202-8f1a388e62ed)
 
-- Quick hotbar allow player siwtch different modes (**`Z`-battle**, **`X`-inventory hotbar**, **`C`-building**, **`V`-team**)
-- The complete inventory system includes merging items, using items, discarding items, transferring items, and more.
-- Detailed item pannel show item attributes and icon
-- Quickly close and open container, support player open inventory when moving
-- Auto open player inventory when open any container, close both pannel when player inventory is opened by container not by player. (else close only container)
-- 10 Equipment slot with equip model binding.
+- **Quick hotbar** allow player siwtch different modes (**`Z` battle**, **`X` Inventory hotbar**, **`C` Building**, **`V` Team**)
+- The complete inventory system includes **merging** items, **using** items, **drop** items, **transferring** items, and more.
+- **Detailed item pannel** show item attributes and large preview.
+- Quickly close and open container, support player open inventory when moving.
+- **Auto open player inventory** when open any container, close both pannel when player inventory is opened by container not by player. (else close only container)
+- 10 Equipment slot with **equip model binding**.
 
+### Build system
+![Build System](https://github.com/Caishangqi/CharmingCraft/assets/39553613/25aab4d0-cb80-47e3-b726-656243074b34)
+- When switching game modes, automatically load **ContextMapping layouts** according to the mode to prevent key conflicts.
+- Supports building, rotation (using `Q` and `E` keys), build specification preview, collision highlighting, destruction, and other functions (press `F` to switch between **Build** / **Destroy** mode).
+- In build mode, automatically disable the interaction between players and interactive objects.
+- Supports **filters** that only allow building in appropriate areas, such as preventing players from building in mining areas.
 ### Equipment assembly
 
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/aa4a85df-a49b-488b-8887-5868ce0d31ec
@@ -96,16 +102,13 @@ https://github.com/Caishangqi/CharmingCraft/assets/39553613/eda346ab-ff80-4fdc-a
 #### Buff System
 
 - Support Stack Buff, Forever Buff.
-- User could customize buff atttributes through Duration, Tick time, or pass a **TMap** contain [**internal Data
-  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L39).
+- User could customize buff atttributes through Duration, Tick time, or pass a **TMap** contain [**internal Data**](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L39).
 - 3 Buff time **update** choices: `Add`, `Replace`, and `Keep`.
 - 2 Buff **remove** Stack choices: `Clear` and `Reduce`.
-- 7 Customize [**Buff Callback
-  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L55): `On Create`, `On Remove`, `On Tick`, `On Hit`, `On Be Hit`, `On Kill`,
+- 7 Customize [**Buff Callback**](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/UBuffData.h#L55): `On Create`, `On Remove`, `On Tick`, `On Hit`, `On Be Hit`, `On Kill`,
   and `On Be Killed`.
 - User
-  could [**implements different Callback
-  **](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/Modules/ModifyPropertyBuffModel.cpp#L14)
+  could [**implements different Callback**](https://github.com/Caishangqi/CharmingCraft/blob/2fc42016c812861645d0e85a4a690637bda0d7ff/Source/CharmingCraft/Core/Buff/Modules/ModifyPropertyBuffModel.cpp#L14)
   to customize buff behaviour.
 
 ![BuffSystem](https://github.com/Caishangqi/CharmingCraft/assets/39553613/08a67844-f027-446a-a95f-02f6104415c1)
@@ -191,6 +194,8 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Game Serialization System (Json, FString) to UObject ❔
 - Game resource system with regenerated resource 🟩
 - Resource fracture mechanism implement by Chaos Destruction system 🟩
+- GameMode system that support key mapping base on different ganemodes 🟩
+- Build system and visual enhancement support place, rotate and break 🟩
 
 ## Content and Mechanism
 
@@ -202,7 +207,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 |:----------------------------------------------------------|:--------:|:-----:|
 | Game Start UI and World Select UI                         | Highest  |   ✅   |
 | Game context serialization                                | Highest  |   ✅   |
-| Chunk and build system                                    |   High   |  📝   |
+| Chunk and build system                                    |   High   |  ✅   |
 | Complete attribute UI                                     |  Normal  |  ✅   |
 | Quest system with related NPCs                            |  Normal  |  📌   |
 | Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📌   |

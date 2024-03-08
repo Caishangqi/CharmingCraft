@@ -6,6 +6,7 @@
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Item/Block.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -39,6 +40,7 @@ ABlockEntityActor* UBlockMeta::PrepareCreateBlockEntityActor(const UObject* Worl
 		                                                   Cast<UBlock>(OuterItemStack->ItemClass.GetDefaultObject())->
 		                                                   DefaultBlockEntityActorClass,
 		                                                   DefaultTransform));
+	BlockEntityActor->DropTableData = DropTableData;
 	return BlockEntityActor;
 }
 
@@ -48,4 +50,15 @@ ABlockEntityActor* UBlockMeta::CreateBlockEntityActor(const UObject* WorldContex
 	TObjectPtr<ABlockEntityActor> BlockEntityActor = PrepareCreateBlockEntityActor(WorldContextObject);
 	UGameplayStatics::FinishSpawningActor(BlockEntityActor, DefaultTransform);
 	return BlockEntityActor;
+}
+
+void UBlockMeta::InitializeItemMetaData(UItem* ItemClass)
+{
+	Super::InitializeItemMetaData(ItemClass);
+	DropTableData = Cast<UBlock>(ItemClass)->DropTableData;
+	bDropSelf = Cast<UBlock>(ItemClass)->bDropSelf;
+	// UE_LOG(LogChamingCraftCraftResource, Display,
+	//        TEXT("[🗒️]  Load Drop Table to BlockMeta\n"
+	// 	       "		 [D] Table Name =			%s\n"),
+	//        *DropTableData->DropTableName.ToString());
 }

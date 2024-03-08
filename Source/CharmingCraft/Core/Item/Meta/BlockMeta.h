@@ -17,10 +17,18 @@ class CHARMINGCRAFT_API UBlockMeta : public UItemMeta
 
 public:
 	UBlockMeta();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Drop Table")
+	TObjectPtr<UDropTableData> DropTableData;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
+	bool bDropSelf = true;
+
 	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject) override;
 
 	UFUNCTION(BlueprintCallable)
 	ABlockEntityActor* PrepareCreateBlockEntityActor(const UObject* WorldContextObject);
 	UFUNCTION(BlueprintCallable)
 	ABlockEntityActor* CreateBlockEntityActor(const UObject* WorldContextObject);
+
+	virtual void InitializeItemMetaData(UItem* ItemClass) override;
 };

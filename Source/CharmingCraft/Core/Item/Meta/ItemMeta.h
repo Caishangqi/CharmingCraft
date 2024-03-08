@@ -7,6 +7,8 @@
 #include "ItemMeta.generated.h"
 
 
+class UItem;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UItemMeta : public UPersistentDataContainer
 {
@@ -40,7 +42,9 @@ public:
 
 	UFUNCTION(Blueprintable)
 	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject);
-
+	UFUNCTION(Blueprintable)
+	virtual void InitializeItemMetaData(UItem * ItemClass);
+	
 protected:
 	// Called when the game starts 
 	virtual void PostInitProperties() override;

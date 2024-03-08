@@ -146,6 +146,7 @@ bool ABlockEntityActor::OnBlockBreak_Implementation(ACharacter* InstigatorCharac
 {
 	Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->
 	                                                 OnBlockBreakEvent(this, InstigatorCharacter);
+	Execute_OnBlockDrop(this, InstigatorCharacter, DropTableData);
 	BlockBreak->Destroy();
 	return IBreakableInterface::OnBlockBreak_Implementation(InstigatorCharacter, BlockBreak);
 }
@@ -154,4 +155,9 @@ bool ABlockEntityActor::OnBlockPlace_Implementation(ACharacter* InstigatorCharac
 {
 	// Event already called by UBuildModuleManager::PlaceBuildPreview()
 	return IBreakableInterface::OnBlockPlace_Implementation(InstigatorCharacter, BlockPlaced);
+}
+
+bool ABlockEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableDataContext)
+{
+	return IBreakableInterface::OnBlockDrop_Implementation(Block, DropTableDataContext);
 }

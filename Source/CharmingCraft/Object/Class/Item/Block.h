@@ -20,6 +20,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Block")
 	TSubclassOf<ABlockEntityActor> DefaultBlockEntityActorClass;
-
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Drop Table")
+	TObjectPtr<UDropTableData> DropTableData;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Drop Table")
+	bool bDropSelf = true;
 };
