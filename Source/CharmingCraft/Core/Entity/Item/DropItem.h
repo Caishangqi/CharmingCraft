@@ -42,7 +42,7 @@ public:
 	// 用于控制上下移动幅度的变量
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Movement")
 	float BobbingAmplitude = 1.0f;
-	
+
 
 	void Initialize(UItemStack* PassItemStack);
 
@@ -53,4 +53,7 @@ public:
 private:
 	// 内部变量，用于追踪上下移动的相位
 	float BobbingPhase = 0.0f;
+	float CurrentRotationAngle = 0.f;
+	float MaxRotationAngle = 45.f;
+	int32 RotationDirection = 1; // 初始方向
 };

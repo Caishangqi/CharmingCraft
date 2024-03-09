@@ -47,10 +47,13 @@ public:
 	// Scale box used for visual enhance, usually invisible in World
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Scale")
 	TObjectPtr<UStaticMeshComponent> Scale;
+	// Drop Table
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
 	TObjectPtr<UDropTableData> DropTableData;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
 	bool bDropSelf = true;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Material")
+	EMaterial Material;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bIsPlaced = false;

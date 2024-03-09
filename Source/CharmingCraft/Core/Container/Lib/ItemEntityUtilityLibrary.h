@@ -3,14 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Entity/Item/DropItem.h"
+#include "../Core/Resource/DropTable/DropTableData.h"
 #include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "Components/BoxComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "ItemEntityUtilityLibrary.generated.h"
 
+class ADropItem;
 /**
  * 
  */
@@ -97,4 +101,43 @@ public:
 	{
 		TargetMesh->SetMaterial(TargetMaterialIndex, InputMaterial);
 	}
+
+	/*!
+	 * Spawn DropItem at specific location do not simulate physics
+	 * @param Instigator Who Spawn the Item, usually System object that can not see in world
+	 * @param ItemStack Contained ItemStack inside DropItem
+	 * @param Location The transform of DropItem
+	 * @param WorldContext At world
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Drop")
+	static void SpawnItemInWorld(UObject* Instigator, UItemStack* ItemStack, FVector Location, UWorld* WorldContext)
+	{
+	}
+
+	/*!
+	 * Spawn and "Eject" DropItem at specific location and direction, simulate physics
+	 * @param Instigator Who Drop the Item, usually a launcher, player or an block
+	 * @param ItemStack Contained ItemStack inside DropItem
+	 * @param SpawnTransform The transform of DropItem
+	 * @param LaunchVelocity The Velocity you want to add on DropItem after it spawn at SpawnTransform
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Drop")
+	static void DropItemInWorld(AActor* Instigator, UItemStack* ItemStack, FTransform SpawnTransform,
+	                            FVector LaunchVelocity)
+	{
+		if (TObjectPtr<ADropItem> DropItemEntity = Cast<ADropItem>(
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(Instigator, ADropItem::StaticClass(), SpawnTransform)))
+		{
+			DropItemEntity->Initialize(ItemStack);
+			// 使用FinishSpawningActor将Drop对象放入世界中
+			UGameplayStatics::FinishSpawningActor(DropItemEntity, SpawnTransform);
+			DropItemEntity->InvisibleCollision->AddImpulse(LaunchVelocity, NAME_None, true);
+		}
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "Drop")
+	static FDropList GenerateDropListFromDropTable(FDropData DropData)
+	{
+		return FDropList();
+	};
 };

@@ -7,7 +7,7 @@ AInteractObject::AInteractObject()
 {
 	MinimumInteractRange = 250;
 	bIgnoreRangeToInteract = false;
-	bIgnoreRangeToInteract = true;
+	bIsAllowToInteract = true;
 	bIsHighlighted = true;
 	FindClassBaseOnBluePrint();
 }

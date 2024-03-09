@@ -159,6 +159,11 @@ void UGameEventHandler::OnBlockBreakEvent(AActor* BlockActor, ACharacter* Instig
 	OnBlockBreak.Broadcast(BlockActor, Instigator);
 }
 
+void UGameEventHandler::OnItemDropEvent(UItemStack* DroppedItem, UObject* Instigator)
+{
+	OnItemDrop.Broadcast(DroppedItem, Instigator);
+}
+
 void UGameEventHandler::OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMode ToMode)
 {
 	OnPlaceModeChange.Broadcast(Instigator, ToMode);

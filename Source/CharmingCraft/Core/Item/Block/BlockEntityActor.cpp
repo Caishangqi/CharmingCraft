@@ -5,6 +5,7 @@
 
 #include "CharmingCraft/Core/Builds/Data/FPlaceValidation.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Components/BoxComponent.h"
@@ -159,5 +160,16 @@ bool ABlockEntityActor::OnBlockPlace_Implementation(ACharacter* InstigatorCharac
 
 bool ABlockEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableDataContext)
 {
+	if (bDropSelf)
+	{
+		const FTransform SpawnTransform(
+			this->GetActorLocation() + this->GetActorUpVector() * 50);
+		FVector LaunchDirection = this->GetActorUpVector() * 100 + FVector(0, 0, 50);
+		FVector LaunchVelocity = LaunchDirection * 2;
+
+		TObjectPtr<UItemStack> ItemStack = UItemStack::CreateItemStackFromMaterial(this->GetWorld(), Material, 1);
+		Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->OnItemDropEvent(ItemStack, this);
+		UItemEntityUtilityLibrary::DropItemInWorld(this, ItemStack, SpawnTransform, LaunchVelocity);
+	}
 	return IBreakableInterface::OnBlockDrop_Implementation(Block, DropTableDataContext);
 }

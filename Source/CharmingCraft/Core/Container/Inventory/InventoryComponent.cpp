@@ -281,24 +281,15 @@ void UInventoryComponent::TransferSlots(int32 SourceIndex, UInventoryComponent* 
 
 void UInventoryComponent::Drop(UItemStack* ItemStack, int32 Quantity)
 {
-	UE_LOG(LogTemp, Warning, TEXT("UInventoryComponent::Drop -0"));
-	FVector Location = GetDropLocation();
-	FTransform SpawnTransform(Location);
+	const FTransform SpawnTransform(
+		this->GetOwner()->GetActorLocation() + this->GetOwner()->GetActorForwardVector() * 50);
+	const FVector InstigatorLocation = this->GetOwner()->GetActorLocation();
+	FVector LaunchDirection = this->GetOwner()->GetActorForwardVector() * 100 + FVector(0, 0, 50);
+	FVector LaunchVelocity = LaunchDirection * 2;
 
-	// Fixed in 23.09.19.01 Custom Copy constructor
 	UItemStack* CachedItemStack = ItemStack->CopyData();
-
-	// 使用SpawnActorDeferred创建ADropItem对象，但它还不在世界中
-	ADropItem* Drop = Cast<ADropItem>(
-		UGameplayStatics::BeginDeferredActorSpawnFromClass(this, ADropItem::StaticClass(), SpawnTransform));
-	// Enter
 	CachedItemStack->Amount = Quantity;
-	if (Drop)
-	{
-		Drop->Initialize(CachedItemStack);
-		// 使用FinishSpawningActor将Drop对象放入世界中
-		UGameplayStatics::FinishSpawningActor(Drop, SpawnTransform);
-	}
+	UItemEntityUtilityLibrary::DropItemInWorld(this->GetOwner(), CachedItemStack, SpawnTransform, LaunchVelocity);
 }
 
 FVector UInventoryComponent::GetDropLocation()

@@ -172,7 +172,12 @@ bool UBuildModuleManager::BreakBlockPreview(ACharacter* Instigator)
 		if (HighlightFrameActor->ColliedResult.bIsValidCollied)
 		{
 			AActor* ColliedActor = HighlightFrameActor->ColliedResult.ColliedActor;
-			IBreakableInterface::Execute_OnBlockBreak(ColliedActor, Instigator, ColliedActor);
+			// Bug Detect: Need change the logic that break, drop item blockEntityActor could also count
+			// and cause NPE in Material Data
+			if (ColliedActor->Implements<UBreakableInterface>() && Cast<ABlockEntityActor>(ColliedActor)->bIsPlaced)
+			{
+				IBreakableInterface::Execute_OnBlockBreak(ColliedActor, Instigator, ColliedActor);
+			}
 			HighlightFrameActor->ColliedResult.ColliedActor = nullptr;
 			return true;
 		}

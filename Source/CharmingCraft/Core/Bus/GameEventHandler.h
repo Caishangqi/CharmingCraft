@@ -38,6 +38,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlaceModeChangeDelegate, ACharac
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBlockBreakDelegate, AActor*, BlockActor, ACharacter*, Instigator);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDropDelegate, UItemStack*, DropedItem, UObject*, Instigator);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnBlockPlaceDelegate, UItemStack*, PreviewItemStack, ABlockEntityActor*,
                                                BlockEntityActor, ACharacter*, Instigator);
 
@@ -89,6 +91,8 @@ public:
 	FOnBlockBreakDelegate OnBlockBreak;
 	UPROPERTY(BlueprintAssignable)
 	FOnPlaceModeChangeDelegate OnPlaceModeChange;
+	UPROPERTY(BlueprintAssignable)
+	FOnItemDropDelegate OnItemDrop;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ADCharacter> BlueprintCharacterClassReference;
@@ -116,7 +120,8 @@ public:
 	void OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEntityActor* BlockEntityActor, ACharacter* Instigator);
 	UFUNCTION(BlueprintCallable)
 	void OnBlockBreakEvent(AActor* BlockActor, ACharacter* Instigator);
-
+	UFUNCTION(BlueprintCallable)
+	void OnItemDropEvent(UItemStack *DroppedItem, UObject * Instigator);
 	void OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMode ToMode);
 
 	UFUNCTION(BlueprintCallable)

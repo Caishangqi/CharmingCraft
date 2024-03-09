@@ -16,6 +16,29 @@ ADropItem::ADropItem()
 	PrimaryActorTick.bCanEverTick = true;
 	// Create the invisible collision box and attach it to the RootComponent of the actor
 	InvisibleCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("InvisibleCollision"));
+	InvisibleCollision->SetSimulatePhysics(true);
+	InvisibleCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	InvisibleCollision->BodyInstance.bLockXRotation = true;
+	InvisibleCollision->BodyInstance.bLockYRotation = true;
+	InvisibleCollision->BodyInstance.bLockZRotation = true;
+
+	//
+	FCollisionResponseContainer CollisionResponse;
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Block);
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_PhysicsBody, ECollisionResponse::ECR_Overlap);
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_Vehicle, ECollisionResponse::ECR_Overlap);
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_Destructible, ECollisionResponse::ECR_Overlap);
+
+	// 其他通道保持默认值或设置为忽略（ECR_Ignore）
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Overlap);
+	CollisionResponse.SetResponse(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Overlap);
+	InvisibleCollision->SetCollisionResponseToChannels(CollisionResponse);
+	InvisibleCollision->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	InvisibleCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	InvisibleCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+
 	RootComponent = InvisibleCollision;
 	// Set the size of the collision box
 	InvisibleCollision->SetBoxExtent(FVector(50.f, 50.f, 100.f)); // You can adjust the size as needed
@@ -29,8 +52,8 @@ ADropItem::ADropItem()
 	DropIconMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DropIconMesh"));
 	DropIconMesh->SetupAttachment(RootComponent); // 附加到Root组件
 	// Set up transform
-	FRotator DropIconRotation = FRotator(0.0f, 90.0f, -30.0f); // Pitch, Yaw, Roll
-	FVector DropIconLocation = FVector(0.0f, -50.0f, 8.0f); // X, Y, Z
+	FRotator DropIconRotation = FRotator(0.0f, 135.0f, -30.0f); // Pitch, Yaw, Roll
+	FVector DropIconLocation = FVector(0.0f, 0.0f, 0.0f); // X, Y, Z
 	DropIconMesh->SetRelativeLocation(DropIconLocation);
 	DropIconMesh->SetRelativeRotation(DropIconRotation);
 	DropIconMesh->SetCastShadow(false);
@@ -54,15 +77,15 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 		{
 			ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this);
 			AItemEntityActor* ItemEntityActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
-			//ItemEntityActor->AttachToComponent(DropModelMesh, FAttachmentTransformRules::KeepRelativeTransform);
-			ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+			ItemEntityActor->AttachToComponent(DropIconMesh, FAttachmentTransformRules::KeepRelativeTransform);
+			//ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 		}
 	}
 	else if (ItemStack->ItemMeta->IsA(UBlockMeta::StaticClass())) // Handle Block Item Drop
 	{
 		AItemEntityActor* ItemEntityActor = Cast<UBlockMeta>(ItemStack->ItemMeta)->CreateItemEntityActor(this);
 		FVector Scale(0.75, 0.75, 0.75);
-		ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		ItemEntityActor->AttachToComponent(DropIconMesh, FAttachmentTransformRules::KeepRelativeTransform);
 		ItemEntityActor->SetActorTransform(FTransform(GetActorRotation(), GetActorLocation(), Scale));
 	}
 	else
@@ -117,13 +140,26 @@ void ADropItem::BeginPlay()
 void ADropItem::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	FRotator NewRotation = GetActorRotation();
-	NewRotation.Yaw += DeltaSeconds * RotationSpeed; // 逆时针旋转，如果你想顺时针旋转，可以减少Yaw值
-	SetActorRotation(NewRotation);
+	// 计算新的旋转角度
+	CurrentRotationAngle += RotationSpeed * DeltaSeconds * RotationDirection;
+
+	// 如果旋转角度达到了最大值，改变旋转方向
+	if (FMath::Abs(CurrentRotationAngle) >= MaxRotationAngle)
+	{
+		RotationDirection *= -1;
+		// 保证旋转角度不超过最大值
+		CurrentRotationAngle = FMath::Sign(CurrentRotationAngle) * MaxRotationAngle;
+	}
+
+	// 应用新的旋转
+	FRotator NewRotation = DropIconMesh->GetRelativeRotation();
+	NewRotation.Yaw += RotationSpeed * DeltaSeconds * RotationDirection; // 根据旋转方向更新Yaw值
+	DropIconMesh->SetRelativeRotation(NewRotation);
+
 
 	// 上下波动
-	FVector NewLocation = GetActorLocation();
+	FVector NewLocation = DropIconMesh->GetRelativeLocation();
 	BobbingPhase += DeltaSeconds * BobbingSpeed;
 	NewLocation.Z += FMath::Sin(BobbingPhase) * BobbingAmplitude;
-	SetActorLocation(NewLocation);
+	DropIconMesh->SetRelativeLocation(NewLocation);
 }
