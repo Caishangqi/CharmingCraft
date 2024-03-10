@@ -17,12 +17,12 @@ ABlockEntityActor::ABlockEntityActor()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Scene Component"));
+	SceneComponent->SetRelativeLocation(FVector(50, 50, 0)); // Caution: DO NOT TOUCH, set to center in 100x100 XY grid
 	RootComponent = SceneComponent;
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
 	CollisionBox->InitBoxExtent(FVector(48.0f, 48.0f, 48.0f));
 	CollisionBox->SetGenerateOverlapEvents(true);
 	CollisionBox->SetupAttachment(RootComponent);
-	CollisionBox->SetRelativeLocation(FVector(50, 50, 50));
 	EnableBlockCollision();
 	//
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &ABlockEntityActor::OnOverlapBegin);
