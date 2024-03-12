@@ -1,6 +1,7 @@
 #include "Biome.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h" // Optional: For debugging raycasts
+#include "CharmingCraft/Core/Builds/Lib/BuildModuleLib.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
@@ -33,7 +34,8 @@ bool ABiome::GetRandomPointInVolume(FVector& OutLocation)
 	FVector BoxExtent;
 	GetActorBounds(false, Origin, BoxExtent);
 
-	FVector RandPoint = Origin + FMath::RandPointInBox(FBox(-BoxExtent, BoxExtent));
+	FVector RandPoint = UBuildModuleLib::SnapToGrid(Origin + FMath::RandPointInBox(FBox(-BoxExtent, BoxExtent)), 100);;
+	
 
 	// 射线投射以检查地面
 	FHitResult HitResult;
