@@ -5,8 +5,10 @@
 
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Resource/Lib/GenerateTraceLibrary.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Engine/StaticMeshActor.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -113,48 +115,68 @@ bool ALandChunk::StartBiomeDataTimer()
 
 void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 {
-	// 获取生成成功的概率
-	float SuccessRate = GetOnGenerateSuccessRate(BiomeDataContext);
+    float SuccessRate = GetOnGenerateSuccessRate(BiomeDataContext);
+    float RandomChance = FMath::FRand();
 
-	// 生成一个0到1之间的随机数
-	float RandomChance = FMath::FRand();
+    if (RandomChance > SuccessRate) {
+        return; // Early exit if the random chance exceeds success rate
+    }
 
-	// 如果随机数小于等于生成几率，则生成Actor
-	if (RandomChance <= SuccessRate)
-	{
-		
-		int32 RandomIndex = FMath::RandRange(0, ChunkPoints.Num() - 1);
+    int32 RandomIndex = FMath::RandRange(0, ChunkPoints.Num() - 1);
+    FVector SpawnLocation = ChunkPoints[RandomIndex] + FVector(0, 0, 500);
+    FTransform SpawnTransform(FRotator(0.f), SpawnLocation);
 
-		FHitResult HitResult;
-		FCollisionQueryParams CollisionParams;
-		//CollisionParams.AddIgnoredActor(this); // 忽略自身
-		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, ChunkPoints[RandomIndex]+ FVector(0, 0, 5000), ChunkPoints[RandomIndex] ,
-														 ECC_WorldStatic, CollisionParams);
-		
-		if (bHit)
-		{
-			if (HitResult.GetActor()->IsA(AStaticMeshActor::StaticClass()))
-			{
-				// 判断是否能在指定材质上生成, 等待实现
-				AResourceEntityActor* SpawnedActor = GetWorld()->SpawnActor<AResourceEntityActor>(
-				BiomeDataContext.ResourceEntityActorClass, HitResult.Location, FRotator::ZeroRotator);
-				if (SpawnedActor)
-				{
-					ResourceEntityActorPool.Add(SpawnedActor);
-				}
-			}
-			if (HitResult.GetActor() == this && HitResult.Component == TopLayer)
-			{
-				AResourceEntityActor* SpawnedActor = GetWorld()->SpawnActor<AResourceEntityActor>(
-				BiomeDataContext.ResourceEntityActorClass, HitResult.Location, FRotator::ZeroRotator);
-				if (SpawnedActor)
-				{
-					ResourceEntityActorPool.Add(SpawnedActor);
-				}
-			}
-			// 尝试在计算出的位置生成资源实体
-		}
-	}
+    TObjectPtr<AResourceEntityActor> ResourceEntityActor = Cast<AResourceEntityActor>(
+        UGameplayStatics::BeginDeferredActorSpawnFromClass(this, BiomeDataContext.ResourceEntityActorClass, SpawnTransform));
+
+    if (!ResourceEntityActor) {
+        return; // Early exit if actor casting fails
+    }
+
+    FCollisionQueryParams CollisionParams;
+    CollisionParams.AddIgnoredActor(ResourceEntityActor);
+
+    TArray<float> Z_Plane;
+    bool bValidSpawn = true; // Assume valid spawn until proven otherwise
+
+    for (FVector CornerVector : UGenerateTraceLibrary::GetBoxCornerVector(ResourceEntityActor->HitBox)) {
+        FHitResult HitResult;
+        bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CornerVector, CornerVector - FVector(0, 0, 500),
+                                                         ECC_WorldStatic, CollisionParams);
+    	DrawDebugLine(this->GetWorld(),CornerVector ,CornerVector-FVector(0, 0, 500),FColor::Purple,false,10.0f);
+
+        if (bHit) {
+            Z_Plane.Add(HitResult.Location.Z);
+        } else {
+            bValidSpawn = false;
+            break; // Exit loop early if any corner does not hit
+        }
+    }
+
+    if (bValidSpawn && UGenerateTraceLibrary::AreAllElementsTheSame(Z_Plane) && Z_Plane.Num() == 4) {
+        FHitResult SecondTraceHitResult;
+        bool bHit = GetWorld()->LineTraceSingleByChannel(SecondTraceHitResult, SpawnLocation, ChunkPoints[RandomIndex],
+                                                         ECC_WorldStatic, CollisionParams);
+    	DrawDebugLine(this->GetWorld(),ChunkPoints[RandomIndex]+ FVector(0, 0, 500),ChunkPoints[RandomIndex],FColor::Yellow,false,10.0f);
+
+        if (bHit && (SecondTraceHitResult.GetActor()->IsA(AStaticMeshActor::StaticClass()) || 
+                     (SecondTraceHitResult.GetActor() == this && SecondTraceHitResult.Component == TopLayer))) {
+            FVector FinalLocation(SecondTraceHitResult.Location);
+            FTransform FinalTransform(FRotator(0.f), FinalLocation);
+            UGameplayStatics::FinishSpawningActor(ResourceEntityActor, FinalTransform);
+            ResourceEntityActorPool.Add(ResourceEntityActor);
+        } else {
+            bValidSpawn = false;
+        }
+    } else {
+        bValidSpawn = false;
+    }
+
+    if (!bValidSpawn) {
+        if (ResourceEntityActor) {
+            ResourceEntityActor->Destroy();
+        }
+    }
 }
 
 

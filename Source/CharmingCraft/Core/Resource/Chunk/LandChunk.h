@@ -58,6 +58,11 @@ public:
 	void OnResourceEntityBreakEvent(APawn* Breaker, AResourceEntityActor* TargetResourceEntity);
 	float GetOnGenerateSuccessRate(FBiomeData BiomeData);
 	bool StartBiomeDataTimer();
+	/*!
+	 * Generate Resource, first check box collision conner line trace, if
+	 * 4 corner in the same plane, then trace the point generate the resource
+	 * @param BiomeData The resource in Data you wan to generate
+	 */
 	void GenerateResource(FBiomeData BiomeData);
 protected:
 	// Called when the game starts or when spawned
