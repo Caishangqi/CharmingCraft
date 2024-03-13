@@ -16,6 +16,10 @@ enum class EMaterial: uint8
 	// Resource
 	ROCKS UMETA(DisplayName = "ROCKS"),
 	DEEPSLATE_PIECE UMETA(DisplayName = "DEEPSLATE_PIECE"),
+	RUBY UMETA(DisplayName = "RUBY"),
+
+	// Seeds
+	CORN_SEED UMETA(DisplayName = "CORN_SEED"),
 
 	// Block
 	PLANT_BOX UMETA(DisplayName = "Plant Box"),

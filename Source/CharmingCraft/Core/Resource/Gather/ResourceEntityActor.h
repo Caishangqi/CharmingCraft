@@ -54,8 +54,9 @@ public:
 	FTimerHandle ResourceInternalTimer;
 
 	// Drop Table
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
-	TObjectPtr<UDropTableData> DropTableData;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop Table")
+	TSubclassOf<UDropTableData> DropTableData;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
 	bool bDropSelf = true;
 

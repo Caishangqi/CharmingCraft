@@ -48,6 +48,38 @@ this repository.
 - Supports building, rotation (using `Q` and `E` keys), build specification preview, collision highlighting, destruction, and other functions (press `F` to switch between **Build** / **Destroy** mode).
 - In build mode, automatically disable the interaction between players and interactive objects.
 - Supports **filters** that only allow building in appropriate areas, such as preventing players from building in mining areas.
+
+### Chunk System (Refactory of Biome Actor)
+![chunk-system](https://github.com/Caishangqi/CharmingCraft/assets/39553613/cf80141b-1730-4815-9a3b-e701ed820743)
+- The Chunk system allows the game map to be divided into several cubes of the size 10 x 10 x 10. A single Chunk **can be activated as needed**, conserving system resources.
+
+- A single Chunk Tile calculates the grid it occupies in the [**Construction Script**](https://github.com/Caishangqi/CharmingCraft/blob/afe8917e7482ab9eae9adc91169e57414c760a2b/Source/CharmingCraft/Core/Resource/Chunk/LandChunk.cpp#L44) based on the chunk's size **(snapped to 100)**. These grid points **(Blue in graph)**, stored inside the Chunk, play a significant role in resource generation.
+
+- The Chunk system has **integrated** the previously **Biome box area Actors**. Now, it's only necessary to allocate Biome data within a single Chunk, **eliminating the need to create Biome boxes** and adjust their sizes. After adjusting the Biome and world resource data, the Chunk will randomly generate resources upon activation.
+
+- Because a Chunk records all the grid points it occupies upon creation, these snap-to-grid points can be easily used for ray tracing.
+<p align="center">
+<img src = "https://i.imgur.com/EF6t6WA.png">
+</p>
+
+
+
+
+
+![chunk-system](https://github.com/Caishangqi/CharmingCraft/assets/39553613/052ca797-7bb0-4865-a1c5-685c44a386f1)
+<p align="center">
+The new version of the Chunk system integrates the Biome Box Actor to manage and generate natural resources in Chunk units.
+</p>
+
+#### Resource Collision Enhance
+
+- To avoid resource collisions or parts being suspended in air within a Chunk, the four corners of the bottom face of the box are used for **pre-generation** judgment.
+
+- First, a point is randomly selected from the **GridPoints pre-stored in the Chunk** for pre-generation.
+
+- The [**four corner coordinates**](https://github.com/Caishangqi/CharmingCraft/blob/afe8917e7482ab9eae9adc91169e57414c760a2b/Source/CharmingCraft/Core/Resource/Lib/GenerateTraceLibrary.h#L24) of the bottom face of the resource Actor's HitBox are used as starting points for ray tracing downwards. If the Z values of the HitResult's return are the same, it can preliminarily be judged as a plane.
+
+- If the randomly selected point for ray tracing is not obstructed or is the expected terrain, then the Resource Actor can be generated.
 ### Equipment assembly
 
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/aa4a85df-a49b-488b-8887-5868ce0d31ec
@@ -196,6 +228,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Resource fracture mechanism implement by Chaos Destruction system 🟩
 - GameMode system that support key mapping base on different ganemodes 🟩
 - Build system and visual enhancement support place, rotate and break 🟩
+- Chunk Based Resource Generation 🟩
 
 ## Content and Mechanism
 
@@ -213,12 +246,13 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 | Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📌   |
 | Resource collection system, ores, trees, farmland         |  Normal  |  📝   |
 | Expand the Level to 1000 x 1000                           |   Low    |  📌   |
-| Biome: Respawn of monsters, resources, creatures          |   Low    |  📝   |
+| Biome: Respawn of monsters, resources, creatures          |   Low    |  ✅   |
 | Developing an engaging storyline                          |  Lowest  |  📌   |
 | Reset inventory UI and drag method                        |  Lowest  |   ✅   |
 
 ## Awaiting Improvement
 
+- If the player cancels the interaction, ray tracing will still be performed, causing widespread resource actror damage.
 - Fixing stuck and jittery issues when interacting with items on high ground (**Fixed**)
 - Correct movement behind buildings when obstructed (Ray Tracing)
 - Dynamic pathfinding improvements, refreshing available routes when players destroy blocks or interact with items (**Fixed**)

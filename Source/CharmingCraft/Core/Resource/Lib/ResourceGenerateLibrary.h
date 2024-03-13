@@ -3,15 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Item/ItemStack.h"
+#include "CharmingCraft/Core/Resource/DropTable/DropTableData.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "GenerateTraceLibrary.generated.h"
+#include "ResourceGenerateLibrary.generated.h"
 
 /**
  * 
  */
 UCLASS(meta=(BlueprintThreadSafe, ScriptName = "Generate Trace Library"))
-class CHARMINGCRAFT_API UGenerateTraceLibrary : public UBlueprintFunctionLibrary
+class CHARMINGCRAFT_API UResourceGenerateLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
@@ -71,12 +73,40 @@ public:
 		// 如果所有元素都与第一个元素相同，则返回true
 		return true;
 	}
-
+	
+	UFUNCTION(BlueprintCallable, Category = "Number")
+	static float GetRandomFloatInRange(float Min, float Max)
+	{
+		return FMath::FRand() * (Max - Min) + Min;
+	}
+	
 	static float GetRandomYawRight()
 	{
 		const int32 RandomRotationIndex = FMath::RandRange(0, 3);
 		const float RandomYaw = RandomRotationIndex * 90.0f;
 		return RandomYaw;
+	}
+	
+	UFUNCTION(BlueprintCallable, Category = "Resource")
+	static TArray<UItemStack *> GenerateDropItemFromDropData(UObject * Outer,UDropTableData * DropDataContext)
+	{
+		TArray<UItemStack *> ItemStackDropList;
+		ItemStackDropList.SetNum(DropDataContext->DropContext.Num());
+		
+		for (auto SingleDropData : DropDataContext->DropContext)
+		{
+			if (FMath::FRand() <= SingleDropData.Chance)
+			{
+				// Pass Chance
+				int32 DropAmount = GetRandomFloatInRange(SingleDropData.MinimumAmount, SingleDropData.MaxAmount);
+				ItemStackDropList.Push(UItemStack::CreateItemStackFromMaterial(Outer,SingleDropData.Material,DropAmount));
+			}
+			else
+			{
+				// Not Pass Chance
+			}
+		}
+		return ItemStackDropList;
 	}
 	
 };

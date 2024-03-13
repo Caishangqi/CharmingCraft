@@ -122,7 +122,7 @@ public:
 	 * @param LaunchVelocity The Velocity you want to add on DropItem after it spawn at SpawnTransform
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Drop")
-	static void DropItemInWorld(AActor* Instigator, UItemStack* ItemStack, FTransform SpawnTransform,
+	static void DropItemInWorld(UObject* Instigator, UItemStack* ItemStack, FTransform SpawnTransform,
 	                            FVector LaunchVelocity)
 	{
 		if (TObjectPtr<ADropItem> DropItemEntity = Cast<ADropItem>(

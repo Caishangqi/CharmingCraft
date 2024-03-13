@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Core/Resource/Lib/GenerateTraceLibrary.h"
+#include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Engine/StaticMeshActor.h"
 #include "Kismet/GameplayStatics.h"
@@ -125,7 +125,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
     int32 RandomIndex = FMath::RandRange(0, ChunkPoints.Num() - 1);
     FVector SpawnLocation = ChunkPoints[RandomIndex] + FVector(0, 0, 500);
 	// Generate Random Rotation
-	float RandomYaw = UGenerateTraceLibrary::GetRandomYawRight();
+	float RandomYaw = UResourceGenerateLibrary::GetRandomYawRight();
 	
     FTransform SpawnTransform(FRotator(0,RandomYaw,0), SpawnLocation);
 
@@ -142,9 +142,9 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
     TArray<float> Z_Plane;
     bool bValidSpawn = true; // Assume valid spawn until proven otherwise
 
-    for (FVector CornerVector : UGenerateTraceLibrary::GetBoxCornerVector(ResourceEntityActor->HitBox)) {
+    for (FVector CornerVector : UResourceGenerateLibrary::GetBoxCornerVector(ResourceEntityActor->HitBox)) {
         FHitResult HitResult;
-        bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CornerVector, CornerVector - FVector(0, 0, 500),
+        bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CornerVector + FVector(0, 0, 1000), CornerVector - FVector(0, 0, 500),
                                                          ECC_WorldStatic, CollisionParams);
     	DrawDebugLine(this->GetWorld(),CornerVector ,CornerVector-FVector(0, 0, 500),FColor::Purple,false,10.0f);
 
@@ -156,7 +156,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
         }
     }
 
-    if (bValidSpawn && UGenerateTraceLibrary::AreAllElementsTheSame(Z_Plane) && Z_Plane.Num() == 4) {
+    if (bValidSpawn && UResourceGenerateLibrary::AreAllElementsTheSame(Z_Plane) && Z_Plane.Num() == 4) {
         FHitResult SecondTraceHitResult;
         bool bHit = GetWorld()->LineTraceSingleByChannel(SecondTraceHitResult, SpawnLocation, ChunkPoints[RandomIndex],
                                                          ECC_WorldStatic, CollisionParams);

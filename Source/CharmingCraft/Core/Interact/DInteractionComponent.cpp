@@ -129,7 +129,9 @@ bool UDInteractionComponent::ExecuteInteractAction()
 {
 	UE_LOG(LogChamingCraftComponents, Warning, TEXT("[+] UDInteractionComponent::ExecuteInteractAction"));
 	/* Handle Interact Object Logic */
-	if (AIController->TargetActor->Implements<UDGameplayInterface>() && AIController->TargetActor->IsA(
+	//if (AIController->TargetActor->Implements<UDGameplayInterface>() && AIController->TargetActor->IsA(
+	//AInteractObject::StaticClass()))
+	if (AIController->TargetActor->IsA(
 		AInteractObject::StaticClass()))
 	{
 		if (Cast<AInteractObject>(AIController->TargetActor.Get())->bIsAllowToDamage)

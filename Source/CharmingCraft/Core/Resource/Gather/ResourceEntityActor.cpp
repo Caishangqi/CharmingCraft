@@ -6,6 +6,8 @@
 #include "ResourceEntityGeometryActor.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
+#include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Components/BoxComponent.h"
 
@@ -53,7 +55,7 @@ bool AResourceEntityActor::OnBlockBreak_Implementation(AActor* InstigatorContext
 {
 	GameEventHandler->OnResourceEntityBreakEvent(InstigatorContext, this);
 	
-	Execute_OnBlockDrop(this, InstigatorContext, DropTableData);
+	Execute_OnBlockDrop(this, InstigatorContext, DropTableData.GetDefaultObject());
 	
 	// Animation
 	if (ResourceGeometryData.OnBreakGeometry)
@@ -70,6 +72,32 @@ bool AResourceEntityActor::OnBlockBreak_Implementation(AActor* InstigatorContext
 
 bool AResourceEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableDataContext)
 {
+	if (bDropSelf)
+	{
+		
+	}
+	else
+	{
+		const FTransform SpawnTransform(
+			this->GetActorLocation() + this->GetActorUpVector() * 50);
+		FVector LaunchDirection = this->GetActorUpVector() * 100 + FVector(0, 0, 50);
+		FVector LaunchVelocity = LaunchDirection * 2;
+		
+		TArray<UItemStack *> ItemStackList = UResourceGenerateLibrary::GenerateDropItemFromDropData(this->GetWorld(),DropTableDataContext);
+		if (ItemStackList.Num() ==0) return false;
+		
+			for (auto ItemStack : ItemStackList)
+			{
+				if (ItemStack!= nullptr)
+				{
+					GameEventHandler->OnItemDropEvent(ItemStack, this);
+					UItemEntityUtilityLibrary::DropItemInWorld(this->GetWorld(), ItemStack, SpawnTransform, LaunchVelocity);
+				}
+				
+			}
+		
+		
+	}
 	return IBreakableInterface::OnBlockDrop_Implementation(Block, DropTableDataContext);
 }
 
