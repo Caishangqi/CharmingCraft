@@ -13,3 +13,5 @@ DEFINE_LOG_CATEGORY(LogChamingCraftWidgetHandler);
 DEFINE_LOG_CATEGORY(LogChamingCraftCraftResource);
 DEFINE_LOG_CATEGORY(LogChamingCraftCraftGameMode);
 DEFINE_LOG_CATEGORY(LogChamingCraftCraftBuild);
+DEFINE_LOG_CATEGORY(LogChamingCraftCraftAsset);
+

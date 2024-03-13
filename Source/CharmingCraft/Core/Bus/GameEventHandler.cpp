@@ -118,7 +118,7 @@ void UGameEventHandler::OnContainerItemTransferEvent(UObject* Instigator, UInven
 	                                  ItemBeingTransfer);
 }
 
-void UGameEventHandler::OnResourceEntityBreakEvent(APawn* Instigator, AResourceEntityActor* TargetResourceEntity)
+void UGameEventHandler::OnResourceEntityBreakEvent(AActor* Instigator, AResourceEntityActor* TargetResourceEntity)
 {
 	OnResourceEntityBreak.Broadcast(Instigator, TargetResourceEntity);
 	UE_LOG(LogChamingCraftCraftResource, Display,
@@ -129,8 +129,6 @@ void UGameEventHandler::OnResourceEntityBreakEvent(APawn* Instigator, AResourceE
 		       "		 [T] Target Resource Actor =		%s"
 	       ),
 	       *Instigator->GetName(), *TargetResourceEntity->GetName());
-	// On resource drop crates
-	TargetResourceEntity->OnResourceDestroy();
 }
 
 void UGameEventHandler::OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator)
@@ -154,7 +152,7 @@ void UGameEventHandler::OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEn
 	       *BlockEntityActor->GetName());
 }
 
-void UGameEventHandler::OnBlockBreakEvent(AActor* BlockActor, ACharacter* Instigator)
+void UGameEventHandler::OnBlockBreakEvent(AActor* BlockActor, AActor* Instigator)
 {
 	OnBlockBreak.Broadcast(BlockActor, Instigator);
 }

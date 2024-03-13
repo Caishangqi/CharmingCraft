@@ -90,7 +90,8 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 	}
 	else
 	{
-		DropIconMesh->SetStaticMesh(ItemStack->GetItemClass()->StaticMesh);
+		ItemStack->ItemClass->GetDefaultObject<UItem>()->CreateDynamicAsset();
+		DropIconMesh->SetStaticMesh(ItemStack->ItemClass->GetDefaultObject<UItem>()->StaticMesh);
 		DropIconMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	}
 }

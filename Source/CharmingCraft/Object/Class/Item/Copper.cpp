@@ -10,18 +10,8 @@ UCopper::UCopper()
 	MaxStackSize = 64;
 	ItemType = EItemType::MATERIAL;
 	Material = EMaterial::COPPER;
+	AssetName = TEXT("copper_ingot");
 	ItemMetaClass = UItemMeta::StaticClass();
-	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(
-		TEXT("/Script/Engine.Texture2D'/Game/CharmingCraft/Assets/textures/item/copper_ingot.copper_ingot'"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(
-		TEXT("/Script/Engine.StaticMesh'/Game/CharmingCraft/Assets/models/item/copper_ingot.copper_ingot'"));
-	if (IconTexture.Succeeded() && MeshTexture.Succeeded())
-	{
-		Icon = IconTexture.Object;
-		StaticMesh = MeshTexture.Object;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Failed to load Icon texture!"));
-	}
+	DescribeText = FText::FromString("It is a soft, malleable, and ductile metal with very high thermal and electrical conductivity.");	
+	Super::LoadLocalAsset();
 }

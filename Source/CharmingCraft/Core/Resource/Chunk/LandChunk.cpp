@@ -76,7 +76,7 @@ void ALandChunk::PostEditMove(bool bFinished)
 }
 
 
-void ALandChunk::OnResourceEntityBreakEvent(APawn* Breaker, AResourceEntityActor* TargetResourceEntity)
+void ALandChunk::OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity)
 {
 	UE_LOG(LogChamingCraftCraftResource, Display,
 	   TEXT("[🪨️]  Chunk Internal resource actor update\n"
@@ -124,7 +124,10 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 
     int32 RandomIndex = FMath::RandRange(0, ChunkPoints.Num() - 1);
     FVector SpawnLocation = ChunkPoints[RandomIndex] + FVector(0, 0, 500);
-    FTransform SpawnTransform(FRotator(0.f), SpawnLocation);
+	// Generate Random Rotation
+	float RandomYaw = UGenerateTraceLibrary::GetRandomYawRight();
+	
+    FTransform SpawnTransform(FRotator(0,RandomYaw,0), SpawnLocation);
 
     TObjectPtr<AResourceEntityActor> ResourceEntityActor = Cast<AResourceEntityActor>(
         UGameplayStatics::BeginDeferredActorSpawnFromClass(this, BiomeDataContext.ResourceEntityActorClass, SpawnTransform));
@@ -162,7 +165,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
         if (bHit && (SecondTraceHitResult.GetActor()->IsA(AStaticMeshActor::StaticClass()) || 
                      (SecondTraceHitResult.GetActor() == this && SecondTraceHitResult.Component == TopLayer))) {
             FVector FinalLocation(SecondTraceHitResult.Location);
-            FTransform FinalTransform(FRotator(0.f), FinalLocation);
+            FTransform FinalTransform(FRotator(0,RandomYaw,0), FinalLocation);
             UGameplayStatics::FinishSpawningActor(ResourceEntityActor, FinalTransform);
             ResourceEntityActorPool.Add(ResourceEntityActor);
         } else {

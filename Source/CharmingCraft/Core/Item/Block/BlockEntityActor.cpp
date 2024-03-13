@@ -143,7 +143,7 @@ void ABlockEntityActor::DisablePreviewScaleBox()
 	IVisualEnhancementInterface::Execute_SetObjectTranslucent(this, 1.0f);
 }
 
-bool ABlockEntityActor::OnBlockBreak_Implementation(ACharacter* InstigatorCharacter, AActor* BlockBreak)
+bool ABlockEntityActor::OnBlockBreak_Implementation(AActor* InstigatorCharacter, AActor* BlockBreak)
 {
 	Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->
 	                                                 OnBlockBreakEvent(this, InstigatorCharacter);
@@ -152,7 +152,7 @@ bool ABlockEntityActor::OnBlockBreak_Implementation(ACharacter* InstigatorCharac
 	return IBreakableInterface::OnBlockBreak_Implementation(InstigatorCharacter, BlockBreak);
 }
 
-bool ABlockEntityActor::OnBlockPlace_Implementation(ACharacter* InstigatorCharacter, AActor* BlockPlaced)
+bool ABlockEntityActor::OnBlockPlace_Implementation(AActor* InstigatorCharacter, AActor* BlockPlaced)
 {
 	// Event already called by UBuildModuleManager::PlaceBuildPreview()
 	return IBreakableInterface::OnBlockPlace_Implementation(InstigatorCharacter, BlockPlaced);

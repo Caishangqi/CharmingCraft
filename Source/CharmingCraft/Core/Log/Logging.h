@@ -24,6 +24,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftWidgetHandler, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftResource, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftGameMode, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftBuild, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftAsset, Log, All);
 
 class Logging
 {

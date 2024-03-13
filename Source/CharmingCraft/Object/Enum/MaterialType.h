@@ -13,13 +13,17 @@ enum class EMaterial: uint8
 	PICKAXE UMETA(DisplayName = "Pickaxe"),
 	HAND UMETA(DisplayName = "Hand"),
 
+	// Resource
+	ROCKS UMETA(DisplayName = "ROCKS"),
+	DEEPSLATE_PIECE UMETA(DisplayName = "DEEPSLATE_PIECE"),
+
 	// Block
 	PLANT_BOX UMETA(DisplayName = "Plant Box"),
-
+	
 
 	// Biome Surface
-	MUD UMETA(DisplayName = "MUD"),
-	DRIED_MUD UMETA(DisplayName = "DRIED_MUD"),
-	GRASS UMETA(DisplayName = "GRASS"),
-	STONE UMETA(DisplayName = "STONE")
+	BLOCK_MUD UMETA(DisplayName = "BLOCK_MUD"),
+	BLOCK_DRIED_MUD UMETA(DisplayName = "BLOCK_DRIED_MUD"),
+	BLOCK_GRASS UMETA(DisplayName = "BLOCK_GRASS"),
+	BLOCK_STONE UMETA(DisplayName = "BLOCK_STONE")
 };

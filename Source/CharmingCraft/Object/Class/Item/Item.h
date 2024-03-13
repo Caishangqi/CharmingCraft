@@ -50,7 +50,14 @@ public:
 	FTransform RenderSpecifyTransform;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Render")
 	int32 OrthoWidth;
-
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Asset")
+	FString AssetName; // 新增的String类型属性
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Asset")
+	TObjectPtr<UMaterial> BaseMaterialAsset;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Asset")
+	TObjectPtr<UMaterialInstanceDynamic> DynamicMaterialInstance;
+	
 public: // Methods
 
 	UItem();
@@ -58,4 +65,9 @@ public: // Methods
 	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator);
 	UFUNCTION(BlueprintCallable)
 	virtual void EndItemInteract();
+	UFUNCTION(BlueprintCallable)
+	virtual void LoadLocalAsset();
+	UFUNCTION(BlueprintCallable)
+	virtual void CreateDynamicAsset();
+
 };

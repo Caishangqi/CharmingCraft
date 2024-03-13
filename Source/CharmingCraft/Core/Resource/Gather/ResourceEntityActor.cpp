@@ -49,8 +49,12 @@ int32 AResourceEntityActor::ReduceResourceHeath(int32 Delta)
 	return this->ResourceData.CurrentHeath;
 }
 
-void AResourceEntityActor::OnResourceDestroy()
+bool AResourceEntityActor::OnBlockBreak_Implementation(AActor* InstigatorContext, AActor* BlockBreak)
 {
+	GameEventHandler->OnResourceEntityBreakEvent(InstigatorContext, this);
+	
+	Execute_OnBlockDrop(this, InstigatorContext, DropTableData);
+	
 	// Animation
 	if (ResourceGeometryData.OnBreakGeometry)
 	{
@@ -60,7 +64,16 @@ void AResourceEntityActor::OnResourceDestroy()
 
 	// Destroy Actor
 	this->Destroy();
+	
+	return IBreakableInterface::OnBlockBreak_Implementation(InstigatorContext, BlockBreak);
 }
+
+bool AResourceEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableDataContext)
+{
+	return IBreakableInterface::OnBlockDrop_Implementation(Block, DropTableDataContext);
+}
+
+
 
 void AResourceEntityActor::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
@@ -84,7 +97,7 @@ void AResourceEntityActor::OnActionHit_Implementation(APawn* InstigatorPawn, FHi
 		                                       ResourceData.ResetHealthTime, false);
 		if (ReduceResourceHeath(HitData.Damage) <= 0)
 		{
-			GameEventHandler->OnResourceEntityBreakEvent(InstigatorPawn, this);
+			Execute_OnBlockBreak(this, InstigatorPawn, this);
 		}
 	}
 

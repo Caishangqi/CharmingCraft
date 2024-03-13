@@ -20,6 +20,8 @@ void UUserWidgetEventHandler::NativeConstruct()
 	GamePlayLogicManager->OnItemDetailDisplay.AddDynamic(this, &UUserWidgetEventHandler::OnItemDetailDisplayEvent);
 	GamePlayLogicManager->OnCloseWidget.AddDynamic(this, &UUserWidgetEventHandler::OnCloseWidgetEvent);
 
+	LoadedUserWidget.SetNum(100);
+
 	GameInstance->UserWidgetEventHandler = this;
 }
 

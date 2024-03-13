@@ -36,7 +36,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuildPreviewTraceDelegate, UItem
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlaceModeChangeDelegate, ACharacter*,
                                              Instigator, EBuildMode, ToMode);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBlockBreakDelegate, AActor*, BlockActor, ACharacter*, Instigator);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBlockBreakDelegate, AActor*, BlockActor, AActor*, Instigator);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDropDelegate, UItemStack*, DropedItem, UObject*, Instigator);
 
@@ -52,7 +52,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerLeaveDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityBreakDelegate, APawn*, Instigator,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityBreakDelegate, AActor*, Instigator,
                                              AResourceEntityActor*, TargetResourceEntity);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
@@ -112,14 +112,14 @@ public:
 	                                  UInventoryComponent* TargetContainer, int32 TargetIndex,
 	                                  UItemStack* ItemBeingTransfer);
 	UFUNCTION(BlueprintCallable)
-	void OnResourceEntityBreakEvent(APawn* Instigator, AResourceEntityActor* TargetResourceEntity);
+	void OnResourceEntityBreakEvent(AActor* Instigator, AResourceEntityActor* TargetResourceEntity);
 	// Building
 	UFUNCTION(BlueprintCallable)
 	void OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator);
 	UFUNCTION(BlueprintCallable)
 	void OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEntityActor* BlockEntityActor, ACharacter* Instigator);
 	UFUNCTION(BlueprintCallable)
-	void OnBlockBreakEvent(AActor* BlockActor, ACharacter* Instigator);
+	void OnBlockBreakEvent(AActor* BlockActor, AActor* Instigator);
 	UFUNCTION(BlueprintCallable)
 	void OnItemDropEvent(UItemStack *DroppedItem, UObject * Instigator);
 	void OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMode ToMode);

@@ -82,7 +82,6 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 			TSubclassOf<UItemMeta> ItemMetaClass = RowData->ItemClass.GetDefaultObject()->ItemMetaClass;
 			ItemStack->ItemClass = RowData->ItemClass;
 			UItem* ItemClass = ItemStack->ItemClass.GetDefaultObject();
-
 			/*!
 			 *	WARNNING: The outer should be ItemStack when create ItemMeta, fail / incorrect assign outer
 			 *	will cause serious implicit bug

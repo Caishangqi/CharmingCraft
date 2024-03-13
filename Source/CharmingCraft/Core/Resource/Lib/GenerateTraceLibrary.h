@@ -71,5 +71,12 @@ public:
 		// 如果所有元素都与第一个元素相同，则返回true
 		return true;
 	}
+
+	static float GetRandomYawRight()
+	{
+		const int32 RandomRotationIndex = FMath::RandRange(0, 3);
+		const float RandomYaw = RandomRotationIndex * 90.0f;
+		return RandomYaw;
+	}
 	
 };

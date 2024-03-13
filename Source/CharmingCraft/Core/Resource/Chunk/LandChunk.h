@@ -55,7 +55,7 @@ public:
 	TObjectPtr<UGameEventHandler> GameEventHandler;
 
 	UFUNCTION()
-	void OnResourceEntityBreakEvent(APawn* Breaker, AResourceEntityActor* TargetResourceEntity);
+	void OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity);
 	float GetOnGenerateSuccessRate(FBiomeData BiomeData);
 	bool StartBiomeDataTimer();
 	/*!

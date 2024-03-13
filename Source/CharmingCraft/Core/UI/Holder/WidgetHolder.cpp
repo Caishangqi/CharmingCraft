@@ -19,7 +19,7 @@ UObject* UWidgetHolder::GetCreator()
 bool UWidgetHolder::RemoveWidget_Implementation()
 {
 	bool bIsRemoveLeastOne = false;
-	for (auto UserWidget : UserWidgetEventHandler->LoadedUserWidget)
+	for (auto &UserWidget : UserWidgetEventHandler->LoadedUserWidget)
 	{
 		if (this == UserWidget)
 		{

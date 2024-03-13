@@ -53,7 +53,7 @@ void UEquipment::OnEquipmentDuringUse()
 		{
 			AActor* HitActor = Hit.GetActor();
 			// 检查Actor是否已经被击中
-			if (!HitActors.Contains(HitActor))
+			if (!HitActors.Contains(HitActor) && HitActor)
 			{
 				// 如果这个Actor还没有被击中
 				UE_LOG(LogTemp, Display, TEXT("Hited Actor: %s"), *HitActor->GetName());

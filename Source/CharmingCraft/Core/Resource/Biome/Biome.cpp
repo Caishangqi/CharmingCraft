@@ -55,7 +55,7 @@ bool ABiome::GetRandomPointInVolume(FVector& OutLocation)
 	return false;
 }
 
-void ABiome::OnResourceEntityBreakEvent(APawn* Breaker, AResourceEntityActor* TargetResourceEntity)
+void ABiome::OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity)
 {
 	UE_LOG(LogChamingCraftCraftResource, Display,
 	       TEXT("[🪨️]  Biome Internal resource actor update\n"

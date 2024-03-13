@@ -45,7 +45,7 @@ public:
 	virtual void BeginPlay() override;
 	bool GetRandomPointInVolume(FVector& OutLocation);
 	UFUNCTION()
-	void OnResourceEntityBreakEvent(APawn* Breaker, AResourceEntityActor* TargetResourceEntity);
+	void OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity);
 	
 	float GetOnGenerateSuccessRate(FBiomeData BiomeData);
 	bool StartBiomeDataTimer();

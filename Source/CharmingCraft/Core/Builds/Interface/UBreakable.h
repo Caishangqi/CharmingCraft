@@ -22,9 +22,9 @@ class CHARMINGCRAFT_API IBreakableInterface
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool OnBlockPlace(ACharacter* Instigator, AActor* BlockPlaced);
+	bool OnBlockPlace(AActor* Instigator, AActor* BlockPlaced);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool OnBlockBreak(ACharacter* Instigator, AActor* BlockBreak);
+	bool OnBlockBreak(AActor* Instigator, AActor* BlockBreak);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool OnBlockDrop(AActor* Block, UDropTableData* DropTableData);
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Builds/Interface/UBreakable.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Resource/Data/FResourceData.h"
 #include "CharmingCraft/Core/Resource/Data/FResourceGeometryData.h"
@@ -17,7 +18,7 @@ class UChildActorComponent;
 class UBoxComponent;
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API AResourceEntityActor : public AInteractObject, public IDamageable
+class CHARMINGCRAFT_API AResourceEntityActor : public AInteractObject, public IDamageable, public IBreakableInterface
 {
 	GENERATED_BODY()
 
@@ -52,6 +53,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Timer")
 	FTimerHandle ResourceInternalTimer;
 
+	// Drop Table
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
+	TObjectPtr<UDropTableData> DropTableData;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
+	bool bDropSelf = true;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -65,7 +72,7 @@ public:
 	void ResetHealth();
 	UFUNCTION(BlueprintCallable)
 	int32 ReduceResourceHeath(int32 Delta);
-	UFUNCTION(BlueprintCallable)
-	void OnResourceDestroy();
+	virtual bool OnBlockBreak_Implementation(AActor* Instigator, AActor* BlockBreak) override;
+	virtual bool OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableData) override;
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
 };

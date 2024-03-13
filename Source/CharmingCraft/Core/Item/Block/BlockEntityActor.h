@@ -84,9 +84,9 @@ public:
 public:
 	// Life cycle of On Block place
 	// Start block function at this place
-	virtual bool OnBlockBreak_Implementation(ACharacter* Instigator, AActor* BlockBreak
+	virtual bool OnBlockBreak_Implementation(AActor* Instigator, AActor* BlockBreak
 	) override;
-	virtual bool OnBlockPlace_Implementation(ACharacter* Instigator, AActor* BlockPlaced) override;
+	virtual bool OnBlockPlace_Implementation(AActor* Instigator, AActor* BlockPlaced) override;
 
 	virtual bool OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableDataContext) override;
 };
