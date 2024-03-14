@@ -26,12 +26,38 @@ void UEquipmentComponent::OnContainerItemTransferListener(UObject* Instigator, U
                                                           UInventoryComponent* TargetContainer, int32 TargetIndex,
                                                           UItemStack* ItemBeingTransfer)
 {
+	// Dismiss Event 
+	if (TargetContainer != this && SourceContainer != this)
+	{
+		return;
+	}
+	
 	UE_LOG(LogChamingCraftGameEvent, Display,
 	       TEXT("[📍]  Event Listener at UGameEventHandler::OnContainerItemTransferEvent()"));
+
+	// Handle Equip and UnEquip Event
+	if (TargetContainer->IsA(UEquipmentComponent::StaticClass()))
+	{	
+		if (SourceContainer->Inventory[SourceIndex])
+		{
+			GameEventHandler->OnActorUnEquipmentEvent(Instigator,SourceContainer->Inventory[SourceIndex],TargetIndex);
+		}
+		GameEventHandler->OnActorOnEquipmentEvent(Instigator,TargetContainer->Inventory[TargetIndex],TargetIndex);
+	} else if (TargetContainer->IsA(UInventoryComponent::StaticClass()))
+	{
+
+		if (SourceContainer->Inventory[SourceIndex])
+		{
+			GameEventHandler->OnActorOnEquipmentEvent(Instigator,SourceContainer->Inventory[SourceIndex],SourceIndex);
+		}
+		GameEventHandler->OnActorUnEquipmentEvent(Instigator,TargetContainer->Inventory[TargetIndex],TargetIndex);
+	}
+	
 
 	/* Update The Render of Equipment on socket call when Transfer successful */
 	UpdateEquipmentModelToEntity(Instigator, SourceContainer, SourceIndex, TargetContainer, TargetIndex,
 	                             ItemBeingTransfer);
+	
 }
 
 bool UEquipmentComponent::UpdateEquipmentModelToEntity(UObject* Instigator, UInventoryComponent* SourceContainer,
@@ -126,7 +152,7 @@ bool UEquipmentComponent::AttachNewEquipmentModelToEntity(int32 UpdateIndex)
 void UEquipmentComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	TObjectPtr<UGameEventHandler> GameEventHandler = Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance())->
+	GameEventHandler = Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance())->
 		GetGameEventHandler();
 	GameEventHandler->OnContainerItemTransfer.AddDynamic(this, &UEquipmentComponent::OnContainerItemTransferListener);
 	// ...
@@ -145,6 +171,11 @@ void UEquipmentComponent::TransferSlots(int32 SourceIndex, UInventoryComponent* 
 		 *  - Use this Component to Store Equipment Attribute Separately and
 		 *  pass the Attribute Data to Attribute Component when needed
 		 */
+
+
+
+
+		
 	}
 }
 

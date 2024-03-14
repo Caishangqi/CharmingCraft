@@ -54,6 +54,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerSaveDelegate);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityBreakDelegate, AActor*, Instigator,
                                              AResourceEntityActor*, TargetResourceEntity);
+// Player
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorOnEquipmentDelegate, UObject * , Instigator, UItemStack * , OnEquipItem, int32, EquipIndex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorUnEquipmentDelegate, UObject * , Instigator, UItemStack * , UnEquipItem, int32, EquipIndex);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
@@ -81,6 +84,11 @@ public:
 	FOnResourceEntityBreakDelegate OnResourceEntityBreak;
 
 	FOnItemDetailDisplayDelegate OnItemDetailDisplay;
+
+	// Player Equipment
+	FOnActorOnEquipmentDelegate OnActorOnEquipment;
+	FOnActorUnEquipmentDelegate OnActorUnEquipment;
+	
 
 	// Building System
 	UPROPERTY(BlueprintAssignable)
@@ -123,7 +131,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnItemDropEvent(UItemStack *DroppedItem, UObject * Instigator);
 	void OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMode ToMode);
-
+	
+	// Player Equipment
+	UFUNCTION(BlueprintCallable)
+	void OnActorOnEquipmentEvent(UObject *  Instigator, UItemStack *  OnEquipItem, int32 EquipIndex);
+	UFUNCTION(BlueprintCallable)
+	void OnActorUnEquipmentEvent(UObject *  Instigator, UItemStack *  UnEquipItem, int32 EquipIndex);
+	
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
 	UFUNCTION(BlueprintCallable)

@@ -8,10 +8,13 @@ enum class EMaterial: uint8
 	COPPER UMETA(DisplayName = "Copper"),
 	LEAD UMETA(DisplayName = "Lead"),
 	COBALT UMETA(DisplayName = "Cobalt"),
+
+	// Equipment
 	HELMET UMETA(DisplayName = "Helmet"),
 	SWORD UMETA(DisplayName = "Sword"),
 	PICKAXE UMETA(DisplayName = "Pickaxe"),
 	HAND UMETA(DisplayName = "Hand"),
+	HOE UMETA(DisplayName = "HOE"),
 
 	// Resource
 	ROCKS UMETA(DisplayName = "ROCKS"),
@@ -22,7 +25,8 @@ enum class EMaterial: uint8
 	CORN_SEED UMETA(DisplayName = "CORN_SEED"),
 
 	// Block
-	PLANT_BOX UMETA(DisplayName = "Plant Box"),
+	PLANT_BOX UMETA(DisplayName = "PLANT_BOX"),
+	FARM_LAND UMETA(DisplayName = "FARM_LAND"),
 	
 
 	// Biome Surface

@@ -7,6 +7,7 @@
 #include "CharmingCraft/Core/Item/Meta/ItemMeta.h"
 #include "EquipmentComponent.generated.h"
 
+class UGameEventHandler;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UEquipmentComponent : public UInventoryComponent
@@ -39,6 +40,9 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool AttachNewEquipmentModelToEntity(int32 UpdateIndex);
+
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UGameEventHandler> GameEventHandler;
 
 protected:
 	// Called when the game starts
