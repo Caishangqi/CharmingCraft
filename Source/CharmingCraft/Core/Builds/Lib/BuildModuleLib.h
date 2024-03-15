@@ -15,6 +15,7 @@ class CHARMINGCRAFT_API UBuildModuleLib : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Grid")
 	static FVector SnapToGrid(const FVector& OriginalPosition, float GridSize)
 	{
 		// 网格大小调整为网格的一半，用于对齐到XY平面的网格中心

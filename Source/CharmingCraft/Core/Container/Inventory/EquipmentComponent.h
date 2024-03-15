@@ -48,8 +48,12 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	virtual void
-	TransferSlots(int32 SourceIndex, UInventoryComponent* SourceInventory, int32 DestinationIndex) override;
+	virtual void TransferSlots(int32 SourceIndex, UInventoryComponent* SourceInventory, int32 DestinationIndex) override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual void OnEquipment(UObject* Instigator, UItemStack* OnEquipItem, int32 EquipIndex);
+	UFUNCTION(BlueprintCallable)
+	virtual void UnEquipment(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex);
 
 public:
 	// Called every frame

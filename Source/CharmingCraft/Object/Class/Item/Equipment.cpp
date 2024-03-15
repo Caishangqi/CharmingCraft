@@ -11,6 +11,15 @@
 #include "CharmingCraft/Object/Structs/model/FEquipmentAttribute.h"
 #include "Components/ArrowComponent.h"
 
+
+void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
+{
+}
+
+void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
+{
+}
+
 void UEquipment::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator);

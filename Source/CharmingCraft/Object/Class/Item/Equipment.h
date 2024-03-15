@@ -12,6 +12,7 @@
  */
 class AItemEntityActor;
 class AEquipmentEntityActor;
+
 UCLASS()
 class CHARMINGCRAFT_API UEquipment : public UItem
 {
@@ -32,6 +33,21 @@ public:
 	TSet<TObjectPtr<AActor>> HitActors;
 
 public:
+	/*!
+	 * Call OnEquip when the equipment is equipped on equip inventory
+	 * @param Instigator Who Equip
+	 * @param OnEquipItem The Item that equip on slot
+	 */
+	UFUNCTION(BlueprintCallable)
+	virtual void OnEquip(UObject* Instigator, UItemStack* OnEquipItem);
+	/*!
+	 * Call UnEquip when equipment is UnEquipped from equip inventory
+	 * @param Instigator Who UnEquip
+	 * @param UnEquipItem The Item that UnEquip from slot
+	 */
+	UFUNCTION(BlueprintCallable)
+	virtual void UnEquip(UObject* Instigator, UItemStack* UnEquipItem);
+
 	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator) override;
 	virtual void OnEquipmentDuringUse();
 	virtual void OnEquipmentHit(UItemStack* EquipmentItemStack, APawn* Instigator, AActor* HitEntity);

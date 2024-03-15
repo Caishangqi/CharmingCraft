@@ -31,6 +31,11 @@ void UEquipmentComponent::OnContainerItemTransferListener(UObject* Instigator, U
 	{
 		return;
 	}
+
+	if (Instigator->IsA( UActorComponent::StaticClass()))
+	{
+		Instigator = Cast<UActorComponent>(Instigator)->GetOwner();
+	}
 	
 	UE_LOG(LogChamingCraftGameEvent, Display,
 	       TEXT("[📍]  Event Listener at UGameEventHandler::OnContainerItemTransferEvent()"));
@@ -155,6 +160,8 @@ void UEquipmentComponent::BeginPlay()
 	GameEventHandler = Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance())->
 		GetGameEventHandler();
 	GameEventHandler->OnContainerItemTransfer.AddDynamic(this, &UEquipmentComponent::OnContainerItemTransferListener);
+	GameEventHandler->OnActorOnEquipment.AddDynamic(this, &UEquipmentComponent::OnEquipment);
+	GameEventHandler->OnActorUnEquipment.AddDynamic(this, &UEquipmentComponent::UnEquipment);
 	// ...
 }
 
@@ -176,6 +183,24 @@ void UEquipmentComponent::TransferSlots(int32 SourceIndex, UInventoryComponent* 
 
 
 		
+	}
+}
+
+void UEquipmentComponent::OnEquipment(UObject* Instigator, UItemStack* OnEquipItem, int32 EquipIndex)
+{
+	if (OnEquipItem->ItemClass->IsChildOf(UEquipment::StaticClass()))
+	{
+		TObjectPtr<UEquipment> EquipmentItemClasInstance = Cast<UEquipment>(OnEquipItem->ItemClass->GetDefaultObject());
+		EquipmentItemClasInstance->OnEquip(Instigator,OnEquipItem);
+	}
+}
+
+void UEquipmentComponent::UnEquipment(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex)
+{
+	if (UnEquipItem->ItemClass->IsChildOf(UEquipment::StaticClass()))
+	{
+		TObjectPtr<UEquipment> EquipmentItemClasInstance = Cast<UEquipment>(UnEquipItem->ItemClass->GetDefaultObject());
+		EquipmentItemClasInstance->UnEquip(Instigator,UnEquipItem);
 	}
 }
 

@@ -18,3 +18,7 @@ void UFrameInfoTemplate::OnOverlapEndStyle_Implementation(EBuildCollidedType Sty
 void UFrameInfoTemplate::SetDefaultTemplateStyle_Implementation(AFrameActor* Parent)
 {
 }
+
+void UFrameInfoTemplate::UpdateAppearance_Implementation(AFrameActor* Parent)
+{
+}

@@ -272,6 +272,32 @@ void UBuildModuleManager::RestToDefault()
 	}
 }
 
+UBaseBuildModel* UBuildModuleManager::StartCustomModel(UObject* Instigator, TSubclassOf<UBaseBuildModel> BuildModel)
+{
+	if (CurrentLoadedBuildModels.Contains(BuildModel.GetDefaultObject()->BuildModelName))
+	{
+		TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
+		BaseBuildModel->StartTrace(Instigator);
+		return CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
+	}
+	else
+	{
+		TObjectPtr<UBaseBuildModel> NewBuildModel = NewObject<UBaseBuildModel>(this,BuildModel);
+		CurrentLoadedBuildModels.Add(NewBuildModel->BuildModelName, NewBuildModel);
+		NewBuildModel->StartTrace(Instigator);
+	}
+	return nullptr;
+}
+
+bool UBuildModuleManager::StopCustomModel(UObject* Instigator, TSubclassOf<UBaseBuildModel> BuildModel)
+{
+	TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
+	BaseBuildModel->StopTrace(Instigator);
+	
+	CurrentLoadedBuildModels.Remove(BuildModel.GetDefaultObject()->BuildModelName);
+	return false;
+}
+
 void UBuildModuleManager::LoadMaterialToPlaceValidation()
 {
 	// /Script/Engine.MaterialInstanceConstant'/Game/CharmingCraft/Block/Module/Material/M_CubeCollisionWarning.M_CubeCollisionWarning' CollidedMatFinder ValidMatFinder

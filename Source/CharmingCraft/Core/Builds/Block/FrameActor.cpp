@@ -41,7 +41,7 @@ void AFrameActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Ot
 	{
 		ColliedResult.ColliedActor = OtherActor;
 		// Call different function in UFrameInfoTemplate base on current Mode
-		LoadedFrameAppearance.Find(CurrentFrameActorType)->GetDefaultObject()->OnOverlapBeginStyle(
+		FrameAppearanceClass->GetDefaultObject<UFrameInfoTemplate>()->OnOverlapBeginStyle(
 			EBuildCollidedType::COLLIDED, this);
 	}
 }
@@ -50,21 +50,22 @@ void AFrameActor::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* Othe
                                int32 OtherBodyIndex)
 {
 	ColliedResult.ColliedActor = nullptr;
-	LoadedFrameAppearance.Find(CurrentFrameActorType)->GetDefaultObject()->OnOverlapEndStyle(
-		EBuildCollidedType::WARNING, this);
+	FrameAppearance->OnOverlapEndStyle(EBuildCollidedType::WARNING, this);
 }
 
 // Called when the game starts or when spawned
 void AFrameActor::BeginPlay()
 {
 	Super::BeginPlay();
-	LoadedFrameAppearance.Find(CurrentFrameActorType)->GetDefaultObject()->SetDefaultTemplateStyle(this);
+	FrameAppearance = NewObject<UFrameInfoTemplate>(this, FrameAppearanceClass, "Frame Appearance");
+	FrameAppearance->SetDefaultTemplateStyle(this);
 }
 
 // Called every frame
 void AFrameActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FrameAppearance->UpdateAppearance(this);
 }
 
 void AFrameActor::SetFrameDestroyState_Implementation()

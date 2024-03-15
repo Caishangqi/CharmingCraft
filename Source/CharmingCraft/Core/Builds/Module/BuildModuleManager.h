@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseBuildModel.h"
 #include "CharmingCraft/Core/Builds/Data/FPlaceValidation.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "UObject/Object.h"
@@ -57,6 +58,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	FPlaceValidation PlaceValidation; // Data collection that storage Collision info, and block data
+
+	// Collection of loaded models, usually add when equip some special "visual" tool like hoe, or plant seed
+	// remove when UnEquip and cancel plant seed
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TMap<FName, TObjectPtr<UBaseBuildModel>> CurrentLoadedBuildModels;
 
 	UBuildModuleManager();
 
@@ -113,6 +119,26 @@ public:
 	// Rest BuildModuleManager to default state, clear cached ItemStack
 	UFUNCTION(BlueprintCallable)
 	void RestToDefault();
+
+	/*!
+	 * A custom model of BuildModel, useful when some equipment need the "additional" visual
+	 * enhancement, for example hoe, when player equip hoe, start a custom HoeBuildModel could
+	 * generate a Hoe specific frame actor that HoeBuildModel could handle additional logic
+	 * for equipment
+	 * @param Instigator Who Start the model
+	 * @param BuildModel Model need to perform
+	 * @return UBaseBuildModel
+	 */
+	UFUNCTION(BlueprintCallable)
+	UBaseBuildModel* StartCustomModel(UObject* Instigator, TSubclassOf<UBaseBuildModel> BuildModel);
+	/*!
+	 * Stop the custom model, usually when UnEquip
+	 * @param Instigator 
+	 * @param BuildModel 
+	 * @return 
+	 */
+	UFUNCTION(BlueprintCallable)
+	bool StopCustomModel(UObject* Instigator, TSubclassOf<UBaseBuildModel> BuildModel);
 
 private:
 	/*!
