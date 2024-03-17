@@ -33,8 +33,6 @@ public:
 	int32 CurrentStage;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Max Stage")
 	int32 MaxStage;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Stage Entity Actor")
-	TArray<TSubclassOf<AActor>> StageEntityActor;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Variation Entity Actor")
 	TArray<TSubclassOf<AActor>> ResourceVariationEntityActor;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Geometry Data")

@@ -131,6 +131,11 @@ void UGameEventHandler::OnResourceEntityBreakEvent(AActor* Instigator, AResource
 	       *Instigator->GetName(), *TargetResourceEntity->GetName());
 }
 
+void UGameEventHandler::OnResourceEntityPlaceEvent(UObject* Instigator, AResourceEntityActor* TargetResourceEntity)
+{
+	OnResourceEntityPlace.Broadcast(Instigator, TargetResourceEntity);
+}
+
 void UGameEventHandler::OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator)
 {
 	OnBuildPreviewTrace.Broadcast(PreviewItemStack, Instigator);
@@ -170,37 +175,42 @@ void UGameEventHandler::OnPlaceModeChangeEvent(ACharacter* Instigator, EBuildMod
 void UGameEventHandler::OnActorOnEquipmentEvent(UObject* Instigator, UItemStack* OnEquipItem, int32 EquipIndex)
 {
 	UE_LOG(LogChamingCraftGameEvent, Display,
-	   TEXT("[📍]  Event trigger at UGameEventHandler::OnActorOnEquipmentEvent()"));
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnActorOnEquipmentEvent()"));
 	UE_LOG(LogChamingCraftGameEvent, Display,
-		   TEXT(
-			   "		 [I] Instigator =			%s									  \n"
-			   "		 [E] OnEquipItem =			%s									  \n"
-			   "		 [E] EquipIndex =		    %d									  \n"
-			  
-		   ),
-		   *Instigator->GetName(),
-		   *OnEquipItem->ItemMeta->DisplayName,
-		   EquipIndex
+	       TEXT(
+		       "		 [I] Instigator =			%s									  \n"
+		       "		 [E] OnEquipItem =			%s									  \n"
+		       "		 [E] EquipIndex =		    %d									  \n"
+
+	       ),
+	       *Instigator->GetName(),
+	       *OnEquipItem->ItemMeta->DisplayName,
+	       EquipIndex
 	);
-	OnActorOnEquipment.Broadcast(Instigator,OnEquipItem,EquipIndex);
+	OnActorOnEquipment.Broadcast(Instigator, OnEquipItem, EquipIndex);
 }
 
 void UGameEventHandler::OnActorUnEquipmentEvent(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex)
 {
 	UE_LOG(LogChamingCraftGameEvent, Display,
-   TEXT("[📍]  Event trigger at UGameEventHandler::OnActorUnEquipmentEvent()"));
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnActorUnEquipmentEvent()"));
 	UE_LOG(LogChamingCraftGameEvent, Display,
-		   TEXT(
-			   "		 [I] Instigator =			%s									  \n"
-			   "		 [U] UnEquipItem =			%s									  \n"
-			   "		 [E] EquipIndex =			%d									  \n"
-			  
-		   ),
-		   *Instigator->GetName(),
-		   *UnEquipItem->ItemMeta->DisplayName,
-		   EquipIndex
+	       TEXT(
+		       "		 [I] Instigator =			%s									  \n"
+		       "		 [U] UnEquipItem =			%s									  \n"
+		       "		 [E] EquipIndex =			%d									  \n"
+
+	       ),
+	       *Instigator->GetName(),
+	       *UnEquipItem->ItemMeta->DisplayName,
+	       EquipIndex
 	);
-	OnActorUnEquipment.Broadcast(Instigator,UnEquipItem,EquipIndex);
+	OnActorUnEquipment.Broadcast(Instigator, UnEquipItem, EquipIndex);
+}
+
+void UGameEventHandler::OnItemInteractEvent(APawn* Instigator, UItemStack* InteractItemStack)
+{
+	OnItemInteract.Broadcast(Instigator, InteractItemStack);
 }
 
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)

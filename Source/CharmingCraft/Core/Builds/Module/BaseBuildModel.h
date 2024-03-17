@@ -22,6 +22,9 @@ public:
 	UBaseBuildModel();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool OnPlace(UObject* Instigator);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool StartTrace(UObject* Instigator);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -53,4 +56,5 @@ public:
 	// Whether the BuildModel is perform logic
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsActivate;
+	
 };

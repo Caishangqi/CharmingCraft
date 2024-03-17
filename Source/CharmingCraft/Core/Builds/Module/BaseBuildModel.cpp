@@ -11,6 +11,11 @@ UBaseBuildModel::UBaseBuildModel()
 	BuildModuleManager = Cast<UBuildModuleManager>(GetOuter());
 }
 
+bool UBaseBuildModel::OnPlace_Implementation(UObject* Instigator)
+{
+	return false;
+}
+
 
 bool UBaseBuildModel::ActivateBuildModel_Implementation(UObject* Instigator)
 {

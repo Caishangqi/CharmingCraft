@@ -63,6 +63,9 @@ public:
 	// remove when UnEquip and cancel plant seed
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TMap<FName, TObjectPtr<UBaseBuildModel>> CurrentLoadedBuildModels;
+	// Handle Build Place for custom build model.
+	UFUNCTION(BlueprintCallable)
+	void OnBuildModelPlace(UObject* Instigator);
 
 	UBuildModuleManager();
 

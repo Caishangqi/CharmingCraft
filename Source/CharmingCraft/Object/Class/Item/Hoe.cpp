@@ -39,6 +39,10 @@ UHoe::UHoe()
 	}
 }
 
+/*
+ *	Note: Hoe Interact event move to HoeBuildModel, include FrameActor and some validation Check
+ */
+
 void UHoe::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 {
 	UE_LOG(LogChamingCraftGameEvent, Display,

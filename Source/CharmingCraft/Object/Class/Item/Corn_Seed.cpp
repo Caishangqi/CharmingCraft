@@ -13,6 +13,26 @@ UCorn_Seed::UCorn_Seed()
 	Material = EMaterial::CORN_SEED;
 	AssetName = TEXT("corn_seed");
 	ItemMetaClass = UItemMeta::StaticClass();
-	DescribeText = FText::FromString("One of the most popular grains. The sweet, fresh cobs are a summer favorite.");	
+	DescribeText = FText::FromString("One of the most popular grains. The sweet, fresh cobs are a summer favorite.");
 	Super::LoadLocalAsset();
+
+	// Load the Build model
+	static ConstructorHelpers::FObjectFinder<UBlueprint> BuildModelBlueprint(
+		TEXT("Script/Engine.Blueprint'/Game/CharmingCraft/Block/Module/BuildModel/BuildModel_Seeds.BuildModel_Seeds'"));
+	if (BuildModelBlueprint.Succeeded())
+	{
+		BuildModel = BuildModelBlueprint.Object->GeneratedClass;
+	}
+	// Load the crop entity
+	static ConstructorHelpers::FObjectFinder<UBlueprint> CropEntityActorBlueprint(
+		TEXT("Script/Engine.Blueprint'/Game/CharmingCraft/Resource/Crops/Corn/Crop_Corn.Crop_Corn'"));
+	if (BuildModelBlueprint.Succeeded())
+	{
+		CropEntityClass = CropEntityActorBlueprint.Object->GeneratedClass;
+	}
+}
+
+void UCorn_Seed::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)
+{
+	Super::OnItemInteract(InteractItemStack, Instigator);
 }

@@ -25,7 +25,7 @@ struct FColliedResult
 {
 	GENERATED_BODY()
 
-	FColliedResult(): bIsValidCollied(false), bIsInRange(false), ColliedActor(nullptr)
+	FColliedResult(): bIsValidCollied(false), bIsInRange(false), bIsValidSurface(false), ColliedActor(nullptr)
 	{
 	}
 
@@ -36,6 +36,9 @@ public:
 	// you should not allow player plowing from extreme far distance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Validation")
 	bool bIsInRange;
+	// Check whether valid surface, for example hoe can not plowing on rock
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Validation")
+	bool bIsValidSurface;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<AActor> ColliedActor;
 };

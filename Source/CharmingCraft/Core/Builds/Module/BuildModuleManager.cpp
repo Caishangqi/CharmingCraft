@@ -12,6 +12,7 @@
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
+
 UBuildModuleManager::UBuildModuleManager()
 {
 	LoadMaterialToPlaceValidation();
@@ -232,6 +233,17 @@ void UBuildModuleManager::OnPlaceModeChange(ACharacter* Instigator, EBuildMode T
 	return;
 }
 
+void UBuildModuleManager::OnBuildModelPlace(UObject* Instigator)
+{
+	for (auto Element : CurrentLoadedBuildModels)
+	{
+		if (Element.Value->bIsActivate)
+		{
+			Element.Value->OnPlace(Instigator);
+		}
+	}
+}
+
 void UBuildModuleManager::RotatePreviewBlockLeft()
 {
 	if (BlockEntityActor)
@@ -276,24 +288,28 @@ UBaseBuildModel* UBuildModuleManager::StartCustomModel(UObject* Instigator, TSub
 {
 	if (CurrentLoadedBuildModels.Contains(BuildModel.GetDefaultObject()->BuildModelName))
 	{
-		TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
-		BaseBuildModel->StartTrace(Instigator);
+		TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(
+			BuildModel.GetDefaultObject()->BuildModelName)->Get();
+		// Fist ensure Deactivate 
+		BaseBuildModel->DeactivateBuildModel(Instigator);
+		BaseBuildModel->ActivateBuildModel(Instigator);
 		return CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
 	}
 	else
 	{
-		TObjectPtr<UBaseBuildModel> NewBuildModel = NewObject<UBaseBuildModel>(this,BuildModel);
+		TObjectPtr<UBaseBuildModel> NewBuildModel = NewObject<UBaseBuildModel>(this, BuildModel);
 		CurrentLoadedBuildModels.Add(NewBuildModel->BuildModelName, NewBuildModel);
-		NewBuildModel->StartTrace(Instigator);
+		NewBuildModel->ActivateBuildModel(Instigator);
 	}
 	return nullptr;
 }
 
 bool UBuildModuleManager::StopCustomModel(UObject* Instigator, TSubclassOf<UBaseBuildModel> BuildModel)
 {
-	TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
-	BaseBuildModel->StopTrace(Instigator);
-	
+	TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(
+		BuildModel.GetDefaultObject()->BuildModelName)->Get();
+	BaseBuildModel->DeactivateBuildModel(Instigator);
+
 	CurrentLoadedBuildModels.Remove(BuildModel.GetDefaultObject()->BuildModelName);
 	return false;
 }

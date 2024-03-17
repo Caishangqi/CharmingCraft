@@ -4,9 +4,11 @@
 #include "Equipment.h"
 
 #include "DCharacter.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "CharmingCraft/Object/Structs/model/FEquipmentAttribute.h"
 #include "Components/ArrowComponent.h"
@@ -23,6 +25,8 @@ void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
 void UEquipment::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator);
+	Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->OnItemInteractEvent(
+		Instigator, InteractItemStack);
 	ItemEntityActor = Cast<AEquipmentEntityActor>(InteractItemStack->ItemMeta->ItemEntityActor);
 	Player = Instigator;
 	MappingItemStack = InteractItemStack;

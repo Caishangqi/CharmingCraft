@@ -15,4 +15,6 @@ class CHARMINGCRAFT_API UCorn_Seed : public USeeds
 	GENERATED_BODY()
 public:
 	UCorn_Seed();
+
+	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator) override;
 };
