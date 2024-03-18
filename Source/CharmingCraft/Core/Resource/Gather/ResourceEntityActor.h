@@ -30,7 +30,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Register Name")
 	FName ResourceName;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Current Stage")
-	int32 CurrentStage;
+	int32 CurrentStage = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Max Stage")
 	int32 MaxStage;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Resource Variation Entity Actor")
@@ -54,7 +54,7 @@ public:
 	// Drop Table
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop Table")
 	TSubclassOf<UDropTableData> DropTableData;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
 	bool bDropSelf = true;
 

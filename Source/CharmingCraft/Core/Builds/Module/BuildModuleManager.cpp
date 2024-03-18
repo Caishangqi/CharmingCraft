@@ -8,7 +8,9 @@
 #include "CharmingCraft/Core/Builds/Block/FrameActor.h"
 #include "CharmingCraft/Core/Builds/Lib/BuildModuleLib.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Item/Meta/BlockMeta.h"
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -293,10 +295,16 @@ UBaseBuildModel* UBuildModuleManager::StartCustomModel(UObject* Instigator, TSub
 		// Fist ensure Deactivate 
 		BaseBuildModel->DeactivateBuildModel(Instigator);
 		BaseBuildModel->ActivateBuildModel(Instigator);
+		UE_LOG(LogChamingCraftGameEvent, Display,
+		       TEXT("[📍]  UBuildModuleManager::StartCustomModel BuildModel =		%s"),
+		       *BuildModel->GetName());
 		return CurrentLoadedBuildModels.Find(BuildModel.GetDefaultObject()->BuildModelName)->Get();
 	}
 	else
 	{
+		UE_LOG(LogChamingCraftGameEvent, Display,
+		       TEXT("[📍]  UBuildModuleManager::StartCustomModel Branch IIBuildModel =		%s"),
+		       *BuildModel->GetName());
 		TObjectPtr<UBaseBuildModel> NewBuildModel = NewObject<UBaseBuildModel>(this, BuildModel);
 		CurrentLoadedBuildModels.Add(NewBuildModel->BuildModelName, NewBuildModel);
 		NewBuildModel->ActivateBuildModel(Instigator);
@@ -308,8 +316,8 @@ bool UBuildModuleManager::StopCustomModel(UObject* Instigator, TSubclassOf<UBase
 {
 	TObjectPtr<UBaseBuildModel> BaseBuildModel = CurrentLoadedBuildModels.Find(
 		BuildModel.GetDefaultObject()->BuildModelName)->Get();
-	BaseBuildModel->DeactivateBuildModel(Instigator);
-
+	BaseBuildModel->DeactivateBuildModel(Instigator); // Stop Trace and set deactivate
+	BaseBuildModel->OnRemoveBuildModel(); // Unbind Event
 	CurrentLoadedBuildModels.Remove(BuildModel.GetDefaultObject()->BuildModelName);
 	return false;
 }

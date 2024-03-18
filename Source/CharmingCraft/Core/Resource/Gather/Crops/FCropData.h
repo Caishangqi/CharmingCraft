@@ -22,7 +22,7 @@ struct FCropData
 	GENERATED_BODY()
 
 public:
-	FCropData():TimeUnit(ETimeUnit::Seconds), GrowthMultiplier(0)
+	FCropData(): TimeUnit(ETimeUnit::Seconds), GrowthMultiplier(1)
 	{
 	}
 
@@ -31,7 +31,7 @@ public:
 	TMap<int32, TObjectPtr<UStaticMesh>> CropStageMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CropStageDrop")
-	TMap<int32, TObjectPtr<UDropTableData>> CropStageDrop;
+	TMap<int32, TSubclassOf<UDropTableData>> CropStageDrop;
 
 	// <1,100> means the need 100 <units> to fulfill first stage
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CropPerStageCount")

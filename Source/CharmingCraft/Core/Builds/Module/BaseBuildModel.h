@@ -37,7 +37,9 @@ public:
 	bool DeactivateBuildModel(UObject* Instigator);
 
 	virtual UWorld* GetWorld() const override;
-
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool OnRemoveBuildModel();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName BuildModelName;

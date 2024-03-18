@@ -18,12 +18,13 @@ public:
 	ACropEntityActor();
 
 	virtual bool OnBlockPlace_Implementation(AActor* Instigator, AActor* BlockPlaced) override;
+	virtual bool OnBlockDrop_Implementation(AActor* Block, UDropTableData* DropTableData) override;
+	virtual bool OnBlockBreak_Implementation(AActor* Instigator, AActor* BlockBreak) override;
 	/*!
 	 * Tick the growth at particular timer rate
-	 * @return CurrentStageCount 
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	int32 OnGrowthTick();
+	void OnGrowthTick();
 
 	/*!
 	 * Start the Tick timer of crops
@@ -36,6 +37,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void StopGrowthTick();
+	
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	UDropTableData * GetDropTableFromGrowthStage();
+	
+	UFUNCTION(BlueprintCallable)
+	int32 SetGrowthStage(int32 TargetStage);
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="CropData")
@@ -47,8 +54,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Crop Medium")
 	TObjectPtr<ABlockEntityActor> Medium;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Crop Stage")
-	int32 CurrentStage;
+	UPROPERTY(BlueprintReadWrite, Category="Crop Growth Timer")
+	FTimerHandle CropGrowthTimer;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Crop Stage")
 	int32 CurrentStageCount;
@@ -56,6 +63,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void OnGrowthStageIncrease(int32 StageBefore);
 
 public:
 	// Called every frame

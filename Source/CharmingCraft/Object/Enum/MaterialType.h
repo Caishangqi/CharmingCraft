@@ -20,6 +20,8 @@ enum class EMaterial: uint8
 	ROCKS UMETA(DisplayName = "ROCKS"),
 	DEEPSLATE_PIECE UMETA(DisplayName = "DEEPSLATE_PIECE"),
 	RUBY UMETA(DisplayName = "RUBY"),
+	CORN UMETA(DisplayName = "CORN"),
+	CORN_GOLD UMETA(DisplayName = "CORN_GOLD"),
 
 	// Seeds
 	CORN_SEED UMETA(DisplayName = "CORN_SEED"),
@@ -27,7 +29,7 @@ enum class EMaterial: uint8
 	// Block
 	PLANT_BOX UMETA(DisplayName = "PLANT_BOX"),
 	FARM_LAND UMETA(DisplayName = "FARM_LAND"),
-	
+
 
 	// Biome Surface
 	BLOCK_MUD UMETA(DisplayName = "BLOCK_MUD"),
