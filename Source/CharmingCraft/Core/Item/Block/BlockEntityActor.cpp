@@ -100,7 +100,7 @@ void ABlockEntityActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AAct
 	{
 		bIsCollied = true;
 	}
-	UE_LOG(LogChamingCraftCraftBuild, Display,
+	UE_LOG(LogChamingCraftBuild, Display,
 	       TEXT("[📦]  Current Block is Overlap\n"
 		       "		 [A] Actor Name =			%s\n"
 		       "		 [B] Is Collied =			%hhd"

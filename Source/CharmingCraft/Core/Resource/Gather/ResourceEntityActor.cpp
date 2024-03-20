@@ -40,7 +40,7 @@ void AResourceEntityActor::Tick(float DeltaTime)
 
 void AResourceEntityActor::ResetHealth()
 {
-	UE_LOG(LogChamingCraftCraftResource, Display,
+	UE_LOG(LogChamingCraftResource, Display,
 	       TEXT("[⛏️]  Resource %s has restore health"), *this->GetName());
 	ResourceData.CurrentHeath = ResourceData.MaxHeath;
 }
@@ -105,9 +105,9 @@ bool AResourceEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableD
 
 void AResourceEntityActor::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
-	UE_LOG(LogChamingCraftCraftResource, Display,
+	UE_LOG(LogChamingCraftResource, Display,
 	       TEXT("[⛏️]  Event trigger at AResourceEntityActor::OnActionHit_Implementation()"));
-	UE_LOG(LogChamingCraftCraftResource, Display,
+	UE_LOG(LogChamingCraftResource, Display,
 	       TEXT(
 		       "		 [I] Instigator =		%s\n"
 		       "		 [T] Target Resource Actor =		%s\n"
@@ -131,7 +131,7 @@ void AResourceEntityActor::OnActionHit_Implementation(APawn* InstigatorPawn, FHi
 
 	if (ResourceGeometryData.OnDamageGeometry)
 	{
-		UE_LOG(LogChamingCraftCraftResource, Display,
+		UE_LOG(LogChamingCraftResource, Display,
 		   TEXT("[⛏️]  Spawn OnDamage Entity Geometry Actor"));
 		AActor* DestructibleActor = GetWorld()->SpawnActor<
 			AActor>(ResourceGeometryData.OnDamageGeometry, GetActorLocation(), GetActorRotation());

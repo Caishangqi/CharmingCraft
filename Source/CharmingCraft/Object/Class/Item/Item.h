@@ -3,6 +3,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Item/Enum/EItemType.h"
+#include "CharmingCraft/Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "Item.generated.h"
 
@@ -50,14 +51,17 @@ public:
 	FTransform RenderSpecifyTransform;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Render")
 	int32 OrthoWidth;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Asset")
 	FString AssetName; // 新增的String类型属性
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Asset")
 	TObjectPtr<UMaterial> BaseMaterialAsset;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Asset")
 	TObjectPtr<UMaterialInstanceDynamic> DynamicMaterialInstance;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Skill")
+	TSubclassOf<UItemDynamicSkill> ItemDynamicSkillClass;
+
 public: // Methods
 
 	UItem();
@@ -69,5 +73,4 @@ public: // Methods
 	virtual void LoadLocalAsset();
 	UFUNCTION(BlueprintCallable)
 	virtual void CreateDynamicAsset();
-
 };

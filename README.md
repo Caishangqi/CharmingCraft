@@ -19,7 +19,7 @@ Select Other Language README: [Chinese](https://github.com/Caishangqi/CharmingCr
 
 ## Introduction
 
-This project utilizes Unreal Engine 5.3 to create a Top-Down voxel RPG game. It draws inspiration from Minecraft, such
+This project build based ib Unreal Engine 5.3 to create a Top-Down voxel RPG game. It draws inspiration from Minecraft, such
 as its inventory system and artistic style, as well as the Top-Down perspective, combat system, and isometric indoor
 scene design of the game Minecraft: Dungeon. CharmingCraft aims to offer a more relaxed gameplay experience, where
 players can freely explore the map, gather resources to craft weapons, complete quests, and more...
@@ -241,10 +241,12 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 | Game Start UI and World Select UI                         | Highest  |   ✅   |
 | Game context serialization                                | Highest  |   ✅   |
 | Chunk and build system                                    |   High   |  ✅   |
+| Skill indicator Component                                 |   High   |  📝   |
 | Complete attribute UI                                     |  Normal  |  ✅   |
+| Per Item Ability System                                   |  Normal  |  📝   |
 | Quest system with related NPCs                            |  Normal  |  📌   |
 | Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📌   |
-| Resource collection system, ores, trees, farmland         |  Normal  |  📝   |
+| Resource collection system, ores, trees, farmland         |  Normal  |  ✅   |
 | Expand the Level to 1000 x 1000                           |   Low    |  📌   |
 | Biome: Respawn of monsters, resources, creatures          |   Low    |  ✅   |
 | Developing an engaging storyline                          |  Lowest  |  📌   |
@@ -261,6 +263,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - The `OnHit()` method of weapons is determined by the weapon type, consider passing in a weapon class template for the
   interaction component to execute the template class method for **HitData** transmission (**Fixed**)
 - Some User Widget component can create template for example, give all widget an close button that bind a function pointer.
+- Combind ItemAbility System to part of Build Module, allow Ability data structure contained visual enhancement object.
 ## Project Structure
 
 ### Asset Structure

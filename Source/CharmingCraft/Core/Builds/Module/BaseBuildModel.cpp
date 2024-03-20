@@ -72,7 +72,7 @@ bool UBaseBuildModel::StopTrace_Implementation(UObject* Instigator)
 	{
 		FrameActor->Destroy();
 	}
-	UE_LOG(LogChamingCraftCraftBuild, Display,
+	UE_LOG(LogChamingCraftBuild, Display,
 	       TEXT("[📦] UBaseBuildModel::StopTrace\n"));
 	return true;
 }
@@ -80,7 +80,7 @@ bool UBaseBuildModel::StopTrace_Implementation(UObject* Instigator)
 bool UBaseBuildModel::StartTrace_Implementation(UObject* Instigator)
 {
 	bIsActivate = true;
-	UE_LOG(LogChamingCraftCraftBuild, Display,
+	UE_LOG(LogChamingCraftBuild, Display,
 	       TEXT("[📦] UBaseBuildModel::StartTrace\n"));
 	return true;
 }

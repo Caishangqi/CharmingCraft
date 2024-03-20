@@ -18,7 +18,7 @@ UPlayerModeBuild::UPlayerModeBuild()
 	if (MappingContextFinder.Succeeded())
 	{
 		ModeMappingContext = MappingContextFinder.Object;
-		UE_LOG(LogChamingCraftCraftGameMode, Display,
+		UE_LOG(LogChamingCraftGameMode, Display,
 		       TEXT("[🎮]  GameMode %s MappingContext  is Loaded"), *EnumClassToString(ModeName));
 	}
 }

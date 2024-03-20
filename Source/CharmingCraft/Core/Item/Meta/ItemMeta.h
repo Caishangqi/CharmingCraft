@@ -6,7 +6,7 @@
 #include "CharmingCraft/Core/Save/Data/PersistentDataContainer.h"
 #include "ItemMeta.generated.h"
 
-
+class UItemDynamicSkill;
 class UItem;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -40,11 +40,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Entity Actor")
 	TObjectPtr<AItemEntityActor> ItemEntityActor;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Item Skill")
+	TObjectPtr<UItemDynamicSkill> ItemDynamicSkill;
+
+
 	UFUNCTION(Blueprintable)
 	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject);
 	UFUNCTION(Blueprintable)
-	virtual void InitializeItemMetaData(UItem * ItemClass);
-	
+	virtual void InitializeItemMetaData(UItem* ItemClass);
+
 protected:
 	// Called when the game starts 
 	virtual void PostInitProperties() override;

@@ -3,7 +3,7 @@
 
 #include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Interface/EquipPartComponent.h"
-#include "CharmingCraft/Interface/Meta/IntegratedMeta.h"
+#include "../Core/Item/Meta/Abstruct/IntegratedMeta.h"
 
 UWorkBenchComponent::UWorkBenchComponent()
 {

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "../Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "DAction.generated.h"
@@ -40,7 +40,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsCooling = false;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Type")
+	EItemDynamicSkillSlot SkillType;
+	
 	/* Default Cooldown */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CoolDown = 5.0f;

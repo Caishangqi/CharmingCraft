@@ -21,10 +21,11 @@ DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftSerilization, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftGameEvent, Log, All);
 
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftWidgetHandler, Log, All);
-DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftResource, Log, All);
-DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftGameMode, Log, All);
-DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftBuild, Log, All);
-DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftCraftAsset, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftResource, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftGameMode, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftBuild, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftAsset, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftAction, Log, All);
 
 class Logging
 {

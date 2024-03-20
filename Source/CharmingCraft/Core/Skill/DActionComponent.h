@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
+#include "EquipmentSkill/ItemDynamicSkill.h"
 #include "Templates/Tuple.h"
 #include "DActionComponent.generated.h"
 
@@ -36,6 +37,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	void AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass);
 
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	bool AddItemDynamicSkills(UItemDynamicSkill * ItemDynamicSkill);
+
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	bool RemoveItemDynamicSkills(UItemDynamicSkill * ItemDynamicSkill);
+	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StartActionByName(APawn* Instigator, FName ActionName);
 

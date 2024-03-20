@@ -86,6 +86,7 @@ public:
 			RenderActor->SceneCaptureComponent->SetRelativeRotation(RenderSpecifyTransform.GetRotation());
 			RenderActor->SceneCaptureComponent->SetRelativeLocation(RenderSpecifyTransform.GetLocation()); // 100 85 70
 			RenderActor->SceneCaptureComponent->OrthoWidth = OuterItemStack->ItemClass.GetDefaultObject()->OrthoWidth;
+			RenderActor->SceneCaptureComponent->ShowOnlyActors.Add(ItemEntityActor);
 
 			RenderActor->SceneCaptureComponent->CaptureScene();
 			RenderActor->Destroy();

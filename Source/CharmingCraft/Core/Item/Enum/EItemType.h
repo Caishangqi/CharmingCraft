@@ -8,5 +8,5 @@ enum class EItemType: uint8
 	CONSUME UMETA(DisplayName = "Consume"),
 	SEEDS UMETA(DisplayName = "Seeds"),
 	BLOCK UMETA(DisplayName = "Block"),
-	FURNITURE UMETA(DisplayName = "furniture")
+	FURNITURE UMETA(DisplayName = "Furniture")
 };

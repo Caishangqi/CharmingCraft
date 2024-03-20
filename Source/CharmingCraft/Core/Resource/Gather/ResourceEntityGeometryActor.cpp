@@ -52,7 +52,7 @@ void AResourceEntityGeometryActor::ApplyResourceEntityDecoration()
 		bFoundParameter = MaterialInstanceDynamic->GetScalarParameterValue(ParamInfo, OpacityValue);
 		if (bFoundParameter)
 		{
-			// UE_LOG(LogChamingCraftCraftResource, Display,
+			// UE_LOG(LogChamingCraftResource, Display,
 			//        TEXT("[✅️]  Apply ApplyResourceEntityDecoration to Resource"));
 			OpacityValue -= 0.2f;
 			MaterialInstanceDynamic->SetScalarParameterValue(FName("Opacity"), bFoundParameter);
@@ -61,7 +61,7 @@ void AResourceEntityGeometryActor::ApplyResourceEntityDecoration()
 		else
 		{
 			// 没有找到Opacity参数
-			UE_LOG(LogChamingCraftCraftResource, Error,
+			UE_LOG(LogChamingCraftResource, Error,
 			       TEXT("[❌]  Error to ApplyResourceEntityDecoration to Resource"));
 		}
 	}

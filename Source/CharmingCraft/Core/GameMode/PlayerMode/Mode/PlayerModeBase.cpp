@@ -26,7 +26,7 @@ void UPlayerModeBase::UpdateControllerMappingContext(EPlayerMode FromGameMode, A
 			{
 				//InputSystem->AddMappingContext(ModeMappingContext.LoadSynchronous(), 0);
 				InputSystem->AddMappingContext(ModeMappingContext.LoadSynchronous(), 0);
-				UE_LOG(LogChamingCraftCraftGameMode, Display,
+				UE_LOG(LogChamingCraftGameMode, Display,
 				       TEXT("[🎮]  GameMode %s MappingContext is inject to Controller"),
 				       *EnumClassToString(ModeName));
 			}
@@ -40,7 +40,7 @@ void UPlayerModeBase::UpdateControllerMappingContext(EPlayerMode FromGameMode, A
 				UEnhancedInputLocalPlayerSubsystem>())
 			{
 				InputSystem->RemoveMappingContext(ModeMappingContext.LoadSynchronous());
-				UE_LOG(LogChamingCraftCraftGameMode, Display,
+				UE_LOG(LogChamingCraftGameMode, Display,
 				       TEXT("[🎮]  GameMode %s MappingContext is remove from Controller"),
 				       *EnumClassToString(ModeName));
 			}

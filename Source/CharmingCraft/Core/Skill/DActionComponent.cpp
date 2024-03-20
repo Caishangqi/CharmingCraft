@@ -107,6 +107,43 @@ void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UDAction> ActionC
 	BindAction.Add(index, NewAction);
 }
 
+bool UDActionComponent::AddItemDynamicSkills(UItemDynamicSkill* ItemDynamicSkill)
+{
+	UE_LOG(LogChamingCraftAction, Display,
+	       TEXT("[⚔️]  UDActionComponent::AddItemDynamicSkills = %s"),
+	       *ItemDynamicSkill->ItemDynamicSkillName.ToString());
+	for (auto SkillInstance : ItemDynamicSkill->DynamicSkills)
+	{
+		if (ensure(SkillInstance))
+		{
+			UE_LOG(LogChamingCraftAction, Display,
+			       TEXT("		[+] Add Action = %s"),
+			       *SkillInstance->ActionName.ToString());
+			Actions.Add(SkillInstance);
+		}
+	}
+	return true;
+}
+
+bool UDActionComponent::RemoveItemDynamicSkills(UItemDynamicSkill* ItemDynamicSkill)
+{
+	UE_LOG(LogChamingCraftAction, Display,
+	       TEXT("[⚔️]  UDActionComponent::RemoveItemDynamicSkills =	%s"),
+	       *ItemDynamicSkill->ItemDynamicSkillName.ToString());
+	for (auto SkillInstance : ItemDynamicSkill->DynamicSkills)
+	{
+		if (ensure(SkillInstance))
+		{
+			UE_LOG(LogChamingCraftAction, Warning,
+			       TEXT("		[-] Remove Action = %s"),
+			       *SkillInstance->ActionName.ToString());
+			// TODO: Consider Unbind the event delegate
+			Actions.Remove(SkillInstance);
+		}
+	}
+	return false;
+}
+
 bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionName)
 {
 	for (UDAction* Action : Actions)

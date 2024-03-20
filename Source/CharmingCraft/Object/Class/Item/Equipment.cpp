@@ -7,6 +7,8 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
+#include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
@@ -16,10 +18,29 @@
 
 void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 {
+	// UE_LOG(LogChamingCraftAction, Display,
+	//        TEXT("[⚔️]  UEquipment::OnEquip =		%s"),
+	//        *Instigator->GetName());
+	if (Instigator->IsA(ADCharacter::StaticClass()))
+	{
+		TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(Instigator);
+		if (OnEquipItem->ItemMeta->ItemDynamicSkill)
+		{
+			PlayerCharacter->ActionComponent->AddItemDynamicSkills(OnEquipItem->ItemMeta->ItemDynamicSkill);
+		}
+	}
 }
 
 void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
 {
+	if (Instigator->IsA(ADCharacter::StaticClass()))
+	{
+		TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(Instigator);
+		if (UnEquipItem->ItemMeta->ItemDynamicSkill)
+		{
+			PlayerCharacter->ActionComponent->RemoveItemDynamicSkills(UnEquipItem->ItemMeta->ItemDynamicSkill);
+		}
+	}
 }
 
 void UEquipment::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)

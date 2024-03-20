@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "IntegratedMeta.h"
-#include "CharmingCraft/Core/Container/Enum/EEquipmentSocket.h"
+#include "../Core/Item/Meta/Abstruct/IntegratedMeta.h"
 #include "ArmorMeta.generated.h"
 
 /**

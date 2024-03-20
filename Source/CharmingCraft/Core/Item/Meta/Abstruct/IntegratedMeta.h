@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "../Core/Item/Meta/ItemMeta.h"
+
 #include "CharmingCraft/Object/Structs/model/FEquipmentAttribute.h"
 #include "IntegratedMeta.generated.h"
 
@@ -35,4 +36,7 @@ public:
 	// Layout for UI
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Layout")
 	TSubclassOf<UUserWidget> Layout;
+
+public:
+
 };

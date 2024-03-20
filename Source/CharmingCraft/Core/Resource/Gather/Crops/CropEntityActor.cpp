@@ -51,7 +51,7 @@ int32 ACropEntityActor::SetGrowthStage(int32 TargetStage)
 	else
 	{
 		CurrentStage = 1;
-		UE_LOG(LogChamingCraftCraftResource, Error,
+		UE_LOG(LogChamingCraftResource, Error,
 		       TEXT("[⛏️]  ACropEntityActor::SetGrowthStage: Invalid Growth Stage"));
 		return CurrentStage;
 	}

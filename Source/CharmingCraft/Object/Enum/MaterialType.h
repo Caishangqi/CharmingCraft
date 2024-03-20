@@ -15,6 +15,7 @@ enum class EMaterial: uint8
 	PICKAXE UMETA(DisplayName = "Pickaxe"),
 	HAND UMETA(DisplayName = "Hand"),
 	HOE UMETA(DisplayName = "HOE"),
+	WATERING_CAN UMETA(DisplayName = "WATERING_CAN"),
 
 	// Resource
 	ROCKS UMETA(DisplayName = "ROCKS"),

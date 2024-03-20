@@ -2,7 +2,7 @@
 
 
 #include "ItemMeta.h"
-
+#include "CharmingCraft/Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "Kismet/GameplayStatics.h"
@@ -67,5 +67,9 @@ void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
 	if (ItemClass->DefaultItemEntityActorClass)
 	{
 		ItemEntityActorClass = ItemClass->DefaultItemEntityActorClass;
+	}
+	if (ItemClass->ItemDynamicSkillClass)
+	{
+		ItemDynamicSkill = NewObject<UItemDynamicSkill>(this, ItemClass->ItemDynamicSkillClass);
 	}
 }

@@ -18,7 +18,7 @@ ADPlayerController::ADPlayerController()
 	if (MappingContextFinder.Succeeded())
 	{
 		GlobalMappingContext = MappingContextFinder.Object;
-		UE_LOG(LogChamingCraftCraftGameMode, Display,
+		UE_LOG(LogChamingCraftGameMode, Display,
 		       TEXT("[🎮]  Controller %s MappingContext  is Loaded"), *this->GetName());
 	}
 }

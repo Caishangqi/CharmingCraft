@@ -78,7 +78,7 @@ void ALandChunk::PostEditMove(bool bFinished)
 
 void ALandChunk::OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity)
 {
-	UE_LOG(LogChamingCraftCraftResource, Display,
+	UE_LOG(LogChamingCraftResource, Display,
 	   TEXT("[🪨️]  Chunk Internal resource actor update\n"
 		   "		 [C] Chunk =		%s\n"
 		   "		 [R] Resource =		%s\n"

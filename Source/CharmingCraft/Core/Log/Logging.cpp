@@ -10,8 +10,9 @@ DEFINE_LOG_CATEGORY(LogChamingCraftSave);
 DEFINE_LOG_CATEGORY(LogChamingCraftSerilization);
 DEFINE_LOG_CATEGORY(LogChamingCraftGameEvent);
 DEFINE_LOG_CATEGORY(LogChamingCraftWidgetHandler);
-DEFINE_LOG_CATEGORY(LogChamingCraftCraftResource);
-DEFINE_LOG_CATEGORY(LogChamingCraftCraftGameMode);
-DEFINE_LOG_CATEGORY(LogChamingCraftCraftBuild);
-DEFINE_LOG_CATEGORY(LogChamingCraftCraftAsset);
+DEFINE_LOG_CATEGORY(LogChamingCraftResource);
+DEFINE_LOG_CATEGORY(LogChamingCraftGameMode);
+DEFINE_LOG_CATEGORY(LogChamingCraftBuild);
+DEFINE_LOG_CATEGORY(LogChamingCraftAsset);
+DEFINE_LOG_CATEGORY(LogChamingCraftAction);
 

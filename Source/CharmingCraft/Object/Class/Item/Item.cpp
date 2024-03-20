@@ -41,7 +41,7 @@ void UItem::LoadLocalAsset()
 		 ConstructorHelpers::FObjectFinder<UStaticMesh> MeshTexture(
 			TEXT("/Script/Engine.StaticMesh'/Game/CharmingCraft/Assets/models/item/generic_item_mesh.generic_item_mesh'"));
 		
-		UE_LOG(LogChamingCraftCraftAsset, Warning, TEXT("2D Path: %s"),*Path);
+		UE_LOG(LogChamingCraftAsset, Warning, TEXT("2D Path: %s"),*Path);
 		if (MeshTexture.Succeeded() && IconTexture.Succeeded())
 		{
 			Icon = IconTexture.Object;

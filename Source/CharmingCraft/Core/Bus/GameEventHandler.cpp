@@ -121,9 +121,9 @@ void UGameEventHandler::OnContainerItemTransferEvent(UObject* Instigator, UInven
 void UGameEventHandler::OnResourceEntityBreakEvent(AActor* Instigator, AResourceEntityActor* TargetResourceEntity)
 {
 	OnResourceEntityBreak.Broadcast(Instigator, TargetResourceEntity);
-	UE_LOG(LogChamingCraftCraftResource, Display,
+	UE_LOG(LogChamingCraftResource, Display,
 	       TEXT("[⛏️]  Resource Entity Actor Has been Destroy"));
-	UE_LOG(LogChamingCraftCraftResource, Display,
+	UE_LOG(LogChamingCraftResource, Display,
 	       TEXT(
 		       "		 [I] Instigator =		%s\n"
 		       "		 [T] Target Resource Actor =		%s"
@@ -139,7 +139,7 @@ void UGameEventHandler::OnResourceEntityPlaceEvent(UObject* Instigator, AResourc
 void UGameEventHandler::OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator)
 {
 	OnBuildPreviewTrace.Broadcast(PreviewItemStack, Instigator);
-	UE_LOG(LogChamingCraftCraftBuild, Display,
+	UE_LOG(LogChamingCraftBuild, Display,
 	       TEXT("[📦]  BuildModuleManager start build trace\n"
 		       "		 [I] Cached ItemStack =			%s\n"
 		       "		 [I] Instigator =				%s"), *PreviewItemStack->ItemMeta->DisplayName, *Instigator->GetName());
@@ -149,7 +149,7 @@ void UGameEventHandler::OnBlockPlaceEvent(UItemStack* PreviewItemStack, ABlockEn
                                           ACharacter* Instigator)
 {
 	OnBlockPlace.Broadcast(PreviewItemStack, BlockEntityActor, Instigator);
-	UE_LOG(LogChamingCraftCraftBuild, Display,
+	UE_LOG(LogChamingCraftBuild, Display,
 	       TEXT("[📦]  BuildModuleManager place a block\n"
 		       "		 [I] Cached ItemStack =			%s\n"
 		       "		 [I] Instigator =				%s\n"

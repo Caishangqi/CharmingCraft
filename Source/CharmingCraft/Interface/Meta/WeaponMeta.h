@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "IntegratedMeta.h"
+#include "../Core/Item/Meta/Abstruct/IntegratedMeta.h"
 #include "WeaponMeta.generated.h"
 
 /**
