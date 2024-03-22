@@ -40,10 +40,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsCooling = false;
-	
+
+	// For ItemDynamicSkill
+	// ItemSkill is display to player but some not unlock
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Item Dynamic Skill")
+	bool bIsUnlocked = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Type")
 	EItemDynamicSkillSlot SkillType;
-	
+
 	/* Default Cooldown */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CoolDown = 5.0f;

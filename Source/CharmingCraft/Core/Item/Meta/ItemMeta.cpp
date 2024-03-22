@@ -2,9 +2,13 @@
 
 
 #include "ItemMeta.h"
+
+#include "DAction.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -48,6 +52,44 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	Durability = GET_JSON_FIELD_NUMBER(JsonObject, Durability);
 	bIsRenderItem = GET_JSON_FIELD_BOOL(JsonObject, bIsRenderItem);
 	return NewInstance;
+}
+
+bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction)
+{
+	// Need to check Empty, fail to check will cause Find() found nullptr
+	if (BindItemDynamicSkill.IsEmpty())
+	{
+		// Broadcast ItemDynamicSkillBindEvent
+		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
+		Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->OnItemDynamicSkillBindEvent(
+			Instigator, TargetAction);
+		return true;
+	}
+
+	TObjectPtr<UGameEventHandler> EventHandler = Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->
+		GetGameEventHandler();
+
+	TObjectPtr<UDAction> BindAction = BindItemDynamicSkill[TargetAction->SkillType];
+	if (!BindAction) // Another check
+	{
+		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
+		EventHandler->OnItemDynamicSkillBindEvent(
+			Instigator, TargetAction);
+		return true;
+	}
+
+	// If bind repeat, return false
+	if (BindAction == TargetAction)
+	{
+		return false;
+	}
+	else
+	{
+		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
+		EventHandler->OnItemDynamicSkillBindEvent(
+			Instigator, TargetAction);
+		return true;
+	}
 }
 
 AItemEntityActor* UItemMeta::CreateItemEntityActor(const UObject* WorldContextObject)

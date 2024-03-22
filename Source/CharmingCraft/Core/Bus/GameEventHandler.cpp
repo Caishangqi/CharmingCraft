@@ -222,3 +222,8 @@ void UGameEventHandler::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* Tar
 {
 	OnCloseWidget.Broadcast(Instigator, TargetWidget);
 }
+
+void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* TargetAction)
+{
+	OnItemDynamicSkillBind.Broadcast(Instigator, TargetAction);
+}
