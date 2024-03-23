@@ -69,7 +69,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemInteractDelegate, APawn*, In
                                              InteractItemStack);
 
 // Item Ability System
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*, FromAction,UDAction*,
                                                TargetAction, UItemMeta *, ContextMeta);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
@@ -174,5 +174,5 @@ public:
 
 	// Item Ability System
 	UFUNCTION(BlueprintCallable)
-	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* TargetAction, UItemMeta* ContextMeta);
+	void OnItemDynamicSkillBindEvent(APawn* Instigator,UDAction* FromAction, UDAction* TargetAction, UItemMeta* ContextMeta);
 };

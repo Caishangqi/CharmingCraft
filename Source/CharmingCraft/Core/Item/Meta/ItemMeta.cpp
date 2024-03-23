@@ -54,7 +54,7 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction, UItemMeta * ContextMeta)
+bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction,UDAction* TargetAction, UItemMeta * ContextMeta)
 {
 	// Need to check Empty, fail to check will cause Find() found nullptr
 	if (BindItemDynamicSkill.IsEmpty())
@@ -64,7 +64,7 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetActi
 		if (Instigator != nullptr)
 		{	// Broadcast ItemDynamicSkillBindEvent
 			Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->OnItemDynamicSkillBindEvent(
-			Instigator, TargetAction,ContextMeta);
+			Instigator,nullptr, TargetAction,ContextMeta);
 		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
 		return true;
@@ -78,7 +78,7 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetActi
 	{
 		if (Instigator != nullptr)
 		{
-			EventHandler->OnItemDynamicSkillBindEvent(Instigator, TargetAction,ContextMeta);
+			EventHandler->OnItemDynamicSkillBindEvent(Instigator,BindAction, TargetAction,ContextMeta);
 		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
 		return true;
@@ -93,7 +93,7 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetActi
 	{
 		if (Instigator != nullptr)
 		{
-			EventHandler->OnItemDynamicSkillBindEvent(Instigator, TargetAction,ContextMeta);
+			EventHandler->OnItemDynamicSkillBindEvent(Instigator,BindAction, TargetAction,ContextMeta);
 		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
 		return true;
@@ -128,12 +128,12 @@ void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
 		{
 			if (BindItemDynamicSkill.IsEmpty())
 			{
-				AddActionToBindItemSkill(nullptr, DynamicSkill,this);
+				AddActionToBindItemSkill(nullptr, nullptr,DynamicSkill,this);
 			}
 
 			if (BindItemDynamicSkill.Find(DynamicSkill->SkillType) == nullptr)
 			{
-				AddActionToBindItemSkill(nullptr, DynamicSkill,this);
+				AddActionToBindItemSkill(nullptr, nullptr,DynamicSkill,this);
 			}
 		}
 	}

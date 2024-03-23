@@ -40,7 +40,9 @@ public:
 	TSubclassOf<AItemEntityActor> ItemEntityActorClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Item Entity Actor")
 	TObjectPtr<AItemEntityActor> ItemEntityActor;
-
+	// Whether item is equipped, useful when bind the event on itemskill
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Is Equipped")
+	bool bIsEquipped = false;
 	/*
 	 *	Item Has its own Default Dynamic Skill. Information store in ItemClass
 	 *	When Create ItemMeta, it read ItemClass to init ItemDynamicSkill. ItemDynamicSkill
@@ -75,16 +77,23 @@ public:
 	 * Type.
 	 * 
 	 * @param Instigator Who select the skill and bind to slot
+	 * @param FromAction The Action that before change, use to remove the action pool
 	 * @param TargetAction The Action Instigator choose to bind
 	 * @param ContextMeta The Parent Meta that the action belong to
 	 * @return true if bind success, false if original action is
 	 * the same with new Action.
 	 */
 	UFUNCTION(BlueprintCallable, Category= "Item Dynamic Skill")
-	bool AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction, UItemMeta * ContextMeta);
+	bool AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction,UDAction* TargetAction, UItemMeta * ContextMeta);
 	
 	UFUNCTION(Blueprintable)
 	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject);
+
+	/*!
+	 * Initialize ItemMeta from ItemClass Template, set default data and model
+	 * 
+	 * @param ItemClass The Default ItemData extract from ItemClass
+	 */
 	UFUNCTION(Blueprintable)
 	virtual void InitializeItemMetaData(UItem* ItemClass);
 

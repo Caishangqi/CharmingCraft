@@ -52,6 +52,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType);
+
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction, UItemMeta * ContextMeta);
 	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StartActionByIndex(APawn* Instigator, int32 index);

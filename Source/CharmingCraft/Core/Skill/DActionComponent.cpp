@@ -4,8 +4,10 @@
 #include "DActionComponent.h"
 #include "DAction.h"
 #include "DCharacter.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
 // Sets default values for this component's properties
 UDActionComponent::UDActionComponent()
@@ -35,8 +37,13 @@ void UDActionComponent::BeginPlay()
 	}
 
 	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwner());
-	
+
 	// ...
+
+	// Bind Event
+	Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance())->GetGameEventHandler()->OnItemDynamicSkillBind.
+	                                                             AddDynamic(this, &UDActionComponent::OnItemDynamicSkillBindEvent);
+
 }
 
 void UDActionComponent::OnRegister()
@@ -122,10 +129,11 @@ bool UDActionComponent::AddItemDynamicSkills(UItemMeta* ItemMeta)
 			UE_LOG(LogChamingCraftAction, Display,
 			       TEXT("		[+] Add Action = %s"),
 			       *ActionPairs.Value->ActionName.ToString());
+			// TargetAction's outer is not ActionComponent, need set handler
 			ActionPairs.Value->Handler = this;
-			// Set Handler, useful when Action Create outside
-			// of the ActionComponent
 			Actions.Add(ActionPairs.Value);
+			
+			// TODO: Consider start action that is buff type or aura
 		}
 	}
 	return true;
@@ -178,8 +186,7 @@ bool UDActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSl
 		{
 			if (Action->bIsCooling)
 			{
-				FString FailedMsg = FString::Printf(
-					TEXT("[x] Failed to run: %s Because it is cooling, Remain: %f"),
+				FString FailedMsg = FString::Printf(TEXT("[x] Failed to run: %s Because it is cooling, Remain: %f"),
 					*Action->ActionName.ToString(), Action->GetRemainCooldown());
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 				return false;
@@ -213,6 +220,29 @@ bool UDActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlo
 		}
 	}
 	return false;
+}
+
+void UDActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction, UItemMeta* ContextMeta)
+{
+	// We only want to receive broadcast when the item is equipped
+	if (ContextMeta->bIsEquipped)
+	{
+		// Remove the original action on item from the pool
+		if (FromAction)
+		{
+			StopActionByName(Instigator,FromAction->ActionName);
+			Actions.Remove(FromAction);
+		}
+		// Add new select action to action pool
+		if (TargetAction)
+		{
+			// TargetAction's outer is not ActionComponent, need set handler
+			TargetAction->Handler = this;
+			Actions.Add(TargetAction);
+			// TODO: Consider start action that is buff type or aura
+		}
+	
+	}
 }
 
 bool UDActionComponent::StartActionByIndex(APawn* Instigator, int32 index)

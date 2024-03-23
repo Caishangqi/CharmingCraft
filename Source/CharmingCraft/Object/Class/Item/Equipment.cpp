@@ -27,6 +27,7 @@ void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 		if (!OnEquipItem->ItemMeta->BindItemDynamicSkill.IsEmpty())
 		{
 			PlayerCharacter->ActionComponent->AddItemDynamicSkills(OnEquipItem->ItemMeta);
+			OnEquipItem->ItemMeta->bIsEquipped = true;
 		}
 	}
 }
@@ -39,6 +40,7 @@ void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
 		if (UnEquipItem->ItemMeta->ItemDynamicSkill)
 		{
 			PlayerCharacter->ActionComponent->RemoveItemDynamicSkills(UnEquipItem->ItemMeta);
+			UnEquipItem->ItemMeta->bIsEquipped = false;
 		}
 	}
 }
