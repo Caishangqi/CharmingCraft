@@ -35,6 +35,10 @@ public:
 	 * https://black-minecraft.com/resources/supreme-icons-pack-100-texture-icons.1910/
 	 */
 
+	// Useful when Action's outer is not ActionComponent
+	UPROPERTY(Category= "Handler", BlueprintReadWrite)
+	TObjectPtr<UDActionComponent> Handler;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UTexture2D* SkillIcon;
 
@@ -87,6 +91,7 @@ public:
 	void ResetCoolDown();
 	UFUNCTION(BlueprintCallable, Category= "Timer")
 	float GetRemainCooldown();
+
 
 	/* Event */
 	UPROPERTY(BlueprintAssignable)

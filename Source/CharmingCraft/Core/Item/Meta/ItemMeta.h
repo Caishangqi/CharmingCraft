@@ -76,12 +76,13 @@ public:
 	 * 
 	 * @param Instigator Who select the skill and bind to slot
 	 * @param TargetAction The Action Instigator choose to bind
+	 * @param ContextMeta The Parent Meta that the action belong to
 	 * @return true if bind success, false if original action is
 	 * the same with new Action.
 	 */
 	UFUNCTION(BlueprintCallable, Category= "Item Dynamic Skill")
-	bool AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction);
-
+	bool AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction, UItemMeta * ContextMeta);
+	
 	UFUNCTION(Blueprintable)
 	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject);
 	UFUNCTION(Blueprintable)

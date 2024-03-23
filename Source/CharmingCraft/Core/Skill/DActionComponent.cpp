@@ -4,6 +4,7 @@
 #include "DActionComponent.h"
 #include "DAction.h"
 #include "DCharacter.h"
+#include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 
 // Sets default values for this component's properties
@@ -22,7 +23,7 @@ void UDActionComponent::BeginPlay()
 	Super::BeginPlay();
 	/* 把从编辑器设置的 DefaultActions 中的内容添加到 Actions中
 	 * @see UDActionComponent.Actions 内容
-	 */ 
+	 */
 	for (TSubclassOf<UDAction> ActionClass : DefaultActions)
 	{
 		AddAction(ActionClass);
@@ -34,6 +35,7 @@ void UDActionComponent::BeginPlay()
 	}
 
 	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwner());
+	
 	// ...
 }
 
@@ -58,7 +60,7 @@ void UDActionComponent::MainHandAction()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::MainHandAction()");
 	// TODO 把每个武器对应的 Action 单独创建一个蓝图类，这个Action蓝图要与武器挂钩
-	this->StartActionByName(Cast<ADCharacter>(GetOwner()), "MainHand");
+	//this->StartActionByName(Cast<ADCharacter>(GetOwner()), "MainHand");
 }
 
 void UDActionComponent::OffHandAction()
@@ -107,41 +109,46 @@ void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UDAction> ActionC
 	BindAction.Add(index, NewAction);
 }
 
-bool UDActionComponent::AddItemDynamicSkills(UItemDynamicSkill* ItemDynamicSkill)
+bool UDActionComponent::AddItemDynamicSkills(UItemMeta* ItemMeta)
 {
 	UE_LOG(LogChamingCraftAction, Display,
 	       TEXT("[⚔️]  UDActionComponent::AddItemDynamicSkills = %s"),
-	       *ItemDynamicSkill->ItemDynamicSkillName.ToString());
-	for (auto SkillInstance : ItemDynamicSkill->DynamicSkills)
+	       *ItemMeta->ItemDynamicSkill->ItemDynamicSkillName.ToString());
+
+	for (auto ActionPairs : ItemMeta->BindItemDynamicSkill)
 	{
-		if (ensure(SkillInstance))
+		if (ensure(ActionPairs.Value))
 		{
 			UE_LOG(LogChamingCraftAction, Display,
 			       TEXT("		[+] Add Action = %s"),
-			       *SkillInstance->ActionName.ToString());
-			Actions.Add(SkillInstance);
+			       *ActionPairs.Value->ActionName.ToString());
+			ActionPairs.Value->Handler = this;
+			// Set Handler, useful when Action Create outside
+			// of the ActionComponent
+			Actions.Add(ActionPairs.Value);
 		}
 	}
 	return true;
 }
 
-bool UDActionComponent::RemoveItemDynamicSkills(UItemDynamicSkill* ItemDynamicSkill)
+bool UDActionComponent::RemoveItemDynamicSkills(UItemMeta* ItemMeta)
 {
 	UE_LOG(LogChamingCraftAction, Display,
 	       TEXT("[⚔️]  UDActionComponent::RemoveItemDynamicSkills =	%s"),
-	       *ItemDynamicSkill->ItemDynamicSkillName.ToString());
-	for (auto SkillInstance : ItemDynamicSkill->DynamicSkills)
+	       *ItemMeta->ItemDynamicSkill->ItemDynamicSkillName.ToString());
+
+	for (auto ActionPairs : ItemMeta->BindItemDynamicSkill)
 	{
-		if (ensure(SkillInstance))
+		if (ensure(ActionPairs.Value))
 		{
 			UE_LOG(LogChamingCraftAction, Warning,
 			       TEXT("		[-] Remove Action = %s"),
-			       *SkillInstance->ActionName.ToString());
+			       *ActionPairs.Value->ActionName.ToString());
 			// TODO: Consider Unbind the event delegate
-			Actions.Remove(SkillInstance);
+			Actions.Remove(ActionPairs.Value);
 		}
 	}
-	return false;
+	return true;
 }
 
 bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionName)
@@ -158,6 +165,51 @@ bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionN
 			}
 			Action->StartAction(Instigator);
 			return true;
+		}
+	}
+	return false;
+}
+
+bool UDActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
+{
+	for (auto Action : Actions)
+	{
+		if (Action && Action->SkillType == ActionType)
+		{
+			if (Action->bIsCooling)
+			{
+				FString FailedMsg = FString::Printf(
+					TEXT("[x] Failed to run: %s Because it is cooling, Remain: %f"),
+					*Action->ActionName.ToString(), Action->GetRemainCooldown());
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+				return false;
+			}
+
+			if (!Action->CanStart(Instigator))
+			{
+				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *Action->ActionName.ToString());
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+				continue;
+			}
+
+			Action->StartAction(Instigator);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool UDActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
+{
+	for (UDAction* Action : Actions)
+	{
+		if (Action && Action->SkillType == ActionType)
+		{
+			if (Action->IsRunning())
+			{
+				Action->StopAction(Instigator);
+				return true;
+			}
 		}
 	}
 	return false;

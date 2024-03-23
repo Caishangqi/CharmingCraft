@@ -67,8 +67,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorUnEquipmentDelegate, UObj
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemInteractDelegate, APawn*, Instigator, UItemStack*,
                                              InteractItemStack);
+
 // Item Ability System
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*, TargetAction);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*,
+                                               TargetAction, UItemMeta *, ContextMeta);
+
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
 class CHARMINGCRAFT_API UGameEventHandler : public UObject
@@ -167,9 +170,9 @@ public:
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
 	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
-	
-	
+
+
 	// Item Ability System
 	UFUNCTION(BlueprintCallable)
-	void OnItemDynamicSkillBindEvent(APawn * Instigator, UDAction * TargetAction);
+	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* TargetAction, UItemMeta* ContextMeta);
 };

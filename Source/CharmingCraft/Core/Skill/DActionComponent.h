@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "CharmingCraft/Core/Item/Meta/ItemMeta.h"
 #include "Components/ActorComponent.h"
 #include "EquipmentSkill/ItemDynamicSkill.h"
 #include "Templates/Tuple.h"
@@ -38,14 +39,20 @@ public:
 	void AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	bool AddItemDynamicSkills(UItemDynamicSkill * ItemDynamicSkill);
+	bool AddItemDynamicSkills(UItemMeta* ItemMeta);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	bool RemoveItemDynamicSkills(UItemDynamicSkill * ItemDynamicSkill);
+	bool RemoveItemDynamicSkills(UItemMeta* ItemMeta);
 	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StartActionByName(APawn* Instigator, FName ActionName);
+	
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	bool StartActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType);
 
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	bool StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType);
+	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StartActionByIndex(APawn* Instigator, int32 index);
 

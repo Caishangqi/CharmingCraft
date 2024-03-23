@@ -24,9 +24,9 @@ void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 	if (Instigator->IsA(ADCharacter::StaticClass()))
 	{
 		TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(Instigator);
-		if (OnEquipItem->ItemMeta->ItemDynamicSkill)
+		if (!OnEquipItem->ItemMeta->BindItemDynamicSkill.IsEmpty())
 		{
-			PlayerCharacter->ActionComponent->AddItemDynamicSkills(OnEquipItem->ItemMeta->ItemDynamicSkill);
+			PlayerCharacter->ActionComponent->AddItemDynamicSkills(OnEquipItem->ItemMeta);
 		}
 	}
 }
@@ -38,7 +38,7 @@ void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
 		TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(Instigator);
 		if (UnEquipItem->ItemMeta->ItemDynamicSkill)
 		{
-			PlayerCharacter->ActionComponent->RemoveItemDynamicSkills(UnEquipItem->ItemMeta->ItemDynamicSkill);
+			PlayerCharacter->ActionComponent->RemoveItemDynamicSkills(UnEquipItem->ItemMeta);
 		}
 	}
 }

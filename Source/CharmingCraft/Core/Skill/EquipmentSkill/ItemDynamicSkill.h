@@ -10,10 +10,12 @@
  * 
  */
 class UDAction;
+
 UENUM(BlueprintType)
 enum class EItemDynamicSkillSlot : uint8
 {
 	SHIFT_INTERACT,
+	HOTBAR_CAST,
 	INTERACT,
 	PASSIVE,
 	ON_HIT,
@@ -28,7 +30,7 @@ class CHARMINGCRAFT_API UItemDynamicSkill : public UPrimaryDataAsset
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Editor")
 	FName ItemDynamicSkillName;
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	TArray<TObjectPtr<UDAction>> DynamicSkills;
 
@@ -36,11 +38,10 @@ public:
 	TArray<TSubclassOf<UDAction>> DynamicSkillsContent;
 
 public:
-
 	UItemDynamicSkill();
 
 	virtual void PostInitProperties() override;
-	
+
 	UFUNCTION(BlueprintCallable)
 	bool AddDynamicSkillToSlot(TSubclassOf<UDAction> ActionClass);
 };

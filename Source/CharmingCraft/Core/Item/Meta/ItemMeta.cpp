@@ -54,15 +54,19 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction)
+bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetAction, UItemMeta * ContextMeta)
 {
 	// Need to check Empty, fail to check will cause Find() found nullptr
 	if (BindItemDynamicSkill.IsEmpty())
 	{
-		// Broadcast ItemDynamicSkillBindEvent
+		
+		
+		if (Instigator != nullptr)
+		{	// Broadcast ItemDynamicSkillBindEvent
+			Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->OnItemDynamicSkillBindEvent(
+			Instigator, TargetAction,ContextMeta);
+		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
-		Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->OnItemDynamicSkillBindEvent(
-			Instigator, TargetAction);
 		return true;
 	}
 
@@ -72,9 +76,11 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetActi
 	TObjectPtr<UDAction> BindAction = BindItemDynamicSkill[TargetAction->SkillType];
 	if (!BindAction) // Another check
 	{
+		if (Instigator != nullptr)
+		{
+			EventHandler->OnItemDynamicSkillBindEvent(Instigator, TargetAction,ContextMeta);
+		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
-		EventHandler->OnItemDynamicSkillBindEvent(
-			Instigator, TargetAction);
 		return true;
 	}
 
@@ -85,9 +91,11 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* TargetActi
 	}
 	else
 	{
+		if (Instigator != nullptr)
+		{
+			EventHandler->OnItemDynamicSkillBindEvent(Instigator, TargetAction,ContextMeta);
+		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
-		EventHandler->OnItemDynamicSkillBindEvent(
-			Instigator, TargetAction);
 		return true;
 	}
 }
@@ -113,5 +121,20 @@ void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
 	if (ItemClass->ItemDynamicSkillClass)
 	{
 		ItemDynamicSkill = NewObject<UItemDynamicSkill>(this, ItemClass->ItemDynamicSkillClass);
+		// TODO: Deserialize Item Skill Binding and Skills
+
+		// Give Default Select bind Skills
+		for (auto DynamicSkill : ItemDynamicSkill->DynamicSkills)
+		{
+			if (BindItemDynamicSkill.IsEmpty())
+			{
+				AddActionToBindItemSkill(nullptr, DynamicSkill,this);
+			}
+
+			if (BindItemDynamicSkill.Find(DynamicSkill->SkillType) == nullptr)
+			{
+				AddActionToBindItemSkill(nullptr, DynamicSkill,this);
+			}
+		}
 	}
 }

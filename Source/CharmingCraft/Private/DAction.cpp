@@ -49,14 +49,24 @@ UWorld* UDAction::GetWorld() const
 	{
 		return Comp->GetWorld();
 	}
-
+	else if (Handler)
+	{
+		return Handler->GetWorld();
+	}
 	return nullptr;
 }
 
 
 UDActionComponent* UDAction::GetOwningComponent() const
 {
-	return Cast<UDActionComponent>(GetOuter());
+	if (Cast<UDActionComponent>(GetOuter()))
+	{
+		return Cast<UDActionComponent>(GetOuter());
+	}
+	else
+	{
+		return Handler;
+	}
 }
 
 bool UDAction::IsRunning() const
