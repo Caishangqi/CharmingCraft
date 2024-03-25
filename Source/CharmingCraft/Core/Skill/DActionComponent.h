@@ -93,11 +93,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
-	/* In build Character Default Skill */
-	UFUNCTION(BlueprintCallable)
-	void MainHandAction();
-	void OffHandAction();
 
-	void SkillStandbyPressed(); /* Shift */
-	void SkillStandbyReleased(); /* Shift */
+
 };

@@ -68,6 +68,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorUnEquipmentDelegate, UObj
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemInteractDelegate, APawn*, Instigator, UItemStack*,
                                              InteractItemStack);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerMovementDelegate, APawn*, Instigator, FVector,
+FromLocation, FVector,TargetLocation);
+
 // Item Ability System
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*, FromAction,UDAction*,
                                                TargetAction, UItemMeta *, ContextMeta);
@@ -100,6 +103,8 @@ public:
 	FOnResourceEntityPlaceDelegate OnResourceEntityPlace;
 	UPROPERTY(BlueprintAssignable)
 	FOnItemDetailDisplayDelegate OnItemDetailDisplay;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerMovementDelegate OnPlayerMovement;
 
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
@@ -166,6 +171,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnItemInteractEvent(APawn* Instigator, UItemStack* InteractItemStack);
 
+	// Player Movement
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerMovementEvent(APawn* Instigator, FVector FromLocation, FVector TargetLocation);
+	
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
 	UFUNCTION(BlueprintCallable)

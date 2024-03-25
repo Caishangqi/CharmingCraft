@@ -8,6 +8,7 @@
 #include "CharmingCraft/Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
+#include "CharmingCraft/Core/Skill/Actions/NativeItemAction.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -121,6 +122,16 @@ void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
 	if (ItemClass->ItemDynamicSkillClass)
 	{
 		ItemDynamicSkill = NewObject<UItemDynamicSkill>(this, ItemClass->ItemDynamicSkillClass);
+		// Pass ItemStack into ItemDynamicSkill
+		for (auto UnityDynamicSkill : ItemDynamicSkill->DynamicSkills)
+		{
+			if (UnityDynamicSkill->IsA(UNativeItemAction::StaticClass()))
+			{
+				const TObjectPtr<UNativeItemAction> ItemActionDynamicSkill = Cast<UNativeItemAction>(UnityDynamicSkill);
+				ItemActionDynamicSkill->BindItemStack = Cast<UItemStack>(this->GetOuter());
+			}
+		}
+
 		// TODO: Deserialize Item Skill Binding and Skills
 
 		// Give Default Select bind Skills

@@ -11,6 +11,7 @@
 UPlayerModeBuild::UPlayerModeBuild()
 {
 	ModeName = EPlayerMode::BUILD;
+	Priority = 3;
 	// /Script/EnhancedInput.InputMappingContext'/Game/CharmingCraft/Input/Actions/BudingInputAction/BuildingInputMappingContext.BuildingInputMappingContext'
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> MappingContextFinder(
 		TEXT(

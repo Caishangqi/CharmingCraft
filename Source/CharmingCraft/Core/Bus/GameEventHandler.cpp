@@ -213,6 +213,11 @@ void UGameEventHandler::OnItemInteractEvent(APawn* Instigator, UItemStack* Inter
 	OnItemInteract.Broadcast(Instigator, InteractItemStack);
 }
 
+void UGameEventHandler::OnPlayerMovementEvent(APawn* Instigator, FVector FromLocation, FVector TargetLocation)
+{
+	OnPlayerMovement.Broadcast(Instigator, FromLocation, TargetLocation);
+}
+
 void UGameEventHandler::OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator)
 {
 	OnItemDetailDisplay.Broadcast(ItemToDisplay, Creator);
@@ -223,7 +228,8 @@ void UGameEventHandler::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* Tar
 	OnCloseWidget.Broadcast(Instigator, TargetWidget);
 }
 
-void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator,UDAction* FromAction, UDAction* TargetAction, UItemMeta * ContextMeta)
+void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
+                                                    UItemMeta* ContextMeta)
 {
-	OnItemDynamicSkillBind.Broadcast(Instigator, FromAction,TargetAction, ContextMeta);
+	OnItemDynamicSkillBind.Broadcast(Instigator, FromAction, TargetAction, ContextMeta);
 }

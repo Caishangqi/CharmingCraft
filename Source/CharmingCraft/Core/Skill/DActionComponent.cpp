@@ -63,29 +63,6 @@ void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UDActionComponent::MainHandAction()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::MainHandAction()");
-	// TODO 把每个武器对应的 Action 单独创建一个蓝图类，这个Action蓝图要与武器挂钩
-	//this->StartActionByName(Cast<ADCharacter>(GetOwner()), "MainHand");
-}
-
-void UDActionComponent::OffHandAction()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::OffHandAction()");
-}
-
-void UDActionComponent::SkillStandbyPressed()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::StandbyPressed()");
-	this->StartActionByName(Cast<ADCharacter>(GetOwner()), "Standby");
-}
-
-void UDActionComponent::SkillStandbyReleased()
-{
-	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, "UDActionComponent::StandbyReleased()");
-	this->StopActionByName(Cast<ADCharacter>(GetOwner()), "Standby");
-}
 
 void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)
 {

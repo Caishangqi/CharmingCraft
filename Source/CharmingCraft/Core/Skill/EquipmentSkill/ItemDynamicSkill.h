@@ -14,10 +14,20 @@ class UDAction;
 UENUM(BlueprintType)
 enum class EItemDynamicSkillSlot : uint8
 {
+	// whe player open Item detail panel click "Use" action bottom
+	USE, 
+	SHIFT, 
 	SHIFT_INTERACT,
+	RIGHT_CLICK,
 	HOTBAR_CAST,
+	// When player interact some object, Action component will automatically
+	// start the Actions
 	INTERACT,
+	// ActionComponent will automatically run the action when related
+	// ItemStack equipped on inventory
 	PASSIVE,
+	// ActionComponent will automatically run the action at some condition
+	// depend by Action logic
 	ON_HIT,
 };
 

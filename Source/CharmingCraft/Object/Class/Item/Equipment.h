@@ -47,9 +47,25 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	virtual void UnEquip(UObject* Instigator, UItemStack* UnEquipItem);
-
+	/*!
+	 * @Deprecated Move to ItemDynamicAbility System
+	 * @param InteractItemStack 
+	 * @param Instigator 
+	 */
 	virtual void OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator) override;
+	/*!
+	 * @Deprecated Move to ItemDynamicAbility System
+	 */
 	virtual void OnEquipmentDuringUse();
+	/*!
+	 * @Deprecated Move to ItemDynamicAbility System
+	 * @param EquipmentItemStack 
+	 * @param Instigator 
+	 * @param HitEntity 
+	 */
 	virtual void OnEquipmentHit(UItemStack* EquipmentItemStack, APawn* Instigator, AActor* HitEntity);
+	/*!
+	 * @Deprecated Move to ItemDynamicAbility System
+	 */
 	virtual void EndItemInteract() override;
 };

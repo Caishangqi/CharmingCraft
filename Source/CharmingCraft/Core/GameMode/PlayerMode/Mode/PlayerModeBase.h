@@ -23,7 +23,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="默认")
 	EPlayerMode ModeName = EPlayerMode::DEFAULT;
-
+	
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="默认")
+	int32 Priority = 0;
 
 	/** Please add a variable description */
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="默认")

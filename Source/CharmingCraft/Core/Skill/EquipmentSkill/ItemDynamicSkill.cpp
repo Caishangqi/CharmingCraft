@@ -4,6 +4,7 @@
 #include "ItemDynamicSkill.h"
 #include "DAction.h"
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Skill/Actions/NativeItemAction.h"
 
 UItemDynamicSkill::UItemDynamicSkill()
 {

@@ -12,6 +12,8 @@
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
 
 // Sets default values for this component's properties
@@ -30,6 +32,9 @@ void UDInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Player = Cast<ADCharacter>(GetOuter());
+	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(Player->GetGameInstance());
+	GameInstance->GetGameEventHandler()->OnPlayerMovement.AddDynamic(
+		this, &UDInteractionComponent::OnPlayerMovementEvent);
 	// 初始化AI控制器 负责玩家交互过程中的移动
 }
 
@@ -45,16 +50,8 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocation)
 {
-	//AIController->TargetActor = nullptr;
-	UE_LOG(LogChamingCraftComponents, Warning, TEXT("[+] UDInteractionComponent::PrimaryInteract"));
-	FGameplayTag StandbyTag = FGameplayTag::RequestGameplayTag(FName("Status.Standby"));
+	
 	Player->ActionComponent->ActiveGamePlayTags.AddTag(InteractTag);
-
-	if (Player->ActionComponent->ActiveGamePlayTags.HasTag(StandbyTag))
-	{
-		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
-		Player->ActionComponent->MainHandAction();
-	}
 
 	if (HitActor)
 	{
@@ -71,32 +68,6 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			//UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
-			//UE_LOG(LogTemp, Warning, TEXT("The Distance between is %f"), Distance);
-
-			/* 如果是执行攻击操作则开始判断人物身上的 AttackRange 属性 */
-			if (CastedObject->bIsAllowToDamage)
-			{
-				if (Distance < Player->AttributeComp->AttackRange)
-				{
-					/* 转向 */
-					Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
-					Player->ActionComponent->MainHandAction();
-					//return true; // If do not need extra MoveTo(), then return true
-				}
-
-				// 如果这个移动Path没有被玩家自己打断，则到达目标Actor后执行
-
-				// 执行动作
-				AIController->TargetActor = HitActor;
-
-				// 使用AI控制器移动Pawn
-				AIController->MoveToActor(HitActor, Player->AttributeComp->AttackRange, true, true, false,
-				                          nullptr,
-				                          false);
-				DrawDebugLine(Player->GetWorld(), HitActor->GetActorLocation(), HitActor->GetActorLocation(),
-				              FColor::Yellow, false, 2, ECC_Visibility,
-				              20.0f);
-			}
 
 			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
 			if (Distance < CastedObject->MinimumInteractRange)
@@ -129,26 +100,16 @@ bool UDInteractionComponent::ExecuteInteractAction()
 {
 	UE_LOG(LogChamingCraftComponents, Warning, TEXT("[+] UDInteractionComponent::ExecuteInteractAction"));
 	/* Handle Interact Object Logic */
-	//if (AIController->TargetActor->Implements<UDGameplayInterface>() && AIController->TargetActor->IsA(
-	//AInteractObject::StaticClass()))
 	if (AIController->TargetActor->IsA(
 		AInteractObject::StaticClass()))
 	{
-		if (Cast<AInteractObject>(AIController->TargetActor.Get())->bIsAllowToDamage)
-		{
-			Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
-			Player->ActionComponent->MainHandAction();
-			return false;
-		}
 		IDGameplayInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
-		Player->InteractionComp->OnItemInteract(AIController->TargetActor.Get(), Player);
 	}
 	/* Handle Creature Interact */
 	else if (AIController->TargetActor.IsValid() && AIController->TargetActor->Implements<UDamageable>())
 	{
 		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
-		Player->ActionComponent->MainHandAction();
-
+		Player->ActionComponent->StartActionByType(Player, EItemDynamicSkillSlot::SHIFT_INTERACT);
 		/* This should have future NPC interact, not damage them, interact with them */
 
 		return false;
@@ -248,7 +209,7 @@ bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 	{
 		/* 转向 */
 		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
-		Player->ActionComponent->MainHandAction();
+		Player->ActionComponent->StartActionByType(Player, EItemDynamicSkillSlot::SHIFT_INTERACT);
 		return true;
 	}
 	// 给AI控制器类里面设置点击的目标, 传参到这个类
@@ -256,4 +217,13 @@ bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 	AIController->MoveToActor(TargetActor, Player->AttributeComp->AttackRange, true, true, true,
 	                          nullptr, true);
 	return false;
+}
+
+void UDInteractionComponent::OnPlayerMovementEvent(APawn* Instigator, FVector FromLocation, FVector TargetLocation)
+{
+	if (Player->ActionComponent->ActiveGamePlayTags.HasTag(InteractTag))
+	{
+		AIController->StopMovement();
+		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
+	}
 }

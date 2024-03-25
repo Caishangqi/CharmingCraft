@@ -8,6 +8,7 @@
 UPlayerModeInventory::UPlayerModeInventory()
 {
 	ModeName = EPlayerMode::INVENTORY;
+	Priority = 2;
 	// /Script/EnhancedInput.InputMappingContext'/Game/CharmingCraft/Input/Actions/InventoryInputAction/InventoryInputMappingContext.InventoryInputMappingContext'
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> MappingContextFinder(
 		TEXT(

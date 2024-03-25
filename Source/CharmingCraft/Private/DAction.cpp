@@ -76,9 +76,13 @@ bool UDAction::IsRunning() const
 
 void UDAction::StartCoolDown()
 {
-	bIsCooling = true;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UDAction::CooldownFinished, CoolDown);
-	OnCoolStart.Broadcast(CachedInstigator);
+	if (CoolDown != 0.0f)
+	{
+		bIsCooling = true;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UDAction::CooldownFinished, CoolDown);
+		OnCoolStart.Broadcast(CachedInstigator);
+	}
+	
 }
 
 void UDAction::CooldownFinished()

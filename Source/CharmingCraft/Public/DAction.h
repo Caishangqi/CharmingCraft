@@ -15,9 +15,7 @@ class UWorld;
  *	Because we drive the Class from UObject, without UCLASS(Blueprintable), we can
  *	not make child classes from as Action
  */
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoolComplete, AActor*, InstigatorPawn);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoolCStart, AActor*, InstigatorPawn);
 
 UCLASS(Blueprintable)
@@ -26,6 +24,7 @@ class CHARMINGCRAFT_API UDAction : public UObject
 	GENERATED_BODY()
 
 public:
+	
 	/* Action nickname to start/stop without a reference to the object */
 	UPROPERTY(EditDefaultsOnly, Category= "Action", BlueprintReadWrite)
 	FName ActionName; // FName is hashed used in game, highly optimized
@@ -41,7 +40,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UTexture2D* SkillIcon;
-
+	
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsCooling = false;
 

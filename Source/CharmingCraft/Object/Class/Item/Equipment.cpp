@@ -44,7 +44,7 @@ void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
 		}
 	}
 }
-
+// Deprecated
 void UEquipment::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)
 {
 	Super::OnItemInteract(InteractItemStack, Instigator);
@@ -59,7 +59,7 @@ void UEquipment::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator
 	Instigator->GetWorld()->GetTimerManager().
 	            SetTimer(TraceTimer, this, &UEquipment::OnEquipmentDuringUse, 0.01f, true);
 }
-
+// Deprecated
 void UEquipment::OnEquipmentDuringUse()
 {
 	// TODO 考虑是否让武器只能对敌人造成一次伤害 蒙太奇 + 动画通知

@@ -25,7 +25,7 @@ void UPlayerModeBase::UpdateControllerMappingContext(EPlayerMode FromGameMode, A
 			if (InputSystem)
 			{
 				//InputSystem->AddMappingContext(ModeMappingContext.LoadSynchronous(), 0);
-				InputSystem->AddMappingContext(ModeMappingContext.LoadSynchronous(), 0);
+				InputSystem->AddMappingContext(ModeMappingContext.LoadSynchronous(), Priority);
 				UE_LOG(LogChamingCraftGameMode, Display,
 				       TEXT("[🎮]  GameMode %s MappingContext is inject to Controller"),
 				       *EnumClassToString(ModeName));

@@ -277,16 +277,7 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ADCharacter::Jump);
 
-	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ADCharacter::SprintStart);
-	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ADCharacter::SprintStop);
-
 	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ADCharacter::PrintDebugMessage);
-
-	PlayerInputComponent->BindAction("OffHandAction", IE_Pressed, ActionComponent, &UDActionComponent::OffHandAction);
-	PlayerInputComponent->BindAction("Standby", IE_Pressed, ActionComponent,
-	                                 &UDActionComponent::SkillStandbyPressed);
-	PlayerInputComponent->BindAction("Standby", IE_Released, ActionComponent,
-	                                 &UDActionComponent::SkillStandbyReleased);
 }
 
 void ADCharacter::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,

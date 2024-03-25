@@ -9,6 +9,7 @@
 UPlayerModeCombat::UPlayerModeCombat()
 {
 	ModeName = EPlayerMode::COMBAT;
+	Priority = 1;
 	// /Script/EnhancedInput.InputMappingContext'/Game/CharmingCraft/Input/Actions/CombatInputAction/CombatInputMappingContext.CombatInputMappingContext'
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> MappingContextFinder(
 		TEXT(

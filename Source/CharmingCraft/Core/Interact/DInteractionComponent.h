@@ -31,16 +31,31 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool PrimaryInteract(AActor* HitActor, FVector HitLocation);
-	//CancelInter
 
+	// TODO: This part could implement in a better way
+	
+	// The Callback function from Controller when execute OnMoveCompleted
 	bool ExecuteInteractAction();
 	void LineTracingInteract() const;
 	void OnItemInteract(TWeakObjectPtr<AActor> TargetActor, APawn* Instigator);
+	// Handle Callback function from Controller and handle creature damage
 	bool ExecuteInteractWithCreature(AActor* TargetActor);
 
 	/* Update Player Rotation */
-
+	
 	FGameplayTag InteractTag;
+
+	// Event Related Logic
+	/*!
+	 * Player move to location while have a previous unfinished interact event,
+	 * cancel the interact event by receiving OnPlayerMovementBroadcast from controller
+	 * (especially the click move Input action)
+	 * @param Instigator Who Cause move
+	 * @param FromLocation From location
+	 * @param TargetLocation To planned Target Location 
+	 */
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerMovementEvent(APawn* Instigator, FVector FromLocation, FVector TargetLocation);
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
