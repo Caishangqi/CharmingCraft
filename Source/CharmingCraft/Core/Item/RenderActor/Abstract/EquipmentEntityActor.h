@@ -32,7 +32,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UEquipmentAnimation> EquipmentAnimation;
-
+	// Used in Ranged based Item, that may have multiple muzzles
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FName,TObjectPtr<UArrowComponent>> SocketContext;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

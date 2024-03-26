@@ -82,16 +82,28 @@ public:
 			TObjectPtr<UItemStack> OuterItemStack = Cast<UItemStack>(InputMeta->GetOuter());
 
 			FTransform RenderSpecifyTransform = OuterItemStack->ItemClass.GetDefaultObject()->RenderSpecifyTransform;
-
-			RenderActor->SceneCaptureComponent->SetRelativeRotation(RenderSpecifyTransform.GetRotation());
-			RenderActor->SceneCaptureComponent->SetRelativeLocation(RenderSpecifyTransform.GetLocation()); // 100 85 70
+			// 100 85 70
+			if(ItemEntityActor->UseCustomTransform)
+			{
+				RenderActor->SceneCaptureComponent->SetRelativeRotation(
+					ItemEntityActor->ItemEntityActorRenderTargetTransform.GetRotation());
+				RenderActor->SceneCaptureComponent->SetRelativeLocation(
+					ItemEntityActor->ItemEntityActorRenderTargetTransform.GetLocation());
+			}
+			else
+			{
+				RenderActor->SceneCaptureComponent->SetRelativeRotation(RenderSpecifyTransform.GetRotation());
+				RenderActor->SceneCaptureComponent->SetRelativeLocation(RenderSpecifyTransform.GetLocation());
+			}
 			RenderActor->SceneCaptureComponent->OrthoWidth = OuterItemStack->ItemClass.GetDefaultObject()->OrthoWidth;
 			RenderActor->SceneCaptureComponent->ShowOnlyActors.Add(ItemEntityActor);
 
 			RenderActor->SceneCaptureComponent->CaptureScene();
-			RenderActor->Destroy();
-			ItemEntityActor->Destroy();
-			//UE_LOG(LogTemp, Warning, TEXT("(!) Successfully destroy RenderItem Actor"))
+			if (ItemEntityActor->DebugTransformOnRenderTarget == false)
+			{
+				RenderActor->Destroy();
+				ItemEntityActor->Destroy();
+			}
 			return RenderMaterial;
 		}
 		return nullptr;
