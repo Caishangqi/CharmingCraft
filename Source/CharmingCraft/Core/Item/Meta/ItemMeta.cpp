@@ -71,10 +71,19 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction
 		return true;
 	}
 
-	TObjectPtr<UGameEventHandler> EventHandler = Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->
-		GetGameEventHandler();
+	TObjectPtr<UGameEventHandler> EventHandler;
+	if (Instigator!= nullptr)
+	{
+		EventHandler = Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->
+	   GetGameEventHandler();
+	}
 
-	TObjectPtr<UDAction> BindAction = BindItemDynamicSkill[TargetAction->SkillType];
+	
+	TObjectPtr<UDAction> BindAction = nullptr;
+	if (BindItemDynamicSkill.Contains(TargetAction->SkillType))
+	{
+		BindAction = BindItemDynamicSkill.Find(TargetAction->SkillType)->Get();
+	}
 	if (!BindAction) // Another check
 	{
 		if (Instigator != nullptr)

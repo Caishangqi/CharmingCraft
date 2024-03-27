@@ -52,7 +52,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType);
-
+	
+	UFUNCTION(BlueprintCallable, Category= "Actions")
+	bool HasActionByType(EItemDynamicSkillSlot ActionType);
+	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction, UItemMeta * ContextMeta);
 	

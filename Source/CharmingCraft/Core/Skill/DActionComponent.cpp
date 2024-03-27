@@ -199,6 +199,18 @@ bool UDActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlo
 	return false;
 }
 
+bool UDActionComponent::HasActionByType(EItemDynamicSkillSlot ActionType)
+{
+	for (const auto Element : Actions)
+	{
+		if (Element->SkillType == ActionType)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void UDActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction, UItemMeta* ContextMeta)
 {
 	// We only want to receive broadcast when the item is equipped

@@ -24,4 +24,12 @@ UBow::UBow()
 		DefaultItemEntityActorClass = ActorBlueprint.Object->GeneratedClass;
 		// 然后你可以使用ActorClass来在游戏世界中创建这个Actor的实例
 	}
+	// Default ItemDynamicSkill
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemDynamicSkillFinder(
+		TEXT(
+			"Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Bow/IDS_Bow.IDS_Bow'"));
+	if (ItemDynamicSkillFinder.Succeeded())
+	{
+		ItemDynamicSkillClass = ItemDynamicSkillFinder.Object->GeneratedClass;
+	}
 }
