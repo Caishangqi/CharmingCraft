@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NativeItemAction.h"
+#include "NativeEquipmentAction.h"
 #include "NativeStandardMeleeAction.generated.h"
 class ADCharacter;
 class UCharmingCraftInstance;
@@ -18,7 +18,7 @@ struct FHitResult;
 class AEquipmentEntityActor;
 
 UCLASS()
-class CHARMINGCRAFT_API UNativeStandardMeleeAction : public UNativeItemAction
+class CHARMINGCRAFT_API UNativeStandardMeleeAction : public UNativeEquipmentAction
 {
 	GENERATED_BODY()
 
@@ -29,10 +29,6 @@ public:
 
 protected:
 	FTimerHandle TraceTimer;
-	// The Item "Model" that handle trace logic and collision
-	// The Item Animation temporary store in 
-	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<AEquipmentEntityActor> ItemEntityActor;
 	// The List of Hit Actor when Item start their trace or collision
 	UPROPERTY(BlueprintReadWrite)
 	TSet<TObjectPtr<AActor>> HitActors;

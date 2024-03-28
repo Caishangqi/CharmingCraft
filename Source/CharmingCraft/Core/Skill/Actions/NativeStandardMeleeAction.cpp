@@ -18,7 +18,6 @@ UNativeStandardMeleeAction::UNativeStandardMeleeAction()
 void UNativeStandardMeleeAction::StartAction_Implementation(APawn* Instigator)
 {
 	Super::StartAction_Implementation(Instigator);
-	ItemEntityActor = Cast<AEquipmentEntityActor>(BindItemStack->ItemMeta->ItemEntityActor);
 }
 
 void UNativeStandardMeleeAction::EndMeleeActionTrace_Implementation()

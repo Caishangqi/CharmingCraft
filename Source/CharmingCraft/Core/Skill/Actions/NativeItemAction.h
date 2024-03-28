@@ -40,5 +40,6 @@ protected:
 
 public:
 	UNativeItemAction();
+	
 	virtual void StartAction_Implementation(APawn* Instigator) override;
 };
