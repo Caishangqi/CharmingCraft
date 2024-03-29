@@ -28,7 +28,8 @@ void UNativeStandardMeleeAction::EndMeleeActionTrace_Implementation()
 
 void UNativeStandardMeleeAction::OnActionHit_Implementation(AActor* HitEntity)
 {
-	FPlayerAttribute PlayerAttribute =CastInstigatorPlayer->AttributeComp->GetPlayerAttributeData();
+	
+	FPlayerAttribute PlayerAttribute = Cast<UDAttributeComponent>(CastInstigatorPlayer->GetComponentByClass(UDAttributeComponent::StaticClass()))->GetPlayerAttributeData();
 
 	FEquipmentAttribute EquipmentAttribute = Cast<UIntegratedMeta>(BindItemStack->ItemMeta)->EquipmentAttribute;
 

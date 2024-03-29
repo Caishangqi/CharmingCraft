@@ -4,6 +4,7 @@
 #include "DAction.h"
 
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/Actions/ActionActor/BaseActionActor.h"
 
 void UDAction::StartAction_Implementation(APawn* Instigator)
 {
@@ -100,4 +101,10 @@ void UDAction::ResetCoolDown()
 float UDAction::GetRemainCooldown()
 {
 	return GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle_Cooldown);
+}
+
+FActionActorData UDAction::GetActionActorData_Implementation()
+{
+	FActionActorData ActionActorData;
+	return  ActionActorData;
 }

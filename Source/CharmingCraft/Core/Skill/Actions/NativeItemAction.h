@@ -31,12 +31,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Bind ItemStack", BlueprintReadWrite)
 	TObjectPtr<UItemStack> BindItemStack;
 
+	// Who cast the Action
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<APawn> CastInstigatorPlayer;
+
 protected:
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
-	// Who cast the Action
-	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<ADCharacter> CastInstigatorPlayer;
+
 
 public:
 	UNativeItemAction();

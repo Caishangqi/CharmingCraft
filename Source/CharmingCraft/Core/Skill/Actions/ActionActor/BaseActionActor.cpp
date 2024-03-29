@@ -3,6 +3,8 @@
 
 #include "BaseActionActor.h"
 
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/Actions/NativeOnHitAction.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -17,7 +19,6 @@ ABaseActionActor::ABaseActionActor(): ActionActorHealth(1)
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("Projectile movement component");
 
-	
 	CollisionBox = CreateDefaultSubobject<USphereComponent>("Collision Box");
 	CollisionBox->SetupAttachment(RootComponent);
 	CollisionBox->SetGenerateOverlapEvents(true);
@@ -31,6 +32,19 @@ void ABaseActionActor::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+bool ABaseActionActor::InjectActionData_Implementation(FActionActorData ActionActorData)
+{
+	ActionHitData = ActionActorData.ActionHitData;
+	InstigatorAction = ActionActorData.InstigatorAction;
+	ActionActorOwner = ActionActorData.ActionActorOwner;
+	OnHitActions = ActionActorData.OnHitCastAction;
+	OnSpawnActions = ActionActorData.OnSpawnCastAction;
+	OnTickActions = ActionActorData.OnTickCastAction;
+	Parent = ActionActorData.Parent;
+	return true;
+}
+
 
 // Called every frame
 void ABaseActionActor::Tick(float DeltaTime)
@@ -47,11 +61,21 @@ void ABaseActionActor::OnOverlapBegin_Implementation(UPrimitiveComponent* Overla
                                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
                                                      bool bFromSweep, const FHitResult& SweepResult)
 {
+	// Usually execute OnActionActorHit_Implementation, but I lay down for users
 }
 
 
-bool ABaseActionActor::OnActionActorHit_Implementation()
+bool ABaseActionActor::OnActionActorHit_Implementation(AActor* OtherActor)
 {
+	if (OnHitActions)
+	{
+		// If it is a valid UNativeOnHitAction
+		TObjectPtr<UNativeOnHitAction> OnHitAction = Cast<UNativeOnHitAction>(OnHitActions);
+		OnHitAction->TargetActor = OtherActor; // Set the target for UNativeOnHitAction
+		OnHitAction->AppliedHitData = ActionHitData; // Set the HitData for UNativeOnHitAction
+		OnHitAction->StartAction(ActionActorOwner);
+		return true;
+	}
 	return false;
 }
 

@@ -49,7 +49,6 @@ void UDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocation)
 {
-	
 	Player->ActionComponent->ActiveGamePlayTags.AddTag(InteractTag);
 
 	if (HitActor)
@@ -99,6 +98,10 @@ bool UDInteractionComponent::ExecuteInteractAction()
 {
 	UE_LOG(LogChamingCraftComponents, Warning, TEXT("[+] UDInteractionComponent::ExecuteInteractAction"));
 	/* Handle Interact Object Logic */
+	if (AIController->TargetActor == nullptr)
+	{
+		return false;
+	}
 	if (AIController->TargetActor->IsA(
 		AInteractObject::StaticClass()))
 	{
