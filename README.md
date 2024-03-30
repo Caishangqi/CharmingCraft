@@ -80,6 +80,40 @@ The new version of the Chunk system integrates the Biome Box Actor to manage and
 - The [**four corner coordinates**](https://github.com/Caishangqi/CharmingCraft/blob/afe8917e7482ab9eae9adc91169e57414c760a2b/Source/CharmingCraft/Core/Resource/Lib/GenerateTraceLibrary.h#L24) of the bottom face of the resource Actor's HitBox are used as starting points for ray tracing downwards. If the Z values of the HitResult's return are the same, it can preliminarily be judged as a plane.
 
 - If the randomly selected point for ray tracing is not obstructed or is the expected terrain, then the Resource Actor can be generated.
+
+### Farming System
+![farming-cycle](https://github.com/Caishangqi/CharmingCraft/assets/39553613/00ff9f88-be3f-4257-9f8b-b97010b74b1f)
+
+- The farming system, in conjunction with the **resource gathering system** and **Chunk system**, allows players to find crop seeds for planting within naturally generated brush.
+- However, before planting, players need to use a hoe to dig and till the land. The hoe uses the building system's **construction indicator** to inform players whether the current grid is valid.
+- The growth rate of each crop depends on the current soil medium. Different crops have different **growth cycles** and **stage texture models**. Players can also configure the drops of crops at different stages (In the future, crop growth timers will count in "game days" rather than seconds).
+- Each crop has its own health. When the health reaches zero, the crop drops items. Different weapons and tools cause different damage to crops (for example, the hoe has higher agricultural damage).
+
+### Item Action/Ability System
+![item-ability-system](https://github.com/Caishangqi/CharmingCraft/assets/39553613/43ddbacc-668a-4737-b4cf-48f2a8147882)
+
+The Item Ability System is an expansion and decoupling based on the **Game Ability System (GAS)**, allowing items and equipment in the game to have skill effects. The types of item skills include `USE`, `SHIFT`, `SHIFT_INTERACT`, `RIGHT_CLICK`, `HOTBAR_CAST`, `INTERACT`, `PASSIVE`, `ON_HIT`, `ON_ATTACK`, with specific keys and game events triggering the above skill callbacks.
+
+- An item can have multiple skills of different types, but only one skill per type can be activated. For example, a bow can have four types of right-click shooting skills, but the player can only activate one. The same applies to other types of skills.
+- If the player's inventory contains skills of the same type, they are executed in **priority order**.
+- The skill selected and activated by the player is stored in the **ItemMeta**. The number and type of activatable skills in an item are based on the **initial set of skills** + **material skills** of the item + **special skills** (level, talents, profession, etc.).
+- When a player equips an item, the skills within the item are loaded into the Action Components and are unloaded from the Action Components upon unequipping.
+#### Detailed Action Callback
+
+|  Callback Name  | Trigger Condition                                                                                                   | Related Component              |
+|:---------------:|---------------------------------------------------------------------------------------------------------------------|--------------------------------|
+|      `USE`      | Triggers when a player clicks the **"use"** button while viewing the item's detailed interface.                         | Item Detail Pannel             |
+|     `SHIFT`     | Activated when the player presses `Shift`.                                                                            | Controller                     |
+| `SHIFT_INTERACT` | Activated when the player presses `Shift` + `Interact` button (usually the left mouse button).                          | Controller                     |
+|  `RIGHT_CLICK`  | The skill is triggered by pressing the right mouse button (e.g., the button used for bows in skill demonstrations). | Controller                     |
+|  `HOTBAR_CAST`  | The skill is executed based on the specified binding key when the player performs an action from the skill hot-bar. | Skill Hotbar Widget            |
+|        `INTERACT`         |  Activated by pressing the interact key (usually the left mouse button).                 | Controller, Interact Component |
+|        `PASSIVE`         |   A continuously active aura effect when the item is equipped in the inventory.         | Buff Handler                   |
+|             `ON_HIT`             |  A skill executed when the item hits a target, including OnHit in the item's skill.           | Action Component               |
+|                 `ON_ATTACK`                 |    A callback skill executed after any OnHit, similar to attack effects.    |    Action Component                            |
+
+#### Structure diagram
+
 ### Equipment assembly
 
 https://github.com/Caishangqi/CharmingCraft/assets/39553613/aa4a85df-a49b-488b-8887-5868ce0d31ec

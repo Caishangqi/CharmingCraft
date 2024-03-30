@@ -67,7 +67,18 @@ void ABaseActionActor::OnOverlapBegin_Implementation(UPrimitiveComponent* Overla
 
 bool ABaseActionActor::OnActionActorHit_Implementation(AActor* OtherActor)
 {
-	if (OnHitActions)
+	// Ensure the Same Action's Action not collied or interact with each other
+	if (OtherActor->IsA(ABaseActionActor::StaticClass()))
+	{
+		// If they have the same InstigatorAction we return false indicate not to execute interface
+		if (Cast<ABaseActionActor>(OtherActor)->InstigatorAction == this->InstigatorAction)
+		{
+			return false;
+		}
+		
+	}
+	
+	if (OnHitActions && !IgnoreActors.Contains(OtherActor))
 	{
 		// If it is a valid UNativeOnHitAction
 		TObjectPtr<UNativeOnHitAction> OnHitAction = Cast<UNativeOnHitAction>(OnHitActions);

@@ -41,6 +41,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UTexture2D* SkillIcon;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Ignore Target")
+	TSet<TObjectPtr<AActor>> IgnoreTargetActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsCooling = false;
