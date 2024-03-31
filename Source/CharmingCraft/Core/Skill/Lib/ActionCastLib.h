@@ -58,7 +58,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Action Actor")
 	static UDAction* GetItemActionsByType(UItemStack* ItemStack, APawn* Owner, EItemDynamicSkillSlot ActionType)
 	{
-		const TObjectPtr<UDActionComponent> ActionComponent = Cast<UDActionComponent>(
+		if (!(ItemStack && Owner))
+		{
+			return nullptr;
+		}
+		TObjectPtr<UDActionComponent> ActionComponent = Cast<UDActionComponent>(
 			Owner->GetComponentByClass(UDActionComponent::StaticClass()));
 		for (const UDAction* Action : ActionComponent->Actions)
 		{

@@ -83,7 +83,6 @@ void UDAction::StartCoolDown()
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UDAction::CooldownFinished, CoolDown);
 		OnCoolStart.Broadcast(CachedInstigator);
 	}
-	
 }
 
 void UDAction::CooldownFinished()
@@ -103,8 +102,14 @@ float UDAction::GetRemainCooldown()
 	return GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle_Cooldown);
 }
 
+FHitData UDAction::GetActionHitData_Implementation()
+{
+	FHitData HitData;
+	return HitData;
+}
+
 FActionActorData UDAction::GetActionActorData_Implementation()
 {
 	FActionActorData ActionActorData;
-	return  ActionActorData;
+	return ActionActorData;
 }

@@ -31,6 +31,9 @@ struct FActionActorData
 	GENERATED_BODY()
 
 public:
+
+	FActionActorData():ActionHitData(){};
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FHitData ActionHitData;
 

@@ -107,7 +107,14 @@ public:
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "Action Actor")
 	FActionActorData GetActionActorData();
-
+	/*!
+	 * Get the Action HitData, use could implement this method to decide
+	 * each actions custom HitData, for example, you could get a HitData
+	 * based on item attribute or based on character level and attributes
+	 * @return FHitData that action will hold and apply to target or else
+	 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "Action Actor")
+	FHitData GetActionHitData();
 	/* Event */
 	UPROPERTY(BlueprintAssignable)
 	FOnCoolComplete OnCoolComplete;

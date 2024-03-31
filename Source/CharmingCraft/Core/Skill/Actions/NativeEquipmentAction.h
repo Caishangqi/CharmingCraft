@@ -25,5 +25,7 @@ public:
 public:
 	UNativeEquipmentAction();
 
+	virtual FActionActorData GetActionActorData_Implementation() override;
+
 	virtual void StartAction_Implementation(APawn* Instigator) override;
 };

@@ -26,7 +26,7 @@ public:
 	/*
 	 *	GameTag System
 	 *	We can not use forwards declaration because it is a struct and
-	 *	the compiler need to know the size of the struct, if it is a
+	 *	the compiler need to know the size of the struct, if it is a   
 	 *	pointer(same size) it do not need to know
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Tags")

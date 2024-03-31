@@ -19,7 +19,6 @@ struct FHitData : public FTableRowBase
 		  , CriticalDamage(0)
 		  , InstigatorPawn(nullptr)
 		  , DamageResponse(EDamageResponse::HitReaction) // 设置默认值
-		  , OnHitBuffList()
 	{
 	}
 
