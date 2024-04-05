@@ -12,7 +12,7 @@
 /**
  * 
  */
-UCLASS(meta=(BlueprintThreadSafe, ScriptName = "Generate Trace Library"))
+UCLASS(meta=(BlueprintThreadSafe, ScriptName = "GenerateTraceLibrary"))
 class CHARMINGCRAFT_API UResourceGenerateLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()

@@ -13,7 +13,7 @@
 /**
  * 
  */
-UCLASS(meta=(BlueprintThreadSafe, ScriptName = "Action Cast Libarary"))
+UCLASS(meta=(BlueprintThreadSafe, ScriptName = "ActionCastLibarary"))
 class CHARMINGCRAFT_API UActionCastLib : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()

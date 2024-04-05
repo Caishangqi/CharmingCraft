@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(meta=(BlueprintThreadSafe, ScriptName = "Build Module Libarary"))
+UCLASS(meta=(BlueprintThreadSafe, ScriptName = "BuildModuleLibarary"))
 class CHARMINGCRAFT_API UBuildModuleLib : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()

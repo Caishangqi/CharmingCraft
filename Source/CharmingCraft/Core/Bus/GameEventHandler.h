@@ -84,6 +84,10 @@ class CHARMINGCRAFT_API UGameEventHandler : public UObject
 	UGameEventHandler();
 
 public:
+
+	// World Management
+	
+	
 	// Global Variable
 
 	// Lowest

@@ -21,8 +21,15 @@ public:
 	// 委托事件，用于在关卡加载完毕后通知
 	FOnLevelLoadedDelegate OnLevelLoaded;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TSoftObjectPtr<UWorld> CurrentLoadWorld;
+	
 	UFUNCTION(BlueprintCallable)
 	bool LoadGameLevel(FName LevelName);
+	
+	UFUNCTION(BlueprintCallable)
+	bool TeleportPlayerToWorld(APawn * PlayerCharacter, UWorld * TargetWorld, const FName WarpPoint);
+	
 	// 加载完成的回调函数
 	UFUNCTION(BlueprintCallable)
 	void OnLevelLoadedCallback();

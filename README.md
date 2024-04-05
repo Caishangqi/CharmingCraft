@@ -2,7 +2,7 @@
 
 ![project_title](https://github.com/Caishangqi/CharmingCraft/assets/39553613/afff6fe3-e541-455d-978c-84dfd8df58f3)
 <p align="center">
-<img src = "https://i.imgur.com/EF6t6WA.png">
+<img src = "https://i.imgur.com/EF6t6WA.png" alt="">
 </p>
 
 <h4 align="center">A Pixel Low poly top-down RPG game implement by Unreal Engine 5.3</h4>
@@ -59,7 +59,7 @@ this repository.
 
 - Because a Chunk records all the grid points it occupies upon creation, these snap-to-grid points can be easily used for ray tracing.
 <p align="center">
-<img src = "https://i.imgur.com/EF6t6WA.png">
+<img src = "https://i.imgur.com/EF6t6WA.png" alt="">
 </p>
 
 
@@ -221,7 +221,7 @@ The Resource Gathering System enables players to collect various resources in th
 World Spawn - Build using blender and Unreal Cube grid tool
 </p>
 <p align="center">
-<img src = "https://i.imgur.com/EF6t6WA.png">
+<img src = "https://i.imgur.com/EF6t6WA.png" alt="">
 </p>
 
 ![085b835d6aa2bbfdfa9b2f7ca4df50b8](https://github.com/Caishangqi/CharmingCraft/assets/39553613/98fb8dec-facb-40ec-b8a4-9ddd14db5ac8)
@@ -274,15 +274,15 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 |:----------------------------------------------------------|:--------:|:-----:|
 | Game Start UI and World Select UI                         | Highest  |   ✅   |
 | Game context serialization                                | Highest  |   ✅   |
-| Chunk and build system                                    |   High   |  ✅   |
-| Skill indicator Component                                 |   High   |  📝   |
-| Complete attribute UI                                     |  Normal  |  ✅   |
-| Per Item Ability System                                   |  Normal  |  📝   |
-| Quest system with related NPCs                            |  Normal  |  📌   |
-| Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📌   |
-| Resource collection system, ores, trees, farmland         |  Normal  |  ✅   |
+| Chunk and build system                                    |   High   |   ✅   |
+| Skill indicator Component                                 |   High   |   ✅   |
+| Complete attribute UI                                     |  Normal  |   ✅   |
+| Per Item Ability System                                   |  Normal  |   ✅   |
+| Quest system with related NPCs                            |  Normal  |  📝   |
+| Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📝   |
+| Resource collection system, ores, trees, farmland         |  Normal  |   ✅   |
 | Expand the Level to 1000 x 1000                           |   Low    |  📌   |
-| Biome: Respawn of monsters, resources, creatures          |   Low    |  ✅   |
+| Biome: Respawn of monsters, resources, creatures          |   Low    |   ✅   |
 | Developing an engaging storyline                          |  Lowest  |  📌   |
 | Reset inventory UI and drag method                        |  Lowest  |   ✅   |
 

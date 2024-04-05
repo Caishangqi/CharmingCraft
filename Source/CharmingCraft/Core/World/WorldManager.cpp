@@ -25,6 +25,23 @@ bool UWorldManager::LoadGameLevel(FName LevelName)
 	return true;
 }
 
+bool UWorldManager::TeleportPlayerToWorld(APawn* PlayerCharacter, UWorld* TargetWorld, const FName WarpPoint)
+{
+	if (PlayerCharacter && TargetWorld)
+	{
+		if (PlayerCharacter->GetWorld() == TargetWorld)
+		{
+			return false;
+		}
+		UGameplayStatics::OpenLevelBySoftObjectPtr(PlayerCharacter,TargetWorld);
+		if (true)
+		{
+			
+		}
+	}
+	return false;
+}
+
 void UWorldManager::OnLevelLoadedCallback()
 {
 	OnLevelLoaded.Broadcast();
