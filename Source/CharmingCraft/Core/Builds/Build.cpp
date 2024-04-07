@@ -29,7 +29,7 @@ ABuild::ABuild()
 void ABuild::BeginPlay()
 {
 	Super::BeginPlay();
-	ALevelTargetPoint* ExitActor = GetWorld()->SpawnActor<ALevelTargetPoint>(ALevelTargetPoint::StaticClass());
+	ALevelWarpPoint* ExitActor = GetWorld()->SpawnActor<ALevelWarpPoint>(ALevelWarpPoint::StaticClass());
 	ExitActor->TargetName = BuildName + " Default Exit";
 	if (ExitActor)
 	{

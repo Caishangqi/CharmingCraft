@@ -15,4 +15,5 @@ DEFINE_LOG_CATEGORY(LogChamingCraftGameMode);
 DEFINE_LOG_CATEGORY(LogChamingCraftBuild);
 DEFINE_LOG_CATEGORY(LogChamingCraftAsset);
 DEFINE_LOG_CATEGORY(LogChamingCraftAction);
+DEFINE_LOG_CATEGORY(LogChamingCraftWorld);
 

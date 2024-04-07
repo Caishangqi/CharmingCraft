@@ -35,7 +35,7 @@ bool ABiome::GetRandomPointInVolume(FVector& OutLocation)
 	GetActorBounds(false, Origin, BoxExtent);
 
 	FVector RandPoint = UBuildModuleLib::SnapToGrid(Origin + FMath::RandPointInBox(FBox(-BoxExtent, BoxExtent)), 100);;
-	
+
 
 	// 射线投射以检查地面
 	FHitResult HitResult;
@@ -81,8 +81,9 @@ float ABiome::GetOnGenerateSuccessRate(FBiomeData BiomeData)
 
 bool ABiome::StartBiomeDataTimer()
 {
-	for (auto BiomeData : RegisterBiomeData)
+	for (auto &BiomeData : RegisterBiomeData)
 	{
+
 		GetWorld()->GetTimerManager().SetTimer(BiomeData.ResourceInternalTimer, [this, BiomeData]()
 		                                       {
 			                                       this->GenerateResource(BiomeData);
@@ -103,6 +104,10 @@ void ABiome::GenerateResource(FBiomeData BiomeData)
 	// 如果随机数小于等于生成几率，则生成Actor
 	if (RandomChance <= SuccessRate)
 	{
+		if (!this)
+		{
+			return;
+		}
 		FVector SpawnLocation;
 		if (GetRandomPointInVolume(SpawnLocation))
 		{

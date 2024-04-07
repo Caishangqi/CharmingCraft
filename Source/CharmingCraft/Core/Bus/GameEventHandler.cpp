@@ -10,6 +10,7 @@
 #include "GameFramework/PlayerStart.h"
 #include "../Core/Save/Lib/CharacterSaveLib.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
+#include "CharmingCraft/Core/Resource/Chunk/LandChunk.h"
 
 UGameEventHandler::UGameEventHandler()
 {
@@ -20,6 +21,25 @@ UGameEventHandler::UGameEventHandler()
 	{
 		BlueprintCharacterClassReference = BlueprintClass.Class;
 	}
+}
+
+void UGameEventHandler::OnUnloadGameLevelEvent(UWorld* TargetWorld)
+{
+	OnUnloadGameLevel.Broadcast(TargetWorld);
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnUnloadGameLevelEvent()\n"
+		       "		TargetWorld: %s"), *TargetWorld->GetMapName());
+}
+
+void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)
+{
+	OnUnloadWorldChunk.Broadcast(Instigator, TargetWorld, TargetChunk);
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnUnloadWorldChunkEvent()\n"
+		       "		TargetWorld:	%s\n"
+		       "		TargetChunk:	%s\n"
+		       "		Instigator:		%s")
+	       , *TargetWorld->GetName(), *TargetChunk->GetName(), *Instigator->GetName());
 }
 
 void UGameEventHandler::OnPlayerJoinEvent()

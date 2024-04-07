@@ -10,7 +10,7 @@ struct FBiomeData
 	GENERATED_BODY()
 
 public:
-	FBiomeData(): BiomeDataName(), CreatureEntityActorClass(nullptr), MaxPerBiome(0), MinPerBiome(0),
+	FBiomeData(): CreatureEntityActorClass(nullptr), MaxPerBiome(0), MinPerBiome(0),
 	              RegenerateTick(0), SuccessRate(0)
 	{
 	}
@@ -35,8 +35,6 @@ public:
 	 *	如果 ResourceInternalTimer = 4, 成功率公式为  1 - (current / max)
 	 *	则 Biome 每隔4秒尝试一次生成,单词生成有 % 1 - (current / max) 成功生成资源
 	 */
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Internal Timer")
 	FTimerHandle ResourceInternalTimer; // 4
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Internal Timer")
 	float SuccessRate; // 单词尝试成功几率 1 - (current / max)

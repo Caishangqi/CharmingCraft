@@ -1,12 +1,15 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/TargetPoint.h"
-#include "LevelTargetPoint.generated.h"
+#include "LevelWarpPoint.generated.h"
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API ALevelTargetPoint : public ATargetPoint
+class CHARMINGCRAFT_API ALevelWarpPoint : public ATargetPoint
 {
 	GENERATED_BODY()
+
+public:
+	ALevelWarpPoint();
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

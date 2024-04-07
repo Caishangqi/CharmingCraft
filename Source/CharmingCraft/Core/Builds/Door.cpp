@@ -5,7 +5,7 @@
 
 #include "DCharacter.h"
 #include "EngineUtils.h"
-#include "LevelTargetPoint.h"
+#include "LevelWarpPoint.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -61,9 +61,9 @@ void ADoor::Tick(float DeltaTime)
 
 bool ADoor::CanTeleportToDestination(APawn* TargetPawn)
 {
-	for (TActorIterator<ALevelTargetPoint> It(GetWorld(), ALevelTargetPoint::StaticClass()); It; ++It)
+	for (TActorIterator<ALevelWarpPoint> It(GetWorld(), ALevelWarpPoint::StaticClass()); It; ++It)
 	{
-		ALevelTargetPoint* TargetActor = *It;
+		ALevelWarpPoint* TargetActor = *It;
 		if (TargetActor->TargetName == DestinationName)
 		{
 			DoorInternalCacheTarget = TargetActor;

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Entry.h"
-#include "LevelTargetPoint.h"
+#include "LevelWarpPoint.h"
 #include "GameFramework/Actor.h"
 #include "Build.generated.h"
 

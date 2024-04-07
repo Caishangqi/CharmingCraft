@@ -69,11 +69,18 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemInteractDelegate, APawn*, In
                                              InteractItemStack);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerMovementDelegate, APawn*, Instigator, FVector,
-FromLocation, FVector,TargetLocation);
+                                               FromLocation, FVector, TargetLocation);
 
 // Item Ability System
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*, FromAction,UDAction*,
-                                               TargetAction, UItemMeta *, ContextMeta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*,
+                                              FromAction, UDAction*,
+                                              TargetAction, UItemMeta *, ContextMeta);
+
+// World Management
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUnloadGameLevel, UWorld *, TargetWorld);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,
+                                               ALandChunk*, TargetChunk);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
@@ -84,10 +91,12 @@ class CHARMINGCRAFT_API UGameEventHandler : public UObject
 	UGameEventHandler();
 
 public:
-
 	// World Management
-	
-	
+	UPROPERTY(BlueprintAssignable)
+	FOnUnloadGameLevel OnUnloadGameLevel;
+	UPROPERTY(BlueprintAssignable)
+	FOnUnloadWorldChunk OnUnloadWorldChunk;
+
 	// Global Variable
 
 	// Lowest
@@ -138,6 +147,19 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ADCharacter> BlueprintCharacterClassReference;
 
+	// World Management
+	UFUNCTION(BlueprintCallable)
+	void OnUnloadGameLevelEvent(UWorld* TargetWorld);
+	
+	/*!
+	 * Unload the specific Chunk in the world
+	 * @param Instigator Who Unload the chunk, it can be WorldManager or Items
+	 * @param TargetWorld The Chunk in the Level
+	 * @param TargetChunk The Target Chunk
+	 */
+	UFUNCTION(BlueprintCallable)
+	void OnUnloadWorldChunkEvent(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk);
+
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerJoinEvent();
 	UFUNCTION(BlueprintCallable)
@@ -178,7 +200,7 @@ public:
 	// Player Movement
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerMovementEvent(APawn* Instigator, FVector FromLocation, FVector TargetLocation);
-	
+
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
@@ -187,5 +209,6 @@ public:
 
 	// Item Ability System
 	UFUNCTION(BlueprintCallable)
-	void OnItemDynamicSkillBindEvent(APawn* Instigator,UDAction* FromAction, UDAction* TargetAction, UItemMeta* ContextMeta);
+	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
+	                                 UItemMeta* ContextMeta);
 };

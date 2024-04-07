@@ -7,6 +7,17 @@
 #include "CharmingCraft/Core/Resource/Data/FBiomeData.h"
 #include "LandChunk.generated.h"
 
+UENUM(BlueprintType)
+enum class EChunkState
+{
+	// The chunk is loaded and generate resource periodically
+	LOADED,
+	// the chunk is marked pending unloaded, disable resource periodically
+	PENDING_UNLOADED,
+	// the chunk is unloaded and can be serialize
+	UNLOADED
+};
+
 UCLASS()
 class CHARMINGCRAFT_API ALandChunk : public AActor
 {
@@ -24,6 +35,10 @@ public:
 	TObjectPtr<UStaticMeshComponent> MiddleLayer;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UStaticMeshComponent> TopLayer;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	EChunkState ChunkState = EChunkState::LOADED;
+
 	/*!
 	 * See https://forums.unrealengine.com/t/onconstruction-vs-blueprint-construction-script/362650
 	 * @param bFinished 
@@ -39,11 +54,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 GridSize = 100;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FVector> ChunkPoints;
 
-	
+
 	// Biome Information
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FBiomeData> BiomeData;
@@ -53,6 +68,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UGameEventHandler> GameEventHandler;
+
+	// Delegate based call event, faster but may cause concurrent issue
+	UFUNCTION(BlueprintCallable)
+	void OnUnloadWorldChunkEvent(UObject* InstigatorObject, UWorld* TargetWorld, ALandChunk* TargetChunk);
 
 	UFUNCTION()
 	void OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity);
@@ -64,17 +83,18 @@ public:
 	 * @param BiomeData The resource in Data you wan to generate
 	 */
 	void GenerateResource(FBiomeData BiomeData);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	int32 GridCell_X;
 	int32 GridCell_Y;
-	
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	
 };
