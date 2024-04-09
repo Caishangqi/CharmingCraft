@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DCharacter.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
 #include "Engine/GameInstance.h"
@@ -13,6 +12,7 @@ class UBuildModuleManager;
 class UPlayerModeManager;
 class UGameEventHandler;
 class UWorldManager;
+class ADCharacter;
 /**
  * 
  */

@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DCharacter.h"
 #include "Blueprint/UserWidget.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "UserWidgetEventHandler.generated.h"
 
 class UGameEventHandler;
 class UCharmingCraftInstance;
+class ADCharacter;
 /**
  * 
  */

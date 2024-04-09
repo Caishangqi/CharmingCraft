@@ -6,7 +6,9 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
+#include "CharmingCraft/Core/World/WorldManager.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "Engine/StaticMeshActor.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -159,11 +161,15 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 	float RandomYaw = UResourceGenerateLibrary::GetRandomYawRight();
 
 	FTransform SpawnTransform(FRotator(0, RandomYaw, 0), SpawnLocation);
+	UE_LOG(LogChamingCraftWorld, Warning,
+	       TEXT("[🌍]  The resource is spawn in world: %s"), *GetWorld()->GetName());
 
 	TObjectPtr<AResourceEntityActor> ResourceEntityActor;
+	/* 请务必确保Owner是当前Actor,这样他就会和关卡一起卸载加载 */
 	ResourceEntityActor = Cast<AResourceEntityActor>(
-		UGameplayStatics::BeginDeferredActorSpawnFromClass(this, BiomeDataContext.ResourceEntityActorClass,
-		                                                   SpawnTransform));
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(
+			this, BiomeDataContext.ResourceEntityActorClass,
+			SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
 	if (!ResourceEntityActor)
 	{
 		return; // Early exit if actor casting fails
@@ -210,6 +216,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 			FVector FinalLocation(SecondTraceHitResult.Location);
 			FTransform FinalTransform(FRotator(0, RandomYaw, 0), FinalLocation);
 			UGameplayStatics::FinishSpawningActor(ResourceEntityActor, FinalTransform);
+			ResourceEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
 			ResourceEntityActorPool.Add(ResourceEntityActor);
 		}
 		else

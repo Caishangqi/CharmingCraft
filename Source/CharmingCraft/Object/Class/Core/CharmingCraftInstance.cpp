@@ -73,6 +73,8 @@ UCharmingCraftInstance::UCharmingCraftInstance()
 	{
 		RegisteredItems = RegisteredItemsFinder.Object;
 	}
+
+	
 }
 
 void UCharmingCraftInstance::Init()
@@ -90,5 +92,5 @@ void UCharmingCraftInstance::Init()
 void UCharmingCraftInstance::OnStart()
 {
 	Super::OnStart();
-	WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGameEventHandler::OnPlayerJoinEvent);
+	//WorldManager->OnLevelLoaded.AddDynamic(GamePlayLogicManager, &UGameEventHandler::OnPlayerJoinEvent);
 }

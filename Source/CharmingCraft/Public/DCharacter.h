@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h" //核心UE运行环境下的要素
 #include "CharmingCraft/Core/Damage/IDamageable.h"
+#include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "GameFramework/Character.h"
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
@@ -20,12 +21,11 @@ class UDInteractionComponent;
 class UAnimMontage;
 class UDAttributeComponent;
 class UDActionComponent;
-
 /*
  * https://sketchfab.com/3d-models/minecraft-player-slim-4e9962a0a094494ab3e85cd688f3d74d
  */
 UCLASS() //Part of UE Property System
-class CHARMINGCRAFT_API ADCharacter : public ACharacter, public IDamageable
+class CHARMINGCRAFT_API ADCharacter : public ACharacter, public IDamageable, public ICoreManagerInterface
 {
 	GENERATED_BODY() //确保放在第一行
 protected:
@@ -111,11 +111,11 @@ public:
 	//UPostProcessComponent* PostProcessComponent;
 
 	/* 物品栏 */
-	UPROPERTY(BlueprintReadOnly,  EditAnywhere, Category="Components")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Components")
 	TObjectPtr<UInventoryComponent> InventoryComponent;
 
 	/* 装备栏 */
-	UPROPERTY(BlueprintReadOnly,  EditAnywhere, Category="Components")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Components")
 	TObjectPtr<UEquipmentComponent> EquipmentComponent;
 
 	/* 槽位管理器 (可以考虑)*/
@@ -130,15 +130,23 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGuid PlayerUUID;
+	
+// Implementation
+public:
+	
 	virtual void HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
-	                                                float Health, float HealthDelta) override;
+													float Health, float HealthDelta) override;
 	virtual void HandleDeath_Implementation(APawn* InstigatorPawn) override;
 
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
 
 	virtual UDAttributeComponent* GetAttributeComponent_Implementation() override;
 
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGuid PlayerUUID;
+	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	virtual UWorldManager* GetWorldManager_Implementation() override;
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
 };

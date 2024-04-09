@@ -8,6 +8,7 @@
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Resource/Chunk/LandChunk.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
 bool UWorldManager::LoadGameLevel(FName LevelName)
@@ -41,13 +42,17 @@ bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, FName TargetWor
 
 	if (PlayerCharacter->GetWorld()->GetName() != LevelPath)
 	{
-		NativeUnloadGameLevel(PlayerCharacter->GetWorld(),
-		                      [this, PlayerCharacter, TargetWorldName,WarpPoint]()
-		                      {
-			                      UGameplayStatics::OpenLevel(PlayerCharacter, TargetWorldName);
-			                      CurrentLoadWorld = PlayerCharacter->GetWorld();
-			                      TeleportPlayerToWarpLocal(PlayerCharacter, WarpPoint);
-		                      });
+		bool success;
+
+		TSoftObjectPtr<ULevelStreamingDynamic> PendingAddedWorld = ULevelStreamingDynamic::LoadLevelInstance(
+			this, TargetWorldName.ToString(), FVector(0, 0, 0), FRotator(0, 0, 0),
+			success);
+		if (success)
+		{
+			//LoadedWorlds.Add(TargetWorldName, PendingAddedWorld.Get());
+			//PendingAddedWorld->OnLevelLoaded.AddDynamic(this, OnLevelLoadedCallback);
+		}
+		TeleportPlayerToWarpLocal(PlayerCharacter, WarpPoint);
 	}
 	return false;
 }
@@ -55,7 +60,7 @@ bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, FName TargetWor
 bool UWorldManager::TeleportPlayerToWarpLocal(APawn* PlayerCharacter, const FName WarpPoint)
 {
 	TArray<AActor*> OutActors;
-	UGameplayStatics::GetAllActorsOfClass(CurrentLoadWorld.Get(), ALevelWarpPoint::StaticClass(), OutActors);
+	UGameplayStatics::GetAllActorsOfClass(this, ALevelWarpPoint::StaticClass(), OutActors);
 	for (const auto OutActor : OutActors)
 	{
 		UE_LOG(LogChamingCraftWorld, Warning,
@@ -84,7 +89,7 @@ bool UWorldManager::NativeUnloadGameLevel(UWorld* TargetWorld, TFunction<void()>
 	UE_LOG(LogChamingCraftWorld, Warning,
 	       TEXT("[🌍]  Unloading World Chunks...\n"
 		       "		Target World: %s"), *TargetWorld->GetName());
-	Cast<UCharmingCraftInstance>(GetOuter())->GetGameEventHandler()->OnUnloadGameLevelEvent(TargetWorld);
+	GetGameEventHandler()->OnUnloadGameLevelEvent(TargetWorld);
 	// Find All Loaded Chunk in this world and prepare unload the chunk
 	TArray<AActor*> OutChunks;
 	UGameplayStatics::GetAllActorsOfClass(this, ALandChunk::StaticClass(), OutChunks);
@@ -103,13 +108,68 @@ bool UWorldManager::NativeUnloadGameLevel(UWorld* TargetWorld, TFunction<void()>
 	return true;
 }
 
+bool UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
+{
+	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
+	{
+		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel->GetMapName()];
+		LevelStreamingDynamic->SetShouldBeVisible(true);
+		return true;
+	}
+	bool IsSuccess;
+	ULevelStreamingDynamic* LevelStreamingDynamic = ULevelStreamingDynamic::LoadLevelInstanceBySoftObjectPtr(
+		this, TargetLevel, FVector(0, 0, 0), FRotator(0, 0, 0), IsSuccess);
+	if (LevelStreamingDynamic != nullptr)
+	{
+		LevelStreamingDynamic->OnLevelLoaded.AddDynamic(this, &UWorldManager::OnLevelLoadedCallback);
+	}
+	if (IsSuccess)
+	{
+		LoadedWorlds.Add(TargetLevel->GetMapName(), LevelStreamingDynamic);
+		return true;
+	}
+	return false;
+}
+
+bool UWorldManager::UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
+{
+	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
+	{
+		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel->GetMapName()];
+		LevelStreamingDynamic->SetShouldBeVisible(false);
+		return true;
+	}
+	return false;
+}
+
+bool UWorldManager::UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
+{
+	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
+	{
+		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel->GetMapName()];
+		LevelStreamingDynamic->SetShouldBeVisible(false);
+		LevelStreamingDynamic->SetShouldBeLoaded(false);
+		return true;
+	}
+	return false;
+}
+
 bool UWorldManager::UnloadWorldChunk(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)
 {
 	UE_LOG(LogChamingCraftWorld, Warning,
 	       TEXT("[🌍]  Unloading Chunks form world\n"
 		       "		Target World: %s\n"
 		       "		Target Chunk: %s"), *TargetWorld->GetName(), *TargetChunk->GetName());
-	Cast<UCharmingCraftInstance>(GetOuter())->GetGameEventHandler()->OnUnloadWorldChunkEvent(
-		Instigator, TargetWorld, TargetChunk);
+	GetGameEventHandler()->OnUnloadWorldChunkEvent(Instigator, TargetWorld, TargetChunk);
 	return true; // 12
+}
+
+UCharmingCraftInstance* UWorldManager::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(GetOuter());
+}
+
+UGameEventHandler* UWorldManager::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance()->GetGameEventHandler();
 }

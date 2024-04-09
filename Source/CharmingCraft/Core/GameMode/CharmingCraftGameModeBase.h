@@ -13,8 +13,10 @@ UCLASS()
 class CHARMINGCRAFT_API ACharmingCraftGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-
 public:
 	ACharmingCraftGameModeBase();
+public:
+
 	virtual APawn* SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot) override;
+	
 };

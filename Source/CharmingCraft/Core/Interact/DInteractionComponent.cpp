@@ -31,7 +31,7 @@ void UDInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Player = Cast<ADCharacter>(GetOuter());
-	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(Player->GetGameInstance());
+	TObjectPtr<UCharmingCraftInstance> GameInstance = Player->GetGameInstance_Implementation();
 	GameInstance->GetGameEventHandler()->OnPlayerMovement.AddDynamic(
 		this, &UDInteractionComponent::OnPlayerMovementEvent);
 	// 初始化AI控制器 负责玩家交互过程中的移动

@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "UObject/Object.h"
 #include "Templates/Function.h"
 #include "WorldManager.generated.h"
-
+class ULevelStreamingDynamic;
 /**
  * 
  */
@@ -14,7 +15,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelLoadedDelegate);
 
 UCLASS()
-class CHARMINGCRAFT_API UWorldManager : public UObject
+class CHARMINGCRAFT_API UWorldManager : public UObject, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -23,11 +24,12 @@ public:
 	FOnLevelLoadedDelegate OnLevelLoaded;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TSoftObjectPtr<UWorld> CurrentLoadWorld;
+	TMap<FString, ULevelStreamingDynamic*> LoadedWorlds;
+
 
 	UFUNCTION(BlueprintCallable)
 	bool LoadGameLevel(FName LevelName);
-	
+
 	UFUNCTION(BlueprintCallable)
 	bool TeleportPlayerToWarp(APawn* PlayerCharacter, FName TargetWorldName, const FName WarpPoint);
 	UFUNCTION(BlueprintCallable)
@@ -36,7 +38,7 @@ public:
 	// 加载完成的回调函数
 	UFUNCTION(BlueprintCallable)
 	void OnLevelLoadedCallback();
-	
+
 	// Life Time
 	/*!
 	 * Unload Game level from specific world, it usually handle unload and pause chunk
@@ -45,6 +47,14 @@ public:
 	 * @return whether unload success
 	 */
 	bool NativeUnloadGameLevel(UWorld* TargetWorld, TFunction<void(void)>&& Callback);
+
+
+	UFUNCTION(BlueprintCallable)
+	bool LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	UFUNCTION(BlueprintCallable)
+	bool UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	UFUNCTION(BlueprintCallable)
+	bool UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 
 	/*!
 	 * 
@@ -55,5 +65,8 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool UnloadWorldChunk(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk);
-	
+
+	// Interface
+	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
 };

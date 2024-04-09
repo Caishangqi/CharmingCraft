@@ -3,6 +3,7 @@
 
 #include "CharmingCraftGameModeBase.h"
 
+#include "DCharacter.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
@@ -23,6 +24,8 @@ ACharmingCraftGameModeBase::ACharmingCraftGameModeBase()
 	{
 		PlayerControllerClass = PlayerControllerClassFinder.Class;
 	}
+	
+	
 }
 
 APawn* ACharmingCraftGameModeBase::SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot)

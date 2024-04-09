@@ -21,6 +21,7 @@ UGameEventHandler::UGameEventHandler()
 	{
 		BlueprintCharacterClassReference = BlueprintClass.Class;
 	}
+	//FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject()
 }
 
 void UGameEventHandler::OnUnloadGameLevelEvent(UWorld* TargetWorld)

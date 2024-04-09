@@ -15,6 +15,7 @@
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "../Core/Container/Inventory/EquipmentComponent.h"
 #include "Components/PostProcessComponent.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 ADCharacter::ADCharacter()
 {
@@ -302,4 +303,19 @@ void ADCharacter::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData Hit
 UDAttributeComponent* ADCharacter::GetAttributeComponent_Implementation()
 {
 	return AttributeComp;
+}
+
+UCharmingCraftInstance* ADCharacter::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
+}
+
+UWorldManager* ADCharacter::GetWorldManager_Implementation()
+{
+	return GetGameInstance_Implementation()->GetWorldManager();
+}
+
+UGameEventHandler* ADCharacter::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
