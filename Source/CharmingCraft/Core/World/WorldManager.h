@@ -8,6 +8,24 @@
 #include "Templates/Function.h"
 #include "WorldManager.generated.h"
 class ULevelStreamingDynamic;
+
+USTRUCT(BlueprintType)
+struct FLevelStreamingDynamicResult
+{
+	GENERATED_BODY()
+
+public:
+	FLevelStreamingDynamicResult(): IsSuccess(false), LoadedWorld(nullptr)
+	{
+	}
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsSuccess;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<ULevelStreamingDynamic> LoadedWorld;
+};
+
 /**
  * 
  */
@@ -30,31 +48,31 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool LoadGameLevel(FName LevelName);
 
+	/*!
+	 * Teleport player to specific warp (Target level point), please ensure you load or set loaded level
+	 * visible before teleport, or it will not work
+	 * @param PlayerCharacter The Character you want to teleport
+	 * @param TargetLevel The target Level that include the warp
+	 * @param WarpName The warp name
+	 * @return whether or not teleport success
+	 */
 	UFUNCTION(BlueprintCallable)
-	bool TeleportPlayerToWarp(APawn* PlayerCharacter, FName TargetWorldName, const FName WarpPoint);
+	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel, const FName WarpName);
 	UFUNCTION(BlueprintCallable)
 	bool TeleportPlayerToWarpLocal(APawn* PlayerCharacter, const FName WarpPoint);
 
 	// 加载完成的回调函数
 	UFUNCTION(BlueprintCallable)
 	void OnLevelLoadedCallback();
-
-	// Life Time
-	/*!
-	 * Unload Game level from specific world, it usually handle unload and pause chunk
-	 * @param TargetWorld The Target Game World need to unload
-	 * @param Callback The Callback function to execute after unload success
-	 * @return whether unload success
-	 */
-	bool NativeUnloadGameLevel(UWorld* TargetWorld, TFunction<void(void)>&& Callback);
+	
 
 
 	UFUNCTION(BlueprintCallable)
-	bool LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 	UFUNCTION(BlueprintCallable)
-	bool UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	FLevelStreamingDynamicResult UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 	UFUNCTION(BlueprintCallable)
-	bool UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	FLevelStreamingDynamicResult UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 
 	/*!
 	 * 

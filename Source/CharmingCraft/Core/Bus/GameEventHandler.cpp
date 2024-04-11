@@ -24,11 +24,35 @@ UGameEventHandler::UGameEventHandler()
 	//FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject()
 }
 
-void UGameEventHandler::OnUnloadGameLevelEvent(UWorld* TargetWorld)
+void UGameEventHandler::OnUnloadGameLevelCompleteEvent(UObject* Instigator, UWorld* TargetWorld)
 {
-	OnUnloadGameLevel.Broadcast(TargetWorld);
+	OnUnloadGameLevelComplete.Broadcast(Instigator, TargetWorld);
 	UE_LOG(LogChamingCraftGameEvent, Display,
-	       TEXT("[📍]  Event trigger at UGameEventHandler::OnUnloadGameLevelEvent()\n"
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnUnloadGameLevelEventComplete()\n"
+		       "		TargetWorld: %s"), *TargetWorld->GetMapName());
+}
+
+void UGameEventHandler::OnUnloadGameLevelStartEvent(UObject* Instigator, UWorld* TargetWorld)
+{
+	OnUnloadGameLevelStart.Broadcast(Instigator, TargetWorld);
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnUnloadGameLevelStartEvent()\n"
+		       "		TargetWorld: %s"), *TargetWorld->GetMapName());
+}
+
+void UGameEventHandler::OnLoadGameLevelCompleteEvent(UObject* Instigator, UWorld* TargetWorld)
+{
+	OnLoadGameLevelComplete.Broadcast(Instigator, TargetWorld);
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnLoadGameLevelCompleteEvent()\n"
+		       "		TargetWorld: %s"), *TargetWorld->GetMapName());
+}
+
+void UGameEventHandler::OnLoadGameLevelStartEvent(UObject* Instigator, UWorld* TargetWorld)
+{
+	OnLoadGameLevelStart.Broadcast(Instigator, TargetWorld);
+	UE_LOG(LogChamingCraftGameEvent, Display,
+	       TEXT("[📍]  Event trigger at UGameEventHandler::OnLoadGameLevelStartEvent()\n"
 		       "		TargetWorld: %s"), *TargetWorld->GetMapName());
 }
 

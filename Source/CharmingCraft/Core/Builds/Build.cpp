@@ -17,7 +17,8 @@ ABuild::ABuild()
 	BuildingMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Building Mesh"));
 	BuildingMesh->SetupAttachment(SceneComponent);
 
-	BuildingEntry = CreateDefaultSubobject<UEntry>(TEXT("MainEntry"));
+	BuildingEntry = CreateDefaultSubobject<UVolumeSceneTriggerComponent>(TEXT("MainEntry"));
+	BuildingEntry->SetGenerateOverlapEvents(true);
 	BuildingEntry->SetupAttachment(SceneComponent);
 
 	BuildingExitPoint = CreateDefaultSubobject<UChildActorComponent>(TEXT("Building Default Exit Location"));
@@ -29,7 +30,7 @@ ABuild::ABuild()
 void ABuild::BeginPlay()
 {
 	Super::BeginPlay();
-	ALevelWarpPoint* ExitActor = GetWorld()->SpawnActor<ALevelWarpPoint>(ALevelWarpPoint::StaticClass());
+	ASceneWarpPoint* ExitActor = GetWorld()->SpawnActor<ASceneWarpPoint>(ASceneWarpPoint::StaticClass());
 	ExitActor->TargetName = BuildName + " Default Exit";
 	if (ExitActor)
 	{

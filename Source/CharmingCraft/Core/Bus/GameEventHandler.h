@@ -77,10 +77,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, A
                                               TargetAction, UItemMeta *, ContextMeta);
 
 // World Management
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUnloadGameLevel, UWorld *, TargetWorld);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUnloadGameLevelComplete, UObject*, Instigator, UWorld *, UnloadedWorld);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLoadGameLevelComplete, UObject*, Instigator, UWorld *, LoadedWorld);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUnloadGameLevelStart, UObject*, Instigator, UWorld *, UnloadedWorld);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLoadGameLevelStart, UObject*, Instigator, UWorld *, UnloadedWorld);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,
-                                               ALandChunk*, TargetChunk);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,ALandChunk*, TargetChunk);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
@@ -93,7 +95,13 @@ class CHARMINGCRAFT_API UGameEventHandler : public UObject
 public:
 	// World Management
 	UPROPERTY(BlueprintAssignable)
-	FOnUnloadGameLevel OnUnloadGameLevel;
+	FOnUnloadGameLevelComplete OnUnloadGameLevelComplete;
+	UPROPERTY(BlueprintAssignable)
+	FOnUnloadGameLevelStart OnUnloadGameLevelStart;
+	UPROPERTY(BlueprintAssignable)
+	FOnLoadGameLevelStart OnLoadGameLevelStart;
+	UPROPERTY(BlueprintAssignable)
+	FOnLoadGameLevelComplete OnLoadGameLevelComplete;
 	UPROPERTY(BlueprintAssignable)
 	FOnUnloadWorldChunk OnUnloadWorldChunk;
 
@@ -149,8 +157,14 @@ public:
 
 	// World Management
 	UFUNCTION(BlueprintCallable)
-	void OnUnloadGameLevelEvent(UWorld* TargetWorld);
-	
+	void OnUnloadGameLevelCompleteEvent(UObject* Instigator,UWorld* TargetWorld);
+	UFUNCTION(BlueprintCallable)
+	void OnUnloadGameLevelStartEvent(UObject* Instigator,UWorld* TargetWorld);
+	UFUNCTION(BlueprintCallable)
+	void OnLoadGameLevelCompleteEvent(UObject* Instigator,UWorld* TargetWorld);
+	UFUNCTION(BlueprintCallable)
+	void OnLoadGameLevelStartEvent(UObject* Instigator,UWorld* TargetWorld);
+
 	/*!
 	 * Unload the specific Chunk in the world
 	 * @param Instigator Who Unload the chunk, it can be WorldManager or Items

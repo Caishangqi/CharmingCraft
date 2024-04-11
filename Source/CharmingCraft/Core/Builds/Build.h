@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Entry.h"
-#include "LevelWarpPoint.h"
+#include "VolumeSceneTriggerComponent.h"
+#include "SceneWarpPoint.h"
 #include "GameFramework/Actor.h"
 #include "Build.generated.h"
 
@@ -38,7 +38,7 @@ public:
 	TSoftObjectPtr<UWorld> SubLevelEntry;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="BuildingEntry")
-	TObjectPtr<UEntry> BuildingEntry;
+	TObjectPtr<UVolumeSceneTriggerComponent> BuildingEntry;
 
 	// Building Default Exit location, use for interior subspace teleport
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="BuildingEntry")

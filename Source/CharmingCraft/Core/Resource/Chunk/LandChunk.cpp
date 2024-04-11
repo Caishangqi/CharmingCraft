@@ -161,8 +161,10 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 	float RandomYaw = UResourceGenerateLibrary::GetRandomYawRight();
 
 	FTransform SpawnTransform(FRotator(0, RandomYaw, 0), SpawnLocation);
+	/*
 	UE_LOG(LogChamingCraftWorld, Warning,
 	       TEXT("[🌍]  The resource is spawn in world: %s"), *GetWorld()->GetName());
+	       */
 
 	TObjectPtr<AResourceEntityActor> ResourceEntityActor;
 	/* 请务必确保Owner是当前Actor,这样他就会和关卡一起卸载加载 */
