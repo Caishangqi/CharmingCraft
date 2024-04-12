@@ -72,13 +72,7 @@ public:
 	virtual void PrintDebugMessage();
 
 	/* Inventory */
-
-	/* Camera Management*/
-
-	// TODO: Use enum to handle camera
-	UFUNCTION(BlueprintCallable)
-	void SetCameraView();
-
+	
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere) // 把SpringArmComp暴露给编辑器中的蓝图和各个部分
 	USpringArmComponent* SpringArmComp;

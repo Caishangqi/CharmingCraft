@@ -8,6 +8,7 @@
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
+class UCameraManager;
 class UBuildModuleManager;
 class UPlayerModeManager;
 class UGameEventHandler;
@@ -63,10 +64,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "PlayerModeManager")
 	UPlayerModeManager* GetPlayerModeManager() const { return PlayerModeManager; }
+
 	UFUNCTION(BlueprintCallable, Category = "BuildModuleManager")
 	UBuildModuleManager* GetBuildModuleManager() const { return BuildModuleManager; }
-
+	UFUNCTION(BlueprintCallable, Category = "WidgetEventHandler")
 	UUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
+	UFUNCTION(BlueprintCallable, Category = "CameraManager")
+	UCameraManager* GetCameraManager() const { return CameraManager; }
 
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
@@ -95,4 +99,7 @@ public:
 
 	UPROPERTY()
 	UBuildModuleManager* BuildModuleManager;
+
+	UPROPERTY()
+	UCameraManager* CameraManager;
 };

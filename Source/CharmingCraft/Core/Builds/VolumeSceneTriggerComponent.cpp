@@ -29,7 +29,7 @@ UVolumeSceneTriggerComponent::UVolumeSceneTriggerComponent()
 void UVolumeSceneTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (!OnComponentBeginOverlap.IsAlreadyBound(this,&UVolumeSceneTriggerComponent::OnOverlapBegin))
+	if (!OnComponentBeginOverlap.IsAlreadyBound(this, &UVolumeSceneTriggerComponent::OnOverlapBegin))
 	{
 		OnComponentBeginOverlap.AddDynamic(this, &UVolumeSceneTriggerComponent::OnOverlapBegin);
 	}
@@ -57,8 +57,11 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 	{
 		FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
 			TargetLoadedLevel);
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-			0.0f, 1.0f, 2.0f, FColor::Black);
+		if (EnableCameraFade)
+		{
+			UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+				0.0f, 1.0f, 1.0f, FColor::Black, false, true);
+		}
 		LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(
 			this, &UVolumeSceneTriggerComponent::OnTargetLevelShown);
 		OverlappedActor = Cast<APawn>(OtherActor);
@@ -67,14 +70,32 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 
 void UVolumeSceneTriggerComponent::OnTargetLevelShown()
 {
+	if (EnableCameraFade)
+	{
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+			1.0f, 0.0f, 1.0f, FColor::Black);
+	}
 	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
 	GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel);
 	if (OverlappedActor)
 	{
+		PostLevelCameraViewChange(); // Change Camera
 		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(OverlappedActor, DestinationName);
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 			1.0f, 0.0f, 1.0f, FColor::Black);
 		OverlappedActor = nullptr;
+	}
+}
+
+void UVolumeSceneTriggerComponent::PostLevelCameraViewChange()
+{
+	if (EnableChangeCameraView)
+	{
+		if (EnableCustomCameraView)
+		{
+			// TODO: EnableCustomCameraView
+		}
+		GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(OverlappedActor, TargetCameraView);
 	}
 }
 

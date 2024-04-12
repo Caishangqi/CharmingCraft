@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "Components/BoxComponent.h"
 #include "VolumeSceneTriggerComponent.generated.h"
@@ -16,6 +17,22 @@ class CHARMINGCRAFT_API UVolumeSceneTriggerComponent : public UBoxComponent, pub
 public:
 	// Sets default values for this component's properties
 	UVolumeSceneTriggerComponent();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool EnableChangeCameraView = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
+	bool EnableCustomCameraView = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool EnableCameraFade = true;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
+	ECameraPerspectiveEnum TargetCameraView;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableCustomCameraView"))
+	FCameraPerspective CustomCameraView;
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName DestinationName;
@@ -49,6 +66,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLevelShown();
+
+	void PostLevelCameraViewChange();
 	// override
 public:
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;

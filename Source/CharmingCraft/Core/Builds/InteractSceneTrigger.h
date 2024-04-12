@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "VolumeSceneTriggerComponent.h"
+#include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "InteractSceneTrigger.generated.h"
 
@@ -15,6 +16,21 @@ class CHARMINGCRAFT_API AInteractSceneTrigger : public AInteractObject, public I
 public:
 	// Sets default values for this actor's properties
 	AInteractSceneTrigger();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool EnableChangeCameraView = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
+	bool EnableCustomCameraView = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool EnableCameraFade = true;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
+	ECameraPerspectiveEnum TargetCameraView;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableCustomCameraView"))
+	FCameraPerspective CustomCameraView;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName DestinationName;
@@ -40,6 +56,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLevelShown();
+
+	void PostLevelCameraViewChange();
 
 	// override
 public:

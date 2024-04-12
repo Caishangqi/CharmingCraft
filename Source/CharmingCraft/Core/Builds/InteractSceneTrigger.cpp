@@ -20,8 +20,11 @@ AInteractSceneTrigger::AInteractSceneTrigger()
 void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 {
 	Super::Interact_Implementation(InstigatorPawn);
-	UGameplayStatics::GetPlayerCameraManager(InstigatorPawn->GetWorld(), 0)->StartCameraFade(
-		0.6f, 1.0f, 0.5f, FColor::Black);
+	if (EnableCameraFade)
+	{
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+			0.1f, 1.0f, 0.05f, FColor::Black, false, true);
+	}
 
 	UE_LOG(LogChamingCraftWorld, Warning,
 	       TEXT("[🌍]  Prepare Load Building Scene: %s"), *TargetLoadedLevel.LoadSynchronous()->GetMapName());
@@ -30,8 +33,6 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 		TargetLoadedLevel);
 	LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
 	InteractObject = Cast<APawn>(InstigatorPawn);
-
-	Cast<ADCharacter>(InstigatorPawn)->SetCameraView();
 }
 
 // Called when the game starts or when spawned
@@ -49,15 +50,32 @@ void AInteractSceneTrigger::Tick(float DeltaTime)
 
 void AInteractSceneTrigger::OnTargetLevelShown()
 {
+	if (EnableCameraFade)
+	{
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+			1.0f, 0.0f, 1.0f, FColor::Black);
+	}
 	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
 	if (InteractObject)
 	{
 		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(InteractObject, DestinationName);
-		// UGameplayStatics::GetPlayerCameraManager(InteractObject->GetWorld(), 0)->StartCameraFade(
-		// 	1.0f, 0.0f, 2.0f, FColor::Black);
+		PostLevelCameraViewChange(); // Change Camera
+
 		InteractObject = nullptr;
 	}
 	GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel.LoadSynchronous());
+}
+
+void AInteractSceneTrigger::PostLevelCameraViewChange()
+{
+	if (EnableChangeCameraView)
+	{
+		if (EnableCustomCameraView)
+		{
+			// TODO: EnableCustomCameraView
+		}
+		GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(InteractObject, TargetCameraView);
+	}
 }
 
 UCharmingCraftInstance* AInteractSceneTrigger::GetGameInstance_Implementation()

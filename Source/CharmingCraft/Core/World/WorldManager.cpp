@@ -137,7 +137,7 @@ FLevelStreamingDynamicResult UWorldManager::UnloadWorldInstance(const TSoftObjec
 	}
 	return LevelStreamingDynamicResult;
 }
-
+ 
 FLevelStreamingDynamicResult UWorldManager::UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
 {
 	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
