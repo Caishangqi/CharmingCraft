@@ -56,6 +56,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLevelShown();
+	UFUNCTION(BlueprintCallable)
+	void OnTargetLevelHidden();
 
 	void PostLevelCameraViewChange();
 

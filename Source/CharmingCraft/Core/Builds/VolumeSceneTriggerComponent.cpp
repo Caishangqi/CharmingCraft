@@ -81,6 +81,7 @@ void UVolumeSceneTriggerComponent::OnTargetLevelShown()
 	{
 		PostLevelCameraViewChange(); // Change Camera
 		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(OverlappedActor, DestinationName);
+		OverlappedActor->Controller->StopMovement();
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 			1.0f, 0.0f, 1.0f, FColor::Black);
 		OverlappedActor = nullptr;

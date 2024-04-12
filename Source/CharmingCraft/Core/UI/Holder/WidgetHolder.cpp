@@ -19,7 +19,7 @@ UObject* UWidgetHolder::GetCreator()
 bool UWidgetHolder::RemoveWidget_Implementation()
 {
 	bool bIsRemoveLeastOne = false;
-	for (auto &UserWidget : UserWidgetEventHandler->LoadedUserWidget)
+	for (auto& UserWidget : UserWidgetEventHandler->LoadedUserWidget)
 	{
 		if (this == UserWidget)
 		{
@@ -40,7 +40,7 @@ void UWidgetHolder::NativeConstruct()
 	UserWidgetEventHandler = GameInstance->GetUserWidgetEventHandler();
 	UE_LOG(LogChamingCraftWidgetHandler, Display,
 	       TEXT("[✅]  Add Widget: %s to Widget Event Handler(Holder)"), *this->GetName());
-	UserWidgetEventHandler->LoadedUserWidget.Add(this);
+	UserWidgetEventHandler->LoadedUserWidget.Push(this);
 }
 
 void UWidgetHolder::NativeDestruct()

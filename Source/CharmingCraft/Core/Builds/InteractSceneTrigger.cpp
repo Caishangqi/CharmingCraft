@@ -11,7 +11,7 @@
 
 
 // Sets default values
-AInteractSceneTrigger::AInteractSceneTrigger()
+AInteractSceneTrigger::AInteractSceneTrigger(): TargetCameraView()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -26,12 +26,17 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 			0.1f, 1.0f, 0.05f, FColor::Black, false, true);
 	}
 
-	UE_LOG(LogChamingCraftWorld, Warning,
-	       TEXT("[🌍]  Prepare Load Building Scene: %s"), *TargetLoadedLevel.LoadSynchronous()->GetMapName());
-
+	UE_LOG(LogChamingCraftWorld, Warning, TEXT("[🌍]  Prepare Load Building Scene: %s"),
+	       *TargetLoadedLevel.LoadSynchronous()->GetName());
 	FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
 		TargetLoadedLevel);
-	LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
+
+
+	if (!LoadWorldInstanceOut.LoadedWorld->OnLevelShown.
+	                          IsAlreadyBound(this, &AInteractSceneTrigger::OnTargetLevelShown))
+	{
+		LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
+	}
 	InteractObject = Cast<APawn>(InstigatorPawn);
 }
 
@@ -50,20 +55,42 @@ void AInteractSceneTrigger::Tick(float DeltaTime)
 
 void AInteractSceneTrigger::OnTargetLevelShown()
 {
+	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
+	if (InteractObject)
+	{
+		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(InteractObject, DestinationName);
+		InteractObject->Controller->StopMovement();
+		PostLevelCameraViewChange(); // Change Camera
+
+		InteractObject = nullptr;
+	}
+	FLevelStreamingDynamicResult UnLoadWorldInstanceOut = GetWorldManager_Implementation()->UnloadWorldInstance(
+		UnloadedLevel.LoadSynchronous());
+	if (UnLoadWorldInstanceOut.IsSuccess)
+	{
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+			1.0f, 0.0f, 1.5f, FColor::Black);
+	}
+
+	// Handle UnloadWorld shown event
+	// TODO: Investigate why OnLevelHidden Delegate not working
+	/*if (!UnLoadWorldInstanceOut.LoadedWorld->OnLevelHidden.IsAlreadyBound(
+		this, &AInteractSceneTrigger::OnTargetLevelHidden))
+	{
+		UnLoadWorldInstanceOut.LoadedWorld->OnLevelHidden.AddDynamic(
+			this, &AInteractSceneTrigger::OnTargetLevelHidden);
+	}*/
+}
+
+void AInteractSceneTrigger::OnTargetLevelHidden()
+{
+	UE_LOG(LogChamingCraftWorld, Warning, TEXT("[🌍]  Execute On Level Hiden Callback: %s"),
+	       *UnloadedLevel.LoadSynchronous()->GetName());
 	if (EnableCameraFade)
 	{
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 			1.0f, 0.0f, 1.0f, FColor::Black);
 	}
-	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
-	if (InteractObject)
-	{
-		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(InteractObject, DestinationName);
-		PostLevelCameraViewChange(); // Change Camera
-
-		InteractObject = nullptr;
-	}
-	GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel.LoadSynchronous());
 }
 
 void AInteractSceneTrigger::PostLevelCameraViewChange()
