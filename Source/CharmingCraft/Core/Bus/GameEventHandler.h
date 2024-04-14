@@ -18,6 +18,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerJoinDelegate, ACharacter*, 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenInventoryDelegate, ACharacter*, PlayerCharacter, UObject *,
                                              Creator);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenTravelMapDelegate, ACharacter*, PlayerCharacter, UObject *,
+                                             Creator);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOpenWidgetDelegate, UObject*, Instigator, UUserWidget*, TargetWidget);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator, UUserWidget*, TargetWidget);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerOpenContainerDelegate, ACharacter*, Instigator,
                                                UInventoryComponent*, TargetInventory, UObject *, Creator);
 
@@ -26,10 +32,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerClickMoveDelegate, ACharac
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDetailDisplayDelegate, UItemStack*, ItemToDisplay,
                                              UObject *, Creator);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator,
-                                             UUserWidget *, TargetWidget);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuildPreviewTraceDelegate, UItemStack *, PreviewItemStack, ACharacter*,
                                              Instigator);
 
@@ -78,11 +80,15 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, A
 
 // World Management
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUnloadGameLevelComplete, UObject*, Instigator, UWorld *, UnloadedWorld);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLoadGameLevelComplete, UObject*, Instigator, UWorld *, LoadedWorld);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUnloadGameLevelStart, UObject*, Instigator, UWorld *, UnloadedWorld);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLoadGameLevelStart, UObject*, Instigator, UWorld *, UnloadedWorld);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,ALandChunk*, TargetChunk);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,
+                                               ALandChunk*, TargetChunk);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
@@ -112,9 +118,15 @@ public:
 	FOnPlayerLeaveDelegate OnPlayerLeave;
 	FOnPlayerSaveDelegate OnPlayerSave;
 	// InGame
+	UPROPERTY(BlueprintAssignable)
 	FOnPlayerOpenInventoryDelegate OnPlayerOpenInventory;
+	UPROPERTY(BlueprintAssignable)
+	FOnOpenWidgetDelegate OnOpenWidget;
+	UPROPERTY(BlueprintAssignable)
 	FOnCloseWidgetDelegate OnCloseWidget;
+	UPROPERTY(BlueprintAssignable)
 	FOnPlayerOpenContainerDelegate OnPlayerOpenContainer;
+	UPROPERTY(BlueprintAssignable)
 	FOnPlayerClickMoveDelegate OnPlayerClickMove;
 	UPROPERTY(BlueprintAssignable)
 	FOnContainerItemTransferDelegate OnContainerItemTransfer;
@@ -126,6 +138,8 @@ public:
 	FOnItemDetailDisplayDelegate OnItemDetailDisplay;
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerMovementDelegate OnPlayerMovement;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerOpenTravelMapDelegate OnPlayerOpenTravelMap;
 
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
@@ -157,13 +171,13 @@ public:
 
 	// World Management
 	UFUNCTION(BlueprintCallable)
-	void OnUnloadGameLevelCompleteEvent(UObject* Instigator,UWorld* TargetWorld);
+	void OnUnloadGameLevelCompleteEvent(UObject* Instigator, UWorld* TargetWorld);
 	UFUNCTION(BlueprintCallable)
-	void OnUnloadGameLevelStartEvent(UObject* Instigator,UWorld* TargetWorld);
+	void OnUnloadGameLevelStartEvent(UObject* Instigator, UWorld* TargetWorld);
 	UFUNCTION(BlueprintCallable)
-	void OnLoadGameLevelCompleteEvent(UObject* Instigator,UWorld* TargetWorld);
+	void OnLoadGameLevelCompleteEvent(UObject* Instigator, UWorld* TargetWorld);
 	UFUNCTION(BlueprintCallable)
-	void OnLoadGameLevelStartEvent(UObject* Instigator,UWorld* TargetWorld);
+	void OnLoadGameLevelStartEvent(UObject* Instigator, UWorld* TargetWorld);
 
 	/*!
 	 * Unload the specific Chunk in the world
@@ -180,6 +194,12 @@ public:
 	void OnPlayerLeaveEvent();
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator);
+	UFUNCTION(BlueprintCallable)
+	void OnOpenWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+	UFUNCTION(BlueprintCallable)
+	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerOpenTravelMapEvent(ACharacter* Instigator, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
@@ -217,8 +237,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
-	UFUNCTION(BlueprintCallable)
-	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+
 
 
 	// Item Ability System

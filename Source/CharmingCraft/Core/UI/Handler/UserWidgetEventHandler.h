@@ -32,7 +32,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator);
-
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	void OnPlayerOpenTravelMapEvent(ACharacter* Instigator, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -41,4 +42,7 @@ public:
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnOpenWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+
 };

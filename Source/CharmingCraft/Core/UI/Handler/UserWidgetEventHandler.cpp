@@ -19,11 +19,25 @@ void UUserWidgetEventHandler::NativeConstruct()
 	GamePlayLogicManager->OnPlayerClickMove.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerClickMoveEvent);
 	GamePlayLogicManager->OnItemDetailDisplay.AddDynamic(this, &UUserWidgetEventHandler::OnItemDetailDisplayEvent);
 	GamePlayLogicManager->OnCloseWidget.AddDynamic(this, &UUserWidgetEventHandler::OnCloseWidgetEvent);
+	GamePlayLogicManager->OnPlayerOpenTravelMap.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenTravelMapEvent);
+	GamePlayLogicManager->OnOpenWidget.AddDynamic(this, &UUserWidgetEventHandler::OnOpenWidgetEvent);
 
 	LoadedUserWidget.SetNum(100);
 
 	GameInstance->UserWidgetEventHandler = this;
 }
+
+void UUserWidgetEventHandler::OnOpenWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)
+{
+}
+
+
+void UUserWidgetEventHandler::OnPlayerOpenTravelMapEvent_Implementation(ACharacter* Instigator, UObject* Creator)
+{
+	UE_LOG(LogChamingCraftWidgetHandler, Display, TEXT("[🔍] OnPlayerOpenTravelMapEvent trigger by: %s"),
+	       *Instigator->GetName());
+}
+
 
 void UUserWidgetEventHandler::OnCloseWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)
 {
@@ -31,7 +45,7 @@ void UUserWidgetEventHandler::OnCloseWidgetEvent_Implementation(UObject* Instiga
 	       TEXT("[❕] OnCloseWidgetEvent trigger by: %s Target Widget: %s"),
 	       *Instigator->GetName(), *TargetWidget->GetName());
 	TargetWidget->RemoveFromParent();
-	LoadedUserWidget.Remove(TargetWidget);
+	//LoadedUserWidget.Remove(TargetWidget);
 }
 
 void UUserWidgetEventHandler::OnItemDetailDisplayEvent_Implementation(UItemStack* ItemToDisplay, UObject* Creator)

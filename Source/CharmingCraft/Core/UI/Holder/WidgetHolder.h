@@ -49,6 +49,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UObject* GetCreator();
 
+	/*!
+	 * Handle Open Widget Event, the event broadcast when native construct
+	 * use this event to listen widget open globally, for example, in player
+	 * map widget you can listen to player inventory open event.
+	 * @param Instigator Who open the event
+	 * @param TargetWidget The target widget that was open
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnOpenWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+	/*!
+	 * Handle Close Widget Event, the event broadcase when native NativeDestruct
+	 * called. 
+	 * @param Instigator 
+	 * @param TargetWidget 
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
+
 	virtual bool RemoveWidget_Implementation() override;
 
 	virtual void NativeConstruct() override;

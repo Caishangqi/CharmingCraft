@@ -68,7 +68,9 @@ public:
 
 
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel, bool UnloadRemainWorld = false);
+	UFUNCTION(BlueprintCallable)
+	bool UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel = nullptr);
 	UFUNCTION(BlueprintCallable)
 	FLevelStreamingDynamicResult UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 	UFUNCTION(BlueprintCallable)

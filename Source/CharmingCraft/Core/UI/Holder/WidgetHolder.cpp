@@ -3,6 +3,7 @@
 
 #include "WidgetHolder.h"
 
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
@@ -16,6 +17,15 @@ UObject* UWidgetHolder::GetCreator()
 	return Creator;
 }
 
+void UWidgetHolder::OnOpenWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)
+{
+}
+
+
+void UWidgetHolder::OnCloseWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)
+{
+}
+
 bool UWidgetHolder::RemoveWidget_Implementation()
 {
 	bool bIsRemoveLeastOne = false;
@@ -23,6 +33,8 @@ bool UWidgetHolder::RemoveWidget_Implementation()
 	{
 		if (this == UserWidget)
 		{
+			// Broadcase the event from game event handler
+			GameInstance->GetGameEventHandler()->OnCloseWidgetEvent(UserWidgetEventHandler, this);
 			UserWidgetEventHandler->LoadedUserWidget.Remove(this);
 			UE_LOG(LogChamingCraftWidgetHandler, Display,
 			       TEXT("[❌]  Remove Widget: %s from Widget Event Handler(Holder)"), *this->GetName());
@@ -41,10 +53,15 @@ void UWidgetHolder::NativeConstruct()
 	UE_LOG(LogChamingCraftWidgetHandler, Display,
 	       TEXT("[✅]  Add Widget: %s to Widget Event Handler(Holder)"), *this->GetName());
 	UserWidgetEventHandler->LoadedUserWidget.Push(this);
+	GameInstance->GetGameEventHandler()->OnOpenWidget.AddDynamic(this, &UWidgetHolder::OnOpenWidgetEvent);
+	GameInstance->GetGameEventHandler()->OnCloseWidget.AddDynamic(this, &UWidgetHolder::OnCloseWidgetEvent);
+	// Broadcase open widget event target is self
+	GameInstance->GetGameEventHandler()->OnOpenWidgetEvent(UserWidgetEventHandler, this);
 }
 
 void UWidgetHolder::NativeDestruct()
 {
 	Super::NativeDestruct();
+	// Automatically run RemoveWidget()
 	RemoveWidget_Implementation();
 }

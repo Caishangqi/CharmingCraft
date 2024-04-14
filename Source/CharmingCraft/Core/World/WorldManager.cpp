@@ -91,7 +91,8 @@ void UWorldManager::OnLevelLoadedCallback()
 	OnLevelLoaded.Broadcast();
 }
 
-FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
+FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
+                                                              bool UnloadRemainWorld)
 {
 	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
 
@@ -102,6 +103,10 @@ FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectP
 		LevelStreamingDynamicResult.IsSuccess = true;
 		LevelStreamingDynamicResult.LoadedWorld = LevelStreamingDynamic;
 		GetGameEventHandler_Implementation()->OnLoadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
+		if (UnloadRemainWorld)
+		{
+			UnloadAllWorldInstance(TargetLevel);
+		}
 		return LevelStreamingDynamicResult;
 	}
 
@@ -118,9 +123,36 @@ FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectP
 		LevelStreamingDynamicResult.LoadedWorld = LevelStreamingDynamic;
 		LevelStreamingDynamicResult.IsSuccess = true;
 		GetGameEventHandler_Implementation()->OnLoadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
+		if (UnloadRemainWorld)
+		{
+			UnloadAllWorldInstance(TargetLevel);
+		}
 		return LevelStreamingDynamicResult;
 	}
 	return LevelStreamingDynamicResult;
+}
+
+bool UWorldManager::UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel)
+{
+	if (WhiteListLevel)
+	{
+		for (auto Element : LoadedWorlds)
+		{
+			if (Element.Key != WhiteListLevel.LoadSynchronous()->GetName())
+			{
+				Element.Value->SetShouldBeVisible(false);
+			}
+		}
+		return true;
+	}
+	else
+	{
+		for (auto Element : LoadedWorlds)
+		{
+			Element.Value->SetShouldBeVisible(false);
+		}
+		return false;
+	}
 }
 
 FLevelStreamingDynamicResult UWorldManager::UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
@@ -137,7 +169,7 @@ FLevelStreamingDynamicResult UWorldManager::UnloadWorldInstance(const TSoftObjec
 	}
 	return LevelStreamingDynamicResult;
 }
- 
+
 FLevelStreamingDynamicResult UWorldManager::UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
 {
 	FLevelStreamingDynamicResult LevelStreamingDynamicResult;

@@ -130,6 +130,17 @@ void UGameEventHandler::OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObje
 	OnPlayerOpenInventory.Broadcast(Instigator, Creator);
 }
 
+void UGameEventHandler::OnOpenWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget)
+{
+	OnOpenWidget.Broadcast(Instigator, TargetWidget);
+}
+
+
+void UGameEventHandler::OnPlayerOpenTravelMapEvent(ACharacter* Instigator, UObject* Creator)
+{
+	OnPlayerOpenTravelMap.Broadcast(Instigator, Creator);
+}
+
 void UGameEventHandler::OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer,
                                                    UObject* Creator)
 {
