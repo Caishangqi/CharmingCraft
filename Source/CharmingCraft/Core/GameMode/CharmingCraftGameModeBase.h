@@ -16,7 +16,6 @@ class CHARMINGCRAFT_API ACharmingCraftGameModeBase : public AGameModeBase
 public:
 	ACharmingCraftGameModeBase();
 public:
-
-	virtual APawn* SpawnDefaultPawnFor_Implementation(AController* NewPlayer, AActor* StartSpot) override;
+	
 	
 };

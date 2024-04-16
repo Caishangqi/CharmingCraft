@@ -6,6 +6,7 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 UUserWidgetEventHandler* UWidgetHolder::GetWidgetHolder()
 {
@@ -64,4 +65,14 @@ void UWidgetHolder::NativeDestruct()
 	Super::NativeDestruct();
 	// Automatically run RemoveWidget()
 	RemoveWidget_Implementation();
+}
+
+UCharmingCraftInstance* UWidgetHolder::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
+}
+
+UGameEventHandler* UWidgetHolder::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
 }

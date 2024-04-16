@@ -6,6 +6,7 @@
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/UI/Holder/WidgetHolder.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
 void UUserWidgetEventHandler::NativeConstruct()
@@ -25,6 +26,19 @@ void UUserWidgetEventHandler::NativeConstruct()
 	LoadedUserWidget.SetNum(100);
 
 	GameInstance->UserWidgetEventHandler = this;
+}
+
+bool UUserWidgetEventHandler::CloseWidgetByClass(TSubclassOf<UWidgetHolder> TargetWidgetHolder)
+{
+	for (auto Element : LoadedUserWidget)
+	{
+		if (Element.IsA(TargetWidgetHolder.Get()))
+		{
+			Cast<UWidgetHolder>(Element)->RemoveWidget_Implementation();
+			return true;
+		}
+	}
+	return false;
 }
 
 void UUserWidgetEventHandler::OnOpenWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)

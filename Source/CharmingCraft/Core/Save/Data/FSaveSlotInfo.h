@@ -16,6 +16,14 @@ struct FSaveSlotInfo
 	{
 	}
 
+	void GenerateDefaultData()
+	{
+		PlayerData = NewObject<UPlayerData>();
+		RealmData = NewObject<URealmData>();
+		ProgressData = NewObject<UProgressData>();
+		LevelData = NewObject<ULevelData>();
+	}
+
 public:
 	// 存档的唯一标识符
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SaveData")

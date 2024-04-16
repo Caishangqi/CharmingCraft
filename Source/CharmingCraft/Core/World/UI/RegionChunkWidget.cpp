@@ -12,6 +12,11 @@ FLevelStreamingDynamicResult URegionChunkWidget::TravelToTargetWorld(APawn* Inst
 	return Out;
 }
 
+bool URegionChunkWidget::CanPlayerTravelToRegion()
+{
+	return true;
+}
+
 UCharmingCraftInstance* URegionChunkWidget::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));

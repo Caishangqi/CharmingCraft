@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "CharmingCraft/Core/UI/ICommonUI.h"
 #include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
 #include "WidgetHolder.generated.h"
@@ -16,7 +17,7 @@
  * creator is "craft-table" you can set Creator "craft-table" and bind new event on UserWidgetEventHandler
  */
 UCLASS()
-class CHARMINGCRAFT_API UWidgetHolder : public UUserWidget, public ICommonUI
+class CHARMINGCRAFT_API UWidgetHolder : public UUserWidget, public ICommonUI, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -71,4 +72,9 @@ public:
 
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+
+	UFUNCTION(BlueprintCallable)
+	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	UFUNCTION(BlueprintCallable)
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
 };

@@ -20,12 +20,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenInventoryDelegate, ACh
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenTravelMapDelegate, ACharacter*, PlayerCharacter, UObject *,
                                              Creator);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerOpenContainerDelegate, ACharacter*, Instigator,
+											   UInventoryComponent*, TargetInventory, UObject *, Creator);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOpenWidgetDelegate, UObject*, Instigator, UUserWidget*, TargetWidget);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator, UUserWidget*, TargetWidget);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerOpenContainerDelegate, ACharacter*, Instigator,
-                                               UInventoryComponent*, TargetInventory, UObject *, Creator);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerTravelToRegionDelegate, APawn*, Instigator, UWorld *, TargetWorld);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerClickMoveDelegate, ACharacter*, Instigator,
                                              FVector, TargetLocation);
@@ -140,6 +140,8 @@ public:
 	FOnPlayerMovementDelegate OnPlayerMovement;
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerOpenTravelMapDelegate OnPlayerOpenTravelMap;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerTravelToRegionDelegate OnPlayerTravelToRegion;
 
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
@@ -178,6 +180,8 @@ public:
 	void OnLoadGameLevelCompleteEvent(UObject* Instigator, UWorld* TargetWorld);
 	UFUNCTION(BlueprintCallable)
 	void OnLoadGameLevelStartEvent(UObject* Instigator, UWorld* TargetWorld);
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerTravelToRegionEvent(APawn * Instigator,UWorld * TargetWorld);
 
 	/*!
 	 * Unload the specific Chunk in the world

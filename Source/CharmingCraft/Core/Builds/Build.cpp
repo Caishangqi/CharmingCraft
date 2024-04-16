@@ -30,8 +30,14 @@ ABuild::ABuild()
 void ABuild::BeginPlay()
 {
 	Super::BeginPlay();
-	ASceneWarpPoint* ExitActor = GetWorld()->SpawnActor<ASceneWarpPoint>(ASceneWarpPoint::StaticClass());
+	FTransform SpawnTransform;
+
+	ASceneWarpPoint* ExitActor = Cast<ASceneWarpPoint>(
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(
+			this, ASceneWarpPoint::StaticClass(),
+			SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
 	ExitActor->TargetName = BuildName + " Default Exit";
+	UGameplayStatics::FinishSpawningActor(ExitActor, SpawnTransform);
 	if (ExitActor)
 	{
 		ExitActor->AttachToComponent(BuildingExitPoint, FAttachmentTransformRules::KeepRelativeTransform);

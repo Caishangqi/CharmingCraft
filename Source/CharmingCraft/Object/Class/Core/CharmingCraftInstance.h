@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
@@ -14,6 +13,7 @@ class UPlayerModeManager;
 class UGameEventHandler;
 class UWorldManager;
 class ADCharacter;
+class URuntimeGameData;
 /**
  * 
  */
@@ -51,7 +51,6 @@ public:
 	// 获取存档管理器实例
 	UFUNCTION(BlueprintCallable, Category = "Save")
 	UGameSaveManager* GetSaveManager() const { return SaveManager; }
-
 	// 获取存档管理器实例
 	UFUNCTION(BlueprintCallable, Category = "World")
 	UWorldManager* GetWorldManager() const { return WorldManager; }
@@ -88,6 +87,8 @@ public:
 	UPROPERTY()
 	UGameEventHandler* GamePlayLogicManager;
 
+	// Runtime Data, usually load player save slot
+	// and transfer data into runtime data
 	UPROPERTY()
 	URuntimeGameData* RuntimeGameData;
 

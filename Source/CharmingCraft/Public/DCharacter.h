@@ -9,6 +9,7 @@
 #include "DCharacter.generated.h" //自己生成的，恶心代码
 
 
+class UNavigationInvokerComponent;
 class UEquipmentComponent;
 class UBuffHandlerComponent;
 class UInventoryComponent;
@@ -111,6 +112,10 @@ public:
 	/* 装备栏 */
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Components")
 	TObjectPtr<UEquipmentComponent> EquipmentComponent;
+
+	// AI navigation
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Components")
+	TObjectPtr<UNavigationInvokerComponent>  NavigationInvokerComponent;
 
 	/* 槽位管理器 (可以考虑)*/
 	// TODO 添加槽位管理组件，这些组件包括格雷StaticMeshComponent 对应的骨骼Socket

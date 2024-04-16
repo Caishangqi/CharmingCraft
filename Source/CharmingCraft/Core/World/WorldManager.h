@@ -64,8 +64,17 @@ public:
 	// 加载完成的回调函数
 	UFUNCTION(BlueprintCallable)
 	void OnLevelLoadedCallback();
-	
-
+	/*!
+	 * Travel player to another world, this method is different from
+	 * warp, warp generally used in scene change, for example, player
+	 * enter a room. please ensure you load or set loaded level,
+	 * visible before teleport, or it will not work
+	 * @param PlayerCharacter
+	 * @param TargetLevel 
+	 * @return FLevelStreamingDynamicResult
+	 */
+	UFUNCTION(BlueprintCallable)
+	FLevelStreamingDynamicResult TravelPlayerToWorld(APawn* PlayerCharacter,const TSoftObjectPtr<UWorld> TargetLevel);
 
 	UFUNCTION(BlueprintCallable)
 	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel, bool UnloadRemainWorld = false);

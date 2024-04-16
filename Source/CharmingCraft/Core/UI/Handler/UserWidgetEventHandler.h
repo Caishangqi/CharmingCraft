@@ -7,6 +7,7 @@
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "UserWidgetEventHandler.generated.h"
 
+class UWidgetHolder;
 class UGameEventHandler;
 class UCharmingCraftInstance;
 class ADCharacter;
@@ -30,9 +31,18 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TArray<TObjectPtr<UUserWidget>> LoadedUserWidget;
 
+	/*!
+	 * Close specific subclass of UWidgetHolder, the first one in
+	 * LoadedUserWidget
+	 * @param TargetWidgetHolder 
+	 * @return true if remove sucess
+	 */
+	UFUNCTION(BlueprintCallable)
+	bool CloseWidgetByClass(TSubclassOf<UWidgetHolder> TargetWidgetHolder);
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenInventoryEvent(ACharacter* Instigator, UObject* Creator);
-	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenTravelMapEvent(ACharacter* Instigator, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer, UObject* Creator);
@@ -44,5 +54,4 @@ public:
 	void OnCloseWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnOpenWidgetEvent(UObject* Instigator, UUserWidget* TargetWidget);
-
 };

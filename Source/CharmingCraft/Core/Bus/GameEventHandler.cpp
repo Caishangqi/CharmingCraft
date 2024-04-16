@@ -11,6 +11,7 @@
 #include "../Core/Save/Lib/CharacterSaveLib.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Resource/Chunk/LandChunk.h"
+#include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 
 UGameEventHandler::UGameEventHandler()
 {
@@ -54,6 +55,11 @@ void UGameEventHandler::OnLoadGameLevelStartEvent(UObject* Instigator, UWorld* T
 	UE_LOG(LogChamingCraftGameEvent, Display,
 	       TEXT("[📍]  Event trigger at UGameEventHandler::OnLoadGameLevelStartEvent()\n"
 		       "		TargetWorld: %s"), *TargetWorld->GetMapName());
+}
+
+void UGameEventHandler::OnPlayerTravelToRegionEvent(APawn* Instigator, UWorld* TargetWorld)
+{
+	OnPlayerTravelToRegion.Broadcast(Instigator, TargetWorld);
 }
 
 void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)

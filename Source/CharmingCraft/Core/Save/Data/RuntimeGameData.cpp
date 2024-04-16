@@ -2,3 +2,9 @@
 
 
 #include "RuntimeGameData.h"
+#include "FSaveSlotInfo.h"
+
+URuntimeGameData::URuntimeGameData()
+{
+	RuntimeSave.GenerateDefaultData();
+}

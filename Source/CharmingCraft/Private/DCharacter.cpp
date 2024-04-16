@@ -4,6 +4,7 @@
 #include "DCharacter.h"
 
 
+#include "NavigationInvokerComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -65,12 +66,15 @@ ADCharacter::ADCharacter()
 	GetCharacterMovement()->SetWalkableFloorAngle(90.0f);
 
 	/* 后处理组件 */
-	//PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
+	// PostProcessComponent = CreateDefaultSubobject<UPostProcessComponent>("PostProcessComponent");
 
 	/* 物品栏 */
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory Component");
 
 	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>("Equipment Component");
+
+	// AI navigation
+	NavigationInvokerComponent = CreateDefaultSubobject<UNavigationInvokerComponent>("NavigationInvoker Component");
 }
 
 // Called when the game starts or when spawned

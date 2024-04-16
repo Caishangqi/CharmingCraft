@@ -11,7 +11,17 @@ class CHARMINGCRAFT_API ASceneWarpPoint : public ATargetPoint
 public:
 	ASceneWarpPoint();
 
+	virtual void BeginPlay() override;
+
+	bool IsInitialized() const
+	{
+		return bIsInitialized;
+	}
+
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString TargetName;
+
+private:
+	bool bIsInitialized = false;
 };

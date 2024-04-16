@@ -11,7 +11,7 @@ public class CharmingCraft : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "Json",
-			"JsonUtilities", "EnhancedInput"
+			"JsonUtilities", "EnhancedInput","NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });

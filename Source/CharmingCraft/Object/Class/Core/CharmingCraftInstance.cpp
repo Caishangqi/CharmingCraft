@@ -2,7 +2,6 @@
 
 
 #include "CharmingCraftInstance.h"
-
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
@@ -10,6 +9,7 @@
 #include "CharmingCraft/Core/World/WorldManager.h"
 #include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
+#include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "Engine/DataTable.h"
 
 UCharmingCraftInstance::UCharmingCraftInstance()
