@@ -20,24 +20,30 @@ AInteractSceneTrigger::AInteractSceneTrigger(): TargetCameraView()
 void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 {
 	Super::Interact_Implementation(InstigatorPawn);
+	InteractObject = Cast<APawn>(InstigatorPawn);
 	if (EnableCameraFade)
 	{
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 			0.1f, 1.0f, 0.05f, FColor::Black, false, true);
 	}
-
-	UE_LOG(LogChamingCraftWorld, Warning, TEXT("[🌍]  Prepare Load Building Scene: %s"),
-	       *TargetLoadedLevel.LoadSynchronous()->GetName());
-	FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
-		TargetLoadedLevel);
-
-
-	if (!LoadWorldInstanceOut.LoadedWorld->OnLevelShown.
-	                          IsAlreadyBound(this, &AInteractSceneTrigger::OnTargetLevelShown))
+	if (bIsASceneTravel)
 	{
-		LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
+		UE_LOG(LogChamingCraftWorld, Warning, TEXT("[🌍]  Prepare Load Building Scene: %s"),
+		       *TargetLoadedLevel.LoadSynchronous()->GetName());
+		FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
+			TargetLoadedLevel);
+
+
+		if (!LoadWorldInstanceOut.LoadedWorld->OnLevelShown.
+		                          IsAlreadyBound(this, &AInteractSceneTrigger::OnTargetLevelShown))
+		{
+			LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
+		}
 	}
-	InteractObject = Cast<APawn>(InstigatorPawn);
+	else
+	{
+		GetWorldManager_Implementation()->TeleportPlayerToWarp(InteractObject, DestinationName);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -58,7 +64,8 @@ void AInteractSceneTrigger::OnTargetLevelShown()
 	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
 	if (InteractObject)
 	{
-		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(InteractObject, DestinationName);
+		GetWorldManager_Implementation()->TravelPlayerToScene(InteractObject, TargetLoadedLevel, DestinationName,
+		                                                      bResetSceneData);
 		InteractObject->Controller->StopMovement();
 		PostLevelCameraViewChange(); // Change Camera
 

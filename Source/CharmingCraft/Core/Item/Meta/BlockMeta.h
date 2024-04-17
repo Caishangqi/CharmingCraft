@@ -23,12 +23,19 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Drop Table")
 	bool bDropSelf = true;
 
-	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject) override;
+	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject, AActor* Owner) override;
 
+	/*!
+	 * Prepare to create BlockEntityActor, modify and inject different block data
+	 * or itemmeta etc.
+	 * @param WorldContextObject 
+	 * @param Owner The Block that related to level or other Actor
+	 * @return ABlockEntityActor
+	 */
 	UFUNCTION(BlueprintCallable)
-	ABlockEntityActor* PrepareCreateBlockEntityActor(const UObject* WorldContextObject);
+	ABlockEntityActor* PrepareCreateBlockEntityActor(const UObject* WorldContextObject, AActor * Owner);
 	UFUNCTION(BlueprintCallable)
-	ABlockEntityActor* CreateBlockEntityActor(const UObject* WorldContextObject);
+	ABlockEntityActor* CreateBlockEntityActor(const UObject* WorldContextObject, AActor* Owner);
 
 	virtual void InitializeItemMetaData(UItem* ItemClass) override;
 };

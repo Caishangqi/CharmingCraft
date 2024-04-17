@@ -55,16 +55,23 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 	       TEXT("[🌍]  Prepare Load Building Scene: %s"), *TargetLoadedLevel.LoadSynchronous()->GetMapName());
 	if (OtherActor->IsA(ADCharacter::StaticClass()))
 	{
-		FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
-			TargetLoadedLevel);
-		if (EnableCameraFade)
-		{
-			UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-				0.0f, 1.0f, 1.0f, FColor::Black, false, true);
-		}
-		LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(
-			this, &UVolumeSceneTriggerComponent::OnTargetLevelShown);
 		OverlappedActor = Cast<APawn>(OtherActor);
+		if (bIsASceneTravel)
+		{
+			FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
+				TargetLoadedLevel);
+			if (EnableCameraFade)
+			{
+				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+					0.0f, 1.0f, 1.0f, FColor::Black, false, true);
+			}
+			LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(
+				this, &UVolumeSceneTriggerComponent::OnTargetLevelShown);
+		}
+		else
+		{
+			GetWorldManager_Implementation()->TeleportPlayerToWarp(OverlappedActor, DestinationName);
+		}
 	}
 }
 
@@ -79,8 +86,9 @@ void UVolumeSceneTriggerComponent::OnTargetLevelShown()
 	GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel);
 	if (OverlappedActor)
 	{
+		GetWorldManager_Implementation()->TravelPlayerToScene(OverlappedActor, TargetLoadedLevel, DestinationName,
+		                                                      bResetSceneData);
 		PostLevelCameraViewChange(); // Change Camera
-		GetWorldManager_Implementation()->TeleportPlayerToWarpLocal(OverlappedActor, DestinationName);
 		OverlappedActor->Controller->StopMovement();
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 			1.0f, 0.0f, 1.0f, FColor::Black);

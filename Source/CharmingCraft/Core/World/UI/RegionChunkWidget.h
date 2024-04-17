@@ -9,12 +9,11 @@
 #include "RegionChunkWidget.generated.h"
 
 
-
-
 USTRUCT(BlueprintType)
 struct FRegionChunkMetaData
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString DisplayName;
@@ -47,6 +46,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D ChunkCoordinate;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TObjectPtr<UTexture2D> RegionBaseIcon;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TObjectPtr<UTexture2D> RegionTopIcon;
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -55,10 +58,10 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 	FLevelStreamingDynamicResult TravelToTargetWorld(APawn* Instigator);
-	
+
 	UFUNCTION(BlueprintCallable)
 	bool CanPlayerTravelToRegion();
-	
+
 public:
 	UFUNCTION(BlueprintCallable)
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;

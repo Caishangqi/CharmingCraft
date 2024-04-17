@@ -12,6 +12,7 @@
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Resource/Chunk/LandChunk.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
+#include "CharmingCraft/Core/World/WorldManager.h"
 
 UGameEventHandler::UGameEventHandler()
 {
@@ -60,6 +61,11 @@ void UGameEventHandler::OnLoadGameLevelStartEvent(UObject* Instigator, UWorld* T
 void UGameEventHandler::OnPlayerTravelToRegionEvent(APawn* Instigator, UWorld* TargetWorld)
 {
 	OnPlayerTravelToRegion.Broadcast(Instigator, TargetWorld);
+}
+
+void UGameEventHandler::OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* FromScene, UWorld* TargetScene)
+{
+	OnPlayerTravelToScene.Broadcast(Instigator, FromScene, TargetScene);
 }
 
 void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)

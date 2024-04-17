@@ -72,6 +72,7 @@ void ABlockEntityActor::DisableBlockCollision()
 	CollisionBox->SetCollisionResponseToChannels(CollisionResponse);
 	CollisionBox->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	CollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
+	CollisionBox->SetCanEverAffectNavigation(false);
 }
 
 void ABlockEntityActor::EnableBlockCollision()
@@ -89,6 +90,7 @@ void ABlockEntityActor::EnableBlockCollision()
 	CollisionResponse.SetResponse(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Block);
 	CollisionBox->SetCollisionResponseToChannels(CollisionResponse);
 	CollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	CollisionBox->SetCanEverAffectNavigation(true);
 }
 
 void ABlockEntityActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -169,6 +171,7 @@ bool ABlockEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableData
 
 		TObjectPtr<UItemStack> ItemStack = UItemStack::CreateItemStackFromMaterial(this->GetWorld(), Material, 1);
 		Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->OnItemDropEvent(ItemStack, this);
+		// TODO: Change this instigator to player or else not block itself
 		UItemEntityUtilityLibrary::DropItemInWorld(this, ItemStack, SpawnTransform, LaunchVelocity);
 	}
 	return IBreakableInterface::OnBlockDrop_Implementation(Block, DropTableDataContext);

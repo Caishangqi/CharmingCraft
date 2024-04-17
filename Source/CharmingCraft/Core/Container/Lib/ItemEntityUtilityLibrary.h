@@ -8,8 +8,11 @@
 #include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "CharmingCraft/Core/World/WorldManager.h"
 #include "Components/BoxComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
+#include "Engine/LevelScriptActor.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "ItemEntityUtilityLibrary.generated.h"
@@ -60,7 +63,7 @@ public:
 			UGameplayStatics::BeginDeferredActorSpawnFromClass(RenderWorld,
 			                                                   AItemTargetRenderActor::StaticClass(), SpawnTransform));
 		// ItemEntityActor
-		TObjectPtr<AItemEntityActor> ItemEntityActor = InputMeta->CreateItemEntityActor(RenderWorld);
+		TObjectPtr<AItemEntityActor> ItemEntityActor = InputMeta->CreateItemEntityActor(RenderWorld,nullptr);
 
 		/* Prepare Spawn Weapon Actor form Meta, spawn from static class */
 		// Modify the Actor's properties here
@@ -83,7 +86,7 @@ public:
 
 			FTransform RenderSpecifyTransform = OuterItemStack->ItemClass.GetDefaultObject()->RenderSpecifyTransform;
 			// 100 85 70
-			if(ItemEntityActor->UseCustomTransform)
+			if (ItemEntityActor->UseCustomTransform)
 			{
 				RenderActor->SceneCaptureComponent->SetRelativeRotation(
 					ItemEntityActor->ItemEntityActorRenderTargetTransform.GetRotation());
@@ -138,10 +141,20 @@ public:
 	static void DropItemInWorld(UObject* Instigator, UItemStack* ItemStack, FTransform SpawnTransform,
 	                            FVector LaunchVelocity)
 	{
-		if (TObjectPtr<ADropItem> DropItemEntity = Cast<ADropItem>(
-			UGameplayStatics::BeginDeferredActorSpawnFromClass(Instigator, ADropItem::StaticClass(), SpawnTransform)))
+		// TODO: Change the logic and avoid use GetPlayerCharacter
+		FLevelStreamingDynamicResult PlayerCurrentLevel = Cast<UCharmingCraftInstance>(
+			                                                  UGameplayStatics::GetGameInstance(Instigator))->
+		                                                  GetWorldManager()->GetPlayerCurrentLevel(
+			                                                  Cast<APawn>(UGameplayStatics::GetPlayerCharacter(Instigator, 0)));
+		TObjectPtr<ADropItem> DropItemEntity = Cast<ADropItem>(
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(
+				Instigator, ADropItem::StaticClass(),
+				SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined,
+				PlayerCurrentLevel.LoadedWorld->GetLevelScriptActor()));
+
+		if (DropItemEntity)
 		{
-			DropItemEntity->Initialize(ItemStack);
+			DropItemEntity->Initialize(ItemStack, PlayerCurrentLevel.LoadedWorld->GetLevelScriptActor());
 			// 使用FinishSpawningActor将Drop对象放入世界中
 			UGameplayStatics::FinishSpawningActor(DropItemEntity, SpawnTransform);
 			DropItemEntity->InvisibleCollision->AddImpulse(LaunchVelocity, NAME_None, true);

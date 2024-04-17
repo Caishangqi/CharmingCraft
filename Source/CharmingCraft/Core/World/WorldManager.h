@@ -7,6 +7,8 @@
 #include "UObject/Object.h"
 #include "Templates/Function.h"
 #include "WorldManager.generated.h"
+
+class AWorldEntityManager;
 class ULevelStreamingDynamic;
 
 USTRUCT(BlueprintType)
@@ -43,23 +45,43 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TMap<FString, ULevelStreamingDynamic*> LoadedWorlds;
+	/*!
+	 * Return playerr current level, this is different from GetWorld()
+	 * double check with LoadedWorlds and game runtime data
+	 * @param PlayerCharacter 
+	 * @return FLevelStreamingDynamicResult
+	 */
+	UFUNCTION(BlueprintCallable)
+	FLevelStreamingDynamicResult GetPlayerCurrentLevel(APawn* PlayerCharacter);
 
+	/*!
+	 * This is a more official or logic way to bind runtime generated actor to a
+	 * specific level instance, be sure you put a WorldEntityManager in your world
+	 * or else it will return null pointer
+	 *
+	 * Also be sure to load only ONE WorldEntityManager in the world or it will cause
+	 * problem
+	 *
+	 * Alternatively if you don't want to put AWorldEntityManager in the level manually
+	 * you can use GetPlayerCurrentLevel and get level instance related script actor
+	 * although it is wierd @see GetPlayerCurrentLevel()
+	 * @return AWorldEntityManager related to current level
+	 */
+	UFUNCTION(BlueprintCallable)
+	AWorldEntityManager* GetWorldEntityManager();
 
 	UFUNCTION(BlueprintCallable)
 	bool LoadGameLevel(FName LevelName);
 
 	/*!
-	 * Teleport player to specific warp (Target level point), please ensure you load or set loaded level
-	 * visible before teleport, or it will not work
-	 * @param PlayerCharacter The Character you want to teleport
-	 * @param TargetLevel The target Level that include the warp
-	 * @param WarpName The warp name
-	 * @return whether or not teleport success
+	 * Teleport player to specific Warp of ASceneWarpPoint
+	 * please check the level is loaded and visible before teleport
+	 * @param PlayerCharacter 
+	 * @param WarpPoint 
+	 * @return whether or not teleport successful
 	 */
 	UFUNCTION(BlueprintCallable)
-	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel, const FName WarpName);
-	UFUNCTION(BlueprintCallable)
-	bool TeleportPlayerToWarpLocal(APawn* PlayerCharacter, const FName WarpPoint);
+	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);
 
 	// 加载完成的回调函数
 	UFUNCTION(BlueprintCallable)
@@ -74,16 +96,44 @@ public:
 	 * @return FLevelStreamingDynamicResult
 	 */
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult TravelPlayerToWorld(APawn* PlayerCharacter,const TSoftObjectPtr<UWorld> TargetLevel);
+	FLevelStreamingDynamicResult TravelPlayerToWorld(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel);
+
+	/*!
+	 * Travel player to another scene, use in scene travel of building,
+	 * it will save the scene information in GameRuntime Data, and the
+	 * data will retrived by GetPlayerCurrentLevel
+	 *
+	 * @see GetPlayerCurrentLevel()
+	 *
+	 * @param PlayerCharacter 
+	 * @param TargetScene 
+	 * @param WarpPoint 
+	 * @param ResetSceneData If reset the scene data, it will clear the GameRuntime Data and
+	 * set the PlayerSceneLocation to null after teleport player to warp point
+	 * @return 
+	 */
+	UFUNCTION(BlueprintCallable)
+	FLevelStreamingDynamicResult TravelPlayerToScene(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetScene,
+	                                                 FName WarpPoint, bool ResetSceneData = true);
 
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel, bool UnloadRemainWorld = false);
+	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
+	                                               bool UnloadRemainWorld = false);
 	UFUNCTION(BlueprintCallable)
 	bool UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel = nullptr);
 	UFUNCTION(BlueprintCallable)
 	FLevelStreamingDynamicResult UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 	UFUNCTION(BlueprintCallable)
 	FLevelStreamingDynamicResult UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+
+	/*!
+	 * Check whether target world is loaded and visible
+	 * @param TargetLevel Target Level you want to check
+	 * @return 
+	 */
+	UFUNCTION(BlueprintCallable)
+	bool GetWorldIsVisible(const TSoftObjectPtr<UWorld> TargetLevel);
+
 
 	/*!
 	 * 
@@ -95,6 +145,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool UnloadWorldChunk(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk);
 
+public:
 	// Interface
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
 	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;

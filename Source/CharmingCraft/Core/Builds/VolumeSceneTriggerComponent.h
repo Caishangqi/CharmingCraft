@@ -26,6 +26,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool EnableCameraFade = true;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool bIsASceneTravel = false;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
+	bool bResetSceneData = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
 	ECameraPerspectiveEnum TargetCameraView;
@@ -41,15 +47,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bPostEntryOriginVisibility;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
 	TSoftObjectPtr<UWorld> TargetLoadedLevel;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
 	TSoftObjectPtr<UWorld> UnloadedLevel;
 
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<APawn> OverlappedActor;
-
 
 protected:
 	// Called when the game starts

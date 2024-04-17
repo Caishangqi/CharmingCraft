@@ -28,9 +28,9 @@ USwordMeta::USwordMeta()
 	CurrentAttackStage = LoadedAnimMontage->AttackStageAnimations.Num();
 }
 
-AItemEntityActor* USwordMeta::CreateItemEntityActor(const UObject* WorldContextObject)
+AItemEntityActor* USwordMeta::CreateItemEntityActor(const UObject* WorldContextObject, AActor * Owner)
 {
-	return Super::CreateItemEntityActor(WorldContextObject);
+	return Super::CreateItemEntityActor(WorldContextObject, Owner);
 
 }
 

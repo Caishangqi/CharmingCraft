@@ -7,6 +7,7 @@
 #include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Object/Class/Item/Block.h"
+#include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 UBlockMeta::UBlockMeta()
@@ -15,13 +16,13 @@ UBlockMeta::UBlockMeta()
 	ItemEntityActorClass = nullptr;
 }
 
-AItemEntityActor* UBlockMeta::CreateItemEntityActor(const UObject* WorldContextObject)
+AItemEntityActor* UBlockMeta::CreateItemEntityActor(const UObject* WorldContextObject, AActor* Owner)
 {
 	FTransform DefaultTransform;
 	TObjectPtr<UItemStack> OuterItemStack = Cast<UItemStack>(this->GetOuter());
 
 	TObjectPtr<AItemEntityActor> AttachedActor = Cast<AItemEntityActor>(
-		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject, AItemEntityActor::StaticClass(), DefaultTransform));
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject, AItemEntityActor::StaticClass(), DefaultTransform,ESpawnActorCollisionHandlingMethod::Undefined,Owner));
 
 	if (AttachedActor)
 	{
@@ -44,6 +45,7 @@ AItemEntityActor* UBlockMeta::CreateItemEntityActor(const UObject* WorldContextO
 		
 		if (AActor* ChildActor = AttachedActor->ChildActorComponent->GetChildActor())
 		{
+			Cast<ABlockEntityActor>(AttachedActor->ChildActorComponent->GetChildActor())->DisableBlockCollision();
 			// 确保BlockEntityActor正确地附加到AttachedActor
 			ChildActor->AttachToActor(AttachedActor, FAttachmentTransformRules::SnapToTargetIncludingScale);
 		}
@@ -53,24 +55,21 @@ AItemEntityActor* UBlockMeta::CreateItemEntityActor(const UObject* WorldContextO
 	return nullptr;
 }
 
-ABlockEntityActor* UBlockMeta::PrepareCreateBlockEntityActor(const UObject* WorldContextObject)
+ABlockEntityActor* UBlockMeta::PrepareCreateBlockEntityActor(const UObject* WorldContextObject, AActor* Owner)
 {
 	FTransform DefaultTransform;
 	TObjectPtr<UItemStack> OuterItemStack = Cast<UItemStack>(this->GetOuter());
 	TObjectPtr<ABlockEntityActor> BlockEntityActor = Cast<ABlockEntityActor>(
-		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject,
-		                                                   Cast<UBlock>(OuterItemStack->ItemClass.GetDefaultObject())->
-		                                                   DefaultBlockEntityActorClass,
-		                                                   DefaultTransform));
+		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject,Cast<UBlock>(OuterItemStack->ItemClass.GetDefaultObject())->DefaultBlockEntityActorClass, DefaultTransform,ESpawnActorCollisionHandlingMethod::Undefined,Owner));
 	BlockEntityActor->DropTableData = DropTableData;
 	BlockEntityActor->Material = OuterItemStack->Material;
 	return BlockEntityActor;
 }
 
-ABlockEntityActor* UBlockMeta::CreateBlockEntityActor(const UObject* WorldContextObject)
+ABlockEntityActor* UBlockMeta::CreateBlockEntityActor(const UObject* WorldContextObject, AActor* Owner)
 {
 	FTransform DefaultTransform;
-	TObjectPtr<ABlockEntityActor> BlockEntityActor = PrepareCreateBlockEntityActor(WorldContextObject);
+	TObjectPtr<ABlockEntityActor> BlockEntityActor = PrepareCreateBlockEntityActor(WorldContextObject, Owner);
 	UGameplayStatics::FinishSpawningActor(BlockEntityActor, DefaultTransform);
 	return BlockEntityActor;
 }

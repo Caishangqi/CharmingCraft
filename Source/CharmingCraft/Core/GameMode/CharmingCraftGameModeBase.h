@@ -17,5 +17,5 @@ public:
 	ACharmingCraftGameModeBase();
 public:
 	
-	
+	virtual void BeginPlay() override;
 };

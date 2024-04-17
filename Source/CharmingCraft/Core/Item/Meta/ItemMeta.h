@@ -87,7 +87,7 @@ public:
 	bool AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction,UDAction* TargetAction, UItemMeta * ContextMeta);
 	
 	UFUNCTION(Blueprintable)
-	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject);
+	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject, AActor* Owner);
 
 	/*!
 	 * Initialize ItemMeta from ItemClass Template, set default data and model

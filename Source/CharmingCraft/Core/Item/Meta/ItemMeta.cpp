@@ -55,30 +55,32 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction,UDAction* TargetAction, UItemMeta * ContextMeta)
+bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
+                                         UItemMeta* ContextMeta)
 {
 	// Need to check Empty, fail to check will cause Find() found nullptr
 	if (BindItemDynamicSkill.IsEmpty())
 	{
-		
-		
 		if (Instigator != nullptr)
-		{	// Broadcast ItemDynamicSkillBindEvent
-			Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->OnItemDynamicSkillBindEvent(
-			Instigator,nullptr, TargetAction,ContextMeta);
+		{
+			// Broadcast ItemDynamicSkillBindEvent
+			Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->GetGameEventHandler()->
+			                                                             OnItemDynamicSkillBindEvent(
+				                                                             Instigator, nullptr, TargetAction,
+				                                                             ContextMeta);
 		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
 		return true;
 	}
 
 	TObjectPtr<UGameEventHandler> EventHandler;
-	if (Instigator!= nullptr)
+	if (Instigator != nullptr)
 	{
 		EventHandler = Cast<UCharmingCraftInstance>(Instigator->GetGameInstance())->
-	   GetGameEventHandler();
+			GetGameEventHandler();
 	}
 
-	
+
 	TObjectPtr<UDAction> BindAction = nullptr;
 	if (BindItemDynamicSkill.Contains(TargetAction->SkillType))
 	{
@@ -88,7 +90,7 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction
 	{
 		if (Instigator != nullptr)
 		{
-			EventHandler->OnItemDynamicSkillBindEvent(Instigator,BindAction, TargetAction,ContextMeta);
+			EventHandler->OnItemDynamicSkillBindEvent(Instigator, BindAction, TargetAction, ContextMeta);
 		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
 		return true;
@@ -103,19 +105,20 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction
 	{
 		if (Instigator != nullptr)
 		{
-			EventHandler->OnItemDynamicSkillBindEvent(Instigator,BindAction, TargetAction,ContextMeta);
+			EventHandler->OnItemDynamicSkillBindEvent(Instigator, BindAction, TargetAction, ContextMeta);
 		}
 		BindItemDynamicSkill.Add(TargetAction->SkillType, TargetAction);
 		return true;
 	}
 }
 
-AItemEntityActor* UItemMeta::CreateItemEntityActor(const UObject* WorldContextObject)
+AItemEntityActor* UItemMeta::CreateItemEntityActor(const UObject* WorldContextObject, AActor* Owner)
 {
 	FTransform DefaultTransform;
 	TObjectPtr<AItemEntityActor> AttachedActor = Cast<AItemEntityActor>(
 		UGameplayStatics::BeginDeferredActorSpawnFromClass(WorldContextObject, this->ItemEntityActorClass,
-		                                                   DefaultTransform));
+		                                                   DefaultTransform,
+		                                                   ESpawnActorCollisionHandlingMethod::Undefined, Owner));
 	UGameplayStatics::FinishSpawningActor(AttachedActor, DefaultTransform);
 	//ItemEntityActor = AttachedActor;
 	return AttachedActor;
@@ -148,12 +151,12 @@ void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
 		{
 			if (BindItemDynamicSkill.IsEmpty())
 			{
-				AddActionToBindItemSkill(nullptr, nullptr,DynamicSkill,this);
+				AddActionToBindItemSkill(nullptr, nullptr, DynamicSkill, this);
 			}
 
 			if (BindItemDynamicSkill.Find(DynamicSkill->SkillType) == nullptr)
 			{
-				AddActionToBindItemSkill(nullptr, nullptr,DynamicSkill,this);
+				AddActionToBindItemSkill(nullptr, nullptr, DynamicSkill, this);
 			}
 		}
 	}

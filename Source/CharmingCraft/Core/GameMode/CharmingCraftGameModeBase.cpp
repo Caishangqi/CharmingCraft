@@ -5,6 +5,7 @@
 
 #include "DCharacter.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
+#include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 
 ACharmingCraftGameModeBase::ACharmingCraftGameModeBase()
@@ -26,4 +27,11 @@ ACharmingCraftGameModeBase::ACharmingCraftGameModeBase()
 	}
 	
 	
+}
+
+void ACharmingCraftGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+	UE_LOG(LogChamingCraftWorld, Error,
+						   TEXT("[🌍]  ACharmingCraftGameModeBase::BeginPlay()"));
 }

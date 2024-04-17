@@ -20,18 +20,26 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenInventoryDelegate, ACh
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenTravelMapDelegate, ACharacter*, PlayerCharacter, UObject *,
                                              Creator);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerOpenContainerDelegate, ACharacter*, Instigator,
-											   UInventoryComponent*, TargetInventory, UObject *, Creator);
+                                               UInventoryComponent*, TargetInventory, UObject *, Creator);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOpenWidgetDelegate, UObject*, Instigator, UUserWidget*, TargetWidget);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCloseWidgetDelegate, UObject*, Instigator, UUserWidget*, TargetWidget);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerTravelToRegionDelegate, APawn*, Instigator, UWorld *, TargetWorld);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerTravelToRegionDelegate, APawn*, Instigator, UWorld *, TargetWorld)
+;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerTravelToSceneDelegate, APawn*, Instigator, UWorld*, FromScene,
+                                             UWorld *, TargetScene);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerClickMoveDelegate, ACharacter*, Instigator,
                                              FVector, TargetLocation);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemDetailDisplayDelegate, UItemStack*, ItemToDisplay,
                                              UObject *, Creator);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnBuildPreviewTraceDelegate, UItemStack *, PreviewItemStack, ACharacter*,
                                              Instigator);
 
@@ -142,6 +150,8 @@ public:
 	FOnPlayerOpenTravelMapDelegate OnPlayerOpenTravelMap;
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerTravelToRegionDelegate OnPlayerTravelToRegion;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerTravelToSceneDelegate OnPlayerTravelToScene;
 
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
@@ -181,7 +191,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnLoadGameLevelStartEvent(UObject* Instigator, UWorld* TargetWorld);
 	UFUNCTION(BlueprintCallable)
-	void OnPlayerTravelToRegionEvent(APawn * Instigator,UWorld * TargetWorld);
+	void OnPlayerTravelToRegionEvent(APawn* Instigator, UWorld* TargetWorld);
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* FromScene,UWorld* TargetScene);
 
 	/*!
 	 * Unload the specific Chunk in the world
@@ -241,9 +253,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
-
-
-
+	
 	// Item Ability System
 	UFUNCTION(BlueprintCallable)
 	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,

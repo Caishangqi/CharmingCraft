@@ -41,7 +41,7 @@ public:
 	
 
 	/* 渲染2D */
-	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject) override;
+	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject, AActor * Owner) override;
 
 public:
 	void SetDefaultAssemble();

@@ -44,7 +44,7 @@ public:
 	float BobbingAmplitude = 1.0f;
 
 
-	void Initialize(UItemStack* PassItemStack);
+	void Initialize(UItemStack* PassItemStack, AActor * DropItemOwner);
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 	virtual void BeginPlay() override;

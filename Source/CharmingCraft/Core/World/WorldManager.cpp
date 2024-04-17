@@ -3,6 +3,7 @@
 
 #include "WorldManager.h"
 
+#include "WorldEntityManager.h"
 #include "CharmingCraft/Core/Builds/SceneWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
@@ -11,8 +12,54 @@
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Engine/LevelStreamingDynamic.h"
-#include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
+
+FLevelStreamingDynamicResult UWorldManager::GetPlayerCurrentLevel(APawn* PlayerCharacter)
+{
+	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	TObjectPtr<UPlayerData> PlayerData = GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.PlayerData;
+	if (GetWorldIsVisible(PlayerData->PlayerLocation.Level))
+	{
+		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[PlayerData->PlayerLocation.Level.LoadSynchronous()->
+		                                                                   GetName()];
+		LevelStreamingDynamicResult.IsSuccess = true;
+	}
+	else if (PlayerData->PlayerSceneLocation.Level)
+	{
+		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[PlayerData->PlayerSceneLocation.Level->GetName()];
+		LevelStreamingDynamicResult.IsSuccess = true;
+	}
+	return LevelStreamingDynamicResult;
+}
+
+AWorldEntityManager* UWorldManager::GetWorldEntityManager()
+{
+	TArray<AActor*> OutActors;
+	UGameplayStatics::GetAllActorsOfClass(this, AWorldEntityManager::StaticClass(), OutActors);
+	if (OutActors.Num() > 1)
+	{
+		UE_LOG(LogChamingCraftWorld, Error,
+		       TEXT("[🌍]  Too many WorldEntityManager in the World!\n"
+			       "		(❌) You need unload some WorldEntityManager"));
+		return nullptr;
+	}
+	else if (OutActors.IsEmpty())
+	{
+		UE_LOG(LogChamingCraftWorld, Error,
+		       TEXT("[🌍]  No WorldEntityManager in the World!\n"
+			       "		(❌) You need add 1 WorldEntityManager in the level"));
+		return nullptr;
+	}
+	for (const auto OutActor : OutActors)
+	{
+		TObjectPtr<AWorldEntityManager> WorldEntityManagerActor = Cast<AWorldEntityManager>(OutActor);
+		if (WorldEntityManagerActor)
+		{
+			return WorldEntityManagerActor;
+		}
+	}
+	return nullptr;
+}
 
 bool UWorldManager::LoadGameLevel(FName LevelName)
 
@@ -34,40 +81,7 @@ bool UWorldManager::LoadGameLevel(FName LevelName)
 	return true;
 }
 
-bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel,
-                                         const FName WarpName)
-{
-	TArray<AActor*> OutActors;
-
-
-	// If Player and Target Level are all loaded and visible
-	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
-	{
-		const bool IsLevelVisible = LoadedWorlds[TargetLevel.LoadSynchronous()->GetMapName()]->IsLevelVisible();
-		if (IsLevelVisible)
-		{
-			return TeleportPlayerToWarpLocal(PlayerCharacter, WarpName);
-		}
-		else
-		{
-			UE_LOG(LogChamingCraftWorld, Error,
-			       TEXT("[🌍]  Can not Teleport Player to warp %s\n"
-				       "		(❌) Because the TargetLevel is not visible, turn on before teleport"), *WarpName.ToString());
-		}
-	}
-	// If Target level is not loaded
-	else
-	{
-		UE_LOG(LogChamingCraftWorld, Error,
-		       TEXT("[🌍]  Can not Teleport Player to warp %s\n"
-			       "		(❌) Because the TargetLevel is not loaded, load the level before teleport"),
-		       *WarpName.ToString());
-		return false;
-	}
-	return false;
-}
-
-bool UWorldManager::TeleportPlayerToWarpLocal(APawn* PlayerCharacter, const FName WarpPoint)
+bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
 {
 	TArray<AActor*> OutActors;
 	UGameplayStatics::GetAllActorsOfClass(this, ASceneWarpPoint::StaticClass(), OutActors);
@@ -104,7 +118,7 @@ bool UWorldManager::TeleportPlayerToWarpLocal(APawn* PlayerCharacter, const FNam
 				       TEXT(
 					       "[🌍]  Fail to Teleport Player to target Warp: %s\n"
 					       "			(!) Reason: ASceneWarpPoint is not initialize"), *WarpPoint.ToString());
-				//TeleportPlayerToWarpLocal(PlayerCharacter, WarpPoint);
+				//TeleportPlayerToWarp(PlayerCharacter, WarpPoint);
 			}
 		}
 	}
@@ -126,12 +140,13 @@ FLevelStreamingDynamicResult UWorldManager::TravelPlayerToWorld(APawn* PlayerCha
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
 	{
 		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[TargetLevel->GetName()];
-		LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarpLocal(PlayerCharacter, "Spawn");
+		LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarp(PlayerCharacter, "Spawn");
 		if (LevelStreamingDynamicResult.IsSuccess)
 		{
 			UE_LOG(LogChamingCraftWorld, Display,
 			       TEXT("[🌍]  Travel Player to target World: %s"), *TargetLevel.LoadSynchronous()->GetName());
-			GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(PlayerCharacter, ECameraPerspectiveEnum::INCLINE);
+			GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(
+				PlayerCharacter, ECameraPerspectiveEnum::INCLINE);
 			UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 				1.0f, 0.0f, 2.0f, FColor::Black, false, true);
 			PlayerCharacter->SetActorHiddenInGame(false); // Make Player visible in game
@@ -145,11 +160,41 @@ FLevelStreamingDynamicResult UWorldManager::TravelPlayerToWorld(APawn* PlayerCha
 	return LevelStreamingDynamicResult;
 }
 
+FLevelStreamingDynamicResult UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
+                                                                const TSoftObjectPtr<UWorld> TargetScene,
+                                                                FName WarpPoint, bool ResetSceneData)
+{
+	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	if (LoadedWorlds.Contains(TargetScene.LoadSynchronous()->GetName()))
+	{
+		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[TargetScene->GetName()];
+		LevelStreamingDynamicResult.IsSuccess = LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarp(
+			PlayerCharacter, WarpPoint);
+		if (LevelStreamingDynamicResult.IsSuccess)
+		{
+			TObjectPtr<UPlayerData> PlayerData = GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.
+				PlayerData;
+			UE_LOG(LogChamingCraftWorld, Display,
+			       TEXT("[🌍]  Travel Player to target Scene: %s"), *TargetScene.LoadSynchronous()->GetName());
+			if (ResetSceneData)
+			{
+				PlayerData->PlayerSceneLocation.Level = nullptr;
+			}
+			else
+			{
+				PlayerData->PlayerSceneLocation.Level = TargetScene;
+			}
+		}
+	}
+	return LevelStreamingDynamicResult;
+}
+
+
 FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
                                                               bool UnloadRemainWorld)
 {
 	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
-	
+
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
 	{
 		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()];
@@ -238,6 +283,16 @@ FLevelStreamingDynamicResult UWorldManager::UnloadAndRemoveWorldInstance(const T
 	}
 	return LevelStreamingDynamicResult;
 }
+
+bool UWorldManager::GetWorldIsVisible(const TSoftObjectPtr<UWorld> TargetLevel)
+{
+	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
+	{
+		return LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()]->ShouldBeVisible();
+	}
+	return false;
+}
+
 
 bool UWorldManager::UnloadWorldChunk(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)
 {

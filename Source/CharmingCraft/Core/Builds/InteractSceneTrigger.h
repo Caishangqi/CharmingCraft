@@ -25,6 +25,13 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool EnableCameraFade = true;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool bIsASceneTravel = false;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
+	bool bResetSceneData = false;
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
 	ECameraPerspectiveEnum TargetCameraView;
@@ -35,10 +42,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName DestinationName;
 	// The Level need load when interact this trigger
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
 	TSoftObjectPtr<UWorld> TargetLoadedLevel;
 	//  The Level need unload when interact this trigger
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
 	TSoftObjectPtr<UWorld> UnloadedLevel;
 	// Cached interact pawn used for callback
 	UPROPERTY(BlueprintReadWrite)

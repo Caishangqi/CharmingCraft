@@ -11,7 +11,11 @@
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Item/Meta/BlockMeta.h"
 #include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/World/WorldEntityManager.h"
+#include "CharmingCraft/Core/World/WorldManager.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Engine/LevelScriptActor.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -30,6 +34,7 @@ UBuildModuleManager::UBuildModuleManager()
 
 bool UBuildModuleManager::StartBuildPreviewTrace(UItemStack* PreviewItemStack, ACharacter* Instigator)
 {
+	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetOuter());;
 	if (BlockEntityActor)
 	{
 		BlockEntityActor->Destroy();
@@ -39,8 +44,11 @@ bool UBuildModuleManager::StartBuildPreviewTrace(UItemStack* PreviewItemStack, A
 	if (PreviewItemStack)
 	{
 		CachedBuildItemStack = PreviewItemStack;
-		BlockEntityActor = Cast<UBlockMeta>(PreviewItemStack->ItemMeta)->CreateBlockEntityActor(
-			Instigator->GetWorld());
+		// Set WorldContext into current level streaming
+		// TODO: Currently use GetLevelScriptActor() as an reference for level generated object
+		// You can use WorldEntityManager Actor too, it is an more official way, but you need
+		// To put in the world
+		BlockEntityActor = Cast<UBlockMeta>(PreviewItemStack->ItemMeta)->CreateBlockEntityActor(this,GameInstance->GetWorldManager()->GetPlayerCurrentLevel(Instigator).LoadedWorld->GetLevelScriptActor());
 	}
 
 	if (PreviewItemStack && CachedBuildItemStack)
@@ -53,7 +61,7 @@ bool UBuildModuleManager::StartBuildPreviewTrace(UItemStack* PreviewItemStack, A
 		BlockEntityActor->EnablePreviewScaleBox();
 		BlockEntityActor->ChangeValidationCollidedType(EBuildCollidedType::VALID, PlaceValidation);
 
-		TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetOuter());
+
 		GameInstance->GetGameEventHandler()->OnBuildPreviewTraceEvent(CachedBuildItemStack, Instigator);
 		TObjectPtr<ADPlayerController> PlayerController = Cast<ADPlayerController>(Instigator->GetController());
 

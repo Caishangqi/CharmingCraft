@@ -8,7 +8,11 @@
 #include "CharmingCraft/Core/Item/Meta/BlockMeta.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
+#include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/World/WorldManager.h"
 #include "Components/BoxComponent.h"
+#include "Engine/LevelScriptActor.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
 ADropItem::ADropItem()
@@ -58,15 +62,17 @@ ADropItem::ADropItem()
 	DropIconMesh->SetRelativeRotation(DropIconRotation);
 	DropIconMesh->SetCastShadow(false);
 	DropIconMesh->SetReceivesDecals(false);
+	
+	DropIconMesh->SetCanEverAffectNavigation(false);
+	InvisibleCollision->SetCanEverAffectNavigation(false);
 }
 
 
 // bRenderingResourcesInitialized
-void ADropItem::Initialize(UItemStack* PassItemStack)
+void ADropItem::Initialize(UItemStack* PassItemStack, AActor * DropItemOwner)
 {
 	ItemStack = PassItemStack;
-
-
+	
 	if (ItemStack->ItemMeta->IsA(UIntegratedMeta::StaticClass()))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ItemStack->ItemMeta->IsA(UWeaponMeta::StaticClass())"));
@@ -75,7 +81,7 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 		FTransform DefaultTransform(WeaponRotation, WeaponLocation);
 		if (ItemStack->ItemMeta->ItemEntityActorClass)
 		{
-			ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this);
+			ItemStack->ItemMeta->ItemEntityActor = ItemStack->ItemMeta->CreateItemEntityActor(this, Owner);
 			AItemEntityActor* ItemEntityActor = Cast<AItemEntityActor>(ItemStack->ItemMeta->ItemEntityActor);
 			ItemEntityActor->AttachToComponent(DropIconMesh, FAttachmentTransformRules::KeepRelativeTransform);
 			//ItemEntityActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
@@ -83,7 +89,7 @@ void ADropItem::Initialize(UItemStack* PassItemStack)
 	}
 	else if (ItemStack->ItemMeta->IsA(UBlockMeta::StaticClass())) // Handle Block Item Drop
 	{
-		AItemEntityActor* ItemEntityActor = Cast<UBlockMeta>(ItemStack->ItemMeta)->CreateItemEntityActor(this);
+		AItemEntityActor* ItemEntityActor = Cast<UBlockMeta>(ItemStack->ItemMeta)->CreateItemEntityActor(this, Owner);
 		FVector Scale(0.75, 0.75, 0.75);
 		ItemEntityActor->AttachToComponent(DropIconMesh, FAttachmentTransformRules::KeepRelativeTransform);
 		ItemEntityActor->SetActorTransform(FTransform(GetActorRotation(), GetActorLocation(), Scale));
@@ -134,7 +140,12 @@ void ADropItem::BeginPlay()
 	{
 		TObjectPtr<UStaticMeshComponent> StaticMeshComponent = Cast<UStaticMeshComponent>(
 			OutActor->GetComponentByClass(UStaticMeshComponent::StaticClass()));
-		StaticMeshComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+
+		TObjectPtr<UBoxComponent> BoxComponent = Cast<UBoxComponent>(OutActor->GetComponentByClass(UBoxComponent::StaticClass()));
+		if (StaticMeshComponent)
+		{
+			StaticMeshComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+		}
 	}
 }
 

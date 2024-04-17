@@ -136,7 +136,7 @@ bool UEquipmentComponent::AttachNewEquipmentModelToEntity(int32 UpdateIndex)
 
 		if (EquipmentClass->IsA(UEquipment::StaticClass()))
 		{
-			TObjectPtr<AItemEntityActor> AttachedActor = Inventory[UpdateIndex]->ItemMeta->CreateItemEntityActor(this);
+			TObjectPtr<AItemEntityActor> AttachedActor = Inventory[UpdateIndex]->ItemMeta->CreateItemEntityActor(this, nullptr);
 			Inventory[UpdateIndex]->ItemMeta->ItemEntityActor = AttachedActor;
 			// 微调
 			AttachedActor->SetActorTransform(AttachedActor->ItemEntityActorTransform);
