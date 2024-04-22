@@ -7,15 +7,12 @@
 
 <h4 align="center">A Pixel Low poly top-down RPG game implement by Unreal Engine 5.3</h4>
 <p align="center">
-<a href="https://www.codefactor.io/repository/github/caishangqi/charmingcraft"><img src="https://www.codefactor.io/repository/github/caishangqi/minecraft-modpack-charmingcraft-journey/badge" alt="CodeFactor" /></a>
+<a href="https://www.codefactor.io/repository/github/caishangqi/charmingcraft"><img src="https://www.codefactor.io/repository/github/caishangqi/charmingcraft/badge" alt="CodeFactor" /></a>
 <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Caishangqi/CharmingCraft">
 <img alt="Lines of code" src="https://img.shields.io/badge/Unreal-5.3.1-orange">
 <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/Caishangqi/CharmingCraft/master?label=build">
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Caishangqi/CharmingCraft">
 </p>
-
-
-Select Other Language README: [Chinese](https://github.com/Caishangqi/CharmingCraft/blob/main/Page/README_CN.md)
 
 ## Introduction
 
@@ -253,8 +250,6 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Dota-style mouse movement attack system, including character rotation and new stationary attacks 🟨
 - Damage number animations based on player's attack direction 🟩
 - Comprehensive AI system, including EQS, Behavior Trees, Decorators, and Services 🟩
-- Scene transitions implemented using scene streaming 🟩
-- UI bind GAS system 🟩
 - Buff System Include BuffData, BuffInfo, BuffHandler, and BuffModel (Callback) 🟩
 - Game Start UI and World Select UI 🟩
 - Game Serialization System (Json, FString) to UObject ❔
@@ -263,6 +258,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - GameMode system that support key mapping base on different ganemodes 🟩
 - Build system and visual enhancement support place, rotate and break 🟩
 - Chunk Based Resource Generation 🟩
+- Level Instance streaming load levels and travel player 🟩
 
 ## Content and Mechanism
 
@@ -270,21 +266,20 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 
 ## Coming Soon / TODO
 
-| Context                                                   | Priority | State |
-|:----------------------------------------------------------|:--------:|:-----:|
-| Game Start UI and World Select UI                         | Highest  |   ✅   |
-| Game context serialization                                | Highest  |   ✅   |
-| Chunk and build system                                    |   High   |   ✅   |
-| Skill indicator Component                                 |   High   |   ✅   |
-| Complete attribute UI                                     |  Normal  |   ✅   |
-| Per Item Ability System                                   |  Normal  |   ✅   |
-| Quest system with related NPCs                            |  Normal  |  📝   |
-| Random dungeons and sub-worlds are loaded non-streamingly |  Normal  |  📝   |
-| Resource collection system, ores, trees, farmland         |  Normal  |   ✅   |
-| Expand the Level to 1000 x 1000                           |   Low    |  📌   |
-| Biome: Respawn of monsters, resources, creatures          |   Low    |   ✅   |
-| Developing an engaging storyline                          |  Lowest  |  📌   |
-| Reset inventory UI and drag method                        |  Lowest  |   ✅   |
+| Context                                           | Priority | State |
+|:--------------------------------------------------|:--------:|:-----:|
+| Game context serialization                        | Highest  |   ✅   |
+| Complete attribute UI                             |  Normal  |   ✅   |
+| Per Item Ability System                           |  Normal  |   ✅   |
+| Quest system with related NPCs                    |  Normal  |  📌   |
+| PCG Random dungeons                               |  Normal  |  📌   |
+| Animals and monster iteration                     |  Normal  |  📌   |
+| Crafting System and RecipeRegistry                |  Normal  |   📝   |
+| Time system: Ingame Date and Days                 |  Normal  |   📌   |
+| Resource collection system, ores, trees, farmland |  Normal  |   ✅   |
+| Biome: Respawn of monsters, resources, creatures  |   Low    |   ✅   |
+| Developing an engaging storyline                  |  Lowest  |  📌   |
+| Reset inventory UI and drag method                |  Lowest  |   ✅   |
 
 ## Awaiting Improvement
 
@@ -296,7 +291,6 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Rendering 3D items into 2D images requires manual placement of RenderTargetActor in the world, otherwise it fails (**Fixed**)
 - The `OnHit()` method of weapons is determined by the weapon type, consider passing in a weapon class template for the
   interaction component to execute the template class method for **HitData** transmission (**Fixed**)
-- Some User Widget component can create template for example, give all widget an close button that bind a function pointer.
 - Combind ItemAbility System to part of Build Module, allow Ability data structure contained visual enhancement object.
 ## Project Structure
 
