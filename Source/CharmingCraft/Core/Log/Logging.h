@@ -24,6 +24,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftBuild, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftAsset, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftAction, Log, All);
 DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftWorld, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogChamingCraftRecipe, Log, All);
 
 class Logging
 {

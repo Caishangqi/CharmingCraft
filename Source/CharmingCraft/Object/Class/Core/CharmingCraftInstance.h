@@ -7,6 +7,7 @@
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
+class URecipeRegistry;
 class UCameraManager;
 class UBuildModuleManager;
 class UPlayerModeManager;
@@ -44,8 +45,10 @@ public:
 	UDataTable* RegisteredItems;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
 	TObjectPtr<ADCharacter> PlayerCharacter;
-
-
+	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
+	TObjectPtr<URecipeRegistry> RecipeRegistry;
+	
 	UCharmingCraftInstance();
 
 	// 获取存档管理器实例
@@ -70,7 +73,9 @@ public:
 	UUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
 	UFUNCTION(BlueprintCallable, Category = "CameraManager")
 	UCameraManager* GetCameraManager() const { return CameraManager; }
-
+	UFUNCTION(BlueprintCallable, Category = "RecipeRegistry")
+	URecipeRegistry * GetRecipeRegistry() const {return RecipeRegistry;}
+	
 	// 重写GameInstance的初始化方法
 	virtual void Init() override;
 

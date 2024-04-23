@@ -14,6 +14,10 @@ FLevelStreamingDynamicResult URegionChunkWidget::TravelToTargetWorld(APawn* Inst
 
 bool URegionChunkWidget::CanPlayerTravelToRegion()
 {
+	if (TargetWorld.LoadSynchronous() == nullptr)
+	{
+		return false;
+	}
 	return true;
 }
 

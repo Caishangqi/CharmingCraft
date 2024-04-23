@@ -9,6 +9,7 @@
 #include "CharmingCraft/Core/World/WorldManager.h"
 #include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
+#include "CharmingCraft/Core/Craft/RecipeRegistry.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "Engine/DataTable.h"
 
@@ -103,6 +104,9 @@ void UCharmingCraftInstance::Init()
 	PlayerModeManager = NewObject<UPlayerModeManager>(this, UPlayerModeManager::StaticClass());
 	BuildModuleManager = NewObject<UBuildModuleManager>(this, UBuildModuleManager::StaticClass());
 	CameraManager = NewObject<UCameraManager>(this, UCameraManager::StaticClass());
+	RecipeRegistry = NewObject<URecipeRegistry>(this, URecipeRegistry::StaticClass());
+
+	RecipeRegistry->RegistRecipeFromClass();
 }
 
 void UCharmingCraftInstance::OnStart()
