@@ -22,6 +22,7 @@ void UUserWidgetEventHandler::NativeConstruct()
 	GamePlayLogicManager->OnCloseWidget.AddDynamic(this, &UUserWidgetEventHandler::OnCloseWidgetEvent);
 	GamePlayLogicManager->OnPlayerOpenTravelMap.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenTravelMapEvent);
 	GamePlayLogicManager->OnOpenWidget.AddDynamic(this, &UUserWidgetEventHandler::OnOpenWidgetEvent);
+	GamePlayLogicManager->OnPlayerOpenCraftPannel.AddDynamic(this, &UUserWidgetEventHandler::OnPlayerOpenCraftPannelEvent);
 
 	LoadedUserWidget.SetNum(100);
 
@@ -39,6 +40,10 @@ bool UUserWidgetEventHandler::CloseWidgetByClass(TSubclassOf<UWidgetHolder> Targ
 		}
 	}
 	return false;
+}
+
+void UUserWidgetEventHandler::OnPlayerOpenCraftPannelEvent_Implementation(ACharacter* Instigator, UObject* Creator)
+{
 }
 
 void UUserWidgetEventHandler::OnOpenWidgetEvent_Implementation(UObject* Instigator, UUserWidget* TargetWidget)

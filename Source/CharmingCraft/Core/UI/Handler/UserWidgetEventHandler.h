@@ -45,6 +45,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenTravelMapEvent(ACharacter* Instigator, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UObject* Creator);
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerOpenContainerEvent(ACharacter* Instigator, UInventoryComponent* TargetContainer, UObject* Creator);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerClickMoveEvent(ACharacter* Instigator, FVector TargetLocation);

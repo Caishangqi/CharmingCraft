@@ -98,6 +98,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLoadGameLevelStart, UObject*, In
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,
                                                ALandChunk*, TargetChunk);
 
+// Craft
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenCraftPannelDelegate, ACharacter*, PlayerCharacter, UObject *, Creator);
+
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
 class CHARMINGCRAFT_API UGameEventHandler : public UObject
@@ -153,6 +156,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerTravelToSceneDelegate OnPlayerTravelToScene;
 
+	// Craft
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerOpenCraftPannelDelegate OnPlayerOpenCraftPannel;
+	
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
 	FOnActorOnEquipmentDelegate OnActorOnEquipment;
@@ -258,4 +265,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
 	                                 UItemMeta* ContextMeta);
+
+	// Craft
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UObject* Creator);
 };

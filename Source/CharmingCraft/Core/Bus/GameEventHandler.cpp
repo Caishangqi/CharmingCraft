@@ -301,3 +301,8 @@ void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction*
 {
 	OnItemDynamicSkillBind.Broadcast(Instigator, FromAction, TargetAction, ContextMeta);
 }
+
+void UGameEventHandler::OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UObject* Creator)
+{
+	OnPlayerOpenCraftPannel.Broadcast(Instigator, Creator);
+}
