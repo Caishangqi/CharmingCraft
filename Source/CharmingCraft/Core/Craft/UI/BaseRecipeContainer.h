@@ -15,7 +15,6 @@ UCLASS()
 class CHARMINGCRAFT_API UBaseRecipeContainer : public UWidgetHolder
 {
 	GENERATED_BODY()
-
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName ContainerName;
@@ -23,10 +22,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<UBaseCraftHandler> CraftHandlerClass;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	TObjectPtr<UBaseCraftHandler> CraftHandler;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FRecipesContainerCollection RecipesContainerCollection;
 
-	FRecipesContainerCollection* RecipesContainerCollection;
-
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	TArray<UBaseRecipeEntry*> FindRecipeByClassification(FName Classification); 
+	
 	virtual void NativeConstruct() override;
+
+	UFUNCTION(BlueprintCallable)
+	FRecipesContainerCollection GetRecipesContainerCollection();
 };

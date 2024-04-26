@@ -19,7 +19,7 @@ public:
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<TObjectPtr<UBaseRecipeEntry>> ContainerCollection;
+	TArray<UBaseRecipeEntry*> ContainerCollection;
 };
 
 /**

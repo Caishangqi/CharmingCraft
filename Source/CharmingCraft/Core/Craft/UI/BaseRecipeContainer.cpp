@@ -4,16 +4,34 @@
 #include "BaseRecipeContainer.h"
 
 #include "CharmingCraft/Core/Craft/Handler/BaseCraftHandler.h"
+#include "CharmingCraft/Core/Log/Logging.h"
+
+TArray<UBaseRecipeEntry*> UBaseRecipeContainer::FindRecipeByClassification_Implementation(FName Classification)
+{
+	FRecipesContainerCollection Collection = GetRecipesContainerCollection();
+	return CraftHandler->FilterRecipeByClassification(Classification, Collection);
+}
+
 
 void UBaseRecipeContainer::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	CraftHandler = NewObject<UBaseCraftHandler>(this, CraftHandlerClass);
 
-	// Fetch Data from Recipe Registry
-	if (GetGameInstance_Implementation()->GetRecipeRegistry()->RegistedRecipe.Contains(ContainerName))
+	CraftHandler = NewObject<UBaseCraftHandler>(this, CraftHandlerClass);
+	RecipesContainerCollection = GetGameInstance_Implementation()->RecipeRegistry->RegistedRecipe.FindRef(ContainerName);
+	UE_LOG(LogChamingCraftRecipe, Display, TEXT("[🏷️]  Current Num of recipe is: %d"),
+	       RecipesContainerCollection.ContainerCollection.Num());
+}
+
+FRecipesContainerCollection UBaseRecipeContainer::GetRecipesContainerCollection()
+{
+	if (GetGameInstance_Implementation())
 	{
-		RecipesContainerCollection = GetGameInstance_Implementation()->GetRecipeRegistry()->RegistedRecipe.Find(ContainerName);
+		return *GetGameInstance_Implementation()->RecipeRegistry->RegistedRecipe.Find(ContainerName);
+	}
+	else
+	{
+		return FRecipesContainerCollection();
 	}
 }
