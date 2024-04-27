@@ -2,9 +2,8 @@
 
 
 #include "BaseCraftHandler.h"
-
 TArray<UBaseRecipeEntry*> UBaseCraftHandler::FilterRecipeByClassification(
-	FName Classification, FRecipesContainerCollection & RecipesContainerCollection)
+	FName Classification, FRecipesContainerCollection& RecipesContainerCollection)
 {
 	TArray<UBaseRecipeEntry*> FilterOutPut;
 	for (TObjectPtr<UBaseRecipeEntry> BaseRecipeEntry : RecipesContainerCollection.ContainerCollection)

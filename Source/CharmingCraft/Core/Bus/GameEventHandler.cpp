@@ -306,3 +306,9 @@ void UGameEventHandler::OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UOb
 {
 	OnPlayerOpenCraftPannel.Broadcast(Instigator, Creator);
 }
+
+void UGameEventHandler::OnCheckRecipeIngredientMatchEvent(UBaseRecipeEntry* TargetRecipe,
+	UInventoryComponent* TargetContainer)
+{
+	OnCheckRecipeIngredientMatch.Broadcast(TargetRecipe,TargetContainer);
+}

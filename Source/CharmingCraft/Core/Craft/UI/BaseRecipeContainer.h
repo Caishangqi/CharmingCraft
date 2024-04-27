@@ -34,4 +34,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FRecipesContainerCollection GetRecipesContainerCollection();
+
 };

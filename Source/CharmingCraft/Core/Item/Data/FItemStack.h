@@ -12,6 +12,11 @@ struct FItemStackData
 	GENERATED_BODY()
 
 public:
+	FItemStackData(): Amount(0), Material(EMaterial::AIR), bCustomizeItemMeta(false), ItemMeta()
+	{
+	}
+
+public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	int32 Amount;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")

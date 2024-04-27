@@ -3,6 +3,7 @@
 
 #include "BaseRecipeContainer.h"
 
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Craft/Handler/BaseCraftHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 
@@ -19,7 +20,8 @@ void UBaseRecipeContainer::NativeConstruct()
 
 
 	CraftHandler = NewObject<UBaseCraftHandler>(this, CraftHandlerClass);
-	RecipesContainerCollection = GetGameInstance_Implementation()->RecipeRegistry->RegistedRecipe.FindRef(ContainerName);
+	RecipesContainerCollection = GetGameInstance_Implementation()->RecipeRegistry->RegistedRecipe.
+	                                                               FindRef(ContainerName);
 	UE_LOG(LogChamingCraftRecipe, Display, TEXT("[🏷️]  Current Num of recipe is: %d"),
 	       RecipesContainerCollection.ContainerCollection.Num());
 }
@@ -35,3 +37,4 @@ FRecipesContainerCollection UBaseRecipeContainer::GetRecipesContainerCollection(
 		return FRecipesContainerCollection();
 	}
 }
+

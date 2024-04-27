@@ -100,6 +100,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, In
 
 // Craft
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenCraftPannelDelegate, ACharacter*, PlayerCharacter, UObject *, Creator);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCheckRecipeIngredientMatchDelegate, UBaseRecipeEntry *, TargetRecipe, UInventoryComponent* ,TargetContainer);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
@@ -159,6 +160,8 @@ public:
 	// Craft
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerOpenCraftPannelDelegate OnPlayerOpenCraftPannel;
+	UPROPERTY(BlueprintAssignable)
+	FOnCheckRecipeIngredientMatchDelegate OnCheckRecipeIngredientMatch;
 	
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
@@ -269,4 +272,7 @@ public:
 	// Craft
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UObject* Creator);
+	UFUNCTION(BlueprintCallable)
+	void OnCheckRecipeIngredientMatchEvent(UBaseRecipeEntry * TargetRecipe, UInventoryComponent* TargetContainer);
+	
 };

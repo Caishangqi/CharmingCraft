@@ -7,6 +7,7 @@
 #include "CharmingCraft/Core/Craft/RecipeRegistry.h"
 #include "BaseCraftHandler.generated.h"
 
+class UInventoryComponent;
 class UBaseRecipeEntry;
 /**
  * 
@@ -18,4 +19,7 @@ class CHARMINGCRAFT_API UBaseCraftHandler : public UObject
 
 public:
 	TArray<UBaseRecipeEntry*> FilterRecipeByClassification(FName Classification, FRecipesContainerCollection & RecipesContainerCollection);
+
+	
+	
 };
