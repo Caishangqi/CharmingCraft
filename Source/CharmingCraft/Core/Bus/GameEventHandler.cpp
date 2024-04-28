@@ -308,7 +308,21 @@ void UGameEventHandler::OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UOb
 }
 
 void UGameEventHandler::OnCheckRecipeIngredientMatchEvent(UBaseRecipeEntry* TargetRecipe,
-	UInventoryComponent* TargetContainer)
+                                                          UInventoryComponent* TargetContainer)
 {
-	OnCheckRecipeIngredientMatch.Broadcast(TargetRecipe,TargetContainer);
+	OnCheckRecipeIngredientMatch.Broadcast(TargetRecipe, TargetContainer);
+}
+
+void UGameEventHandler::OnCraftProcessStartEvent(UBaseRecipeEntry* TargetRecipe, int32 Amount,
+                                                 UInventoryComponent* Container,
+                                                 UObject* Instigator)
+{
+	OnCraftProcessStart.Broadcast(TargetRecipe, Amount, Container, Instigator);
+}
+
+void UGameEventHandler::OnCraftProcessFinishEnvent(UBaseRecipeEntry* TargetRecipe, int32 Amount, bool bIsSuccess,
+                                                   UObject* Instigator,
+                                                   TArray<UItemStack*> RecipeOutPut)
+{
+	OnCraftProcessFinish.Broadcast(TargetRecipe, Amount, bIsSuccess, Instigator, RecipeOutPut);
 }

@@ -22,8 +22,8 @@ void UBaseRecipeContainer::NativeConstruct()
 	CraftHandler = NewObject<UBaseCraftHandler>(this, CraftHandlerClass);
 	RecipesContainerCollection = GetGameInstance_Implementation()->RecipeRegistry->RegistedRecipe.
 	                                                               FindRef(ContainerName);
-	UE_LOG(LogChamingCraftRecipe, Display, TEXT("[🏷️]  Current Num of recipe is: %d"),
-	       RecipesContainerCollection.ContainerCollection.Num());
+	// TODO: need investigate why RecipesContainerCollection is nullptr after the function stack
+	
 }
 
 FRecipesContainerCollection UBaseRecipeContainer::GetRecipesContainerCollection()
@@ -38,3 +38,10 @@ FRecipesContainerCollection UBaseRecipeContainer::GetRecipesContainerCollection(
 	}
 }
 
+bool UBaseRecipeContainer::StartProcessRecipe(UBaseRecipeEntry* TargetRecipe, int32 Amount,
+                                              UInventoryComponent* Container,
+                                              UObject* Instigator)
+{
+	GetGameEventHandler_Implementation()->OnCraftProcessStartEvent(TargetRecipe, Amount, Container, Instigator);
+	return CraftHandler->ProcessRecipe(TargetRecipe, Amount, Container, Instigator);
+}

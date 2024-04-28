@@ -19,6 +19,12 @@ class CHARMINGCRAFT_API UCraftFunctionLib : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
+	/*!
+	 * Check a Container is matach with the recipes by Material
+	 * @param TargetRecipe 
+	 * @param TargetContainer 
+	 * @return whether this recipe is craftable in the perspective of Material
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Check")
 	static bool GetCraftValidationMaterial(UBaseRecipeEntry* TargetRecipe, UInventoryComponent* TargetContainer)
 	{
@@ -36,8 +42,16 @@ public:
 		return true;
 	}
 
+	/*!
+	 * Get the ItemStack data from the specific container, inlcude Material and total amount,
+	 * max stack size ignored
+	 * @param TargetMaterial 
+	 * @param TargetContainer 
+	 * @return ItemStack data
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Check")
-	static FItemStackData GetItemStackDataInContainerByMaterial(EMaterial TargetMaterial, UInventoryComponent* TargetContainer)
+	static FItemStackData GetItemStackDataInContainerByMaterial(EMaterial TargetMaterial,
+	                                                            UInventoryComponent* TargetContainer)
 	{
 		FItemStackData ItemStackData;
 		ItemStackData.Material = TargetMaterial;
@@ -49,5 +63,36 @@ public:
 			}
 		}
 		return ItemStackData;
+	}
+
+	/*!
+	 * Get the max recipes a container could affort
+	 * @param TargetRecipe 
+	 * @param TargetContainer 
+	 * @return the max recipes number
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Check")
+	static int32 GetMaxAmountRecipeProcess(UBaseRecipeEntry* TargetRecipe, UInventoryComponent* TargetContainer)
+	{
+		TArray<int32> PerIngredientMaxAmount;
+		for (FItemStackData& Ingredient : TargetRecipe->Ingredients)
+		{
+			FItemStackData SearchedResult = GetItemStackDataInContainerByMaterial(Ingredient.Material, TargetContainer);
+			if (Ingredient.Material == SearchedResult.Material && Ingredient.Amount <= SearchedResult.Amount)
+			{
+				PerIngredientMaxAmount.Add((int)(SearchedResult.Amount / Ingredient.Amount));
+			}
+			else
+			{
+				return -1; // Invalid
+			}
+		}
+		int32 Min = PerIngredientMaxAmount[0];
+		for (int32 IngredientMaxAmount : PerIngredientMaxAmount)
+		{
+			if (IngredientMaxAmount < Min)
+			Min = IngredientMaxAmount;
+		}
+		return Min;
 	}
 };

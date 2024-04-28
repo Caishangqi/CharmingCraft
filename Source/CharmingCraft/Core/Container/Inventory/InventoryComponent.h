@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
@@ -50,6 +51,8 @@ public:
 	/* 找到物品栏可以堆叠物品的slot ItemStack 版本 */
 	UFUNCTION(BlueprintCallable)
 	virtual int32 FindSlot(UItemStack* ItemID);
+	UFUNCTION(BlueprintCallable)
+	virtual int32 FindSlotByMaterial(EMaterial TargetMaterial);
 	/* 找到物品的最大叠加 ItemStack 版本*/
 	virtual int32 GetMaxStackSize(UItemStack* ItemStack);
 	/* 叠加同类物品 ItemStack 版本*/

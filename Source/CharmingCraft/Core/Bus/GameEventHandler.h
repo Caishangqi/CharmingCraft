@@ -101,6 +101,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, In
 // Craft
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenCraftPannelDelegate, ACharacter*, PlayerCharacter, UObject *, Creator);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCheckRecipeIngredientMatchDelegate, UBaseRecipeEntry *, TargetRecipe, UInventoryComponent* ,TargetContainer);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCraftProcessStartDelegate, UBaseRecipeEntry *, TargetRecipe, int32, Amount,UInventoryComponent *, Container, UObject *, Instigator);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnCraftProcessFinishDelegate, UBaseRecipeEntry *, TargetRecipe,int32, Amount, bool, bIsSuccess, UObject *, Instigator, TArray<UItemStack*>, RecipeOutPut);
 
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
@@ -162,6 +164,10 @@ public:
 	FOnPlayerOpenCraftPannelDelegate OnPlayerOpenCraftPannel;
 	UPROPERTY(BlueprintAssignable)
 	FOnCheckRecipeIngredientMatchDelegate OnCheckRecipeIngredientMatch;
+	UPROPERTY(BlueprintAssignable)
+	FOnCraftProcessStartDelegate OnCraftProcessStart;
+	UPROPERTY(BlueprintAssignable)
+	FOnCraftProcessFinishDelegate OnCraftProcessFinish;
 	
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
@@ -274,5 +280,9 @@ public:
 	void OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
 	void OnCheckRecipeIngredientMatchEvent(UBaseRecipeEntry * TargetRecipe, UInventoryComponent* TargetContainer);
+	UFUNCTION(BlueprintCallable)
+	void OnCraftProcessStartEvent(UBaseRecipeEntry * TargetRecipe,int32 Amount, UInventoryComponent * Container, UObject * Instigator);
+	UFUNCTION(BlueprintCallable)
+	void OnCraftProcessFinishEnvent(UBaseRecipeEntry * TargetRecipe, int32 Amount, bool bIsSuccess, UObject * Instigator, TArray<UItemStack*> RecipeOutPut);
 	
 };
