@@ -8,7 +8,7 @@
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
-UUserWidgetEventHandler* UWidgetHolder::GetWidgetHolder()
+UNativeUserWidgetEventHandler* UWidgetHolder::GetWidgetHolder()
 {
 	return UserWidgetEventHandler;
 }

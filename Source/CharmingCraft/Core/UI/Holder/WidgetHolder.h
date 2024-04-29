@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "CharmingCraft/Core/UI/ICommonUI.h"
-#include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
+#include "CharmingCraft/Core/UI/Handler/NativeUserWidgetEventHandler.h"
 #include "WidgetHolder.generated.h"
 
 /*!
@@ -23,7 +23,7 @@ class CHARMINGCRAFT_API UWidgetHolder : public UUserWidget, public ICommonUI, pu
 
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UUserWidgetEventHandler> UserWidgetEventHandler;
+	TObjectPtr<UNativeUserWidgetEventHandler> UserWidgetEventHandler;
 	/*
 	 *	Creator tell UI system who create this Widget, in some case, the container invoke
 	 *	Player's inventory is different from Player invoke PlayerOpen Event
@@ -45,7 +45,7 @@ public:
 	 * @return Return the Handler UUserWidgetEventHandler
 	 */
 	UFUNCTION(BlueprintCallable)
-	UUserWidgetEventHandler* GetWidgetHolder();
+	UNativeUserWidgetEventHandler* GetWidgetHolder();
 
 	UFUNCTION(BlueprintCallable)
 	UObject* GetCreator();

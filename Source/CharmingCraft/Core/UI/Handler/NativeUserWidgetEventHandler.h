@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
-#include "UserWidgetEventHandler.generated.h"
+#include "NativeUserWidgetEventHandler.generated.h"
 
 class UWidgetHolder;
 class UGameEventHandler;
@@ -15,7 +15,7 @@ class ADCharacter;
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API UUserWidgetEventHandler : public UUserWidget
+class CHARMINGCRAFT_API UNativeUserWidgetEventHandler : public UUserWidget
 {
 	GENERATED_BODY()
 

@@ -215,7 +215,7 @@ The Resource Gathering System enables players to collect various resources in th
 
 ![Spawn](https://github.com/Caishangqi/CharmingCraft/assets/39553613/b2fe8dd6-fe09-480e-84ab-e2dba4aedb46)
 <p align="center">
-World Spawn - Build using blender and Unreal Cube grid tool
+Realm - Build using blender and Unreal Cube grid tool
 </p>
 <p align="center">
 <img src = "https://i.imgur.com/EF6t6WA.png" alt="">
@@ -227,18 +227,17 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 
 </p>
 
+![image](https://github.com/Caishangqi/CharmingCraft/assets/39553613/20cb46ac-62e3-4b77-98b0-c05b269268b3)
+<p align="center">
+Loford - A town with houses and npcs, Build using blender and Unreal Cube grid tool
+
+</p>
+
 ## Progress
 
 **Stability**: 🟩 Stable / 🟨 Unstable / ❔ Not Test / 🟥 Failed
 
-- Implementation of projectile blueprint templates based on C++ 🟩
-- Interactive interface and character interaction functionality 🟩
-- Chest opening feature and animation implemented through the interactive interface 🟩
-- Health bar decay implemented using event binding and UI parameter exposure 🟩
-- Digital animations realized through the animation system 🟨
-- Dynamic materials based on mathematical functions 🟩
 - Implementation of chests and keys using GameTags 🟩
-- Block skill (R key) implemented using GameTags 🟩
 - Material highlight and glow upon impact 🟩
 - Interactive item highlight and player obstruction glow 🟩
 - Inventory system and item prototypes 🟩
@@ -259,6 +258,8 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 - Build system and visual enhancement support place, rotate and break 🟩
 - Chunk Based Resource Generation 🟩
 - Level Instance streaming load levels and travel player 🟩
+- Map Travel system combined with level loaded and unloaded 🟩
+- Crafting system that support multiple input and output 🟩
 
 ## Content and Mechanism
 
@@ -271,10 +272,10 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
 | Game context serialization                        | Highest  |   ✅   |
 | Complete attribute UI                             |  Normal  |   ✅   |
 | Per Item Ability System                           |  Normal  |   ✅   |
-| Quest system with related NPCs                    |  Normal  |  📌   |
+| Quest system with related NPCs                    |  Normal  |  📝   |
 | PCG Random dungeons                               |  Normal  |  📌   |
-| Animals and monster iteration                     |  Normal  |  📌   |
-| Crafting System and RecipeRegistry                |  Normal  |   📝   |
+| Animals and monster iteration                     |  Normal  |  📝   |
+| Crafting System and RecipeRegistry                |  Normal  |   ✅   |
 | Time system: Ingame Date and Days                 |  Normal  |   📌   |
 | Resource collection system, ores, trees, farmland |  Normal  |   ✅   |
 | Biome: Respawn of monsters, resources, creatures  |   Low    |   ✅   |
@@ -310,6 +311,7 @@ Pub Interior - Build using blender and Unreal Cube grid tool, Design reference �
       - Container (Widget and Container hold itemstack)
       - Damage (RPG Damage system)
       - Decoration (Decoration system)
+      - Craft (Craft system)
       - Entity (Drop Entity and Creatures template)
       - GameMode (Gamemode for different cases)
       - Interact (Interact system)
@@ -355,8 +357,6 @@ project's [Wiki](https://github.com/Caishangqi/CharmingCraft/wiki).
 ### Animation Assets
 
 - [Fast Create Animation Asset](https://www.mixamo.com/)
-
-### Components and Native
 
 ## Resource
 

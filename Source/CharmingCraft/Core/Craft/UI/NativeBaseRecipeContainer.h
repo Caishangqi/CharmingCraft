@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Craft/RecipeRegistry.h"
 #include "CharmingCraft/Core/UI/Holder/WidgetHolder.h"
-#include "BaseRecipeContainer.generated.h"
+#include "NativeBaseRecipeContainer.generated.h"
 
 class UBaseCraftHandler;
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API UBaseRecipeContainer : public UWidgetHolder
+class CHARMINGCRAFT_API UNativeBaseRecipeContainer : public UWidgetHolder
 {
 	GENERATED_BODY()
 

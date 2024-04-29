@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Core/UI/Handler/UserWidgetEventHandler.h"
+#include "CharmingCraft/Core/UI/Handler/NativeUserWidgetEventHandler.h"
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
@@ -70,7 +70,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "BuildModuleManager")
 	UBuildModuleManager* GetBuildModuleManager() const { return BuildModuleManager; }
 	UFUNCTION(BlueprintCallable, Category = "WidgetEventHandler")
-	UUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
+	UNativeUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
 	UFUNCTION(BlueprintCallable, Category = "CameraManager")
 	UCameraManager* GetCameraManager() const { return CameraManager; }
 	UFUNCTION(BlueprintCallable, Category = "RecipeRegistry")
@@ -101,7 +101,7 @@ public:
 	UPlayerModeManager* PlayerModeManager;
 
 	UPROPERTY()
-	TObjectPtr<UUserWidgetEventHandler> UserWidgetEventHandler;
+	TObjectPtr<UNativeUserWidgetEventHandler> UserWidgetEventHandler;
 
 	UPROPERTY()
 	UBuildModuleManager* BuildModuleManager;
