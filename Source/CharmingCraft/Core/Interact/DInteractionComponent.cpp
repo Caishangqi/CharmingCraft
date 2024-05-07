@@ -2,12 +2,12 @@
 
 
 #include "DInteractionComponent.h"
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "../Interface/DGameplayInterface.h"
 #include "CharmingCraft/CharmingCraft.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
-#include "CharmingCraft/Core/Entity/Creature/Creature.h"
+#include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/InteractObject.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
@@ -30,7 +30,7 @@ UDInteractionComponent::UDInteractionComponent(): AIController(nullptr), Player(
 void UDInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Player = Cast<ADCharacter>(GetOuter());
+	Player = Cast<ANativePlayerCharacter>(GetOuter());
 	TObjectPtr<UCharmingCraftInstance> GameInstance = Player->GetGameInstance_Implementation();
 	GameInstance->GetGameEventHandler()->OnPlayerMovement.AddDynamic(
 		this, &UDInteractionComponent::OnPlayerMovementEvent);
@@ -71,7 +71,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			if (Distance < CastedObject->MinimumInteractRange)
 			{
 				IDGameplayInterface::Execute_Interact(HitActor, Player);
-				Cast<ADCharacter>(GetOwner())->InventoryComponent->OnItemInteract(HitActor, Player);
+				Cast<ANativePlayerCharacter>(GetOwner())->InventoryComponent->OnItemInteract(HitActor, Player);
 			}
 			else
 			{

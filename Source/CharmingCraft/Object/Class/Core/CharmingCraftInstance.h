@@ -13,7 +13,7 @@ class UBuildModuleManager;
 class UPlayerModeManager;
 class UGameEventHandler;
 class UWorldManager;
-class ADCharacter;
+class ANativePlayerCharacter;
 class URuntimeGameData;
 /**
  * 
@@ -44,7 +44,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Data")
 	UDataTable* RegisteredItems;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
-	TObjectPtr<ADCharacter> PlayerCharacter;
+	TObjectPtr<ANativePlayerCharacter> PlayerCharacter;
 	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
 	TObjectPtr<URecipeRegistry> RecipeRegistry;

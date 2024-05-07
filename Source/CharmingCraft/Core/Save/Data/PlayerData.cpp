@@ -3,7 +3,7 @@
 
 #include "PlayerData.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "RuntimeGameData.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
@@ -35,7 +35,7 @@ bool UPlayerData::PerformSavePlayerDataToSlot(const UCharmingCraftInstance* Game
 	}
 
 	// Save Attribute Component
-	TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(RuntimeGameData->PlayerCharacter);
+	TObjectPtr<ANativePlayerCharacter> PlayerCharacter = Cast<ANativePlayerCharacter>(RuntimeGameData->PlayerCharacter);
 	if (PlayerCharacter)
 	{
 		AttributeComponentData = PlayerCharacter->AttributeComp->Serialize_Implementation();

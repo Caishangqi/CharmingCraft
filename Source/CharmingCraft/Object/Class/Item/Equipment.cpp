@@ -3,7 +3,7 @@
 
 #include "Equipment.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
@@ -21,9 +21,9 @@ void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 	// UE_LOG(LogChamingCraftAction, Display,
 	//        TEXT("[⚔️]  UEquipment::OnEquip =		%s"),
 	//        *Instigator->GetName());
-	if (Instigator->IsA(ADCharacter::StaticClass()))
+	if (Instigator->IsA(ANativePlayerCharacter::StaticClass()))
 	{
-		TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(Instigator);
+		TObjectPtr<ANativePlayerCharacter> PlayerCharacter = Cast<ANativePlayerCharacter>(Instigator);
 		if (!OnEquipItem->ItemMeta->BindItemDynamicSkill.IsEmpty())
 		{
 			PlayerCharacter->ActionComponent->AddItemDynamicSkills(OnEquipItem->ItemMeta);
@@ -34,9 +34,9 @@ void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 
 void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)
 {
-	if (Instigator->IsA(ADCharacter::StaticClass()))
+	if (Instigator->IsA(ANativePlayerCharacter::StaticClass()))
 	{
-		TObjectPtr<ADCharacter> PlayerCharacter = Cast<ADCharacter>(Instigator);
+		TObjectPtr<ANativePlayerCharacter> PlayerCharacter = Cast<ANativePlayerCharacter>(Instigator);
 		if (UnEquipItem->ItemMeta->ItemDynamicSkill)
 		{
 			PlayerCharacter->ActionComponent->RemoveItemDynamicSkills(UnEquipItem->ItemMeta);
@@ -109,7 +109,7 @@ void UEquipment::OnEquipmentDuringUse()
 void UEquipment::OnEquipmentHit(UItemStack* EquipmentItemStack, APawn* Instigator, AActor* HitEntity)
 {
 	// TODO: Put Damage Handle into separate class
-	FPlayerAttribute PlayerAttribute = Cast<ADCharacter>(Instigator)->AttributeComp->GetPlayerAttributeData();
+	FPlayerAttribute PlayerAttribute = Cast<ANativePlayerCharacter>(Instigator)->AttributeComp->GetPlayerAttributeData();
 
 	FEquipmentAttribute EquipmentAttribute = Cast<UIntegratedMeta>(EquipmentItemStack->ItemMeta)->EquipmentAttribute;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h"
-#include "CharmingCraft/Core/Entity/Creature/Creature.h"
+#include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "FBiomeData.generated.h"
 
 USTRUCT(BlueprintType)
@@ -21,7 +21,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Entity Actor Class")
 	TSubclassOf<AResourceEntityActor> ResourceEntityActorClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Creature Entity Actor Class")
-	TSubclassOf<ACreature> CreatureEntityActorClass;
+	TSubclassOf<ANativeCreature> CreatureEntityActorClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Data")
 	int32 MaxPerBiome;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Data")

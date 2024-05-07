@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Core/Entity/Creature/Creature.h"
+#include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "CharmingCraft/Core/Resource/Data/FBiomeData.h"
 #include "GameFramework/Volume.h"
 #include "Biome.generated.h"
@@ -31,7 +31,7 @@ public:
 
 	// Record the ResourceEntityActor, can be watched by event system
 	TArray<TObjectPtr<AResourceEntityActor>> ResourceEntityActorPool;
-	TArray<TObjectPtr<ACreature>> CreaturesPool;
+	TArray<TObjectPtr<ANativeCreature>> CreaturesPool;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UGameEventHandler> GameEventHandler;

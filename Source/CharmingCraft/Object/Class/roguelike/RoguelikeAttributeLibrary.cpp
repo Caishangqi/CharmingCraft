@@ -3,7 +3,7 @@
 
 #include "RoguelikeAttributeLibrary.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 
 bool URoguelikeAttributeLibrary::IsAttackCriticFloat(float CriticValue)

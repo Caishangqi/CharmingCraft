@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerAttributeWidget.generated.h"
 
-class ADCharacter;
+class ANativePlayerCharacter;
 /**
  * 
  */
@@ -17,7 +17,7 @@ class CHARMINGCRAFT_API UPlayerAttributeWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<ADCharacter> Player;
+	TObjectPtr<ANativePlayerCharacter> Player;
 
 	virtual void NativePreConstruct() override;
 	virtual void NativeConstruct() override;

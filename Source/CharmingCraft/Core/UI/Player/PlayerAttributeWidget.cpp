@@ -3,7 +3,7 @@
 
 #include "PlayerAttributeWidget.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 void UPlayerAttributeWidget::NativePreConstruct()
@@ -19,7 +19,7 @@ void UPlayerAttributeWidget::NativeConstruct()
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (PlayerController)
 	{
-		ADCharacter* Character = Cast<ADCharacter>(PlayerController->GetPawn());
+		ANativePlayerCharacter* Character = Cast<ANativePlayerCharacter>(PlayerController->GetPawn());
 		if (Character)
 		{
 			Player = Character;

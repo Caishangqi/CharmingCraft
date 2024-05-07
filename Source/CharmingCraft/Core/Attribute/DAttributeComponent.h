@@ -51,6 +51,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float Mana;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
+	float MovementSpeed;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	int32 Level;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Attributes")
 	float CurrentLevelXP;
@@ -110,7 +112,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
-
+	
 	FPlayerAttribute GetPlayerAttributeData();
 
 	UFUNCTION(BlueprintCallable)

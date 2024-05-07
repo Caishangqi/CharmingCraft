@@ -3,7 +3,7 @@
 
 #include "ModifyPropertyBuffModel.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Buff/BuffInfo.h"
 
 

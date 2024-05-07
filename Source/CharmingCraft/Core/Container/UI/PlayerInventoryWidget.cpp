@@ -3,7 +3,7 @@
 
 #include "PlayerInventoryWidget.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"

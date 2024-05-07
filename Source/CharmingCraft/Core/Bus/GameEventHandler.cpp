@@ -16,7 +16,7 @@
 
 UGameEventHandler::UGameEventHandler()
 {
-	static ConstructorHelpers::FClassFinder<ADCharacter> BlueprintClass(
+	static ConstructorHelpers::FClassFinder<ANativePlayerCharacter> BlueprintClass(
 		TEXT("/Game/CharmingCraft/PlayerCharacter.PlayerCharacter"));
 
 	if (BlueprintClass.Class != nullptr)
@@ -99,7 +99,7 @@ void UGameEventHandler::OnPlayerJoinEvent()
 
 	TObjectPtr<UCharmingCraftInstance> CharmingCraftInstance = Cast<UCharmingCraftInstance>(GetOuter());
 	UPlayerData* PlayerData = CharmingCraftInstance->GetSaveManager()->GetCurrentSaveSlot().PlayerData;
-	TObjectPtr<ADCharacter> InGamePlayerCharacter = Cast<ADCharacter>(
+	TObjectPtr<ANativePlayerCharacter> InGamePlayerCharacter = Cast<ANativePlayerCharacter>(
 		CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter);
 	// Set Player Hidden First
 	CharmingCraftInstance->GetRuntimeGameData()->PlayerCharacter->SetActorHiddenInGame(true);
@@ -202,6 +202,11 @@ void UGameEventHandler::OnResourceEntityBreakEvent(AActor* Instigator, AResource
 void UGameEventHandler::OnResourceEntityPlaceEvent(UObject* Instigator, AResourceEntityActor* TargetResourceEntity)
 {
 	OnResourceEntityPlace.Broadcast(Instigator, TargetResourceEntity);
+}
+
+void UGameEventHandler::OnPlayerDeathEvent(UObject* Instigator, ANativePlayerCharacter* TargetPlayer)
+{
+	OnPlayerDeath.Broadcast(Instigator, TargetPlayer);
 }
 
 void UGameEventHandler::OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator)

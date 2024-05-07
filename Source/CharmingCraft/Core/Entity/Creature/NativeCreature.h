@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagAssetInterface.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/UI/IUIProcess.h"
 #include "CharmingCraft/Interface/DGameplayInterface.h"
 #include "GameFramework/Character.h"
-#include "Creature.generated.h"
+#include "NativeCreature.generated.h"
 
+class UDActionComponent;
 class UHealthIndicator;
 class UDamageIndicator;
 class UBuffHandlerComponent;
@@ -21,13 +23,14 @@ class UBuffHandlerComponent;
  *	Editor BP_Creature
  */
 UCLASS(Blueprintable, BlueprintType)
-class CHARMINGCRAFT_API ACreature : public ACharacter, public IDamageable, public IDGameplayInterface, public IUIProcess
+class CHARMINGCRAFT_API ANativeCreature : public ACharacter, public IDamageable, public IDGameplayInterface,
+                                          public IUIProcess, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ACreature();
+	ANativeCreature();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="AI")
 	TObjectPtr<UBehaviorTree> BehaviourTree;
@@ -38,6 +41,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="UI")
 	TObjectPtr<UHealthIndicator> HealthIndicator;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Action")
+	TObjectPtr<UDActionComponent> ActionComponent;
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Attribute")
 	TObjectPtr<UDAttributeComponent> CreatureAttributeComponent;
 
@@ -47,14 +53,27 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResponseMontage")
 	TMap<EDamageResponse, TObjectPtr<UAnimMontage>> HitResponseMontage;
 
+public: // Data
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Spawn")
+	FVector SpawnPoint;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Spawn")
+	bool bReturnToSpawn = true;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditAnywhere, Category="Tags")
+	FGameplayTagContainer GameplayTags;
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

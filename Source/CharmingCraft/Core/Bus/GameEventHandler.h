@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "../Core/Save/Data/FSaveSlotInfo.h"
 #include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h"
@@ -67,6 +67,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityBreakDelegate, AAc
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityPlaceDelegate, UObject*, Instigator,
                                              AResourceEntityActor*, TargetResourceEntity);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerDeathDelegate, UObject*, Instigator,ANativePlayerCharacter*, TargetPlayer);
 
 // Player
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorOnEquipmentDelegate, UObject *, Instigator, UItemStack *,
@@ -153,6 +154,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerMovementDelegate OnPlayerMovement;
 	UPROPERTY(BlueprintAssignable)
+	FOnPlayerDeathDelegate OnPlayerDeath;
+	UPROPERTY(BlueprintAssignable)
 	FOnPlayerOpenTravelMapDelegate OnPlayerOpenTravelMap;
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerTravelToRegionDelegate OnPlayerTravelToRegion;
@@ -195,7 +198,7 @@ public:
 	FOnItemDropDelegate OnItemDrop;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ADCharacter> BlueprintCharacterClassReference;
+	TSubclassOf<ANativePlayerCharacter> BlueprintCharacterClassReference;
 
 	// World Management
 	UFUNCTION(BlueprintCallable)
@@ -244,6 +247,8 @@ public:
 	void OnResourceEntityBreakEvent(AActor* Instigator, AResourceEntityActor* TargetResourceEntity);
 	UFUNCTION(BlueprintCallable)
 	void OnResourceEntityPlaceEvent(UObject* Instigator, AResourceEntityActor* TargetResourceEntity);
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerDeathEvent(UObject* Instigator, ANativePlayerCharacter* TargetPlayer);
 	// Building
 	UFUNCTION(BlueprintCallable)
 	void OnBuildPreviewTraceEvent(UItemStack* PreviewItemStack, ACharacter* Instigator);

@@ -3,7 +3,7 @@
 
 #include "DActionComponent.h"
 #include "DAction.h"
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
@@ -36,7 +36,7 @@ void UDActionComponent::BeginPlay()
 		AddBindAction(Pair.Key, Pair.Value);
 	}
 
-	TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwner());
+	TObjectPtr<ANativePlayerCharacter> Player = Cast<ANativePlayerCharacter>(GetOwner());
 
 	// ...
 
@@ -61,6 +61,11 @@ void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	const FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGamePlayTags.ToStringSimple();
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 	// ...
+}
+
+void UDActionComponent::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+{
+	TagContainer = ActiveGamePlayTags;
 }
 
 

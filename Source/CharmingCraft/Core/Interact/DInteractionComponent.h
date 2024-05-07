@@ -8,7 +8,7 @@
 #include "DInteractionComponent.generated.h"
 
 
-class ADCharacter;
+class ANativePlayerCharacter;
 class ADPlayerAIController;
 
 UCLASS(Blueprintable)
@@ -63,7 +63,7 @@ public:
 
 private:
 	UPROPERTY()
-	ADCharacter* Player;
+	ANativePlayerCharacter* Player;
 
 protected:
 	// Called when the game starts

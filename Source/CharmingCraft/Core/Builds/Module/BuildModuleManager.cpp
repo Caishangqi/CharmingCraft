@@ -160,7 +160,7 @@ bool UBuildModuleManager::PlaceBuildPreview(ACharacter* Instigator)
 		BlockEntityActor->EnableBlockCollision();
 		IBreakableInterface::Execute_OnBlockPlace(BlockEntityActor, Instigator, BlockEntityActor);
 		BlockEntityActor->bIsPlaced = true;
-		TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(Instigator);
+		TObjectPtr<ANativePlayerCharacter> Player = Cast<ANativePlayerCharacter>(Instigator);
 		if (Player->InventoryComponent->RemoveInventoryByItemStack(CachedBuildItemStack, 1) != 0)
 		{
 			BlockEntityActor = nullptr;

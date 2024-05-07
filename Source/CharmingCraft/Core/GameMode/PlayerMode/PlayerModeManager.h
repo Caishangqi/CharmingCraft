@@ -8,7 +8,7 @@
 #include "UObject/Object.h"
 #include "PlayerModeManager.generated.h"
 
-class ADCharacter;
+class ANativePlayerCharacter;
 /**
  * 
  */

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "DAction.h"
 #include "NativeItemAction.generated.h"
-class ADCharacter;
+class ANativePlayerCharacter;
 class UCharmingCraftInstance;
 class UItemStack;
 /**

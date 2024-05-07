@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h" //核心UE运行环境下的要素
+#include "GameplayTagAssetInterface.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "GameFramework/Character.h"
-#include "DCharacter.generated.h" //自己生成的，恶心代码
+#include "NativePlayerCharacter.generated.h"
 
 
 class UNavigationInvokerComponent;
@@ -26,7 +27,7 @@ class UDActionComponent;
  * https://sketchfab.com/3d-models/minecraft-player-slim-4e9962a0a094494ab3e85cd688f3d74d
  */
 UCLASS() //Part of UE Property System
-class CHARMINGCRAFT_API ADCharacter : public ACharacter, public IDamageable, public ICoreManagerInterface
+class CHARMINGCRAFT_API ANativePlayerCharacter : public ACharacter, public IDamageable, public ICoreManagerInterface, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY() //确保放在第一行
 protected:
@@ -38,7 +39,7 @@ protected:
 
 public:
 	// Sets default values for this character's properties
-	ADCharacter();
+	ANativePlayerCharacter();
 	/*
 	 * Constructor called when the Object is initialized
 	 * then call BeginPlay() when everything is loaded
@@ -120,6 +121,10 @@ public:
 	/* 槽位管理器 (可以考虑)*/
 	// TODO 添加槽位管理组件，这些组件包括格雷StaticMeshComponent 对应的骨骼Socket
 
+protected:
+	UPROPERTY(EditAnywhere, Category="Tags")
+	FGameplayTagContainer GameplayTags;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -143,6 +148,8 @@ public:
 
 	virtual void OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData) override;
 
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
+	
 	virtual UDAttributeComponent* GetAttributeComponent_Implementation() override;
 
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;

@@ -63,7 +63,7 @@ public:
 			UGameplayStatics::BeginDeferredActorSpawnFromClass(RenderWorld,
 			                                                   AItemTargetRenderActor::StaticClass(), SpawnTransform));
 		// ItemEntityActor
-		TObjectPtr<AItemEntityActor> ItemEntityActor = InputMeta->CreateItemEntityActor(RenderWorld,nullptr);
+		TObjectPtr<AItemEntityActor> ItemEntityActor = InputMeta->CreateItemEntityActor(RenderWorld, nullptr);
 
 		/* Prepare Spawn Weapon Actor form Meta, spawn from static class */
 		// Modify the Actor's properties here
@@ -145,12 +145,28 @@ public:
 		FLevelStreamingDynamicResult PlayerCurrentLevel = Cast<UCharmingCraftInstance>(
 			                                                  UGameplayStatics::GetGameInstance(Instigator))->
 		                                                  GetWorldManager()->GetPlayerCurrentLevel(
-			                                                  Cast<APawn>(UGameplayStatics::GetPlayerCharacter(Instigator, 0)));
-		TObjectPtr<ADropItem> DropItemEntity = Cast<ADropItem>(
-			UGameplayStatics::BeginDeferredActorSpawnFromClass(
-				Instigator, ADropItem::StaticClass(),
-				SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined,
-				PlayerCurrentLevel.LoadedWorld->GetLevelScriptActor()));
+			                                                  Cast<APawn>(
+				                                                  UGameplayStatics::GetPlayerCharacter(Instigator, 0)));
+		// If is not in the test environment that PlayerCurrentLevel is valid
+		TObjectPtr<ADropItem> DropItemEntity;
+		if (PlayerCurrentLevel.LoadedWorld)
+		{
+			DropItemEntity = Cast<ADropItem>(
+				UGameplayStatics::BeginDeferredActorSpawnFromClass(
+					Instigator, ADropItem::StaticClass(),
+					SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined,
+					PlayerCurrentLevel.LoadedWorld->GetLevelScriptActor()));
+		}
+		// If in the test envitonment that open a level through editor not
+		// form persistence level so that the PlayerCurrentLevel is not handle
+		// by world manager (TEST　Only)
+		else
+		{
+			DropItemEntity = Cast<ADropItem>(
+				UGameplayStatics::BeginDeferredActorSpawnFromClass(Instigator, ADropItem::StaticClass(),
+				                                                   SpawnTransform));
+		}
+
 
 		if (DropItemEntity)
 		{

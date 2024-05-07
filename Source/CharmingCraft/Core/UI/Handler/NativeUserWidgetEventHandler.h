@@ -10,7 +10,7 @@
 class UWidgetHolder;
 class UGameEventHandler;
 class UCharmingCraftInstance;
-class ADCharacter;
+class ANativePlayerCharacter;
 /**
  * 
  */

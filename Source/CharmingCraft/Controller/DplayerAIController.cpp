@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "DPlayerAIController.h"
 #include "CharmingCraft/Core/Interact/DInteractionComponent.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -14,7 +14,7 @@
 void ADPlayerAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	//Super::OnMoveCompleted(RequestID, Result);
-	ADCharacter* Player = Cast<ADCharacter>(GetPawn());
+	ANativePlayerCharacter* Player = Cast<ANativePlayerCharacter>(GetPawn());
 
 	//TODO: SEVER! YOU MUST FIX DOUBLE INTERACT BUG
 	

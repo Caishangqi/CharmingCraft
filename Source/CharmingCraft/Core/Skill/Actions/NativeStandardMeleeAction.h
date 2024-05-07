@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "NativeEquipmentAction.h"
 #include "NativeStandardMeleeAction.generated.h"
-class ADCharacter;
+class ANativePlayerCharacter;
 class UCharmingCraftInstance;
 /**
  * Handle Melee Action for an Item, especially the melee weapon

@@ -1,15 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Creature.h"
+#include "NativeCreature.h"
 
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
+#include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Core/UI/HealthIndicator.h"
 #include "CharmingCraft/Object/Components/UI/DamageIndicator.h"
 
 
 // Sets default values
-ACreature::ACreature()
+ANativeCreature::ANativeCreature()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -19,34 +20,43 @@ ACreature::ACreature()
 	HealthIndicator = CreateDefaultSubobject<UHealthIndicator>("HealthIndicator");
 	HealthIndicator->SetupAttachment(GetRootComponent());
 	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
+	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComp");
 }
 
 // Called when the game starts or when spawned
-void ACreature::BeginPlay()
+void ANativeCreature::BeginPlay()
 {
 	Super::BeginPlay();
 	/* Fix 2014/1/13 Bind Delegate multiply time when re stream the level */
 	if (!CreatureAttributeComponent->OnHealthChanged.IsBound())
 	{
-		CreatureAttributeComponent->OnHealthChanged.AddDynamic(this, &ACreature::HandleHealthChanged);
+		CreatureAttributeComponent->OnHealthChanged.AddDynamic(this, &ANativeCreature::HandleHealthChanged);
 	}
 }
 
 
 // Called every frame
-void ACreature::Tick(float DeltaTime)
+void ANativeCreature::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
+void ANativeCreature::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+{
+	TagContainer = GameplayTags;
+	FGameplayTagContainer ComponentTags;
+	ActionComponent->GetOwnedGameplayTags(ComponentTags);
+	TagContainer.AppendTags(ComponentTags);
+}
+
 
 // Called to bind functionality to input
-void ACreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ANativeCreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ACreature::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
+void ANativeCreature::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
 	if (!CreatureAttributeComponent->IsDead)
 	{
@@ -55,27 +65,27 @@ void ACreature::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitDa
 	}
 }
 
-void ACreature::HandleDamageIndicator_Implementation(FHitData HitData)
+void ANativeCreature::HandleDamageIndicator_Implementation(FHitData HitData)
 {
 	IUIProcess::HandleDamageIndicator_Implementation(HitData);
 }
 
-void ACreature::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
+void ANativeCreature::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
                                                    float Health, float HealthDelta)
 {
 	IDamageable::HandleHealthChanged_Implementation(InstigatorPawn, OwningComp, Health, HealthDelta);
 }
 
 
-void ACreature::HandleDeath_Implementation(APawn* InstigatorPawn)
+void ANativeCreature::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
 }
 
-bool ACreature::IsDead_Implementation()
+bool ANativeCreature::IsDead_Implementation()
 {
 	return CreatureAttributeComponent->IsDead;
 }
 
-void ACreature::HitReaction_Implementation(EDamageResponse Response)
+void ANativeCreature::HitReaction_Implementation(EDamageResponse Response)
 {
 }

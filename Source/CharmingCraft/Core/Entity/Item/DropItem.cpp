@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DropItem.h"
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
@@ -108,7 +108,7 @@ void ADropItem::Interact_Implementation(APawn* InstigatorPawn)
 	UE_LOG(LogTemp, Warning, TEXT("ADropItem::Interact_Implementation"));
 
 	//Super::Interact_Implementation(InstigatorPawn);
-	ADCharacter* Player = Cast<ADCharacter>(InstigatorPawn);
+	ANativePlayerCharacter* Player = Cast<ANativePlayerCharacter>(InstigatorPawn);
 
 	UE_LOG(LogTemp, Warning, TEXT("ADropItem::Interact_Implementation -> %s, %d"),
 	       *this->ItemStack->GetItemClass()->DisplayName.ToString(), this->ItemStack->Amount);

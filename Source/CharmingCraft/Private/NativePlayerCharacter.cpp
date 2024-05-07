@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 
 
 #include "NavigationInvokerComponent.h"
@@ -18,7 +18,7 @@
 #include "Components/PostProcessComponent.h"
 #include "Kismet/GameplayStatics.h"
 // Sets default values
-ADCharacter::ADCharacter()
+ANativePlayerCharacter::ANativePlayerCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -78,7 +78,7 @@ ADCharacter::ADCharacter()
 }
 
 // Called when the game starts or when spawned
-void ADCharacter::BeginPlay()
+void ANativePlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -94,12 +94,12 @@ void ADCharacter::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("Unable to set player AIController to Pawn"));
 	}
 
-	AttributeComp->OnHealthChanged.AddDynamic(this, &ADCharacter::HandleHealthChanged);
+	AttributeComp->OnHealthChanged.AddDynamic(this, &ANativePlayerCharacter::HandleHealthChanged);
 	InteractionComp->AIController = PlayerAIController;
 }
 
 
-void ADCharacter::MoveForward(float Value)
+void ANativePlayerCharacter::MoveForward(float Value)
 {
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
@@ -111,7 +111,7 @@ void ADCharacter::MoveForward(float Value)
 	AddMovementInput(ControlRot.Vector(), Value);
 }
 
-void ADCharacter::MoveRight(float Value)
+void ANativePlayerCharacter::MoveRight(float Value)
 {
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Pitch = 0.0f;
@@ -126,12 +126,12 @@ void ADCharacter::MoveRight(float Value)
 	AddMovementInput(RightVector, Value);
 }
 
-void ADCharacter::PrimaryInteract()
+void ANativePlayerCharacter::PrimaryInteract()
 {
 	//InteractionComp->PrimaryInteract();
 }
 
-void ADCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+void ANativePlayerCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
 	if (ensureAlways(ClassToSpawn))
 	{
@@ -173,29 +173,29 @@ void ADCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	}
 }
 
-void ADCharacter::Dash_TimeElapsed()
+void ANativePlayerCharacter::Dash_TimeElapsed()
 {
 	//SpawnProjectile(ADDashProjectile);
 }
 
-void ADCharacter::SprintStart()
+void ANativePlayerCharacter::SprintStart()
 {
 	ActionComponent->StartActionByName(this, "Sprint");
 }
 
-void ADCharacter::SprintStop()
+void ANativePlayerCharacter::SprintStop()
 {
 	ActionComponent->StopActionByName(this, "Sprint");
 }
 
-void ADCharacter::PrintDebugMessage()
+void ANativePlayerCharacter::PrintDebugMessage()
 {
 	// /* 测试背包 */
 	// UE_LOG(LogTemp, Warning, TEXT("should print something"));
 	// UInventoryComponent->PrintDebugMessage();
 }
 
-void ADCharacter::PrimaryAttack_TimeElapsed()
+void ANativePlayerCharacter::PrimaryAttack_TimeElapsed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Enter PrimaryAttack_TimeElapsed"));
 	/*!
@@ -215,7 +215,7 @@ void ADCharacter::PrimaryAttack_TimeElapsed()
 }
 
 // Called every frame
-void ADCharacter::Tick(float DeltaTime)
+void ANativePlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -240,12 +240,12 @@ void ADCharacter::Tick(float DeltaTime)
 
 
 // Called to bind functionality to input
-void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ANativePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	//绑定游戏内的轴，第一个参数是名字, 第二个参数是目标, 第三个参数是触发后激活的函数
-	PlayerInputComponent->BindAxis("MoveForward", this, &ADCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ANativePlayerCharacter::MoveForward);
 
 	//绑定水平旋转, yaw是水平, pitch是垂直旋转, 这里用的Pawn上的方法
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
@@ -253,25 +253,25 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	 * 这个方法本质上移动的是Controller的位置，但是UE的人物蓝图有一个属性 Pawn.Use Controller Rotation
 	 * 开启这个会让角色基于控制器进行旋转
 	 */
-	PlayerInputComponent->BindAxis("MoveRight", this, &ADCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ANativePlayerCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ADCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ANativePlayerCharacter::Jump);
 
-	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ADCharacter::PrintDebugMessage);
+	PlayerInputComponent->BindAction("PrintDebug", IE_Pressed, this, &ANativePlayerCharacter::PrintDebugMessage);
 }
 
-void ADCharacter::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
+void ANativePlayerCharacter::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
                                                      float Health, float HealthDelta)
 {
 	IDamageable::HandleHealthChanged_Implementation(InstigatorPawn, OwningComp, Health, HealthDelta);
 }
 
-void ADCharacter::HandleDeath_Implementation(APawn* InstigatorPawn)
+void ANativePlayerCharacter::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
 	IDamageable::HandleDeath_Implementation(InstigatorPawn);
 }
 
-void ADCharacter::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
+void ANativePlayerCharacter::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData HitData)
 {
 	if (!AttributeComp->IsDead)
 	{
@@ -279,22 +279,30 @@ void ADCharacter::OnActionHit_Implementation(APawn* InstigatorPawn, FHitData Hit
 	}
 }
 
-UDAttributeComponent* ADCharacter::GetAttributeComponent_Implementation()
+void ANativePlayerCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+{
+	TagContainer = GameplayTags;
+	FGameplayTagContainer ComponentTags;
+	ActionComponent->GetOwnedGameplayTags(ComponentTags);
+	TagContainer.AppendTags(ComponentTags);
+}
+
+UDAttributeComponent* ANativePlayerCharacter::GetAttributeComponent_Implementation()
 {
 	return AttributeComp;
 }
 
-UCharmingCraftInstance* ADCharacter::GetGameInstance_Implementation()
+UCharmingCraftInstance* ANativePlayerCharacter::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
 }
 
-UWorldManager* ADCharacter::GetWorldManager_Implementation()
+UWorldManager* ANativePlayerCharacter::GetWorldManager_Implementation()
 {
 	return GetGameInstance_Implementation()->GetWorldManager();
 }
 
-UGameEventHandler* ADCharacter::GetGameEventHandler_Implementation()
+UGameEventHandler* ANativePlayerCharacter::GetGameEventHandler_Implementation()
 {
 	return GetGameInstance_Implementation()->GetGameEventHandler();
 }

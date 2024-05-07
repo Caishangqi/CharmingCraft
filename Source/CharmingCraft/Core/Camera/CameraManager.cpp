@@ -3,7 +3,7 @@
 
 #include "CameraManager.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -49,7 +49,7 @@ bool UCameraManager::SwitchPlayerCameraView(APawn* Player, ECameraPerspectiveEnu
 	// 如果找到了相应的行
 	if (CameraPerspective)
 	{
-		TObjectPtr<ADCharacter> PlayerCharacter = Player ? Cast<ADCharacter>(Player) : nullptr;
+		TObjectPtr<ANativePlayerCharacter> PlayerCharacter = Player ? Cast<ANativePlayerCharacter>(Player) : nullptr;
 		if (PlayerCharacter)
 		{
 			// 获取摄像机组件

@@ -3,12 +3,12 @@
 
 #include "ContainerWidget.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 
 void UContainerWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	// TObjectPtr<ADCharacter> Player = Cast<ADCharacter>(GetOwningLocalPlayer());
+	// TObjectPtr<ANativePlayerCharacter> Player = Cast<ANativePlayerCharacter>(GetOwningLocalPlayer());
 	// if (Player)
 	// {
 	// 	ContainInventory = Player->UInventoryComponent;

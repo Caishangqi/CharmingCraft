@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagAssetInterface.h"
 #include "GameplayTagContainer.h"
 #include "CharmingCraft/Core/Item/Meta/ItemMeta.h"
 #include "Components/ActorComponent.h"
@@ -18,7 +19,7 @@
 class UDAction;
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API UDActionComponent : public UActorComponent
+class CHARMINGCRAFT_API UDActionComponent : public UActorComponent, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -97,5 +98,5 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
-
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 };

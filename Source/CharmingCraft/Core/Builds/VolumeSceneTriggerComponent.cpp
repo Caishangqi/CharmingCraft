@@ -3,7 +3,7 @@
 
 #include "VolumeSceneTriggerComponent.h"
 
-#include "DCharacter.h"
+#include "NativePlayerCharacter.h"
 #include "EngineUtils.h"
 #include "SceneWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
@@ -53,7 +53,7 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 {
 	UE_LOG(LogChamingCraftWorld, Warning,
 	       TEXT("[🌍]  Prepare Load Building Scene: %s"), *TargetLoadedLevel.LoadSynchronous()->GetMapName());
-	if (OtherActor->IsA(ADCharacter::StaticClass()))
+	if (OtherActor->IsA(ANativePlayerCharacter::StaticClass()))
 	{
 		OverlappedActor = Cast<APawn>(OtherActor);
 		if (bIsASceneTravel)
