@@ -6,11 +6,14 @@
 #include "GameplayTagAssetInterface.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
+#include "../Core/Interact/Interface/DGameplayInterface.h"
+#include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "CharmingCraft/Core/UI/IUIProcess.h"
-#include "CharmingCraft/Interface/DGameplayInterface.h"
 #include "GameFramework/Character.h"
 #include "NativeCreature.generated.h"
 
+class UDropTableData;
+class UInventoryComponent;
 class UDActionComponent;
 class UHealthIndicator;
 class UDamageIndicator;
@@ -23,8 +26,8 @@ class UBuffHandlerComponent;
  *	Editor BP_Creature
  */
 UCLASS(Blueprintable, BlueprintType)
-class CHARMINGCRAFT_API ANativeCreature : public ACharacter, public IDamageable, public IDGameplayInterface,
-                                          public IUIProcess, public IGameplayTagAssetInterface
+class CHARMINGCRAFT_API ANativeCreature : public ACharacter, public IDamageable, public IMouseInteractInterface,
+                                          public IUIProcess, public IGameplayTagAssetInterface, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -43,7 +46,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Action")
 	TObjectPtr<UDActionComponent> ActionComponent;
-	
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Attribute")
 	TObjectPtr<UDAttributeComponent> CreatureAttributeComponent;
 
@@ -53,12 +56,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResponseMontage")
 	TMap<EDamageResponse, TObjectPtr<UAnimMontage>> HitResponseMontage;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 public: // Data
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Spawn")
 	FVector SpawnPoint;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Spawn")
 	bool bReturnToSpawn = true;
+	// Drop
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop")
+	TSubclassOf<UDropTableData> DropTableData;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop")
+	bool DropLoot = true;
 
 protected:
 	// Called when the game starts or when spawned
@@ -71,7 +82,6 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 
@@ -94,4 +104,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void HitReaction(EDamageResponse Response);
+
+	/* Core Management Object*/
+	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
+	virtual UWorldManager* GetWorldManager_Implementation() override;
 };

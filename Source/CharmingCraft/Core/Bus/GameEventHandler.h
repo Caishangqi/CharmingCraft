@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NativePlayerCharacter.h"
 #include "../Core/Save/Data/FSaveSlotInfo.h"
+#include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
 #include "CharmingCraft/Core/Resource/Gather/ResourceEntityActor.h"
 #include "UObject/Object.h"
@@ -105,6 +106,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCheckRecipeIngredientMatchDelega
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCraftProcessStartDelegate, UBaseRecipeEntry *, TargetRecipe, int32, Amount,UInventoryComponent *, Container, UObject *, Instigator);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnCraftProcessFinishDelegate, UBaseRecipeEntry *, TargetRecipe,int32, Amount, bool, bIsSuccess, UObject *, Instigator, TArray<UItemStack*>, RecipeOutPut);
 
+// Creature
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCreatureDeadDelegate,UObject*, Instigator, ANativeCreature *, TargetCreature);
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
 class CHARMINGCRAFT_API UGameEventHandler : public UObject
@@ -179,7 +182,9 @@ public:
 	FOnActorUnEquipmentDelegate OnActorUnEquipment;
 	UPROPERTY(BlueprintAssignable)
 	FOnItemInteractDelegate OnItemInteract;
-
+	// Creature
+	UPROPERTY(BlueprintAssignable)
+	FOnCreatureDeadDelegate OnCreatureDead;
 
 	// Item Ability System
 	UPROPERTY(BlueprintAssignable)
@@ -267,6 +272,10 @@ public:
 	void OnActorUnEquipmentEvent(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex);
 	UFUNCTION(BlueprintCallable)
 	void OnItemInteractEvent(APawn* Instigator, UItemStack* InteractItemStack);
+
+	// Creature
+	UFUNCTION(BlueprintCallable)
+	void OnOnCreatureDeadEvent(UObject* Instigator, ANativeCreature * TargetCreature);
 
 	// Player Movement
 	UFUNCTION(BlueprintCallable)

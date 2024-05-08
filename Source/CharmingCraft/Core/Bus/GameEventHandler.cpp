@@ -286,6 +286,11 @@ void UGameEventHandler::OnItemInteractEvent(APawn* Instigator, UItemStack* Inter
 	OnItemInteract.Broadcast(Instigator, InteractItemStack);
 }
 
+void UGameEventHandler::OnOnCreatureDeadEvent(UObject* Instigator, ANativeCreature* TargetCreature)
+{
+	OnCreatureDead.Broadcast(Instigator, TargetCreature);
+}
+
 void UGameEventHandler::OnPlayerMovementEvent(APawn* Instigator, FVector FromLocation, FVector TargetLocation)
 {
 	OnPlayerMovement.Broadcast(Instigator, FromLocation, TargetLocation);

@@ -14,7 +14,7 @@ void AChest::Interact_Implementation(APawn* InstigatorPawn)
 	 *	SetRelativeRotation 中的Relative是相对于LidMesh 连接的组件这里相对的应该是BaseMesh
 	 *	FRotator(TargetPitch,0,0) 对应的是旋转向量旋转向量的仰角为Pitch也就是Y (绿色的)
 	 */
-	TObjectPtr<UCharmingCraftInstance> GameInstance = Cast<UCharmingCraftInstance>(GetGameInstance());
+	TObjectPtr<UCharmingCraftInstance> GameInstance = GetGameInstance_Implementation();
 	LidMesh->SetRelativeRotation(FRotator(0, 0, TargetPitch));
 	GameInstance->GamePlayLogicManager->OnPlayerOpenContainerEvent(
 		Cast<ACharacter>(InstigatorPawn), InventoryComponent, InstigatorPawn);

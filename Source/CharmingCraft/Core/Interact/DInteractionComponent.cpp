@@ -3,7 +3,7 @@
 
 #include "DInteractionComponent.h"
 #include "NativePlayerCharacter.h"
-#include "../Interface/DGameplayInterface.h"
+#include "../Core/Interact/Interface/DGameplayInterface.h"
 #include "CharmingCraft/CharmingCraft.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
@@ -59,7 +59,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 		 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
 		 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
 		 */
-		if (HitActor->Implements<UDGameplayInterface>() && Cast<AInteractObject>(HitActor))
+		if (HitActor->Implements<UMouseInteractInterface>() && Cast<AInteractObject>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 		{
 			AInteractObject* CastedObject = Cast<AInteractObject>(HitActor);
@@ -70,7 +70,7 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 			// 如股玩家的距离在可交互距离内, 则不用走过去执行动作,直接执行
 			if (Distance < CastedObject->MinimumInteractRange)
 			{
-				IDGameplayInterface::Execute_Interact(HitActor, Player);
+				IMouseInteractInterface::Execute_Interact(HitActor, Player);
 				Cast<ANativePlayerCharacter>(GetOwner())->InventoryComponent->OnItemInteract(HitActor, Player);
 			}
 			else
@@ -105,7 +105,7 @@ bool UDInteractionComponent::ExecuteInteractAction()
 	if (AIController->TargetActor->IsA(
 		AInteractObject::StaticClass()))
 	{
-		IDGameplayInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
+		IMouseInteractInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
 	}
 	/* Handle Creature Interact */
 	else if (AIController->TargetActor.IsValid() && AIController->TargetActor->Implements<UDamageable>())
@@ -156,10 +156,10 @@ void UDInteractionComponent::LineTracingInteract() const
 	 * AActor* HitActor = Hit.GetActor();
 	 * if (HitActor)
 	 * {
-	 * if (HitActor->Implements<UDGameplayInterface>()) //注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
+	 * if (HitActor->Implements<UMouseInteractInterface>()) //注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 	 * 	{
 	 * 	APawn* MyPawn = Cast<APawn>(MyOwner);
-	 * 	IDGameplayInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
+	 * 	IMouseInteractInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
 	 * 	}
 	 * }
 	 */
@@ -180,10 +180,10 @@ void UDInteractionComponent::LineTracingInteract() const
 		AActor* HitActor = Hit.GetActor();
 		if (HitActor)
 		{
-			if (HitActor->Implements<UDGameplayInterface>()) //注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
+			if (HitActor->Implements<UMouseInteractInterface>()) //注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 			{
 				APawn* MyPawn = Cast<APawn>(MyOwner);
-				IDGameplayInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
+				IMouseInteractInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
 				break; //碰到第一个可交互物品就跳出循环
 			}
 			//每次球体命中就把这个球画出来
@@ -206,6 +206,15 @@ void UDInteractionComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, 
 
 bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 {
+	// When Creature Dead we don't want to hit
+	if (TargetActor->IsA(ANativeCreature::StaticClass()))
+	{
+		FGameplayTag DeadTag = FGameplayTag::RequestGameplayTag(FName("Status.Dead"));
+		if (Cast<ANativeCreature>(TargetActor)->HasMatchingGameplayTag(DeadTag))
+		{
+			return false;
+		}
+	}
 	float Distance = FVector::DistXY(Player->GetActorLocation(), TargetActor->GetActorLocation());
 	if (Distance < Player->AttributeComp->AttackRange)
 	{

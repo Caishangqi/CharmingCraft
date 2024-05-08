@@ -147,7 +147,7 @@ void ABlockEntityActor::DisablePreviewScaleBox()
 
 bool ABlockEntityActor::OnBlockBreak_Implementation(AActor* InstigatorCharacter, AActor* BlockBreak)
 {
-	Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->
+	GetGameEventHandler()->
 	                                                 OnBlockBreakEvent(this, InstigatorCharacter);
 	Execute_OnBlockDrop(this, InstigatorCharacter, DropTableData);
 	BlockBreak->Destroy();
@@ -170,7 +170,7 @@ bool ABlockEntityActor::OnBlockDrop_Implementation(AActor* Block, UDropTableData
 		FVector LaunchVelocity = LaunchDirection * 2;
 
 		TObjectPtr<UItemStack> ItemStack = UItemStack::CreateItemStackFromMaterial(this->GetWorld(), Material, 1);
-		Cast<UCharmingCraftInstance>(GetGameInstance())->GetGameEventHandler()->OnItemDropEvent(ItemStack, this);
+		GetGameEventHandler()->OnItemDropEvent(ItemStack, this);
 		// TODO: Change this instigator to player or else not block itself
 		UItemEntityUtilityLibrary::DropItemInWorld(this, ItemStack, SpawnTransform, LaunchVelocity);
 	}

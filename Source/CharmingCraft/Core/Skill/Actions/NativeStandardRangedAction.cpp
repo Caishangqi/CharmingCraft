@@ -2,8 +2,7 @@
 
 
 #include "NativeStandardRangedAction.h"
-
-#include "CharmingCraft/Interface/DGameplayInterface.h"
+#include "../Core/Interact/Interface/DGameplayInterface.h"
 
 UNativeStandardRangedAction::UNativeStandardRangedAction()
 {
@@ -30,7 +29,7 @@ FVector UNativeStandardRangedAction::GetCastMouseLocation(APawn* Instigator)
 		{
 			AActor* HitActor = HitResult.GetActor();
 
-			if (HitActor && HitActor->Implements<UDGameplayInterface>())
+			if (HitActor && HitActor->Implements<UMouseInteractInterface>())
 			{
 				// Add Additional 50 unit offset
 				return HitActor->GetActorLocation() + FVector(0,0,50);

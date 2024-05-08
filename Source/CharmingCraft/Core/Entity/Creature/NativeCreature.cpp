@@ -4,9 +4,12 @@
 #include "NativeCreature.h"
 
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
+#include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/Container/Inventory/InventoryComponent.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Core/UI/HealthIndicator.h"
 #include "CharmingCraft/Object/Components/UI/DamageIndicator.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -21,6 +24,7 @@ ANativeCreature::ANativeCreature()
 	HealthIndicator->SetupAttachment(GetRootComponent());
 	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComp");
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Creature Inventory");
 }
 
 // Called when the game starts or when spawned
@@ -71,7 +75,7 @@ void ANativeCreature::HandleDamageIndicator_Implementation(FHitData HitData)
 }
 
 void ANativeCreature::HandleHealthChanged_Implementation(APawn* InstigatorPawn, UDAttributeComponent* OwningComp,
-                                                   float Health, float HealthDelta)
+                                                         float Health, float HealthDelta)
 {
 	IDamageable::HandleHealthChanged_Implementation(InstigatorPawn, OwningComp, Health, HealthDelta);
 }
@@ -79,12 +83,30 @@ void ANativeCreature::HandleHealthChanged_Implementation(APawn* InstigatorPawn, 
 
 void ANativeCreature::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
+	GetGameEventHandler_Implementation()->OnOnCreatureDeadEvent(InstigatorPawn, this);
+	IDamageable::HandleDeath_Implementation(InstigatorPawn);
 }
 
 bool ANativeCreature::IsDead_Implementation()
 {
 	return CreatureAttributeComponent->IsDead;
 }
+
+UCharmingCraftInstance* ANativeCreature::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
+}
+
+UGameEventHandler* ANativeCreature::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
+}
+
+UWorldManager* ANativeCreature::GetWorldManager_Implementation()
+{
+	return GetGameInstance_Implementation()->GetWorldManager();
+}
+
 
 void ANativeCreature::HitReaction_Implementation(EDamageResponse Response)
 {

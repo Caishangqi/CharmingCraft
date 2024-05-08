@@ -3,6 +3,8 @@
 
 #include "InteractObject.h"
 
+#include "Kismet/GameplayStatics.h"
+
 AInteractObject::AInteractObject()
 {
 	MinimumInteractRange = 250;
@@ -15,7 +17,22 @@ AInteractObject::AInteractObject()
 void AInteractObject::Interact_Implementation(APawn* InstigatorPawn)
 {
 	UE_LOG(LogTemp, Warning, TEXT("CALLED BACK!"));
-	IDGameplayInterface::Interact_Implementation(InstigatorPawn);
+	IMouseInteractInterface::Interact_Implementation(InstigatorPawn);
+}
+
+UCharmingCraftInstance* AInteractObject::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
+}
+
+UWorldManager* AInteractObject::GetWorldManager_Implementation()
+{
+	return GetGameInstance_Implementation()->GetWorldManager();
+}
+
+UGameEventHandler* AInteractObject::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
 
 

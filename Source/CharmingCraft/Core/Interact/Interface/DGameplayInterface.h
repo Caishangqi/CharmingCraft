@@ -14,16 +14,16 @@ UINTERFACE(MinimalAPI)
  *
  *	在设置好Interface后其他组件或者实例可以基于实例不同类型来实现接口的方法
  */
-class UDGameplayInterface : public UInterface
+class UMouseInteractInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
 /**
- * 上方的UDGameplayInterface 不应当添加任何东西, 功能性实现在下方 IDGameplayInterface
+ * 上方的UDGameplayInterface 不应当添加任何东西, 功能性实现在下方 IMouseInteractInterface
  * 中, 其中前缀 I 意为接口
  */
-class CHARMINGCRAFT_API IDGameplayInterface
+class CHARMINGCRAFT_API IMouseInteractInterface
 {
 	GENERATED_BODY()
 

@@ -2,7 +2,8 @@
 
 #pragma once
 #include "CoreMinimal.h"
-#include "DGameplayInterface.h"
+#include "../Core/Interact/Interface/DGameplayInterface.h"
+#include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "InteractObject.generated.h"
 
 
@@ -10,7 +11,7 @@
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API AInteractObject : public AActor, public IDGameplayInterface
+class CHARMINGCRAFT_API AInteractObject : public AActor, public IMouseInteractInterface, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -43,6 +44,9 @@ public:
 	AInteractObject();
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
+	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	virtual UWorldManager* GetWorldManager_Implementation() override;
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
 
 	virtual void BeginPlay() override;
 

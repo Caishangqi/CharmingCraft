@@ -111,18 +111,3 @@ void AInteractSceneTrigger::PostLevelCameraViewChange()
 		GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(InteractObject, TargetCameraView);
 	}
 }
-
-UCharmingCraftInstance* AInteractSceneTrigger::GetGameInstance_Implementation()
-{
-	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
-}
-
-UGameEventHandler* AInteractSceneTrigger::GetGameEventHandler_Implementation()
-{
-	return GetGameInstance_Implementation()->GetGameEventHandler();
-}
-
-UWorldManager* AInteractSceneTrigger::GetWorldManager_Implementation()
-{
-	return GetGameInstance_Implementation()->GetWorldManager();
-}

@@ -9,7 +9,7 @@
 #include "InteractSceneTrigger.generated.h"
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API AInteractSceneTrigger : public AInteractObject, public ICoreManagerInterface
+class CHARMINGCRAFT_API AInteractSceneTrigger : public AInteractObject
 {
 	GENERATED_BODY()
 
@@ -70,7 +70,4 @@ public:
 
 	// override
 public:
-	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
-	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
-	virtual UWorldManager* GetWorldManager_Implementation() override;
 };
