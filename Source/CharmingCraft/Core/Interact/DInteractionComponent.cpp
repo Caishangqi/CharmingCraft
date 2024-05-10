@@ -110,10 +110,24 @@ bool UDInteractionComponent::ExecuteInteractAction()
 	/* Handle Creature Interact */
 	else if (AIController->TargetActor.IsValid() && AIController->TargetActor->Implements<UDamageable>())
 	{
-		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
-		Player->ActionComponent->StartActionByType(Player, EItemDynamicSkillSlot::SHIFT_INTERACT);
-		/* This should have future NPC interact, not damage them, interact with them */
 
+		// When Creature Dead we don't want to hit
+		if (AIController->TargetActor.Get()->IsA(ANativeCreature::StaticClass()))
+		{
+			FGameplayTag DeadTag = FGameplayTag::RequestGameplayTag(FName("Status.Dead"));
+			if (Cast<ANativeCreature>(AIController->TargetActor.Get())->HasMatchingGameplayTag(DeadTag))
+			{
+				IMouseInteractInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
+			}
+			else
+			{
+				Player->ActionComponent->StartActionByType(Player, EItemDynamicSkillSlot::SHIFT_INTERACT);
+			}
+		}
+		
+		Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
+		
+		/* This should have future NPC interact, not damage them, interact with them */
 		return false;
 	}
 	Player->ActionComponent->ActiveGamePlayTags.RemoveTag(InteractTag);
@@ -140,30 +154,7 @@ void UDInteractionComponent::LineTracingInteract() const
 
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
-
-
-	/*
-	 *	线性追踪实现方法 I
-	 */
-
-	/*
-	//是否击中,这个也可以不需要返回值也能正常运行
-	FHitResult Hit;
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
-	*/
-
-	/* 线性追踪实现方法 I
-	 * AActor* HitActor = Hit.GetActor();
-	 * if (HitActor)
-	 * {
-	 * if (HitActor->Implements<UMouseInteractInterface>()) //注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
-	 * 	{
-	 * 	APawn* MyPawn = Cast<APawn>(MyOwner);
-	 * 	IMouseInteractInterface::Execute_Interact(HitActor, MyPawn); // 注意 调用的时候是使用的我们自己写的接口而不是 UE生产的
-	 * 	}
-	 * }
-	 */
-
+	
 	/*
 	 *	球型追踪实现方法 II
 	 *	FQuat::Identity 意思为没有旋转
@@ -190,10 +181,7 @@ void UDInteractionComponent::LineTracingInteract() const
 			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 		}
 	}
-
-
 	//这个函数后填满了Hit信息
-
 
 	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0, 2.0f);
 }
@@ -206,15 +194,7 @@ void UDInteractionComponent::OnItemInteract(TWeakObjectPtr<AActor> TargetActor, 
 
 bool UDInteractionComponent::ExecuteInteractWithCreature(AActor* TargetActor)
 {
-	// When Creature Dead we don't want to hit
-	if (TargetActor->IsA(ANativeCreature::StaticClass()))
-	{
-		FGameplayTag DeadTag = FGameplayTag::RequestGameplayTag(FName("Status.Dead"));
-		if (Cast<ANativeCreature>(TargetActor)->HasMatchingGameplayTag(DeadTag))
-		{
-			return false;
-		}
-	}
+
 	float Distance = FVector::DistXY(Player->GetActorLocation(), TargetActor->GetActorLocation());
 	if (Distance < Player->AttributeComp->AttackRange)
 	{

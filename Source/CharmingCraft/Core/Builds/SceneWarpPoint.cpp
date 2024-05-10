@@ -9,5 +9,5 @@ ASceneWarpPoint::ASceneWarpPoint()
 void ASceneWarpPoint::BeginPlay()
 {
 	Super::BeginPlay();
-	bIsInitialized = true;
+	bIsInitialized = false;
 }

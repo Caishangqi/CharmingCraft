@@ -42,8 +42,7 @@ public:
 
 	/* 方法 */
 	AInteractObject();
-
-	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
+	
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
 	virtual UWorldManager* GetWorldManager_Implementation() override;
 	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;

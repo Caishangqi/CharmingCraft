@@ -24,23 +24,29 @@ ABuild::ABuild()
 	BuildingExitPoint = CreateDefaultSubobject<UChildActorComponent>(TEXT("Building Default Exit Location"));
 	BuildingExitPoint->SetupAttachment(SceneComponent);
 	// 创建并附加MyCustomActor到MyChildComponent
+
+	SetIsSpatiallyLoaded(false);
 }
 
 // Called when the game starts or when spawned
 void ABuild::BeginPlay()
 {
 	Super::BeginPlay();
-	FTransform SpawnTransform;
-
-	ASceneWarpPoint* ExitActor = Cast<ASceneWarpPoint>(
-		UGameplayStatics::BeginDeferredActorSpawnFromClass(
-			this, ASceneWarpPoint::StaticClass(),
-			SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
-	ExitActor->TargetName = BuildName + " Default Exit";
-	UGameplayStatics::FinishSpawningActor(ExitActor, SpawnTransform);
-	if (ExitActor)
+	if (!bIsInitializedBuildExitPoint)
 	{
-		ExitActor->AttachToComponent(BuildingExitPoint, FAttachmentTransformRules::KeepRelativeTransform);
+		FTransform SpawnTransform;
+		ASceneWarpPoint* ExitActor = Cast<ASceneWarpPoint>(
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(
+				this, ASceneWarpPoint::StaticClass(),
+				SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
+		ExitActor->TargetName = BuildName + " Default Exit";
+		ExitActor->SetIsSpatiallyLoaded(false);
+		UGameplayStatics::FinishSpawningActor(ExitActor, SpawnTransform);
+		if (ExitActor)
+		{
+			ExitActor->AttachToComponent(BuildingExitPoint, FAttachmentTransformRules::KeepRelativeTransform);
+			bIsInitializedBuildExitPoint = true;
+		}
 	}
 }
 

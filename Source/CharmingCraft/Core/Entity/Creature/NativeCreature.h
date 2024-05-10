@@ -8,10 +8,12 @@
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "../Core/Interact/Interface/DGameplayInterface.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
+#include "CharmingCraft/Core/Resource/Interface/LootableInterface.h"
 #include "CharmingCraft/Core/UI/IUIProcess.h"
 #include "GameFramework/Character.h"
 #include "NativeCreature.generated.h"
 
+class ANativeLootEntity;
 class UDropTableData;
 class UInventoryComponent;
 class UDActionComponent;
@@ -27,7 +29,7 @@ class UBuffHandlerComponent;
  */
 UCLASS(Blueprintable, BlueprintType)
 class CHARMINGCRAFT_API ANativeCreature : public ACharacter, public IDamageable, public IMouseInteractInterface,
-                                          public IUIProcess, public IGameplayTagAssetInterface, public ICoreManagerInterface
+                                          public IUIProcess, public IGameplayTagAssetInterface, public ICoreManagerInterface, public ILootableInterface
 {
 	GENERATED_BODY()
 
@@ -56,8 +58,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="HitResponseMontage")
 	TMap<EDamageResponse, TObjectPtr<UAnimMontage>> HitResponseMontage;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Inventory")
-	TObjectPtr<UInventoryComponent> InventoryComponent;
+
 public: // Data
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Spawn")
@@ -67,9 +68,13 @@ public: // Data
 	// Drop
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop")
 	TSubclassOf<UDropTableData> DropTableData;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop")
+	TSubclassOf<ANativeLootEntity> LootEntityClass;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop")
 	bool DropLoot = true;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Drop")
+	bool PackLoot = false;
 
 protected:
 	// Called when the game starts or when spawned
@@ -100,6 +105,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual bool IsDead_Implementation() override;
 
+	virtual void LootFromObject_Implementation(UObject* Instigator) override;
+
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 	/* Debug */
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)

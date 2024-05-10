@@ -77,23 +77,37 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 
 void UVolumeSceneTriggerComponent::OnTargetLevelShown()
 {
+	UE_LOG(LogChamingCraftWorld, Display, TEXT("[🌍]  UVolumeSceneTriggerComponent::OnTargetLevelShown()"));
 	if (EnableCameraFade)
 	{
 		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 			1.0f, 0.0f, 1.0f, FColor::Black);
 	}
 	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
-	GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel);
+
 	if (OverlappedActor)
 	{
-		GetWorldManager_Implementation()->TravelPlayerToScene(OverlappedActor, TargetLoadedLevel, DestinationName,
-		                                                      bResetSceneData);
-		PostLevelCameraViewChange(); // Change Camera
-		OverlappedActor->Controller->StopMovement();
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-			1.0f, 0.0f, 1.0f, FColor::Black);
-		OverlappedActor = nullptr;
+		FTimerHandle InOutHandle;
+
+		GetWorld()->GetTimerManager().SetTimer(InOutHandle, [this]()
+		                                       {
+			                                       GetWorldManager_Implementation()->TravelPlayerToScene(
+				                                       OverlappedActor, TargetLoadedLevel, DestinationName,
+				                                       bResetSceneData);
+			                                       PostLevelCameraViewChange(); // Change Camera
+			                                       OverlappedActor->Controller->StopMovement();
+			                                       UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->
+				                                       StartCameraFade(
+					                                       1.0f, 0.0f, 1.0f, FColor::Black);
+			                                       //OverlappedActor = nullptr;
+			                                       GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel);
+		                                       },
+		                                       1, false);
 	}
+}
+
+void UVolumeSceneTriggerComponent::OnTravelToDestination()
+{
 }
 
 void UVolumeSceneTriggerComponent::PostLevelCameraViewChange()

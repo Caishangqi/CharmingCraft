@@ -88,12 +88,10 @@ bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName War
 	for (const auto OutActor : OutActors)
 	{
 		UE_LOG(LogChamingCraftWorld, Warning,
-		       TEXT("[🌍]  Find Warp %s in world %s"), *Cast<ASceneWarpPoint>(OutActor)->TargetName,
+		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ASceneWarpPoint>(OutActor)->TargetName,
 		       *PlayerCharacter->GetWorld()->GetName());
 		if (Cast<ASceneWarpPoint>(OutActor)->TargetName == WarpPoint)
 		{
-			if (Cast<ASceneWarpPoint>(OutActor)->IsInitialized())
-			{
 				//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
 				bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(
 					OutActor->GetActorLocation(), false, nullptr, ETeleportType::None);
@@ -102,24 +100,14 @@ bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName War
 				if (bIsSuccessTeleport)
 				{
 					UE_LOG(LogChamingCraftWorld, Display,
-					       TEXT("[🌍]  Teleport Player to target Warp: %s"), *WarpPoint.ToString());
+					       TEXT("[🌍]  Teleport Player to target warp <%s>"), *WarpPoint.ToString());
 				}
 				else
 				{
 					UE_LOG(LogChamingCraftWorld, Error,
-					       TEXT("[🌍]  Fail to Teleport Player to target Warp: %s"), *WarpPoint.ToString());
+					       TEXT("[🌍]  Fail to Teleport Player to target warp <%s>"), *WarpPoint.ToString());
 				}
-
 				return true;
-			}
-			else
-			{
-				UE_LOG(LogChamingCraftWorld, Error,
-				       TEXT(
-					       "[🌍]  Fail to Teleport Player to target Warp: %s\n"
-					       "			(!) Reason: ASceneWarpPoint is not initialize"), *WarpPoint.ToString());
-				//TeleportPlayerToWarp(PlayerCharacter, WarpPoint);
-			}
 		}
 	}
 	UE_LOG(LogChamingCraftWorld, Warning,

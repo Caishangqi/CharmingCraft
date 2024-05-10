@@ -19,7 +19,6 @@ AInteractSceneTrigger::AInteractSceneTrigger(): TargetCameraView()
 
 void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 {
-	Super::Interact_Implementation(InstigatorPawn);
 	InteractObject = Cast<APawn>(InstigatorPawn);
 	if (EnableCameraFade)
 	{
@@ -34,8 +33,8 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 			TargetLoadedLevel);
 
 
-		if (!LoadWorldInstanceOut.LoadedWorld->OnLevelShown.
-		                          IsAlreadyBound(this, &AInteractSceneTrigger::OnTargetLevelShown))
+		if (!LoadWorldInstanceOut.LoadedWorld->OnLevelShown.IsAlreadyBound(
+			this, &AInteractSceneTrigger::OnTargetLevelShown))
 		{
 			LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
 		}
@@ -64,29 +63,24 @@ void AInteractSceneTrigger::OnTargetLevelShown()
 	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
 	if (InteractObject)
 	{
-		GetWorldManager_Implementation()->TravelPlayerToScene(InteractObject, TargetLoadedLevel, DestinationName,
-		                                                      bResetSceneData);
-		InteractObject->Controller->StopMovement();
-		PostLevelCameraViewChange(); // Change Camera
+		FTimerHandle InOutHandle;
+		GetWorld()->GetTimerManager().SetTimer(InOutHandle, [this]()
+		{
+			GetWorldManager_Implementation()->TravelPlayerToScene(InteractObject, TargetLoadedLevel, DestinationName,
+			                                                      bResetSceneData);
+			InteractObject->Controller->StopMovement();
+			PostLevelCameraViewChange(); // Change Camera
 
-		InteractObject = nullptr;
+			InteractObject = nullptr;
+			FLevelStreamingDynamicResult UnLoadWorldInstanceOut = GetWorldManager_Implementation()->UnloadWorldInstance(
+				UnloadedLevel.LoadSynchronous());
+			if (UnLoadWorldInstanceOut.IsSuccess)
+			{
+				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+					1.0f, 0.0f, 1.5f, FColor::Black);
+			}
+		}, 1, false);
 	}
-	FLevelStreamingDynamicResult UnLoadWorldInstanceOut = GetWorldManager_Implementation()->UnloadWorldInstance(
-		UnloadedLevel.LoadSynchronous());
-	if (UnLoadWorldInstanceOut.IsSuccess)
-	{
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-			1.0f, 0.0f, 1.5f, FColor::Black);
-	}
-
-	// Handle UnloadWorld shown event
-	// TODO: Investigate why OnLevelHidden Delegate not working
-	/*if (!UnLoadWorldInstanceOut.LoadedWorld->OnLevelHidden.IsAlreadyBound(
-		this, &AInteractSceneTrigger::OnTargetLevelHidden))
-	{
-		UnLoadWorldInstanceOut.LoadedWorld->OnLevelHidden.AddDynamic(
-			this, &AInteractSceneTrigger::OnTargetLevelHidden);
-	}*/
 }
 
 void AInteractSceneTrigger::OnTargetLevelHidden()

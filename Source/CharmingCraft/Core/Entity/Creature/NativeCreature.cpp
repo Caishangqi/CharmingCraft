@@ -6,6 +6,9 @@
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Container/Inventory/InventoryComponent.h"
+#include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
+#include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
+#include "CharmingCraft/Core/Resource/Loot/NativeLootEntity.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Core/UI/HealthIndicator.h"
 #include "CharmingCraft/Object/Components/UI/DamageIndicator.h"
@@ -24,7 +27,6 @@ ANativeCreature::ANativeCreature()
 	HealthIndicator->SetupAttachment(GetRootComponent());
 	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComp");
-	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Creature Inventory");
 }
 
 // Called when the game starts or when spawned
@@ -84,12 +86,56 @@ void ANativeCreature::HandleHealthChanged_Implementation(APawn* InstigatorPawn, 
 void ANativeCreature::HandleDeath_Implementation(APawn* InstigatorPawn)
 {
 	GetGameEventHandler_Implementation()->OnOnCreatureDeadEvent(InstigatorPawn, this);
+	LootFromObject_Implementation(this);
 	IDamageable::HandleDeath_Implementation(InstigatorPawn);
 }
 
 bool ANativeCreature::IsDead_Implementation()
 {
 	return CreatureAttributeComponent->IsDead;
+}
+
+void ANativeCreature::LootFromObject_Implementation(UObject* InstigatorObject)
+{
+	if (DropLoot)
+	{
+		TArray<UItemStack*> LootItemStackList = UResourceGenerateLibrary::GenerateDropItemFromDropData(
+			this->GetWorld(), DropTableData.GetDefaultObject());
+		if (LootItemStackList.Num() > 0)
+		{
+			if (PackLoot)
+			{
+				// Generate Loot Entity
+				FTransform SpawnTransform(GetActorRotation(), GetActorLocation());
+				TObjectPtr<ANativeLootEntity> LootEntity = Cast<ANativeLootEntity>(
+					UGameplayStatics::BeginDeferredActorSpawnFromClass(
+						this, LootEntityClass, SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
+				LootEntity->GenerateLootContent(LootItemStackList);
+				UGameplayStatics::FinishSpawningActor(LootEntity, SpawnTransform);
+			}
+			else
+			{
+				const FTransform SpawnTransform(
+					this->GetActorLocation() + this->GetActorUpVector() * 50);
+				FVector LaunchDirection = this->GetActorUpVector() * 100 + FVector(0, 0, 50);
+				FVector LaunchVelocity = LaunchDirection * 2;
+				for (auto ItemStack : LootItemStackList)
+				{
+					if (ItemStack != nullptr)
+					{
+						GetGameEventHandler_Implementation()->OnItemDropEvent(ItemStack, this);
+						UItemEntityUtilityLibrary::DropItemInWorld(this->GetWorld(), ItemStack, SpawnTransform,
+						                                           LaunchVelocity);
+					}
+				}
+			}
+		}
+	}
+}
+
+void ANativeCreature::Interact_Implementation(APawn* InstigatorPawn)
+{
+	IMouseInteractInterface::Interact_Implementation(InstigatorPawn);
 }
 
 UCharmingCraftInstance* ANativeCreature::GetGameInstance_Implementation()

@@ -71,6 +71,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnTargetLevelShown();
+	UFUNCTION(BlueprintCallable)
+	void OnTravelToDestination();
 
 	void PostLevelCameraViewChange();
 	// override

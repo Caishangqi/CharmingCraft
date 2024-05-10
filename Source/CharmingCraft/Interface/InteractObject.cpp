@@ -14,12 +14,6 @@ AInteractObject::AInteractObject()
 	FindClassBaseOnBluePrint();
 }
 
-void AInteractObject::Interact_Implementation(APawn* InstigatorPawn)
-{
-	UE_LOG(LogTemp, Warning, TEXT("CALLED BACK!"));
-	IMouseInteractInterface::Interact_Implementation(InstigatorPawn);
-}
-
 UCharmingCraftInstance* AInteractObject::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
