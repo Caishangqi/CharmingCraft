@@ -136,14 +136,12 @@ public:
 
 
 	/*!
-	 * 
 	 * @param Instigator The instigator that unload the chunk
-	 * @param TargetWorld The world that chunk belongs to
 	 * @param TargetChunk The specific chunk you want to unload
 	 * @return whether unload chunk success
 	 */
 	UFUNCTION(BlueprintCallable)
-	bool UnloadWorldChunk(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk);
+	bool UnloadWorldChunk(UObject* Instigator, ALandChunk* TargetChunk);
 
 public:
 	// Interface

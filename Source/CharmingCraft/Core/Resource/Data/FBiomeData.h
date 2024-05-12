@@ -28,6 +28,8 @@ public:
 	int32 MinPerBiome;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Data")
 	int32 RegenerateTick;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Resource Data")
+	bool PerformPreGenerateCollitionCheck = true;
 
 
 	/*

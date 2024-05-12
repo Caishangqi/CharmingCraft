@@ -63,7 +63,7 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 			if (EnableCameraFade)
 			{
 				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-					0.0f, 1.0f, 1.0f, FColor::Black, false, true);
+					0.1f, 1.0f, 1.0f, FColor::Black, false, true);
 			}
 			LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(
 				this, &UVolumeSceneTriggerComponent::OnTargetLevelShown);
@@ -77,12 +77,6 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 
 void UVolumeSceneTriggerComponent::OnTargetLevelShown()
 {
-	UE_LOG(LogChamingCraftWorld, Display, TEXT("[🌍]  UVolumeSceneTriggerComponent::OnTargetLevelShown()"));
-	if (EnableCameraFade)
-	{
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-			1.0f, 0.0f, 1.0f, FColor::Black);
-	}
 	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
 
 	if (OverlappedActor)
@@ -96,9 +90,12 @@ void UVolumeSceneTriggerComponent::OnTargetLevelShown()
 				                                       bResetSceneData);
 			                                       PostLevelCameraViewChange(); // Change Camera
 			                                       OverlappedActor->Controller->StopMovement();
-			                                       UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->
-				                                       StartCameraFade(
-					                                       1.0f, 0.0f, 1.0f, FColor::Black);
+			                                       if (EnableCameraFade)
+			                                       {
+				                                       UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->
+					                                       StartCameraFade(
+						                                       1.0f, 0.0f, 1.0f, FColor::Black);
+			                                       }
 			                                       //OverlappedActor = nullptr;
 			                                       GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel);
 		                                       },

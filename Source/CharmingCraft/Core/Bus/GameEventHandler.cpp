@@ -68,15 +68,14 @@ void UGameEventHandler::OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* Fr
 	OnPlayerTravelToScene.Broadcast(Instigator, FromScene, TargetScene);
 }
 
-void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)
+void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, ALandChunk* TargetChunk)
 {
-	OnUnloadWorldChunk.Broadcast(Instigator, TargetWorld, TargetChunk);
+	OnUnloadWorldChunk.Broadcast(Instigator, TargetChunk);
 	UE_LOG(LogChamingCraftGameEvent, Display,
 	       TEXT("[📍]  Event trigger at UGameEventHandler::OnUnloadWorldChunkEvent()\n"
-		       "		TargetWorld:	%s\n"
 		       "		TargetChunk:	%s\n"
 		       "		Instigator:		%s")
-	       , *TargetWorld->GetName(), *TargetChunk->GetName(), *Instigator->GetName());
+	       , *TargetChunk->GetName(), *Instigator->GetName());
 }
 
 void UGameEventHandler::OnPlayerJoinEvent()

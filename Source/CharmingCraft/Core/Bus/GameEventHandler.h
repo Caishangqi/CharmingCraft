@@ -33,7 +33,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerTravelToRegionDelegate, AP
 ;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerTravelToSceneDelegate, APawn*, Instigator, UWorld*, FromScene,
-                                             UWorld *, TargetScene);
+                                               UWorld *, TargetScene);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerClickMoveDelegate, ACharacter*, Instigator,
                                              FVector, TargetLocation);
@@ -68,7 +68,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityBreakDelegate, AAc
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnResourceEntityPlaceDelegate, UObject*, Instigator,
                                              AResourceEntityActor*, TargetResourceEntity);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerDeathDelegate, UObject*, Instigator,ANativePlayerCharacter*, TargetPlayer);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerDeathDelegate, UObject*, Instigator, ANativePlayerCharacter*,
+                                             TargetPlayer);
 
 // Player
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorOnEquipmentDelegate, UObject *, Instigator, UItemStack *,
@@ -97,17 +99,27 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUnloadGameLevelStart, UObject*, 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnLoadGameLevelStart, UObject*, Instigator, UWorld *, UnloadedWorld);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnUnloadWorldChunk, UObject*, Instigator, UWorld*, TargetWorld,
-                                               ALandChunk*, TargetChunk);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUnloadWorldChunk, UObject*, Instigator,
+                                             ALandChunk*, TargetChunk);
 
 // Craft
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenCraftPannelDelegate, ACharacter*, PlayerCharacter, UObject *, Creator);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCheckRecipeIngredientMatchDelegate, UBaseRecipeEntry *, TargetRecipe, UInventoryComponent* ,TargetContainer);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCraftProcessStartDelegate, UBaseRecipeEntry *, TargetRecipe, int32, Amount,UInventoryComponent *, Container, UObject *, Instigator);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnCraftProcessFinishDelegate, UBaseRecipeEntry *, TargetRecipe,int32, Amount, bool, bIsSuccess, UObject *, Instigator, TArray<UItemStack*>, RecipeOutPut);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerOpenCraftPannelDelegate, ACharacter*, PlayerCharacter, UObject *,
+                                             Creator);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCheckRecipeIngredientMatchDelegate, UBaseRecipeEntry *, TargetRecipe,
+                                             UInventoryComponent*, TargetContainer);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnCraftProcessStartDelegate, UBaseRecipeEntry *, TargetRecipe, int32,
+                                              Amount, UInventoryComponent *, Container, UObject *, Instigator);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnCraftProcessFinishDelegate, UBaseRecipeEntry *, TargetRecipe, int32,
+                                              Amount, bool, bIsSuccess, UObject *, Instigator, TArray<UItemStack*>,
+                                              RecipeOutPut);
 
 // Creature
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCreatureDeadDelegate,UObject*, Instigator, ANativeCreature *, TargetCreature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCreatureDeadDelegate, UObject*, Instigator, ANativeCreature *,
+                                             TargetCreature);
+
 // TODO: 尝试玩家加入世界后，播报事件，让组件接收到这个事件后由组件内部进行调用
 UCLASS(BlueprintType)
 class CHARMINGCRAFT_API UGameEventHandler : public UObject
@@ -174,7 +186,7 @@ public:
 	FOnCraftProcessStartDelegate OnCraftProcessStart;
 	UPROPERTY(BlueprintAssignable)
 	FOnCraftProcessFinishDelegate OnCraftProcessFinish;
-	
+
 	// Player Equipment
 	UPROPERTY(BlueprintAssignable)
 	FOnActorOnEquipmentDelegate OnActorOnEquipment;
@@ -217,16 +229,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerTravelToRegionEvent(APawn* Instigator, UWorld* TargetWorld);
 	UFUNCTION(BlueprintCallable)
-	void OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* FromScene,UWorld* TargetScene);
+	void OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* FromScene, UWorld* TargetScene);
 
 	/*!
 	 * Unload the specific Chunk in the world
 	 * @param Instigator Who Unload the chunk, it can be WorldManager or Items
-	 * @param TargetWorld The Chunk in the Level
 	 * @param TargetChunk The Target Chunk
 	 */
 	UFUNCTION(BlueprintCallable)
-	void OnUnloadWorldChunkEvent(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk);
+	void OnUnloadWorldChunkEvent(UObject* Instigator, ALandChunk* TargetChunk);
 
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerJoinEvent();
@@ -275,7 +286,7 @@ public:
 
 	// Creature
 	UFUNCTION(BlueprintCallable)
-	void OnOnCreatureDeadEvent(UObject* Instigator, ANativeCreature * TargetCreature);
+	void OnOnCreatureDeadEvent(UObject* Instigator, ANativeCreature* TargetCreature);
 
 	// Player Movement
 	UFUNCTION(BlueprintCallable)
@@ -283,7 +294,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnItemDetailDisplayEvent(UItemStack* ItemToDisplay, UObject* Creator);
-	
+
 	// Item Ability System
 	UFUNCTION(BlueprintCallable)
 	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
@@ -293,10 +304,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerOpenCraftPannelEvent(ACharacter* Instigator, UObject* Creator);
 	UFUNCTION(BlueprintCallable)
-	void OnCheckRecipeIngredientMatchEvent(UBaseRecipeEntry * TargetRecipe, UInventoryComponent* TargetContainer);
+	void OnCheckRecipeIngredientMatchEvent(UBaseRecipeEntry* TargetRecipe, UInventoryComponent* TargetContainer);
 	UFUNCTION(BlueprintCallable)
-	void OnCraftProcessStartEvent(UBaseRecipeEntry * TargetRecipe,int32 Amount, UInventoryComponent * Container, UObject * Instigator);
+	void OnCraftProcessStartEvent(UBaseRecipeEntry* TargetRecipe, int32 Amount, UInventoryComponent* Container,
+	                              UObject* Instigator);
 	UFUNCTION(BlueprintCallable)
-	void OnCraftProcessFinishEnvent(UBaseRecipeEntry * TargetRecipe, int32 Amount, bool bIsSuccess, UObject * Instigator, TArray<UItemStack*> RecipeOutPut);
-	
+	void OnCraftProcessFinishEnvent(UBaseRecipeEntry* TargetRecipe, int32 Amount, bool bIsSuccess, UObject* Instigator,
+	                                TArray<UItemStack*> RecipeOutPut);
 };

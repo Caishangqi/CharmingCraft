@@ -19,7 +19,7 @@ enum class EChunkState
 };
 
 UCLASS()
-class CHARMINGCRAFT_API ALandChunk : public AActor
+class CHARMINGCRAFT_API ALandChunk : public AActor, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -66,23 +66,31 @@ public:
 	// Record the ResourceEntityActor, can be watched by event system
 	TArray<TObjectPtr<AResourceEntityActor>> ResourceEntityActorPool;
 
+	// Record the NativeCreatureActor, can be watched by event system
+	TArray<TObjectPtr<ANativeCreature>> NativeCreaturePool;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UGameEventHandler> GameEventHandler;
 
 	// Delegate based call event, faster but may cause concurrent issue
 	UFUNCTION(BlueprintCallable)
-	void OnUnloadWorldChunkEvent(UObject* InstigatorObject, UWorld* TargetWorld, ALandChunk* TargetChunk);
+	void OnUnloadWorldChunk(UObject* InstigatorObject, ALandChunk* TargetChunk);
+	UFUNCTION(BlueprintCallable)
+	void SpawnCreatureAtChunk();
+	UFUNCTION(BlueprintCallable)
+	void OnLoadWorldChunk(UObject* InstigatorObject, ALandChunk* TargetChunk);
 
 	UFUNCTION()
 	void OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity);
-	float GetOnGenerateSuccessRate(FBiomeData BiomeData);
+	float GetOnGenerateResourceSuccessRate(FBiomeData BiomeData, UClass* ResourceClass);
 	bool StartBiomeDataTimer();
 	/*!
 	 * Generate Resource, first check box collision conner line trace, if
 	 * 4 corner in the same plane, then trace the point generate the resource
 	 * @param BiomeData The resource in Data you wan to generate
 	 */
-	void GenerateResource(FBiomeData BiomeData);
+	void SpawnResourceEntity(FBiomeData BiomeData);
+	void SpawnCreatureEntity(FBiomeData BiomeData);
 
 protected:
 	// Called when the game starts or when spawned
@@ -95,6 +103,10 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
+	virtual UWorldManager* GetWorldManager_Implementation() override;
 
 private:
 };

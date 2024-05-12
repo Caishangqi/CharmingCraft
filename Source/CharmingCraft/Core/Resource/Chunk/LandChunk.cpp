@@ -8,6 +8,7 @@
 #include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
 #include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "Engine/LevelScriptActor.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Engine/StaticMeshActor.h"
 #include "Kismet/GameplayStatics.h"
@@ -75,7 +76,7 @@ void ALandChunk::PostEditMove(bool bFinished)
 }
 
 
-void ALandChunk::OnUnloadWorldChunkEvent(UObject* InstigatorObject, UWorld* TargetWorld, ALandChunk* TargetChunk)
+void ALandChunk::OnUnloadWorldChunk(UObject* InstigatorObject, ALandChunk* TargetChunk)
 {
 	// Execute OnUnloadChunk
 	if (TargetChunk == this)
@@ -83,28 +84,50 @@ void ALandChunk::OnUnloadWorldChunkEvent(UObject* InstigatorObject, UWorld* Targ
 		// Set Chunk state
 		SetActorTickEnabled(false);
 		ChunkState = EChunkState::PENDING_UNLOADED;
-		GetWorldTimerManager().ClearAllTimersForObject(TargetWorld);
+		GetWorldTimerManager().ClearAllTimersForObject(this);
 		for (auto& PerBiomeData : BiomeData)
 		{
-			/*UE_LOG(LogChamingCraftWorld, Error,
-			       TEXT("[🌍]  Timer Status Before clear: %d\n"
-				       "		Timer Owner: %s\n"
-				       "		Timer Valid: %d"),
-			       GetWorldTimerManager().IsTimerActive(PerBiomeData.ResourceInternalTimer),
-			       *PerBiomeData.ResourceInternalTimer.ToString(), PerBiomeData.ResourceInternalTimer.IsValid());*/
 			GetWorldTimerManager().ClearTimer(PerBiomeData.ResourceInternalTimer);
-			/*UE_LOG(LogChamingCraftWorld, Error,
-			       TEXT("[🌍]  Timer Status: %d\n"
-				       "		Timer Owner: %s\n"
-				       "		Timer Valid: %d"),
-			       GetWorldTimerManager().IsTimerActive(PerBiomeData.ResourceInternalTimer),
-			       *PerBiomeData.ResourceInternalTimer.ToString(), PerBiomeData.ResourceInternalTimer.IsValid());*/
 		}
 		ChunkState = EChunkState::UNLOADED;
 		// Then We start serialize data (resource pool)
 
 		// Destroy
 	}
+}
+
+void ALandChunk::SpawnCreatureAtChunk()
+{
+	// Check distance, we don't want creature natually spawn in player view range
+	ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
+	float Distance = FVector::DistXY(this->GetActorLocation(), PlayerCharacter->GetActorLocation());
+	if (Distance > 1600)
+	{
+		for (auto& PerBiomeData : BiomeData)
+		{
+			if (PerBiomeData.CreatureEntityActorClass != nullptr)
+			{
+				SpawnCreatureEntity(PerBiomeData);
+			}
+		}
+	}
+}
+
+void ALandChunk::OnLoadWorldChunk(UObject* InstigatorObject, ALandChunk* TargetChunk)
+{
+	UE_LOG(LogChamingCraftResource, Display,
+	       TEXT("[🪨️]  On Chunk Loaded into world\n"
+		       "		 [I] Instigator =		%s\n"
+		       "		 [C] Chunk =		%s\n"), *this->GetName(),
+	       *InstigatorObject->GetName());
+	if (ChunkState == EChunkState::LOADED)
+	{
+		StartBiomeDataTimer();
+	}
+	GameEventHandler = GetGameEventHandler_Implementation();
+	GameEventHandler->OnResourceEntityBreak.AddDynamic(this, &ALandChunk::OnResourceEntityBreakEvent);
+	// Spawn Creature at a specific distance
+	SpawnCreatureAtChunk();
 }
 
 void ALandChunk::OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActor* TargetResourceEntity)
@@ -118,18 +141,36 @@ void ALandChunk::OnResourceEntityBreakEvent(AActor* Breaker, AResourceEntityActo
 	ResourceEntityActorPool.Remove(TargetResourceEntity);
 }
 
-float ALandChunk::GetOnGenerateSuccessRate(FBiomeData BiomeDataContext)
+float ALandChunk::GetOnGenerateResourceSuccessRate(FBiomeData BiomeDataContext, UClass* ResourceClass)
 {
 	int32 BiomeIncludeResource = 0;
-	for (auto ResourceEntity : ResourceEntityActorPool)
+	if (ResourceClass == AResourceEntityActor::StaticClass())
 	{
-		if (ResourceEntity.GetClass() == BiomeDataContext.ResourceEntityActorClass.Get())
+		for (auto ResourceEntity : ResourceEntityActorPool)
 		{
-			BiomeIncludeResource++;
+			if (ResourceEntity.GetClass() == BiomeDataContext.ResourceEntityActorClass.Get())
+			{
+				BiomeIncludeResource++;
+			}
+		}
+		return 1 - (BiomeIncludeResource / BiomeDataContext.MaxPerBiome);
+	}
+
+	if (ResourceClass == ANativeCreature::StaticClass())
+	{
+		if (NativeCreaturePool.Num() == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 1 - (NativeCreaturePool.Num() / BiomeDataContext.MaxPerBiome);
 		}
 	}
-	return 1 - (BiomeIncludeResource / BiomeDataContext.MaxPerBiome);
+
+	return 0.0f;
 }
+
 
 bool ALandChunk::StartBiomeDataTimer()
 {
@@ -137,17 +178,80 @@ bool ALandChunk::StartBiomeDataTimer()
 	{
 		GetWorld()->GetTimerManager().SetTimer(PerBiomeData.ResourceInternalTimer, [this, PerBiomeData]()
 		                                       {
-			                                       this->GenerateResource(PerBiomeData);
+			                                       this->SpawnResourceEntity(
+				                                       PerBiomeData);
 		                                       },
 		                                       PerBiomeData.RegenerateTick, true);
 	}
 	return true;
 }
 
-
-void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
+void ALandChunk::SpawnCreatureEntity(FBiomeData BiomeDataContext)
 {
-	float SuccessRate = GetOnGenerateSuccessRate(BiomeDataContext);
+	float RandomFloat = FMath::FRand(); // Generates a random float between 0.0 and 1.0
+	float ScaledAndShifted = RandomFloat * BiomeDataContext.MaxPerBiome + BiomeDataContext.MinPerBiome;
+	// Scale to the range of 2 to 10
+
+	while (ScaledAndShifted > 0)
+	{
+		float SuccessRate = GetOnGenerateResourceSuccessRate(BiomeDataContext, ANativeCreature::StaticClass());
+		float RandomChance = FMath::FRand();
+
+
+		if (RandomChance > SuccessRate)
+		{
+			return; // Early exit if the random chance exceeds success rate
+		}
+
+		int32 RandomIndex = FMath::RandRange(0, ChunkPoints.Num() - 1);
+		FVector SpawnLocation = ChunkPoints[RandomIndex] + FVector(0, 0, 500);
+		// Generate Random Rotation
+		float RandomYaw = UResourceGenerateLibrary::GetRandomYawRight();
+		FTransform SpawnTransform(FRotator(0, RandomYaw, 0), SpawnLocation);
+
+		TObjectPtr<ANativeCreature> CreatureEntityActor;
+		// Script Actor
+
+		CreatureEntityActor = Cast<ANativeCreature>(
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(
+				GetWorld(), BiomeDataContext.CreatureEntityActorClass,
+				SpawnTransform, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, this));
+		if (!CreatureEntityActor)
+		{
+			return; // Early exit if actor casting fails
+		}
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActor(CreatureEntityActor);
+
+		FHitResult HitResult;
+		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, SpawnLocation + FVector(0, 0, 1000),
+		                                                 SpawnLocation - FVector(0, 0, 500),
+		                                                 ECC_WorldStatic, CollisionParams);
+		// DrawDebugLine(this->GetWorld(), SpawnLocation + FVector(0, 0, 1000), SpawnLocation - FVector(0, 0, 500),
+		//               FColor::Purple, true,
+		//               10.0f);
+
+
+		if (bHit)
+		{
+			FVector FinalLocation(HitResult.Location);
+			SpawnTransform.SetLocation(FinalLocation);
+			UGameplayStatics::FinishSpawningActor(CreatureEntityActor, SpawnTransform);
+			NativeCreaturePool.Add(CreatureEntityActor);
+			//DrawDebugPoint(this->GetWorld(), FinalLocation, 10, FColor::Yellow, true);
+		}
+		else
+		{
+			CreatureEntityActor->Destroy();
+		}
+
+		ScaledAndShifted--;
+	}
+}
+
+void ALandChunk::SpawnResourceEntity(FBiomeData BiomeDataContext)
+{
+	float SuccessRate = GetOnGenerateResourceSuccessRate(BiomeDataContext, AResourceEntityActor::StaticClass());
 	float RandomChance = FMath::FRand();
 
 	if (RandomChance > SuccessRate)
@@ -159,12 +263,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 	FVector SpawnLocation = ChunkPoints[RandomIndex] + FVector(0, 0, 500);
 	// Generate Random Rotation
 	float RandomYaw = UResourceGenerateLibrary::GetRandomYawRight();
-
 	FTransform SpawnTransform(FRotator(0, RandomYaw, 0), SpawnLocation);
-	/*
-	UE_LOG(LogChamingCraftWorld, Warning,
-	       TEXT("[🌍]  The resource is spawn in world: %s"), *GetWorld()->GetName());
-	       */
 
 	TObjectPtr<AResourceEntityActor> ResourceEntityActor;
 	/* 请务必确保Owner是当前Actor,这样他就会和关卡一起卸载加载 */
@@ -179,6 +278,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(ResourceEntityActor);
+
 
 	TArray<float> Z_Plane;
 	bool bValidSpawn = true; // Assume valid spawn until proven otherwise
@@ -245,13 +345,7 @@ void ALandChunk::GenerateResource(FBiomeData BiomeDataContext)
 void ALandChunk::BeginPlay()
 {
 	Super::BeginPlay();
-	if (ChunkState == EChunkState::LOADED)
-	{
-		StartBiomeDataTimer();
-	}
-	GameEventHandler = Cast<UCharmingCraftInstance>(GetGameInstance())->GamePlayLogicManager;
-	GameEventHandler->OnResourceEntityBreak.AddDynamic(this, &ALandChunk::OnResourceEntityBreakEvent);
-	GameEventHandler->OnUnloadWorldChunk.AddDynamic(this, &ALandChunk::OnUnloadWorldChunkEvent);
+	OnLoadWorldChunk(this, this);
 }
 
 void ALandChunk::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -260,11 +354,28 @@ void ALandChunk::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(PerBiomeData.ResourceInternalTimer);
 	}
+	OnUnloadWorldChunk(this, this);
 	Super::EndPlay(EndPlayReason);
 }
+
 
 // Called every frame
 void ALandChunk::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+UCharmingCraftInstance* ALandChunk::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
+}
+
+UGameEventHandler* ALandChunk::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
+}
+
+UWorldManager* ALandChunk::GetWorldManager_Implementation()
+{
+	return GetGameInstance_Implementation()->GetWorldManager();
 }

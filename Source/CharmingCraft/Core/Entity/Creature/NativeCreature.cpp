@@ -5,7 +5,6 @@
 
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
-#include "CharmingCraft/Core/Container/Inventory/InventoryComponent.h"
 #include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
 #include "CharmingCraft/Core/Resource/Loot/NativeLootEntity.h"
@@ -27,6 +26,10 @@ ANativeCreature::ANativeCreature()
 	HealthIndicator->SetupAttachment(GetRootComponent());
 	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
 	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComp");
+	
+	HitBox = CreateDefaultSubobject<UBoxComponent>("HitBox");
+	HitBox->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned

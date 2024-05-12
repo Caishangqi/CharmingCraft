@@ -282,13 +282,13 @@ bool UWorldManager::GetWorldIsVisible(const TSoftObjectPtr<UWorld> TargetLevel)
 }
 
 
-bool UWorldManager::UnloadWorldChunk(UObject* Instigator, UWorld* TargetWorld, ALandChunk* TargetChunk)
+bool UWorldManager::UnloadWorldChunk(UObject* Instigator, ALandChunk* TargetChunk)
 {
 	UE_LOG(LogChamingCraftWorld, Warning,
 	       TEXT("[🌍]  Unloading Chunks form world\n"
-		       "		Target World: %s\n"
-		       "		Target Chunk: %s"), *TargetWorld->GetName(), *TargetChunk->GetName());
-	GetGameEventHandler()->OnUnloadWorldChunkEvent(Instigator, TargetWorld, TargetChunk);
+		       "		[I] Instigator: %s\n"
+		       "		[C] Target Chunk: %s"), *Instigator->GetName(), *TargetChunk->GetName());
+	GetGameEventHandler()->OnUnloadWorldChunkEvent(Instigator, TargetChunk);
 	return true; // 12
 }
 
