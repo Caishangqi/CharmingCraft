@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Builds/Interface/UBreakable.h"
 #include "CharmingCraft/Core/Builds/Interface/UVisualEnhancement.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "BlockEntityActor.generated.h"
 class UBoxComponent;
 
@@ -17,7 +17,7 @@ enum class EBlockManipulationType: uint8
 };
 
 UCLASS()
-class CHARMINGCRAFT_API ABlockEntityActor : public AInteractObject, public IBreakableInterface,
+class CHARMINGCRAFT_API ABlockEntityActor : public ANativeInteractActor, public IBreakableInterface,
                                             public IVisualEnhancementInterface
 {
 	GENERATED_BODY()

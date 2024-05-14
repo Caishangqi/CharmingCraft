@@ -8,7 +8,7 @@
 #include "CharmingCraft/Core/Resource/Data/FResourceData.h"
 #include "CharmingCraft/Core/Resource/Data/FResourceGeometryData.h"
 #include "CharmingCraft/Core/Resource/Enum/EResourceType.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "ResourceEntityActor.generated.h"
 
 class UGeometryCollectionComponent;
@@ -18,7 +18,7 @@ class UChildActorComponent;
 class UBoxComponent;
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API AResourceEntityActor : public AInteractObject, public IDamageable, public IBreakableInterface
+class CHARMINGCRAFT_API AResourceEntityActor : public ANativeInteractActor, public IDamageable, public IBreakableInterface
 {
 	GENERATED_BODY()
 

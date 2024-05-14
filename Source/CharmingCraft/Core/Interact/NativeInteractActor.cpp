@@ -1,11 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "InteractObject.h"
-
+#include "../Core/Interact/NativeInteractActor.h"
 #include "Kismet/GameplayStatics.h"
 
-AInteractObject::AInteractObject()
+ANativeInteractActor::ANativeInteractActor()
 {
 	MinimumInteractRange = 250;
 	bIgnoreRangeToInteract = false;
@@ -14,23 +13,23 @@ AInteractObject::AInteractObject()
 	FindClassBaseOnBluePrint();
 }
 
-UCharmingCraftInstance* AInteractObject::GetGameInstance_Implementation()
+UCharmingCraftInstance* ANativeInteractActor::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
 }
 
-UWorldManager* AInteractObject::GetWorldManager_Implementation()
+UWorldManager* ANativeInteractActor::GetWorldManager_Implementation()
 {
 	return GetGameInstance_Implementation()->GetWorldManager();
 }
 
-UGameEventHandler* AInteractObject::GetGameEventHandler_Implementation()
+UGameEventHandler* ANativeInteractActor::GetGameEventHandler_Implementation()
 {
 	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
 
 
-void AInteractObject::BeginPlay()
+void ANativeInteractActor::BeginPlay()
 {
 	Super::BeginPlay();
 	if (bIsHighlighted)
@@ -47,7 +46,7 @@ void AInteractObject::BeginPlay()
  *	@return void 
  */
 
-void AInteractObject::FindClassBaseOnBluePrint()
+void ANativeInteractActor::FindClassBaseOnBluePrint()
 {
 	static ConstructorHelpers::FClassFinder<UActorComponent> BlueprintComponentFinder(
 		TEXT(
@@ -59,7 +58,7 @@ void AInteractObject::FindClassBaseOnBluePrint()
  * 在注册完蓝图类后,基于这个模板类型注册组件
  * @return	void
  */
-void AInteractObject::RegisterComponent()
+void ANativeInteractActor::RegisterComponent()
 {
 	if (BlueprintComponentClass != nullptr)
 	{

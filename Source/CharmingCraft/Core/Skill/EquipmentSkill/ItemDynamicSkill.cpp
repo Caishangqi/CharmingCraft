@@ -2,7 +2,7 @@
 
 
 #include "ItemDynamicSkill.h"
-#include "DAction.h"
+#include "../Core/Skill/Actions/NativeAction.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Skill/Actions/NativeItemAction.h"
 
@@ -29,11 +29,11 @@ void UItemDynamicSkill::PostInitProperties()
 	}
 }
 
-bool UItemDynamicSkill::AddDynamicSkillToSlot(TSubclassOf<UDAction> ActionClass)
+bool UItemDynamicSkill::AddDynamicSkillToSlot(TSubclassOf<UNativeAction> ActionClass)
 {
 	UE_LOG(LogChamingCraftAction, Display,
 	       TEXT("[⚔️]  UItemDynamicSkill::AddDynamicSkillToSlot"));
-	const TObjectPtr<UDAction> DefaultAction = NewObject<UDAction>(this, ActionClass);
+	const TObjectPtr<UNativeAction> DefaultAction = NewObject<UNativeAction>(this, ActionClass);
 	if (!DynamicSkills.Contains(DefaultAction))
 	{
 		DynamicSkills.Add(DefaultAction);

@@ -3,7 +3,7 @@
 
 #include "CameraManager.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "GameFramework/SpringArmComponent.h"

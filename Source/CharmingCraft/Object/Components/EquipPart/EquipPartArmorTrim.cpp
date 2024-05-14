@@ -3,7 +3,7 @@
 
 #include "EquipPartArmorTrim.h"
 
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Structs/FDArmorMaterial.h"
 
 UEquipPartArmorTrim::UEquipPartArmorTrim()

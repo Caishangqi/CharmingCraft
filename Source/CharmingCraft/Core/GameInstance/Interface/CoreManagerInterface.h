@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "UObject/Interface.h"
 #include "CoreManagerInterface.generated.h"
 

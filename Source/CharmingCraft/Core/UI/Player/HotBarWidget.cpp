@@ -4,7 +4,7 @@
 #include "HotBarWidget.h"
 
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Components/Overlay.h"
 
 void UHotBarWidget::NativeConstruct()

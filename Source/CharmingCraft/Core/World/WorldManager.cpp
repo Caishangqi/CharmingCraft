@@ -10,11 +10,11 @@
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Resource/Chunk/LandChunk.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
-FLevelStreamingDynamicResult UWorldManager::GetPlayerCurrentLevel(APawn* PlayerCharacter)
+FLevelStreamingDynamicResult UWorldManager::GetPlayerCurrentLevel(ACharacter* PlayerCharacter)
 {
 	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
 	TObjectPtr<UPlayerData> PlayerData = GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.PlayerData;

@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DAction.h"
+#include "../Core/Skill/Actions/NativeAction.h"
 
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Core/Skill/Actions/ActionActor/BaseActionActor.h"
 
-void UDAction::StartAction_Implementation(APawn* Instigator)
+void UNativeAction::StartAction_Implementation(APawn* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));
 	StartCoolDown();
@@ -18,7 +18,7 @@ void UDAction::StartAction_Implementation(APawn* Instigator)
 	bIsRunning = true;
 }
 
-void UDAction::StopAction_Implementation(APawn* Instigator)
+void UNativeAction::StopAction_Implementation(APawn* Instigator)
 {
 	UDActionComponent* Comp = GetOwningComponent();
 	Comp->ActiveGamePlayTags.RemoveTags(GrantsTags);
@@ -26,7 +26,7 @@ void UDAction::StopAction_Implementation(APawn* Instigator)
 	bIsRunning = false;
 }
 
-bool UDAction::CanStart_Implementation(APawn* Instigator)
+bool UNativeAction::CanStart_Implementation(APawn* Instigator)
 {
 	if (IsRunning())
 	{
@@ -42,7 +42,7 @@ bool UDAction::CanStart_Implementation(APawn* Instigator)
 	return true;
 }
 
-UWorld* UDAction::GetWorld() const
+UWorld* UNativeAction::GetWorld() const
 {
 	// Outer is set when creating action via NewObject<T>
 	UActorComponent* Comp = Cast<UActorComponent>(GetOuter());
@@ -58,7 +58,7 @@ UWorld* UDAction::GetWorld() const
 }
 
 
-UDActionComponent* UDAction::GetOwningComponent() const
+UDActionComponent* UNativeAction::GetOwningComponent() const
 {
 	if (Cast<UDActionComponent>(GetOuter()))
 	{
@@ -70,45 +70,45 @@ UDActionComponent* UDAction::GetOwningComponent() const
 	}
 }
 
-bool UDAction::IsRunning() const
+bool UNativeAction::IsRunning() const
 {
 	return bIsRunning;
 }
 
-void UDAction::StartCoolDown()
+void UNativeAction::StartCoolDown()
 {
 	if (CoolDown != 0.0f)
 	{
 		bIsCooling = true;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UDAction::CooldownFinished, CoolDown);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle_Cooldown, this, &UNativeAction::CooldownFinished, CoolDown);
 		OnCoolStart.Broadcast(CachedInstigator);
 	}
 }
 
-void UDAction::CooldownFinished()
+void UNativeAction::CooldownFinished()
 {
 	bIsCooling = false;
 	ResetCoolDown();
 	OnCoolComplete.Broadcast(CachedInstigator);
 }
 
-void UDAction::ResetCoolDown()
+void UNativeAction::ResetCoolDown()
 {
 	GetWorld()->GetTimerManager().ClearTimer(TimerHandle_Cooldown);
 }
 
-float UDAction::GetRemainCooldown()
+float UNativeAction::GetRemainCooldown()
 {
 	return GetWorld()->GetTimerManager().GetTimerRemaining(TimerHandle_Cooldown);
 }
 
-FHitData UDAction::GetActionHitData_Implementation()
+FHitData UNativeAction::GetActionHitData_Implementation()
 {
 	FHitData HitData;
 	return HitData;
 }
 
-FActionActorData UDAction::GetActionActorData_Implementation()
+FActionActorData UNativeAction::GetActionActorData_Implementation()
 {
 	FActionActorData ActionActorData;
 	return ActionActorData;

@@ -6,7 +6,7 @@
 #include "EngineUtils.h"
 #include "../Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "GameFramework/PlayerStart.h"
 #include "../Core/Save/Lib/CharacterSaveLib.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
@@ -305,7 +305,7 @@ void UGameEventHandler::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* Tar
 	OnCloseWidget.Broadcast(Instigator, TargetWidget);
 }
 
-void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
+void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction, UNativeAction* TargetAction,
                                                     UItemMeta* ContextMeta)
 {
 	OnItemDynamicSkillBind.Broadcast(Instigator, FromAction, TargetAction, ContextMeta);

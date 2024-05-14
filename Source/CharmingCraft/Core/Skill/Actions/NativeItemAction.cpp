@@ -3,8 +3,8 @@
 
 #include "NativeItemAction.h"
 
-#include "NativePlayerCharacter.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
+#include "../Core/CharmingCraftInstance.h"
 
 UNativeItemAction::UNativeItemAction()
 {

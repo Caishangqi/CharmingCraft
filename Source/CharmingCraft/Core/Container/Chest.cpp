@@ -4,7 +4,7 @@
 #include "Chest.h"
 
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
 
 void AChest::Interact_Implementation(APawn* InstigatorPawn)

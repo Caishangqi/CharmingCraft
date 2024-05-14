@@ -4,7 +4,7 @@
 #include "PersistentDataComponent.h"
 
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 

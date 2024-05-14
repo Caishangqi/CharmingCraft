@@ -3,14 +3,14 @@
 
 #include "Equipment.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "CharmingCraft/Object/Structs/model/FEquipmentAttribute.h"
 #include "Components/ArrowComponent.h"

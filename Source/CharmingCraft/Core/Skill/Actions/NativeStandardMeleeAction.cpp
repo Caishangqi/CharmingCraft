@@ -6,7 +6,7 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Item/Meta/Abstruct/IntegratedMeta.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "Components/ArrowComponent.h"
 

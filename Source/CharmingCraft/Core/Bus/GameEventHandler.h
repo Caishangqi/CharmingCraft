@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "../Core/Save/Data/FSaveSlotInfo.h"
 #include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "CharmingCraft/Core/Item/Block/BlockEntityActor.h"
@@ -86,8 +86,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerMovementDelegate, APawn*
                                                FromLocation, FVector, TargetLocation);
 
 // Item Ability System
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UDAction*,
-                                              FromAction, UDAction*,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UNativeAction*,
+                                              FromAction, UNativeAction*,
                                               TargetAction, UItemMeta *, ContextMeta);
 
 // World Management
@@ -297,7 +297,7 @@ public:
 
 	// Item Ability System
 	UFUNCTION(BlueprintCallable)
-	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
+	void OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction, UNativeAction* TargetAction,
 	                                 UItemMeta* ContextMeta);
 
 	// Craft

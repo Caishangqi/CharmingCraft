@@ -2,12 +2,12 @@
 
 
 #include "DActionComponent.h"
-#include "DAction.h"
-#include "NativePlayerCharacter.h"
+#include "../Core/Skill/Actions/NativeAction.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 // Sets default values for this component's properties
 UDActionComponent::UDActionComponent()
@@ -26,7 +26,7 @@ void UDActionComponent::BeginPlay()
 	/* 把从编辑器设置的 DefaultActions 中的内容添加到 Actions中
 	 * @see UDActionComponent.Actions 内容
 	 */
-	for (TSubclassOf<UDAction> ActionClass : DefaultActions)
+	for (TSubclassOf<UNativeAction> ActionClass : DefaultActions)
 	{
 		AddAction(ActionClass);
 	}
@@ -69,7 +69,7 @@ void UDActionComponent::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer
 }
 
 
-void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)
+void UDActionComponent::AddAction(const TSubclassOf<UNativeAction> ActionClass)
 {
 	/* 安全的空指针判断 */
 	if (!ensure(ActionClass))
@@ -77,24 +77,24 @@ void UDActionComponent::AddAction(const TSubclassOf<UDAction> ActionClass)
 		return;
 	}
 
-	/* 实例化 UDAction, outer可以理解成包裹的类,这样在 UDAction中就可以
+	/* 实例化 UNativeAction, outer可以理解成包裹的类,这样在 UDAction中就可以
 	 * .GetOuter()获取 UDActionComponent 了.
 	 */
-	UDAction* NewAction = NewObject<UDAction>(this, ActionClass);
+	UNativeAction* NewAction = NewObject<UNativeAction>(this, ActionClass);
 	if (ensure(NewAction))
 	{
 		Actions.Add(NewAction);
 	}
 }
 
-void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass)
+void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UNativeAction> ActionClass)
 {
 	if (!ensure(ActionClass))
 	{
 		return;
 	}
 
-	UDAction* NewAction = NewObject<UDAction>(this, ActionClass);
+	UNativeAction* NewAction = NewObject<UNativeAction>(this, ActionClass);
 	BindAction.Add(index, NewAction);
 }
 
@@ -143,7 +143,7 @@ bool UDActionComponent::RemoveItemDynamicSkills(UItemMeta* ItemMeta)
 
 bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionName)
 {
-	for (UDAction* Action : Actions)
+	for (UNativeAction* Action : Actions)
 	{
 		if (Action && Action->ActionName == ActionName)
 		{
@@ -190,7 +190,7 @@ bool UDActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSl
 
 bool UDActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
 {
-	for (UDAction* Action : Actions)
+	for (UNativeAction* Action : Actions)
 	{
 		if (Action && Action->SkillType == ActionType)
 		{
@@ -216,7 +216,7 @@ bool UDActionComponent::HasActionByType(EItemDynamicSkillSlot ActionType)
 	return false;
 }
 
-void UDActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction, UItemMeta* ContextMeta)
+void UDActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction, UNativeAction* TargetAction, UItemMeta* ContextMeta)
 {
 	// We only want to receive broadcast when the item is equipped
 	if (ContextMeta->bIsEquipped)
@@ -265,7 +265,7 @@ bool UDActionComponent::StartActionByIndex(APawn* Instigator, int32 index)
 
 bool UDActionComponent::StopActionByName(APawn* Instigator, const FName ActionName)
 {
-	for (UDAction* Action : Actions)
+	for (UNativeAction* Action : Actions)
 	{
 		if (Action && Action->ActionName == ActionName)
 		{

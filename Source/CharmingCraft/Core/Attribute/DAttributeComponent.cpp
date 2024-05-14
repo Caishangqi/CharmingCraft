@@ -7,7 +7,7 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"
 #include "Kismet/GameplayStatics.h"
 

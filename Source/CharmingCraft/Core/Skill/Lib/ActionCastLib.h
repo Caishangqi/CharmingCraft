@@ -56,7 +56,7 @@ public:
 	}
 
 	UFUNCTION(BlueprintCallable, Category = "Action Actor")
-	static UDAction* GetItemActionsByType(UItemStack* ItemStack, APawn* Owner, EItemDynamicSkillSlot ActionType)
+	static UNativeAction* GetItemActionsByType(UItemStack* ItemStack, APawn* Owner, EItemDynamicSkillSlot ActionType)
 	{
 		if (!(ItemStack && Owner))
 		{
@@ -64,7 +64,7 @@ public:
 		}
 		TObjectPtr<UDActionComponent> ActionComponent = Cast<UDActionComponent>(
 			Owner->GetComponentByClass(UDActionComponent::StaticClass()));
-		for (const UDAction* Action : ActionComponent->Actions)
+		for (const UNativeAction* Action : ActionComponent->Actions)
 		{
 			if (Action == ItemStack->ItemMeta->BindItemDynamicSkill.Find(ActionType)->Get())
 			{

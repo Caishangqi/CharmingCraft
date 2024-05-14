@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "VolumeSceneTriggerComponent.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "InteractSceneTrigger.generated.h"
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API AInteractSceneTrigger : public AInteractObject
+class CHARMINGCRAFT_API AInteractSceneTrigger : public ANativeInteractActor
 {
 	GENERATED_BODY()
 

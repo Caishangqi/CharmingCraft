@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "Decoration.generated.h"
 
 UCLASS()
-class CHARMINGCRAFT_API ADecoration : public AInteractObject
+class CHARMINGCRAFT_API ADecoration : public ANativeInteractActor
 {
 	GENERATED_BODY()
 

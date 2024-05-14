@@ -9,7 +9,7 @@
 /**
  * 
  */
-class UDAction;
+class UNativeAction;
 
 UENUM(BlueprintType)
 enum class EItemDynamicSkillSlot : uint8
@@ -53,10 +53,10 @@ public:
 	FName ItemDynamicSkillName;
 
 	UPROPERTY(BlueprintReadWrite)
-	TArray<TObjectPtr<UDAction>> DynamicSkills;
+	TArray<TObjectPtr<UNativeAction>> DynamicSkills;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Editor")
-	TArray<TSubclassOf<UDAction>> DynamicSkillsContent;
+	TArray<TSubclassOf<UNativeAction>> DynamicSkillsContent;
 
 public:
 	UItemDynamicSkill();
@@ -64,5 +64,5 @@ public:
 	virtual void PostInitProperties() override;
 
 	UFUNCTION(BlueprintCallable)
-	bool AddDynamicSkillToSlot(TSubclassOf<UDAction> ActionClass);
+	bool AddDynamicSkillToSlot(TSubclassOf<UNativeAction> ActionClass);
 };

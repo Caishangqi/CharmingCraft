@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "NativeLootEntity.generated.h"
 
 class UDropTableData;
@@ -16,7 +16,7 @@ class UDropTableData;
  * complex enough
  */
 UCLASS()
-class CHARMINGCRAFT_API ANativeLootEntity : public AInteractObject
+class CHARMINGCRAFT_API ANativeLootEntity : public ANativeInteractActor
 {
 	GENERATED_BODY()
 

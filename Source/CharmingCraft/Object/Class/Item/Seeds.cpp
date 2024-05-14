@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "CharmingCraft/Core/Builds/Module/Modules/SeedsBuildModel.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 void USeeds::OnItemInteract(UItemStack* InteractItemStack, APawn* Instigator)
 {

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DAction.h"
+#include "../Core/Skill/Actions/NativeAction.h"
 #include "NativeItemAction.generated.h"
 class ANativePlayerCharacter;
 class UCharmingCraftInstance;
@@ -23,7 +23,7 @@ class UItemStack;
  * read drop table in the ItemMeta to decided the rewards
  */
 UCLASS()
-class CHARMINGCRAFT_API UNativeItemAction : public UDAction
+class CHARMINGCRAFT_API UNativeItemAction : public UNativeAction
 {
 	GENERATED_BODY()
 

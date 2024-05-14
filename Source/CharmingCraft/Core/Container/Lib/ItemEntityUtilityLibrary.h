@@ -142,11 +142,7 @@ public:
 	                            FVector LaunchVelocity)
 	{
 		// TODO: Change the logic and avoid use GetPlayerCharacter
-		FLevelStreamingDynamicResult PlayerCurrentLevel = Cast<UCharmingCraftInstance>(
-			                                                  UGameplayStatics::GetGameInstance(Instigator))->
-		                                                  GetWorldManager()->GetPlayerCurrentLevel(
-			                                                  Cast<APawn>(
-				                                                  UGameplayStatics::GetPlayerCharacter(Instigator, 0)));
+		FLevelStreamingDynamicResult PlayerCurrentLevel = Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(Instigator))->GetWorldManager()->GetPlayerCurrentLevel(UGameplayStatics::GetPlayerCharacter(Instigator, 0));
 		// If is not in the test environment that PlayerCurrentLevel is valid
 		TObjectPtr<ADropItem> DropItemEntity;
 		if (PlayerCurrentLevel.LoadedWorld)

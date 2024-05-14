@@ -7,7 +7,7 @@
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/UI/Holder/WidgetHolder.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 void UNativeUserWidgetEventHandler::NativeConstruct()
 {

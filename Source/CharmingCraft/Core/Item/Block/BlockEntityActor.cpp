@@ -7,7 +7,7 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Components/BoxComponent.h"
 
 

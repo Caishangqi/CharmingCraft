@@ -3,13 +3,13 @@
 
 #include "ItemMeta.h"
 
-#include "DAction.h"
+#include "../Core/Skill/Actions/NativeAction.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
 #include "CharmingCraft/Core/Save/Lib/SerializationLib.h"
 #include "CharmingCraft/Core/Skill/Actions/NativeItemAction.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -55,7 +55,7 @@ UObject* UItemMeta::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
-bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction,
+bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UNativeAction* FromAction, UNativeAction* TargetAction,
                                          UItemMeta* ContextMeta)
 {
 	// Need to check Empty, fail to check will cause Find() found nullptr
@@ -81,7 +81,7 @@ bool UItemMeta::AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction
 	}
 
 
-	TObjectPtr<UDAction> BindAction = nullptr;
+	TObjectPtr<UNativeAction> BindAction = nullptr;
 	if (BindItemDynamicSkill.Contains(TargetAction->SkillType))
 	{
 		BindAction = BindItemDynamicSkill.Find(TargetAction->SkillType)->Get();

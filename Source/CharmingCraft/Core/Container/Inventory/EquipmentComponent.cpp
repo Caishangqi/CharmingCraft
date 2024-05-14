@@ -8,7 +8,7 @@
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "../Core/Item/Meta/ItemMeta.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/Item/Equipment.h"
 
 // Sets default values for this component's properties

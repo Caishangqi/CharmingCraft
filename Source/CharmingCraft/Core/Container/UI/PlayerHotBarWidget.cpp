@@ -3,9 +3,9 @@
 
 #include "PlayerHotBarWidget.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 UPlayerHotBarWidget::UPlayerHotBarWidget()
 {

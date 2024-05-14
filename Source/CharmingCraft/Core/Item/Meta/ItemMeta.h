@@ -66,7 +66,7 @@ public:
 	 *	and Serialize will load the BindItemDynamicSkill and its binding
 	 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Item Dynamic Skill")
-	TMap<EItemDynamicSkillSlot, TObjectPtr<UDAction>> BindItemDynamicSkill;
+	TMap<EItemDynamicSkillSlot, TObjectPtr<UNativeAction>> BindItemDynamicSkill;
 
 	/*!
 	 * Add Specific Action to BindItemDynamicSkill, usually the action
@@ -84,7 +84,7 @@ public:
 	 * the same with new Action.
 	 */
 	UFUNCTION(BlueprintCallable, Category= "Item Dynamic Skill")
-	bool AddActionToBindItemSkill(APawn* Instigator, UDAction* FromAction,UDAction* TargetAction, UItemMeta * ContextMeta);
+	bool AddActionToBindItemSkill(APawn* Instigator, UNativeAction* FromAction,UNativeAction* TargetAction, UItemMeta * ContextMeta);
 	
 	UFUNCTION(Blueprintable)
 	virtual AItemEntityActor* CreateItemEntityActor(const UObject* WorldContextObject, AActor* Owner);

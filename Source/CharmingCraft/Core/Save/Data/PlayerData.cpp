@@ -3,11 +3,11 @@
 
 #include "PlayerData.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "RuntimeGameData.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 

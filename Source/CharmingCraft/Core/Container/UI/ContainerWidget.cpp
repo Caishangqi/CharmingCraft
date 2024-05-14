@@ -3,7 +3,7 @@
 
 #include "ContainerWidget.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 
 void UContainerWidget::NativeConstruct()
 {

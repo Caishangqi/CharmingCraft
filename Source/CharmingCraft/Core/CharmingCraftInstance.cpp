@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"

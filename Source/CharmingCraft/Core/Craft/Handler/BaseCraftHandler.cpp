@@ -6,7 +6,7 @@
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Container/Inventory/InventoryComponent.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 TArray<UBaseRecipeEntry*> UBaseCraftHandler::FilterRecipeByClassification(
 	FName Classification, FRecipesContainerCollection& RecipesContainerCollection)

@@ -2,18 +2,18 @@
 
 
 #include "DInteractionComponent.h"
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "../Core/Interact/Interface/DGameplayInterface.h"
 #include "CharmingCraft/CharmingCraft.h"
 #include "CharmingCraft/Controller/DPlayerAIController.h"
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 
 // Sets default values for this component's properties
@@ -59,10 +59,10 @@ bool UDInteractionComponent::PrimaryInteract(AActor* HitActor, FVector HitLocati
 		 * 实例化和InteractComponent是同步的,所以你在InteractComponent获取
 		 * 玩积类上的AIController会空指针,因为这时没有触发玩家类上的BeingPlay()
 		 */
-		if (HitActor->Implements<UMouseInteractInterface>() && Cast<AInteractObject>(HitActor))
+		if (HitActor->Implements<UMouseInteractInterface>() && Cast<ANativeInteractActor>(HitActor))
 		//注意 Check Implements 泛型是UDGameplayInterface, UE生成的接口
 		{
-			AInteractObject* CastedObject = Cast<AInteractObject>(HitActor);
+			ANativeInteractActor* CastedObject = Cast<ANativeInteractActor>(HitActor);
 			//UE_LOG(LogTemp, Warning, TEXT("The Actor's range is %d"), CastedObject->MinimumInteractRange);
 			//计算玩家角色和这个Actor之间的距离
 			float Distance = FVector::DistXY(Player->GetActorLocation(), HitActor->GetActorLocation());
@@ -103,7 +103,7 @@ bool UDInteractionComponent::ExecuteInteractAction()
 		return false;
 	}
 	if (AIController->TargetActor->IsA(
-		AInteractObject::StaticClass()))
+		ANativeInteractActor::StaticClass()))
 	{
 		IMouseInteractInterface::Execute_Interact(AIController->TargetActor.Get(), Player);
 	}

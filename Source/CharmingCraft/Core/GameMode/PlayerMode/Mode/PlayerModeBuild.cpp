@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "GameFramework/Character.h"
 
 UPlayerModeBuild::UPlayerModeBuild()

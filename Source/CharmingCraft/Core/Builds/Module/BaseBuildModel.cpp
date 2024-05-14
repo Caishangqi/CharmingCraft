@@ -7,7 +7,7 @@
 #include "CharmingCraft/Core/Builds/Block/FrameActor.h"
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 UBaseBuildModel::UBaseBuildModel()
 {

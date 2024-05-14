@@ -5,7 +5,7 @@
 
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 
 void UGameSaveWidget::NativePreConstruct()

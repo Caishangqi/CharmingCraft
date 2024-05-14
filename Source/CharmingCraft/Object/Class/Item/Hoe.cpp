@@ -6,7 +6,7 @@
 #include "CharmingCraft/Core/Builds/Module/BuildModuleManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "../Core/Item/Meta/Abstruct/IntegratedMeta.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 UHoe::UHoe()
 {

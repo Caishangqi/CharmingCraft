@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Interface/InteractObject.h"
+#include "../Core/Interact/NativeInteractActor.h"
 #include "DropItem.generated.h"
 
 class UBoxComponent;
@@ -12,7 +12,7 @@ class UItemStack;
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API ADropItem : public AInteractObject
+class CHARMINGCRAFT_API ADropItem : public ANativeInteractActor
 {
 	GENERATED_BODY()
 

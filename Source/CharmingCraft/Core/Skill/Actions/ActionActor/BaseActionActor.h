@@ -8,7 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseActionActor.generated.h"
 
-class UDAction;
+class UNativeAction;
 class UProjectileMovementComponent;
 class USphereComponent;
 
@@ -41,19 +41,19 @@ public:
 	TObjectPtr<UObject> Parent;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDAction> InstigatorAction;
+	TObjectPtr<UNativeAction> InstigatorAction;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDAction> OnHitCastAction;
+	TObjectPtr<UNativeAction> OnHitCastAction;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDAction> OnDestroyCastAction;
+	TObjectPtr<UNativeAction> OnDestroyCastAction;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDAction> OnSpawnCastAction;
+	TObjectPtr<UNativeAction> OnSpawnCastAction;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDAction> OnTickCastAction;
+	TObjectPtr<UNativeAction> OnTickCastAction;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TSet<TObjectPtr<AActor>> IgnoreActors;
@@ -73,7 +73,7 @@ class CHARMINGCRAFT_API ABaseActionActor : public AActor, public IDamageable
 public:
 	// Which Actions Generate the Action Actor
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TObjectPtr<UDAction> InstigatorAction;
+	TObjectPtr<UNativeAction> InstigatorAction;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FHitData ActionHitData;
@@ -106,15 +106,15 @@ public:
 
 	// The "OnHit Actions" will start when ActionActor Perform OnHit
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UDAction> OnHitActions;
+	TObjectPtr<UNativeAction> OnHitActions;
 
 	// The "OnHit Actions" will start when ActionActor Perform OnSpawn
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UDAction> OnSpawnActions;
+	TObjectPtr<UNativeAction> OnSpawnActions;
 
 	// The "OnHit Actions" will start when ActionActor Perform OnTick
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UDAction> OnTickActions;
+	TObjectPtr<UNativeAction> OnTickActions;
 
 public:
 	// Sets default values for this actor's properties

@@ -3,7 +3,7 @@
 
 #include "Hand.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "../Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Item/RenderActor/Equipment/SwordEntityActorP5.h"

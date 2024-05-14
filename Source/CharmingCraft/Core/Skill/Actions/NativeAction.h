@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "CharmingCraft/Core/Skill/Actions/ActionActor/BaseActionActor.h"
-#include "DAction.generated.h"
+#include "NativeAction.generated.h"
 
 /**
  * 
@@ -20,7 +20,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoolComplete, AActor*, Instigator
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoolCStart, AActor*, InstigatorPawn);
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API UDAction : public UObject
+class CHARMINGCRAFT_API UNativeAction : public UObject
 {
 	GENERATED_BODY()
 
@@ -76,7 +76,7 @@ public:
 	 *	Also, because we mark this BlueprintNativeEvent, the implementation will be
 	 *	_Implementation
 	 *
-	 *	@see UDAction::StartAction_Implementation(AActor* Instigator)
+	 *	@see UNativeAction::StartAction_Implementation(AActor* Instigator)
 	 */
 	UFUNCTION(BlueprintNativeEvent, Category= "Action")
 	void StartAction(APawn* Instigator); // Passing who is responsible for starting the action

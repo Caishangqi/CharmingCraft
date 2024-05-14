@@ -4,7 +4,7 @@
 #include "PlayerModeWidget.h"
 
 #include "CharmingCraft/Core/GameMode/PlayerMode/PlayerModeManager.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 void UPlayerModeWidget::NativeConstruct()
 {

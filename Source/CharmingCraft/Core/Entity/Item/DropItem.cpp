@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DropItem.h"
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"

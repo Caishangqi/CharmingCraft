@@ -3,7 +3,7 @@
 
 #include "PlayerAttributeWidget.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 void UPlayerAttributeWidget::NativePreConstruct()

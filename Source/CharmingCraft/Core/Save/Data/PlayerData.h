@@ -6,7 +6,7 @@
 #include "BaseSaveGame.h"
 #include "FPlayerInfo.h"
 #include "FPlayerLocation.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "PlayerData.generated.h"
 
 /**

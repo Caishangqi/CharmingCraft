@@ -16,7 +16,7 @@
  *	The main goal of Action Component is to keep a list of actions
  */
 
-class UDAction;
+class UNativeAction;
 
 UCLASS(Blueprintable)
 class CHARMINGCRAFT_API UDActionComponent : public UActorComponent, public IGameplayTagAssetInterface
@@ -34,10 +34,10 @@ public:
 	FGameplayTagContainer ActiveGamePlayTags;
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	void AddAction(TSubclassOf<UDAction> ActionClass);
+	void AddAction(TSubclassOf<UNativeAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	void AddBindAction(int32 index, TSubclassOf<UDAction> ActionClass);
+	void AddBindAction(int32 index, TSubclassOf<UNativeAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool AddItemDynamicSkills(UItemMeta* ItemMeta);
@@ -58,7 +58,7 @@ public:
 	bool HasActionByType(EItemDynamicSkillSlot ActionType);
 	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
-	void OnItemDynamicSkillBindEvent(APawn* Instigator, UDAction* FromAction, UDAction* TargetAction, UItemMeta * ContextMeta);
+	void OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction, UNativeAction* TargetAction, UItemMeta * ContextMeta);
 	
 	UFUNCTION(BlueprintCallable, Category= "Actions")
 	bool StartActionByIndex(APawn* Instigator, int32 index);
@@ -74,19 +74,19 @@ public:
 
 	/** Granted abilities at game start */
 	UPROPERTY(EditAnywhere, Category = "Editor Actions")
-	TArray<TSubclassOf<UDAction>> DefaultActions;
+	TArray<TSubclassOf<UNativeAction>> DefaultActions;
 
 	/* EDITOR ONLY: Default bind Action */
 	UPROPERTY(EditAnywhere, Category = "Editor Actions")
-	TMap<int32, TSubclassOf<UDAction>> DefaultBindAction;
+	TMap<int32, TSubclassOf<UNativeAction>> DefaultBindAction;
 
 	// List of actions
 	UPROPERTY(BlueprintReadWrite) // When we deal with pointers to actions, we want to let UE handle
-	TArray<UDAction*> Actions;
+	TArray<UNativeAction*> Actions;
 
 	/* Bind Action for example q - Action1 */
 	UPROPERTY(EditAnywhere, Category = "Actions", BlueprintReadWrite)
-	TMap<int32, TObjectPtr<UDAction>> BindAction;
+	TMap<int32, TObjectPtr<UNativeAction>> BindAction;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;

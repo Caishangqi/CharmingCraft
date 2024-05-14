@@ -4,14 +4,14 @@
 #include "CoreMinimal.h"
 #include "../Core/Interact/Interface/DGameplayInterface.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
-#include "InteractObject.generated.h"
+#include "NativeInteractActor.generated.h"
 
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API AInteractObject : public AActor, public IMouseInteractInterface, public ICoreManagerInterface
+class CHARMINGCRAFT_API ANativeInteractActor : public AActor, public IMouseInteractInterface, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -41,7 +41,7 @@ public:
 	UActorComponent* ClickableComponent;
 
 	/* 方法 */
-	AInteractObject();
+	ANativeInteractActor();
 	
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
 	virtual UWorldManager* GetWorldManager_Implementation() override;

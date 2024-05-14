@@ -3,10 +3,10 @@
 
 #include "CharmingCraftGameModeBase.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 ACharmingCraftGameModeBase::ACharmingCraftGameModeBase()
 {

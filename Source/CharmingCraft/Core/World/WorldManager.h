@@ -52,7 +52,7 @@ public:
 	 * @return FLevelStreamingDynamicResult
 	 */
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult GetPlayerCurrentLevel(APawn* PlayerCharacter);
+	FLevelStreamingDynamicResult GetPlayerCurrentLevel(ACharacter* PlayerCharacter);
 
 	/*!
 	 * This is a more official or logic way to bind runtime generated actor to a

@@ -3,7 +3,7 @@
 
 #include "EquipPartSwordHiltBasic.h"
 
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 
 // Sets default values for this component's properties

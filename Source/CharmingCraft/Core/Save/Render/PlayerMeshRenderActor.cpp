@@ -6,7 +6,7 @@
 #include "EPlayerPreviewLocation.h"
 #include "CharmingCraft/Core/Save/GameSaveManager.h"
 #include "CharmingCraft/Core/Save/Lib/CharacterSaveLib.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 
 
 // Sets default values

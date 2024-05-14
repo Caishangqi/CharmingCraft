@@ -3,7 +3,7 @@
 
 #include "VolumeSceneTriggerComponent.h"
 
-#include "NativePlayerCharacter.h"
+#include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "EngineUtils.h"
 #include "SceneWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"

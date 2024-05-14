@@ -13,7 +13,7 @@
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/World/WorldEntityManager.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Engine/LevelScriptActor.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"

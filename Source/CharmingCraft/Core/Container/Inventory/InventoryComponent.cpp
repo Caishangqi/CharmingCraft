@@ -9,7 +9,7 @@
 #include "CharmingCraft/Core/Entity/Item/DropItem.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Interface/DItemInteractInterface.h"
-#include "CharmingCraft/Object/Class/Core/CharmingCraftInstance.h"
+#include "../Core/CharmingCraftInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties

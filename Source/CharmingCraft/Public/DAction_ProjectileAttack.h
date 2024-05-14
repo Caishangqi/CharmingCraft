@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DAction.h"
+#include "../Core/Skill/Actions/NativeAction.h"
 #include "DAction_ProjectileAttack.generated.h"
 
 /**
@@ -13,7 +13,7 @@ class UAnimMontage;
 class UParticleSystem;
 
 UCLASS()
-class CHARMINGCRAFT_API UDAction_ProjectileAttack : public UDAction
+class CHARMINGCRAFT_API UDAction_ProjectileAttack : public UNativeAction
 {
 	GENERATED_BODY()
 
