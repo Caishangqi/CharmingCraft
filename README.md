@@ -1,6 +1,6 @@
 # CharmingCraft: Journey (Unreal Build)
 
-![project_title](https://github.com/Caishangqi/CharmingCraft/assets/39553613/afff6fe3-e541-455d-978c-84dfd8df58f3)
+![project_title](https://github.com/Caishangqi/CharmingCraft/assets/39553613/a22d5d51-3daf-48e6-a3da-c936115b0885)
 <p align="center">
 <img src = "https://i.imgur.com/EF6t6WA.png" alt="">
 </p>
@@ -16,8 +16,8 @@
 
 ## Introduction
 
-This project build based ib Unreal Engine 5.3 to create a Top-Down voxel RPG game. It draws inspiration from Minecraft, such
-as its inventory system and artistic style, as well as the Top-Down perspective, combat system, and isometric indoor
+This project build based on Unreal Engine 5.3 to create a Top-Down low poly RPG game. It draws inspiration from Minecraft, such
+as its inventory system and artistic style, as well as the Top-Down view, combat system, and isometric indoor
 scene design of the game Minecraft: Dungeon. CharmingCraft aims to offer a more relaxed gameplay experience, where
 players can freely explore the map, gather resources to craft weapons, complete quests, and more...
 
@@ -276,7 +276,7 @@ Loford - A town with houses and npcs, Build using blender and Unreal Cube grid t
 | PCG Random dungeons                               |  Normal  |  📌   |
 | Animals and monster iteration                     |  Normal  |  📝   |
 | Crafting System and RecipeRegistry                |  Normal  |   ✅   |
-| Time system: Ingame Date and Days                 |  Normal  |   📌   |
+| Time system: Ingame Date and Days                 |  Normal  |   📝   |
 | Resource collection system, ores, trees, farmland |  Normal  |   ✅   |
 | Biome: Respawn of monsters, resources, creatures  |   Low    |   ✅   |
 | Developing an engaging storyline                  |  Lowest  |  📌   |

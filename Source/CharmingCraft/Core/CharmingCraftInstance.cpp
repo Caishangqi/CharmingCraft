@@ -12,6 +12,7 @@
 #include "CharmingCraft/Core/Craft/RecipeRegistry.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "Engine/DataTable.h"
+#include "World/TimeManager.h"
 
 UCharmingCraftInstance::UCharmingCraftInstance()
 {
@@ -105,6 +106,7 @@ void UCharmingCraftInstance::Init()
 	BuildModuleManager = NewObject<UBuildModuleManager>(this, UBuildModuleManager::StaticClass());
 	CameraManager = NewObject<UCameraManager>(this, UCameraManager::StaticClass());
 	RecipeRegistry = NewObject<URecipeRegistry>(this, URecipeRegistry::StaticClass());
+	TimeManager = NewObject<UTimeManager>(this, UTimeManager::StaticClass());
 
 	RecipeRegistry->RegistRecipeFromClass();
 }

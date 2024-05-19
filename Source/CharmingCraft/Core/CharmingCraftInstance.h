@@ -7,6 +7,7 @@
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
+class UTimeManager;
 class URecipeRegistry;
 class UCameraManager;
 class UBuildModuleManager;
@@ -45,6 +46,8 @@ public:
 	UDataTable* RegisteredItems;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
 	TObjectPtr<ANativePlayerCharacter> PlayerCharacter;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
+	TObjectPtr<UTimeManager> TimeManager;
 	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category="Data")
 	TObjectPtr<URecipeRegistry> RecipeRegistry;
