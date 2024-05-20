@@ -109,6 +109,7 @@ void UCharmingCraftInstance::Init()
 	TimeManager = NewObject<UTimeManager>(this, UTimeManager::StaticClass());
 
 	RecipeRegistry->RegistRecipeFromClass();
+	TimeManager->StartGlobalTimer();
 }
 
 void UCharmingCraftInstance::OnStart()
