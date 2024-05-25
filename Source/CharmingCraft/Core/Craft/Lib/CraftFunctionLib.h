@@ -84,7 +84,7 @@ public:
 			}
 			else
 			{
-				return -1; // Invalid
+				return 0; // Invalid
 			}
 		}
 		int32 Min = PerIngredientMaxAmount[0];

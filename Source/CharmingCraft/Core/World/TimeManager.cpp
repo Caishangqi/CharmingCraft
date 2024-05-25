@@ -4,14 +4,14 @@
 #include "TimeManager.h"
 
 
-UTimeManager::UTimeManager(): TickTime(0)
+UTimeManager::UTimeManager(): TickTime(0), MaxTickTime(1440)
 {
 }
 
 void UTimeManager::StartGlobalTimer()
 {
 	GetGameInstance_Implementation()->GetTimerManager().SetTimer(GlobalTimeHandler, this,
-	                                                             &UTimeManager::OnGlobalTimerTick, 2.0f, true);
+	                                                             &UTimeManager::OnGlobalTimerTick, 1.0f, true);
 }
 
 void UTimeManager::PauseGlobalTimer()
@@ -34,7 +34,7 @@ void UTimeManager::UnpauseGlobalTimer()
 void UTimeManager::OnGlobalTimerTick()
 {
 	TickTime++;
-	if (TickTime <= 2880)
+	if (TickTime <= 1440)
 	{
 		TimeData += 1;
 	}
@@ -44,11 +44,11 @@ void UTimeManager::OnGlobalTimerTick()
 	}
 }
 
-FTimeData& UTimeManager::GetTimeDataFromTickTime(int32 TickTimeData)
+FTimeData UTimeManager::GetTimeDataFromTickTime(int32 TickTimeData)
 {
-	FTimeData TimeData;
+	FTimeData NewTimeData;
 	
-	return TimeData;
+	return NewTimeData;
 }
 
 UCharmingCraftInstance* UTimeManager::GetGameInstance_Implementation()

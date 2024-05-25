@@ -112,9 +112,11 @@ public:
 	// Global time, future support time zone for different map
 
 	// Total tick time for a game day
-	// Default 2 s = 1 min game Total 2880 tick
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	// Default 1 s = 1 min game Total 1440 tick
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int32 TickTime;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 MaxTickTime;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FTimeData TimeData;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -133,7 +135,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnGlobalTimerTick();
 	UFUNCTION(BlueprintCallable)
-	FTimeData & GetTimeDataFromTickTime(int32 TickTimeData);
+	FTimeData GetTimeDataFromTickTime(int32 TickTimeData);
 public:
 	// Interface
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
