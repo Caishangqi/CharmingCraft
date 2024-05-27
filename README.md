@@ -21,10 +21,9 @@ as its inventory system and artistic style, as well as the Top-Down view, combat
 scene design of the game Minecraft: Dungeon. CharmingCraft aims to offer a more relaxed gameplay experience, where
 players can freely explore the map, gather resources to craft weapons, complete quests, and more...
 
-## Build
+## Wiki
 
-Use the `vc solution file` and the `Unreal 5.3.1 Engine source code` and `uproject file` to build. All dependency is on
-this repository.
+The game project's wiki contains documentation related to game mechanics and game content, you can find them [**here**](https://charmingcraft.caizii.org/). It is currently in Chinese, I will update it to English in the future
 
 ## Feature
 
