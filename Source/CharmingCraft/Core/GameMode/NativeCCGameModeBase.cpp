@@ -1,14 +1,15 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 
-#include "CharmingCraftGameModeBase.h"
+#include "NativeCCGameModeBase.h"
 
 #include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Controller/DPlayerController.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "../Core/CharmingCraftInstance.h"
+#include "CharmingCraft/Core/Dungeon/NativeDungeonHandler.h"
 
-ACharmingCraftGameModeBase::ACharmingCraftGameModeBase()
+ANativeCCGameModeBase::ANativeCCGameModeBase()
 {
 	// 使用FClassFinder查找蓝图类
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(
@@ -25,13 +26,13 @@ ACharmingCraftGameModeBase::ACharmingCraftGameModeBase()
 	{
 		PlayerControllerClass = PlayerControllerClassFinder.Class;
 	}
-	
-	
 }
 
-void ACharmingCraftGameModeBase::BeginPlay()
+
+
+void ANativeCCGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogChamingCraftWorld, Error,
-						   TEXT("[🌍]  ACharmingCraftGameModeBase::BeginPlay()"));
+	       TEXT("[🌍]  ANativeCCGameModeBase::BeginPlay()"));
 }

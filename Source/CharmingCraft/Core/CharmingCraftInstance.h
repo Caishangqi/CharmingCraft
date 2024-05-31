@@ -7,6 +7,7 @@
 #include "Engine/GameInstance.h"
 #include "CharmingCraftInstance.generated.h"
 
+class UNativeDungeonHandler;
 class UTimeManager;
 class URecipeRegistry;
 class UCameraManager;
@@ -99,6 +100,9 @@ public:
 	// and transfer data into runtime data
 	UPROPERTY()
 	URuntimeGameData* RuntimeGameData;
+	
+	UPROPERTY()
+	TObjectPtr<UNativeDungeonHandler>  DungeonHandler;
 
 	UPROPERTY()
 	UPlayerModeManager* PlayerModeManager;

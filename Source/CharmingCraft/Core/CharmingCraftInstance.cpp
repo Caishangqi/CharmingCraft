@@ -11,10 +11,16 @@
 #include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "CharmingCraft/Core/Craft/RecipeRegistry.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
+#include "Dungeon/NativeDungeonHandler.h"
 #include "Engine/DataTable.h"
 #include "World/TimeManager.h"
 
-UCharmingCraftInstance::UCharmingCraftInstance()
+UCharmingCraftInstance::UCharmingCraftInstance(): SaveManager(nullptr), WorldManager(nullptr),
+                                                  GamePlayLogicManager(nullptr),
+                                                  RuntimeGameData(nullptr),
+                                                  PlayerModeManager(nullptr),
+                                                  BuildModuleManager(nullptr),
+                                                  CameraManager(nullptr)
 {
 	// Load the DataTable using its path
 	static ConstructorHelpers::FObjectFinder<UDataTable> ArmorMaterialDataTableFinder(
@@ -107,6 +113,7 @@ void UCharmingCraftInstance::Init()
 	CameraManager = NewObject<UCameraManager>(this, UCameraManager::StaticClass());
 	RecipeRegistry = NewObject<URecipeRegistry>(this, URecipeRegistry::StaticClass());
 	TimeManager = NewObject<UTimeManager>(this, UTimeManager::StaticClass());
+	DungeonHandler = NewObject<UNativeDungeonHandler>(this, UNativeDungeonHandler::StaticClass());
 
 	RecipeRegistry->RegistRecipeFromClass();
 	TimeManager->StartGlobalTimer();

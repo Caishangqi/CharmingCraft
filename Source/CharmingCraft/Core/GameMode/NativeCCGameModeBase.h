@@ -4,17 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "CharmingCraftGameModeBase.generated.h"
+#include "NativeCCGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API ACharmingCraftGameModeBase : public AGameModeBase
+class CHARMINGCRAFT_API ANativeCCGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
 public:
-	ACharmingCraftGameModeBase();
+	ANativeCCGameModeBase();
+
 public:
 	
 	virtual void BeginPlay() override;
