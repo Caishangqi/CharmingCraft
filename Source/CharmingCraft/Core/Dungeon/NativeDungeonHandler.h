@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
-#include "Data/NativeDungeonInstance.h"
+#include "Data/NativeBaseDungeonInstance.h"
 #include "UObject/Object.h"
 #include "NativeDungeonHandler.generated.h"
 
@@ -18,10 +18,13 @@ class CHARMINGCRAFT_API UNativeDungeonHandler : public UObject, public ICoreMana
 
 public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TArray<TObjectPtr<UNativeDungeonInstance>> LoadedDungeonInstances;
+	TSet<TObjectPtr<ANativeBaseDungeonInstance>> LoadedDungeonInstances;
 
 public:
 	UNativeDungeonHandler();
+
+	bool AddInstanceToSet(ANativeBaseDungeonInstance * DungeonInstance);
+	
 
 public:
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;

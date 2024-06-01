@@ -14,19 +14,19 @@
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
-FLevelStreamingDynamicResult UWorldManager::GetPlayerCurrentLevel(ACharacter* PlayerCharacter)
+FCharmingCraftWorld UWorldManager::GetPlayerCurrentLevel(ACharacter* PlayerCharacter)
 {
-	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	FCharmingCraftWorld LevelStreamingDynamicResult;
 	TObjectPtr<UPlayerData> PlayerData = GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.PlayerData;
 	if (GetWorldIsVisible(PlayerData->PlayerLocation.Level))
 	{
-		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[PlayerData->PlayerLocation.Level.LoadSynchronous()->
+		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[PlayerData->PlayerLocation.Level.LoadSynchronous()->
 		                                                                   GetName()];
 		LevelStreamingDynamicResult.IsSuccess = true;
 	}
 	else if (PlayerData->PlayerSceneLocation.Level)
 	{
-		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[PlayerData->PlayerSceneLocation.Level->GetName()];
+		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[PlayerData->PlayerSceneLocation.Level->GetName()];
 		LevelStreamingDynamicResult.IsSuccess = true;
 	}
 	return LevelStreamingDynamicResult;
@@ -120,14 +120,14 @@ void UWorldManager::OnLevelLoadedCallback()
 	OnLevelLoaded.Broadcast();
 }
 
-FLevelStreamingDynamicResult UWorldManager::TravelPlayerToWorld(APawn* PlayerCharacter,
+FCharmingCraftWorld UWorldManager::TravelPlayerToWorld(APawn* PlayerCharacter,
                                                                 const TSoftObjectPtr<UWorld> TargetLevel)
 {
-	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	FCharmingCraftWorld LevelStreamingDynamicResult;
 
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
 	{
-		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[TargetLevel->GetName()];
+		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[TargetLevel->GetName()];
 		LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarp(PlayerCharacter, "Spawn");
 		if (LevelStreamingDynamicResult.IsSuccess)
 		{
@@ -148,14 +148,14 @@ FLevelStreamingDynamicResult UWorldManager::TravelPlayerToWorld(APawn* PlayerCha
 	return LevelStreamingDynamicResult;
 }
 
-FLevelStreamingDynamicResult UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
+FCharmingCraftWorld UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
                                                                 const TSoftObjectPtr<UWorld> TargetScene,
                                                                 FName WarpPoint, bool ResetSceneData)
 {
-	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	FCharmingCraftWorld LevelStreamingDynamicResult;
 	if (LoadedWorlds.Contains(TargetScene.LoadSynchronous()->GetName()))
 	{
-		LevelStreamingDynamicResult.LoadedWorld = LoadedWorlds[TargetScene->GetName()];
+		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[TargetScene->GetName()];
 		LevelStreamingDynamicResult.IsSuccess = LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarp(
 			PlayerCharacter, WarpPoint);
 		if (LevelStreamingDynamicResult.IsSuccess)
@@ -178,17 +178,17 @@ FLevelStreamingDynamicResult UWorldManager::TravelPlayerToScene(APawn* PlayerCha
 }
 
 
-FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
+FCharmingCraftWorld UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
                                                               bool UnloadRemainWorld)
 {
-	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	FCharmingCraftWorld LevelStreamingDynamicResult;
 
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
 	{
 		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()];
 		LevelStreamingDynamic->SetShouldBeVisible(true);
 		LevelStreamingDynamicResult.IsSuccess = true;
-		LevelStreamingDynamicResult.LoadedWorld = LevelStreamingDynamic;
+		LevelStreamingDynamicResult.GamePlayWorld = LevelStreamingDynamic;
 		GetGameEventHandler_Implementation()->OnLoadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
 		if (UnloadRemainWorld)
 		{
@@ -207,7 +207,7 @@ FLevelStreamingDynamicResult UWorldManager::LoadWorldInstance(const TSoftObjectP
 	if (IsSuccess)
 	{
 		LoadedWorlds.Add(TargetLevel.LoadSynchronous()->GetName(), LevelStreamingDynamic);
-		LevelStreamingDynamicResult.LoadedWorld = LevelStreamingDynamic;
+		LevelStreamingDynamicResult.GamePlayWorld = LevelStreamingDynamic;
 		LevelStreamingDynamicResult.IsSuccess = true;
 		GetGameEventHandler_Implementation()->OnLoadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
 		if (UnloadRemainWorld)
@@ -242,14 +242,14 @@ bool UWorldManager::UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteLis
 	}
 }
 
-FLevelStreamingDynamicResult UWorldManager::UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
+FCharmingCraftWorld UWorldManager::UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
 {
-	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	FCharmingCraftWorld LevelStreamingDynamicResult;
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
 	{
 		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()];
 		LevelStreamingDynamic->SetShouldBeVisible(false);
-		LevelStreamingDynamicResult.LoadedWorld = LevelStreamingDynamic;
+		LevelStreamingDynamicResult.GamePlayWorld = LevelStreamingDynamic;
 		LevelStreamingDynamicResult.IsSuccess = true;
 		GetGameEventHandler_Implementation()->OnUnloadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
 		return LevelStreamingDynamicResult;
@@ -257,15 +257,15 @@ FLevelStreamingDynamicResult UWorldManager::UnloadWorldInstance(const TSoftObjec
 	return LevelStreamingDynamicResult;
 }
 
-FLevelStreamingDynamicResult UWorldManager::UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
+FCharmingCraftWorld UWorldManager::UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
 {
-	FLevelStreamingDynamicResult LevelStreamingDynamicResult;
+	FCharmingCraftWorld LevelStreamingDynamicResult;
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
 	{
 		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel->GetName()];
 		LevelStreamingDynamic->SetShouldBeVisible(false);
 		LevelStreamingDynamic->SetShouldBeLoaded(false);
-		LevelStreamingDynamicResult.LoadedWorld = nullptr;
+		LevelStreamingDynamicResult.GamePlayWorld = nullptr;
 		LevelStreamingDynamicResult.IsSuccess = true;
 		return LevelStreamingDynamicResult;
 	}

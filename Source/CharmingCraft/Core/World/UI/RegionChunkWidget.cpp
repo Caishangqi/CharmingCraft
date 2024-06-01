@@ -5,9 +5,9 @@
 
 #include "Kismet/GameplayStatics.h"
 
-FLevelStreamingDynamicResult URegionChunkWidget::TravelToTargetWorld(APawn* Instigator)
+FCharmingCraftWorld URegionChunkWidget::TravelToTargetWorld(APawn* Instigator)
 {
-	FLevelStreamingDynamicResult Out;
+	FCharmingCraftWorld Out;
 
 	return Out;
 }

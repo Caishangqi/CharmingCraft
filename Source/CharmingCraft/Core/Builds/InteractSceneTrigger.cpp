@@ -29,14 +29,14 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 	{
 		UE_LOG(LogChamingCraftWorld, Warning, TEXT("[🌍]  Prepare Load Building Scene: %s"),
 		       *TargetLoadedLevel.LoadSynchronous()->GetName());
-		FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
+		FCharmingCraftWorld LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
 			TargetLoadedLevel);
 
 
-		if (!LoadWorldInstanceOut.LoadedWorld->OnLevelShown.IsAlreadyBound(
+		if (!LoadWorldInstanceOut.GamePlayWorld->OnLevelShown.IsAlreadyBound(
 			this, &AInteractSceneTrigger::OnTargetLevelShown))
 		{
-			LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
+			LoadWorldInstanceOut.GamePlayWorld->OnLevelShown.AddDynamic(this, &AInteractSceneTrigger::OnTargetLevelShown);
 		}
 	}
 	else
@@ -72,7 +72,7 @@ void AInteractSceneTrigger::OnTargetLevelShown()
 			PostLevelCameraViewChange(); // Change Camera
 
 			InteractObject = nullptr;
-			FLevelStreamingDynamicResult UnLoadWorldInstanceOut = GetWorldManager_Implementation()->UnloadWorldInstance(
+			FCharmingCraftWorld UnLoadWorldInstanceOut = GetWorldManager_Implementation()->UnloadWorldInstance(
 				UnloadedLevel.LoadSynchronous());
 			if (UnLoadWorldInstanceOut.IsSuccess)
 			{

@@ -142,16 +142,16 @@ public:
 	                            FVector LaunchVelocity)
 	{
 		// TODO: Change the logic and avoid use GetPlayerCharacter
-		FLevelStreamingDynamicResult PlayerCurrentLevel = Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(Instigator))->GetWorldManager()->GetPlayerCurrentLevel(UGameplayStatics::GetPlayerCharacter(Instigator, 0));
+		FCharmingCraftWorld PlayerCurrentLevel = Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(Instigator))->GetWorldManager()->GetPlayerCurrentLevel(UGameplayStatics::GetPlayerCharacter(Instigator, 0));
 		// If is not in the test environment that PlayerCurrentLevel is valid
 		TObjectPtr<ADropItem> DropItemEntity;
-		if (PlayerCurrentLevel.LoadedWorld)
+		if (PlayerCurrentLevel.GamePlayWorld)
 		{
 			DropItemEntity = Cast<ADropItem>(
 				UGameplayStatics::BeginDeferredActorSpawnFromClass(
 					Instigator, ADropItem::StaticClass(),
 					SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined,
-					PlayerCurrentLevel.LoadedWorld->GetLevelScriptActor()));
+					PlayerCurrentLevel.GamePlayWorld->GetLevelScriptActor()));
 		}
 		// If in the test envitonment that open a level through editor not
 		// form persistence level so that the PlayerCurrentLevel is not handle
@@ -166,7 +166,7 @@ public:
 
 		if (DropItemEntity)
 		{
-			DropItemEntity->Initialize(ItemStack, PlayerCurrentLevel.LoadedWorld->GetLevelScriptActor());
+			DropItemEntity->Initialize(ItemStack, PlayerCurrentLevel.GamePlayWorld->GetLevelScriptActor());
 			// 使用FinishSpawningActor将Drop对象放入世界中
 			UGameplayStatics::FinishSpawningActor(DropItemEntity, SpawnTransform);
 			DropItemEntity->InvisibleCollision->AddImpulse(LaunchVelocity, NAME_None, true);

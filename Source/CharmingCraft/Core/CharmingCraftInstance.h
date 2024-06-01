@@ -73,6 +73,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "BuildModuleManager")
 	UBuildModuleManager* GetBuildModuleManager() const { return BuildModuleManager; }
+	UFUNCTION(BlueprintCallable, Category = "DungeonHandler")
+	UNativeDungeonHandler* GetDungeonHandler() const { return DungeonHandler; }
 	UFUNCTION(BlueprintCallable, Category = "WidgetEventHandler")
 	UNativeUserWidgetEventHandler* GetUserWidgetEventHandler() const { return UserWidgetEventHandler; }
 	UFUNCTION(BlueprintCallable, Category = "CameraManager")

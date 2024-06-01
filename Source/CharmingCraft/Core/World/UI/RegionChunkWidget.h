@@ -57,7 +57,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult TravelToTargetWorld(APawn* Instigator);
+	FCharmingCraftWorld TravelToTargetWorld(APawn* Instigator);
 
 	UFUNCTION(BlueprintCallable)
 	bool CanPlayerTravelToRegion();

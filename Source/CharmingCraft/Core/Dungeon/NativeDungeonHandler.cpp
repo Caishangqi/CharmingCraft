@@ -8,7 +8,21 @@
 
 UNativeDungeonHandler::UNativeDungeonHandler()
 {
-	UE_LOG(LogChamingCraftDungeon, Warning,TEXT("[💀]  初始化地牢处理器"));
+	UE_LOG(LogChamingCraftDungeon, Warning, TEXT("[💀]  初始化地牢处理器"));
+}
+
+bool UNativeDungeonHandler::AddInstanceToSet(ANativeBaseDungeonInstance* DungeonInstance)
+{
+	if (LoadedDungeonInstances.Contains(DungeonInstance))
+	{
+		return false;
+	}
+	else
+	{
+		LoadedDungeonInstances.Add(DungeonInstance);
+	}
+
+	return true;
 }
 
 UCharmingCraftInstance* UNativeDungeonHandler::GetGameInstance_Implementation()

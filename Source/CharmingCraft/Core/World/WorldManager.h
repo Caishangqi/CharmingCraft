@@ -12,12 +12,12 @@ class AWorldEntityManager;
 class ULevelStreamingDynamic;
 
 USTRUCT(BlueprintType)
-struct FLevelStreamingDynamicResult
+struct FCharmingCraftWorld
 {
 	GENERATED_BODY()
 
 public:
-	FLevelStreamingDynamicResult(): IsSuccess(false), LoadedWorld(nullptr)
+	FCharmingCraftWorld(): IsSuccess(false), GamePlayWorld(nullptr)
 	{
 	}
 
@@ -25,7 +25,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSuccess;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<ULevelStreamingDynamic> LoadedWorld;
+	TObjectPtr<ULevelStreamingDynamic> GamePlayWorld;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString WorldName;
 };
 
 /**
@@ -52,7 +54,7 @@ public:
 	 * @return FLevelStreamingDynamicResult
 	 */
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult GetPlayerCurrentLevel(ACharacter* PlayerCharacter);
+	FCharmingCraftWorld GetPlayerCurrentLevel(ACharacter* PlayerCharacter);
 
 	/*!
 	 * This is a more official or logic way to bind runtime generated actor to a
@@ -96,7 +98,7 @@ public:
 	 * @return FLevelStreamingDynamicResult
 	 */
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult TravelPlayerToWorld(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel);
+	FCharmingCraftWorld TravelPlayerToWorld(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel);
 
 	/*!
 	 * Travel player to another scene, use in scene travel of building,
@@ -113,18 +115,18 @@ public:
 	 * @return 
 	 */
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult TravelPlayerToScene(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetScene,
+	FCharmingCraftWorld TravelPlayerToScene(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetScene,
 	                                                 FName WarpPoint, bool ResetSceneData = true);
 
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
+	FCharmingCraftWorld LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
 	                                               bool UnloadRemainWorld = false);
 	UFUNCTION(BlueprintCallable)
 	bool UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel = nullptr);
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	FCharmingCraftWorld UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 	UFUNCTION(BlueprintCallable)
-	FLevelStreamingDynamicResult UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
+	FCharmingCraftWorld UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
 
 	/*!
 	 * Check whether target world is loaded and visible

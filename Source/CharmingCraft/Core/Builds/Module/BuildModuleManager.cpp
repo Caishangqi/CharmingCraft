@@ -48,7 +48,7 @@ bool UBuildModuleManager::StartBuildPreviewTrace(UItemStack* PreviewItemStack, A
 		// TODO: Currently use GetLevelScriptActor() as an reference for level generated object
 		// You can use WorldEntityManager Actor too, it is an more official way, but you need
 		// To put in the world
-		BlockEntityActor = Cast<UBlockMeta>(PreviewItemStack->ItemMeta)->CreateBlockEntityActor(this,GameInstance->GetWorldManager()->GetPlayerCurrentLevel(Instigator).LoadedWorld->GetLevelScriptActor());
+		BlockEntityActor = Cast<UBlockMeta>(PreviewItemStack->ItemMeta)->CreateBlockEntityActor(this,GameInstance->GetWorldManager()->GetPlayerCurrentLevel(Instigator).GamePlayWorld->GetLevelScriptActor());
 	}
 
 	if (PreviewItemStack && CachedBuildItemStack)

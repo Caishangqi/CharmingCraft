@@ -58,14 +58,14 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 		OverlappedActor = Cast<APawn>(OtherActor);
 		if (bIsASceneTravel)
 		{
-			FLevelStreamingDynamicResult LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
+			FCharmingCraftWorld LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
 				TargetLoadedLevel);
 			if (EnableCameraFade)
 			{
 				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
 					0.1f, 1.0f, 1.0f, FColor::Black, false, true);
 			}
-			LoadWorldInstanceOut.LoadedWorld->OnLevelShown.AddDynamic(
+			LoadWorldInstanceOut.GamePlayWorld->OnLevelShown.AddDynamic(
 				this, &UVolumeSceneTriggerComponent::OnTargetLevelShown);
 		}
 		else
