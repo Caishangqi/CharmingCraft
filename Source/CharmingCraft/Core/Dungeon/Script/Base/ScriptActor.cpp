@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DungeonScriptActor.h"
+#include "ScriptActor.h"
 
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 
 
 // Sets default values
-ADungeonScriptActor::ADungeonScriptActor()
+AScriptActor::AScriptActor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -26,18 +26,18 @@ ADungeonScriptActor::ADungeonScriptActor()
 	}
 }
 
-void ADungeonScriptActor::Interact_Implementation(APawn* InstigatorPawn)
+void AScriptActor::Interact_Implementation(APawn* InstigatorPawn)
 {
 	if (bEnableInteractEvent && OnInteractScript)
 	{
 		TObjectPtr<UNativeScriptObject> ScriptObject = OnInteractScript.GetDefaultObject();
-		ScriptObject->ParentScriptActor = this;
+		ScriptObject->SetParentScriptActor(this); // Set the parent Script Actor
 		RunningScriptObjectInstance.Add(ScriptObject);
 		ScriptObject->StartScript(InstigatorPawn);
 	}
 }
 
-bool ADungeonScriptActor::AddRunningScriptObject_Implementation(UNativeScriptObject* ScriptObject)
+bool AScriptActor::AddRunningScriptObject_Implementation(UNativeScriptObject* ScriptObject)
 {
 	if (!RunningScriptObjectInstance.Contains(ScriptObject))
 	{
@@ -49,7 +49,7 @@ bool ADungeonScriptActor::AddRunningScriptObject_Implementation(UNativeScriptObj
 }
 
 
-bool ADungeonScriptActor::RemoveRunningScriptObject_Implementation(UNativeScriptObject* ScriptObject)
+bool AScriptActor::RemoveRunningScriptObject_Implementation(UNativeScriptObject* ScriptObject)
 {
 	if (RunningScriptObjectInstance.Contains(ScriptObject))
 	{
@@ -60,7 +60,7 @@ bool ADungeonScriptActor::RemoveRunningScriptObject_Implementation(UNativeScript
 	return false;
 }
 
-bool ADungeonScriptActor::SuspendRunningScriptObject_Implementation(UNativeScriptObject* ScriptObject)
+bool AScriptActor::SuspendRunningScriptObject_Implementation(UNativeScriptObject* ScriptObject)
 {
 	if (RunningScriptObjectInstance.Contains(ScriptObject))
 	{
@@ -69,7 +69,7 @@ bool ADungeonScriptActor::SuspendRunningScriptObject_Implementation(UNativeScrip
 	return false;
 }
 
-bool ADungeonScriptActor::FilterBySubClass(TArray<UClass*> ContainerClasses, UObject* TargetObject)
+bool AScriptActor::FilterBySubClass(TArray<UClass*> ContainerClasses, UObject* TargetObject)
 {
 	for (auto Element : ContainerClasses)
 	{
@@ -82,16 +82,16 @@ bool ADungeonScriptActor::FilterBySubClass(TArray<UClass*> ContainerClasses, UOb
 }
 
 
-void ADungeonScriptActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                         const FHitResult& SweepResult)
+void AScriptActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                  const FHitResult& SweepResult)
 {
 	if (bEnableVolumeTriggerEvent && OnOverlapScript)
 	{
 		if (FilterBySubClass(WhiteListTriggerClass, OtherActor) && !FilterBySubClass(BlackListTriggerClass, OtherActor))
 		{
 			TObjectPtr<UNativeScriptObject> ScriptObject = OnOverlapScript.GetDefaultObject();
-			ScriptObject->ParentScriptActor = this;
+			ScriptObject->SetParentScriptActor(this);
 			if (OtherActor->IsA(ACharacter::StaticClass()))
 			{
 				RunningScriptObjectInstance.Add(ScriptObject);
@@ -102,12 +102,13 @@ void ADungeonScriptActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AA
 }
 
 // Called when the game starts or when spawned
-void ADungeonScriptActor::BeginPlay()
+void AScriptActor::BeginPlay()
 {
 	Super::BeginPlay();
 	if (bEnableVolumeTriggerEvent)
 	{
-		VolumeBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ADungeonScriptActor::OnOverlapBegin);
+		VolumeBoxComponent->SetGenerateOverlapEvents(true);
+		VolumeBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AScriptActor::OnOverlapBegin);
 	}
 	if (!bEnableScriptActorTickScript)
 	{
@@ -116,7 +117,7 @@ void ADungeonScriptActor::BeginPlay()
 }
 
 // Called every frame
-void ADungeonScriptActor::Tick(float DeltaTime)
+void AScriptActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (bEnableScriptActorTickScript)

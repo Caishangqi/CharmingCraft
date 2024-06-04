@@ -3,7 +3,8 @@
 
 #include "NativeScriptObject.h"
 
-#include "ScriptActorInterface.h"
+#include "ScriptActor.h"
+#include "CharmingCraft/Core/Dungeon/Interface/ScriptActorInterface.h"
 
 bool UNativeScriptObject::StopScript_Implementation(UObject* InstigatorObject)
 {

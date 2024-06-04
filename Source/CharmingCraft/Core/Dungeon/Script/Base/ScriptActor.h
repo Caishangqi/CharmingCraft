@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "NativeScriptObject.h"
-#include "ScriptActorInterface.h"
+#include "CharmingCraft/Core/Dungeon/Interface/ScriptActorInterface.h"
 #include "CharmingCraft/Core/Interact/NativeInteractActor.h"
-#include "DungeonScriptActor.generated.h"
+#include "ScriptActor.generated.h"
 
 class UBoxComponent;
 
@@ -16,7 +16,7 @@ class UBoxComponent;
  * do not want use.
  */
 UCLASS()
-class CHARMINGCRAFT_API ADungeonScriptActor : public ANativeInteractActor, public IScriptActorInterface
+class CHARMINGCRAFT_API AScriptActor : public ANativeInteractActor, public IScriptActorInterface
 {
 	GENERATED_BODY()
 
@@ -67,7 +67,7 @@ public:
 
 public:
 	// Sets default values for this actor's properties
-	ADungeonScriptActor();
+	AScriptActor();
 
 	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 

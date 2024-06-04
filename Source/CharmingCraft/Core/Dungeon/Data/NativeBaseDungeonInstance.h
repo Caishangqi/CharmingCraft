@@ -22,21 +22,36 @@ public:
 	int32 MaxChildDungeonsPerInstance = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bLoadDungeonsWorldsByNeed = true; // Whether load the world to world manager when needed
-	
+
 	/*
 	 *	In the Array,put hub map to 0 index if possible, if a dungeon do not
 	 *	have a hub, always put the first map to index 1.
 	 */
-	
 
 	// Predefine the map for each child dungeons
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<TSoftObjectPtr<UWorld>> ChildDungeonsWorlds;
 	// 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<FCharmingCraftWorld> ChildDungeonsWorldsInstance;
+	TMap<int, FCharmingCraftWorld> ChildDungeonsWorldsInstance;
 	// Define player in which child dungeons, for example, <PlayerA, 3> means
 	// PlayerA is in 3rd ChildDungeon;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TMap<ACharacter *, int> DungeonInstancePlayerData;
+	TMap<ACharacter*, int> DungeonInstancePlayerData;
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	bool IsDungeonWorldLoaded(int TargetChildDungeon);
+
+public:
+	ANativeBaseDungeonInstance();
+
+	UFUNCTION(BlueprintCallable)
+	bool JoinPlayerToDungeon(ACharacter* Player, int32 TargetChildDungeon);
+
+	UFUNCTION(BlueprintCallable)
+	bool LeavePlayerFromDungeon(ACharacter* Player, int32 TargetChildDungeon);
+
+	UFUNCTION(BlueprintCallable)
+	bool ExitPlayerFromDungeon(ACharacter* Player);
 };

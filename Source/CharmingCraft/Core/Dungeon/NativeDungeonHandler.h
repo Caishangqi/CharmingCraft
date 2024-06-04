@@ -24,8 +24,9 @@ public:
 	UNativeDungeonHandler();
 
 	bool AddInstanceToSet(ANativeBaseDungeonInstance * DungeonInstance);
-	
 
 public:
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;
+	virtual UWorldManager* GetWorldManager_Implementation() override;
+	virtual UGameEventHandler* GetGameEventHandler_Implementation() override;
 };

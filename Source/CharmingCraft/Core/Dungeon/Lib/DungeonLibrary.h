@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Dungeon/NativeDungeonHandler.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
+#include "Engine/LevelStreamingDynamic.h"
+#include "GameFramework/Character.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonLibrary.generated.h"
@@ -45,5 +47,15 @@ public:
 		DungeonHandler->AddInstanceToSet(NativeBaseDungeonInstance);
 		UGameplayStatics::FinishSpawningActor(NativeBaseDungeonInstance, DefaultTransform);
 		return NativeBaseDungeonInstance;
+	}
+
+	UFUNCTION(BlueprintCallable)
+	static FCharmingCraftWorld TeleportPlayerToDungeonWorld(ACharacter* TargetPlayer, FCharmingCraftWorld TargetWorld,
+	                                                        const FName WarpPoint = "Spawn")
+	{
+		TargetWorld.GamePlayWorld->SetShouldBeVisible(true);
+		GetDungeonHandler(TargetPlayer)->GetWorldManager_Implementation()->
+		                                 TeleportPlayerToWarp(TargetPlayer, WarpPoint);
+		return TargetWorld;
 	}
 };

@@ -3,6 +3,7 @@
 
 #include "WorldManager.h"
 
+#include "NativeCraftWorld.h"
 #include "WorldEntityManager.h"
 #include "CharmingCraft/Core/Builds/SceneWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
@@ -11,6 +12,7 @@
 #include "CharmingCraft/Core/Resource/Chunk/LandChunk.h"
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "../Core/CharmingCraftInstance.h"
+#include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -21,7 +23,7 @@ FCharmingCraftWorld UWorldManager::GetPlayerCurrentLevel(ACharacter* PlayerChara
 	if (GetWorldIsVisible(PlayerData->PlayerLocation.Level))
 	{
 		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[PlayerData->PlayerLocation.Level.LoadSynchronous()->
-		                                                                   GetName()];
+		                                                                     GetName()];
 		LevelStreamingDynamicResult.IsSuccess = true;
 	}
 	else if (PlayerData->PlayerSceneLocation.Level)
@@ -31,6 +33,110 @@ FCharmingCraftWorld UWorldManager::GetPlayerCurrentLevel(ACharacter* PlayerChara
 	}
 	return LevelStreamingDynamicResult;
 }
+
+UNativeCraftWorld* UWorldManager::GetPlayerCurrentWorld(ACharacter* PlayerCharacter)
+{
+	TObjectPtr<UPlayerData> PlayerData = UCoreComponents::GetGameInstance(PlayerCharacter)->GetRuntimeGameData()->
+		RuntimeSave.PlayerData;
+
+	UNativeCraftWorld* CraftWorld = PlayerData->PlayerLocation.GameWorld;
+	bool IsWorldContainCurrentPlayer = CraftWorld->GetCraftWorldPlayers().Contains(PlayerCharacter);
+	if (!IsWorldContainCurrentPlayer)
+	{
+		UE_LOG(LogChamingCraftWorld, Error,
+		       TEXT("[🌍]  玩家不在任何世界中!\n"
+			       "		(❌) 查找是否在加载世界时将玩家添加到 PlayerList 中"));
+	}
+	return CraftWorld;
+}
+
+UNativeCraftWorld* UWorldManager::GetWorldByWorldName(FString SearchWorldName)
+{
+	for (auto Element : Worlds)
+	{
+		if (Element->GetCraftWorldName() == SearchWorldName)
+		{
+			return Element;
+		}
+	}
+	return nullptr;
+}
+
+
+UNativeCraftWorld* UWorldManager::LoadCraftWorldInMemory(TSubclassOf<UNativeCraftWorld> TargetWorld)
+{
+	TObjectPtr<UNativeCraftWorld> TargetWorldInstance = TargetWorld->GetDefaultObject<UNativeCraftWorld>();
+
+
+	for (auto Element : Worlds)
+	{
+		// Do WorldName can not identical
+		if (Element->GetCraftWorldName() == TargetWorldInstance->GetCraftWorldName())
+		{
+			return Element;
+		}
+	}
+	TObjectPtr<UNativeCraftWorld> CraftWorld = NewObject<UNativeCraftWorld>(this, TargetWorld);
+	CraftWorld->InitializeWorldInstance();
+	Worlds.Add(CraftWorld);
+	UE_LOG(LogChamingCraftWorld, Display,
+	       TEXT("[🌍] Load CraftWorld In Memory\n"
+		       "		World Name: %s"), *CraftWorld->GetCraftWorldName());
+	return CraftWorld;
+}
+
+bool UWorldManager::UnLoadCraftWorldInMemory(UNativeCraftWorld* TargetWorld)
+{
+	if (Worlds.Contains(TargetWorld))
+	{
+		UE_LOG(LogChamingCraftWorld, Warning,
+		       TEXT("[🌍] UnLoad CraftWorld In Memory\n"
+			       "		World Name: %s"), *TargetWorld->GetCraftWorldName());
+		TargetWorld->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
+		TargetWorld->GetGamePlayWorldInstance()->SetShouldBeLoaded(false);
+		Worlds.Remove(TargetWorld);
+		return true;
+	}
+	else
+	{
+		UE_LOG(LogChamingCraftWorld, Error,
+		       TEXT("[🌍] Fail to Unload CraftWorld In Memory\n"
+			       "		Worlds Array do not find correspound word"));
+		return false;
+	}
+}
+
+UNativeCraftWorld* UWorldManager::ShownCraftWorld(UNativeCraftWorld* TargetWorld)
+{
+	for (auto Element : Worlds)
+	{
+		if (Element == TargetWorld && Element->GetGamePlayWorldInstance())
+		{
+			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(true);
+			return Element;
+		}
+	}
+	return nullptr;
+}
+
+UNativeCraftWorld* UWorldManager::HiddenCraftWorld(UNativeCraftWorld* TargetWorld)
+{
+	for (auto Element : Worlds)
+	{
+		if (Element == TargetWorld && Element->GetGamePlayWorldInstance())
+		{
+			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
+			return Element;
+		}
+	}
+	return nullptr;
+}
+
+UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName)
+{
+	return nullptr;
+}
+
 
 AWorldEntityManager* UWorldManager::GetWorldEntityManager()
 {
@@ -92,22 +198,22 @@ bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName War
 		       *PlayerCharacter->GetWorld()->GetName());
 		if (Cast<ASceneWarpPoint>(OutActor)->TargetName == WarpPoint)
 		{
-				//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
-				bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(
-					OutActor->GetActorLocation(), false, nullptr, ETeleportType::None);
-				// TeleportTo(OutActor->GetActorLocation(), FRotator(), false,false);
-				// OutActor->GetActorLocation().Equals(PlayerCharacter->GetActorLocation(),10.0f)
-				if (bIsSuccessTeleport)
-				{
-					UE_LOG(LogChamingCraftWorld, Display,
-					       TEXT("[🌍]  Teleport Player to target warp <%s>"), *WarpPoint.ToString());
-				}
-				else
-				{
-					UE_LOG(LogChamingCraftWorld, Error,
-					       TEXT("[🌍]  Fail to Teleport Player to target warp <%s>"), *WarpPoint.ToString());
-				}
-				return true;
+			//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
+			bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(
+				OutActor->GetActorLocation(), false, nullptr, ETeleportType::None);
+			// TeleportTo(OutActor->GetActorLocation(), FRotator(), false,false);
+			// OutActor->GetActorLocation().Equals(PlayerCharacter->GetActorLocation(),10.0f)
+			if (bIsSuccessTeleport)
+			{
+				UE_LOG(LogChamingCraftWorld, Display,
+				       TEXT("[🌍]  Teleport Player to target warp <%s>"), *WarpPoint.ToString());
+			}
+			else
+			{
+				UE_LOG(LogChamingCraftWorld, Error,
+				       TEXT("[🌍]  Fail to Teleport Player to target warp <%s>"), *WarpPoint.ToString());
+			}
+			return true;
 		}
 	}
 	UE_LOG(LogChamingCraftWorld, Warning,
@@ -121,7 +227,7 @@ void UWorldManager::OnLevelLoadedCallback()
 }
 
 FCharmingCraftWorld UWorldManager::TravelPlayerToWorld(APawn* PlayerCharacter,
-                                                                const TSoftObjectPtr<UWorld> TargetLevel)
+                                                       const TSoftObjectPtr<UWorld> TargetLevel)
 {
 	FCharmingCraftWorld LevelStreamingDynamicResult;
 
@@ -149,8 +255,8 @@ FCharmingCraftWorld UWorldManager::TravelPlayerToWorld(APawn* PlayerCharacter,
 }
 
 FCharmingCraftWorld UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
-                                                                const TSoftObjectPtr<UWorld> TargetScene,
-                                                                FName WarpPoint, bool ResetSceneData)
+                                                       const TSoftObjectPtr<UWorld> TargetScene,
+                                                       FName WarpPoint, bool ResetSceneData)
 {
 	FCharmingCraftWorld LevelStreamingDynamicResult;
 	if (LoadedWorlds.Contains(TargetScene.LoadSynchronous()->GetName()))
@@ -179,7 +285,7 @@ FCharmingCraftWorld UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
 
 
 FCharmingCraftWorld UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
-                                                              bool UnloadRemainWorld)
+                                                     bool UnloadRemainWorld)
 {
 	FCharmingCraftWorld LevelStreamingDynamicResult;
 

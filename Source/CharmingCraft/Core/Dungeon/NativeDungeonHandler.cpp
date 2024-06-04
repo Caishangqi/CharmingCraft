@@ -29,3 +29,13 @@ UCharmingCraftInstance* UNativeDungeonHandler::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
 }
+
+UWorldManager* UNativeDungeonHandler::GetWorldManager_Implementation()
+{
+	return GetGameInstance_Implementation()->GetWorldManager();
+}
+
+UGameEventHandler* UNativeDungeonHandler::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
+}

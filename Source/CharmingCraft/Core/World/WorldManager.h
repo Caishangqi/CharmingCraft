@@ -8,6 +8,7 @@
 #include "Templates/Function.h"
 #include "WorldManager.generated.h"
 
+class UNativeCraftWorld;
 class AWorldEntityManager;
 class ULevelStreamingDynamic;
 
@@ -25,7 +26,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSuccess;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSoftObjectPtr<UWorld> WorldTemplate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<ULevelStreamingDynamic> GamePlayWorld;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TObjectPtr<ACharacter>> PlayerList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString WorldName;
 };
@@ -42,19 +47,47 @@ class CHARMINGCRAFT_API UWorldManager : public UObject, public ICoreManagerInter
 	GENERATED_BODY()
 
 public:
+	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
 	// 委托事件，用于在关卡加载完毕后通知
 	FOnLevelLoadedDelegate OnLevelLoaded;
 
+	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TMap<FString, ULevelStreamingDynamic*> LoadedWorlds;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TArray<TObjectPtr<UNativeCraftWorld>> Worlds;
+
 	/*!
 	 * Return playerr current level, this is different from GetWorld()
 	 * double check with LoadedWorlds and game runtime data
 	 * @param PlayerCharacter 
 	 * @return FLevelStreamingDynamicResult
 	 */
+	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
 	UFUNCTION(BlueprintCallable)
 	FCharmingCraftWorld GetPlayerCurrentLevel(ACharacter* PlayerCharacter);
+
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* GetPlayerCurrentWorld(ACharacter* PlayerCharacter);
+
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* GetWorldByWorldName(FString SearchWorldName);
+
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* LoadCraftWorldInMemory(TSubclassOf<UNativeCraftWorld> TargetWorld);
+
+	UFUNCTION(BlueprintCallable)
+	bool UnLoadCraftWorldInMemory(UNativeCraftWorld * TargetWorld);
+
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* ShownCraftWorld(UNativeCraftWorld * TargetWorld);
+
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* HiddenCraftWorld(UNativeCraftWorld * TargetWorld);
+
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName);
 
 	/*!
 	 * This is a more official or logic way to bind runtime generated actor to a
@@ -72,6 +105,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AWorldEntityManager* GetWorldEntityManager();
 
+	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
 	UFUNCTION(BlueprintCallable)
 	bool LoadGameLevel(FName LevelName);
 
@@ -116,11 +150,12 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	FCharmingCraftWorld TravelPlayerToScene(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetScene,
-	                                                 FName WarpPoint, bool ResetSceneData = true);
+	                                        FName WarpPoint, bool ResetSceneData = true);
+
 
 	UFUNCTION(BlueprintCallable)
 	FCharmingCraftWorld LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
-	                                               bool UnloadRemainWorld = false);
+	                                      bool UnloadRemainWorld = false);
 	UFUNCTION(BlueprintCallable)
 	bool UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel = nullptr);
 	UFUNCTION(BlueprintCallable)
