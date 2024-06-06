@@ -55,7 +55,7 @@ public:
 	{
 		TargetWorld.GamePlayWorld->SetShouldBeVisible(true);
 		GetDungeonHandler(TargetPlayer)->GetWorldManager_Implementation()->
-		                                 TeleportPlayerToWarp(TargetPlayer, WarpPoint);
+		                                 TravelPlayerToWarp(TargetPlayer, WarpPoint);
 		return TargetWorld;
 	}
 };

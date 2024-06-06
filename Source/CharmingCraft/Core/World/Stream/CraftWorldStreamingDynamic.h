@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Engine/LevelStreamingDynamic.h"
-#include "CharmingCraftLevelStreamingDynamic.generated.h"
+#include "CraftWorldStreamingDynamic.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API UCharmingCraftLevelStreamingDynamic : public ULevelStreamingDynamic
+class CHARMINGCRAFT_API UCraftWorldStreamingDynamic : public ULevelStreamingDynamic
 {
 	GENERATED_BODY()
+public:
+	
 };

@@ -10,6 +10,12 @@
  * 
  */
 
+class ACraftWorldWarpPoint;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCraftWorldPrepare);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdate, UNativeCraftWorld *, TargetCraftWorld,
+                                             ACraftWorldWarpPoint *, TargetCraftWorldWarpPoint);
+
 UCLASS(Blueprintable, NotBlueprintType)
 class CHARMINGCRAFT_API UNativeCraftWorld : public UObject
 {
@@ -20,14 +26,14 @@ public:
 	bool IsLoadInMemory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool IsVisible;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	FLevelStreamingLoadedStatus OnLevelLoaded;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	FLevelStreamingVisibilityStatus OnLevelHidden;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	FLevelStreamingVisibilityStatus OnLevelShown;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	FLevelStreamingLoadedStatus OnLevelUnloaded;
+	UPROPERTY(BlueprintAssignable)
+	FOnCraftWorldPrepare OnCraftWorldPrepare;
+	UPROPERTY(BlueprintAssignable)
+	FOnWarpDataUpdate OnWarpDataUpdate;
+
+private:
+	FTimerHandle CraftWorldCheckHandle;
+	/*void BroadcastCraftWorldStatus_Internal();*/
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -40,6 +46,8 @@ protected:
 	TArray<TObjectPtr<ACharacter>> PlayerList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSuccess = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TArray<TObjectPtr<ACraftWorldWarpPoint>> LoadedWarpPoints;
 
 public:
 	UNativeCraftWorld();
@@ -56,5 +64,17 @@ public:
 	TSoftObjectPtr<UWorld> GetCraftWorldMapRes();
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
+	TArray<ACraftWorldWarpPoint*> GetLoadedWarpPoints();
+
+	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	ULevelStreamingDynamic* GetGamePlayWorldInstance();
+
+	/*UFUNCTION(BlueprintCallable)
+	bool CheckCraftWorldStatus();*/
+
+
+public:
+	// Event
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnPlayerJoinWorld(ACharacter* Instigator, UNativeCraftWorld* TargetWorld);
 };

@@ -41,7 +41,7 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 	}
 	else
 	{
-		GetWorldManager_Implementation()->TeleportPlayerToWarp(InteractObject, DestinationName);
+		GetWorldManager_Implementation()->TravelPlayerToWarp(InteractObject, DestinationName);
 	}
 }
 

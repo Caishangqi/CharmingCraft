@@ -1,18 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "RegionChunkWidget.h"
+#include "NativeRegionChunkWidget.h"
 
 #include "Kismet/GameplayStatics.h"
 
-FCharmingCraftWorld URegionChunkWidget::TravelToTargetWorld(APawn* Instigator)
+FCharmingCraftWorld UNativeRegionChunkWidget::TravelToTargetWorld(APawn* Instigator)
 {
 	FCharmingCraftWorld Out;
 
 	return Out;
 }
 
-bool URegionChunkWidget::CanPlayerTravelToRegion()
+bool UNativeRegionChunkWidget::CanPlayerTravelToRegion()
 {
 	if (TargetWorld.LoadSynchronous() == nullptr)
 	{
@@ -21,17 +21,17 @@ bool URegionChunkWidget::CanPlayerTravelToRegion()
 	return true;
 }
 
-UCharmingCraftInstance* URegionChunkWidget::GetGameInstance_Implementation()
+UCharmingCraftInstance* UNativeRegionChunkWidget::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(this));
 }
 
-UGameEventHandler* URegionChunkWidget::GetGameEventHandler_Implementation()
+UGameEventHandler* UNativeRegionChunkWidget::GetGameEventHandler_Implementation()
 {
 	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
 
-UWorldManager* URegionChunkWidget::GetWorldManager_Implementation()
+UWorldManager* UNativeRegionChunkWidget::GetWorldManager_Implementation()
 {
 	return GetGameInstance_Implementation()->GetWorldManager();
 }

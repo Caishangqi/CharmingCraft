@@ -1,15 +1,15 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Engine/TargetPoint.h"
-#include "SceneWarpPoint.generated.h"
+#include "CraftWorldWarpPoint.generated.h"
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API ASceneWarpPoint : public ATargetPoint
+class CHARMINGCRAFT_API ACraftWorldWarpPoint : public ATargetPoint
 {
 	GENERATED_BODY()
 
 public:
-	ASceneWarpPoint();
+	ACraftWorldWarpPoint();
 
 	virtual void BeginPlay() override;
 
@@ -22,6 +22,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString TargetName;
 
+protected:
+	UFUNCTION(BlueprintCallable)
+	bool SynchronizeDataToCraftWords();
+	
 private:
 	bool bIsInitialized = false;
 };

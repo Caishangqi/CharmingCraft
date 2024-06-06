@@ -35,9 +35,9 @@ void ABuild::BeginPlay()
 	if (!bIsInitializedBuildExitPoint)
 	{
 		FTransform SpawnTransform;
-		ASceneWarpPoint* ExitActor = Cast<ASceneWarpPoint>(
+		ACraftWorldWarpPoint* ExitActor = Cast<ACraftWorldWarpPoint>(
 			UGameplayStatics::BeginDeferredActorSpawnFromClass(
-				this, ASceneWarpPoint::StaticClass(),
+				this, ACraftWorldWarpPoint::StaticClass(),
 				SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
 		ExitActor->TargetName = BuildName + " Default Exit";
 		ExitActor->SetIsSpatiallyLoaded(false);

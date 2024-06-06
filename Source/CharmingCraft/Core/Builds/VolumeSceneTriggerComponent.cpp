@@ -5,7 +5,7 @@
 
 #include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "EngineUtils.h"
-#include "SceneWarpPoint.h"
+#include "CraftWorldWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
@@ -70,7 +70,7 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 		}
 		else
 		{
-			GetWorldManager_Implementation()->TeleportPlayerToWarp(OverlappedActor, DestinationName);
+			GetWorldManager_Implementation()->TravelPlayerToWarp(OverlappedActor, DestinationName);
 		}
 	}
 }

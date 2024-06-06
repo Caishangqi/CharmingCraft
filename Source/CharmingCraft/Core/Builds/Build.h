@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "VolumeSceneTriggerComponent.h"
-#include "SceneWarpPoint.h"
+#include "CraftWorldWarpPoint.h"
 #include "GameFramework/Actor.h"
 #include "Build.generated.h"
 

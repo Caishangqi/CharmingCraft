@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "CharmingCraft/Core/GameInstance/Interface/CoreManagerInterface.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
-#include "RegionChunkWidget.generated.h"
+#include "NativeRegionChunkWidget.generated.h"
 
 
 USTRUCT(BlueprintType)
@@ -33,7 +33,7 @@ enum class ERegionState
  * https://clockworkraven.itch.io/rpg-icon-pack-32-places-and-seasons
  */
 UCLASS()
-class CHARMINGCRAFT_API URegionChunkWidget : public UUserWidget, public ICoreManagerInterface
+class CHARMINGCRAFT_API UNativeRegionChunkWidget : public UUserWidget, public ICoreManagerInterface
 {
 	GENERATED_BODY()
 
@@ -45,11 +45,18 @@ public:
 	TSoftObjectPtr<UWorld> TargetWorld;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSubclassOf<UNativeCraftWorld> TargetCraftWorld;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FVector2D ChunkCoordinate;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UTexture2D> RegionBaseIcon;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TObjectPtr<UTexture2D> RegionTopIcon;
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TObjectPtr<UNativeCraftWorld> CraftWorldInstance;
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

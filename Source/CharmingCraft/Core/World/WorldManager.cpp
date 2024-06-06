@@ -5,7 +5,7 @@
 
 #include "NativeCraftWorld.h"
 #include "WorldEntityManager.h"
-#include "CharmingCraft/Core/Builds/SceneWarpPoint.h"
+#include "CharmingCraft/Core/Builds/CraftWorldWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
@@ -13,6 +13,7 @@
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
+#include "Engine/LevelScriptActor.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -85,6 +86,18 @@ UNativeCraftWorld* UWorldManager::LoadCraftWorldInMemory(TSubclassOf<UNativeCraf
 	return CraftWorld;
 }
 
+UNativeCraftWorld* UWorldManager::GetShownWorld()
+{
+	for (auto World : Worlds)
+	{
+		if (World->GetGamePlayWorldInstance()->IsLevelVisible())
+		{
+			return World;
+		}
+	}
+	return nullptr;
+}
+
 bool UWorldManager::UnLoadCraftWorldInMemory(UNativeCraftWorld* TargetWorld)
 {
 	if (Worlds.Contains(TargetWorld))
@@ -113,10 +126,15 @@ UNativeCraftWorld* UWorldManager::ShownCraftWorld(UNativeCraftWorld* TargetWorld
 		if (Element == TargetWorld && Element->GetGamePlayWorldInstance())
 		{
 			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(true);
-			return Element;
+			//Element->CheckCraftWorldStatus();
+		}
+		else
+		{
+			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
+			//Element->CheckCraftWorldStatus();
 		}
 	}
-	return nullptr;
+	return TargetWorld;
 }
 
 UNativeCraftWorld* UWorldManager::HiddenCraftWorld(UNativeCraftWorld* TargetWorld)
@@ -132,9 +150,85 @@ UNativeCraftWorld* UWorldManager::HiddenCraftWorld(UNativeCraftWorld* TargetWorl
 	return nullptr;
 }
 
-UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName)
+UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName,
+                                                        UNativeCraftWorld* TargetWorld)
 {
-	return nullptr;
+	TObjectPtr<UNativeCraftWorld> TargetCraftWorld;
+	if (!WorldName.IsEmpty())
+	{
+		TargetCraftWorld = GetWorldByWorldName(WorldName);
+	}
+
+
+	if (TargetWorld && WorldName.IsEmpty())
+	{
+		for (auto Element : Worlds)
+		{
+			if (TargetWorld == Element)
+			{
+				TargetCraftWorld = Element;
+			}
+		}
+	}
+
+	if (TargetCraftWorld && TargetCraftWorld->GetGamePlayWorldInstance()->IsLevelVisible())
+	{
+		if (TargetCraftWorld->GetCraftWorldPlayers().Contains(PlayerCharacter))
+		{
+			UE_LOG(LogChamingCraftWorld, Error,
+			       TEXT("[🌍] Fail to Teleport player to world: %s\n"
+				       "		Player Already in the world"), *TargetCraftWorld->GetCraftWorldName());
+			return TargetCraftWorld;
+		}
+		bool TeleportResult = TeleportPlayerToWarp(PlayerCharacter, "Spawn");
+		//
+		if (TeleportResult)
+		{
+			GetGameEventHandler_Implementation()->OnPlayerJoinWorldEvent(PlayerCharacter, TargetCraftWorld);
+			//TargetCraftWorld->GetCraftWorldPlayers().Add(PlayerCharacter);
+			TObjectPtr<UPlayerData> PlayerData = UCoreComponents::GetGameInstance(PlayerCharacter)->GetRuntimeGameData()
+				->RuntimeSave.PlayerData;
+			PlayerData->PlayerLocation.GameWorld = TargetCraftWorld;
+		}
+	}
+	else
+	{
+		return TargetCraftWorld;
+	}
+
+	return TargetCraftWorld;
+}
+
+bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
+{
+	TArray<AActor*> OutActors;
+	UGameplayStatics::GetAllActorsOfClass(this, ACraftWorldWarpPoint::StaticClass(), OutActors);
+	for (const auto OutActor : OutActors)
+	{
+		UE_LOG(LogChamingCraftWorld, Warning,
+		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ACraftWorldWarpPoint>(OutActor)->TargetName,
+		       *PlayerCharacter->GetWorld()->GetName());
+		if (Cast<ACraftWorldWarpPoint>(OutActor)->TargetName == WarpPoint)
+		{
+			//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
+			bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(
+				OutActor->GetActorLocation(), false, nullptr, ETeleportType::None);
+			if (bIsSuccessTeleport)
+			{
+				UE_LOG(LogChamingCraftWorld, Display,
+				       TEXT("[🌍]  Teleport Player to target warp <%s>"), *WarpPoint.ToString());
+			}
+			else
+			{
+				UE_LOG(LogChamingCraftWorld, Error,
+				       TEXT("[🌍]  Fail to Teleport Player to target warp <%s>"), *WarpPoint.ToString());
+			}
+			return true;
+		}
+	}
+	UE_LOG(LogChamingCraftWorld, Warning,
+	       TEXT("[🌍]  Target warp does not exist, use the default spawn, please check the warp name"));
+	return false;
 }
 
 
@@ -187,16 +281,16 @@ bool UWorldManager::LoadGameLevel(FName LevelName)
 	return true;
 }
 
-bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
+bool UWorldManager::TravelPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
 {
 	TArray<AActor*> OutActors;
-	UGameplayStatics::GetAllActorsOfClass(this, ASceneWarpPoint::StaticClass(), OutActors);
+	UGameplayStatics::GetAllActorsOfClass(this, ACraftWorldWarpPoint::StaticClass(), OutActors);
 	for (const auto OutActor : OutActors)
 	{
 		UE_LOG(LogChamingCraftWorld, Warning,
-		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ASceneWarpPoint>(OutActor)->TargetName,
+		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ACraftWorldWarpPoint>(OutActor)->TargetName,
 		       *PlayerCharacter->GetWorld()->GetName());
-		if (Cast<ASceneWarpPoint>(OutActor)->TargetName == WarpPoint)
+		if (Cast<ACraftWorldWarpPoint>(OutActor)->TargetName == WarpPoint)
 		{
 			//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
 			bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(
@@ -234,7 +328,7 @@ FCharmingCraftWorld UWorldManager::TravelPlayerToWorld(APawn* PlayerCharacter,
 	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
 	{
 		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[TargetLevel->GetName()];
-		LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarp(PlayerCharacter, "Spawn");
+		LevelStreamingDynamicResult.IsSuccess = TravelPlayerToWarp(PlayerCharacter, "Spawn");
 		if (LevelStreamingDynamicResult.IsSuccess)
 		{
 			UE_LOG(LogChamingCraftWorld, Display,
@@ -262,7 +356,7 @@ FCharmingCraftWorld UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
 	if (LoadedWorlds.Contains(TargetScene.LoadSynchronous()->GetName()))
 	{
 		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[TargetScene->GetName()];
-		LevelStreamingDynamicResult.IsSuccess = LevelStreamingDynamicResult.IsSuccess = TeleportPlayerToWarp(
+		LevelStreamingDynamicResult.IsSuccess = LevelStreamingDynamicResult.IsSuccess = TravelPlayerToWarp(
 			PlayerCharacter, WarpPoint);
 		if (LevelStreamingDynamicResult.IsSuccess)
 		{

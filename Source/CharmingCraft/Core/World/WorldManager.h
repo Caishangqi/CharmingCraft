@@ -76,18 +76,33 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* LoadCraftWorldInMemory(TSubclassOf<UNativeCraftWorld> TargetWorld);
+	// Get the CraftWorld that currently display to player
+	// Note: Only 1 World could display !
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* GetShownWorld();
+	
+	UFUNCTION(BlueprintCallable)
+	bool UnLoadCraftWorldInMemory(UNativeCraftWorld* TargetWorld);
+
+	/*!
+	 * Shown CraftWorld to player, the function will automatically Hidden
+	 * all CraftWorld that is not {TargetWorld}
+	 * @param TargetWorld The target CraftWorld need to be shown to player
+	 * @return TargetWorld
+	 */
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* ShownCraftWorld(UNativeCraftWorld* TargetWorld);
 
 	UFUNCTION(BlueprintCallable)
-	bool UnLoadCraftWorldInMemory(UNativeCraftWorld * TargetWorld);
+	UNativeCraftWorld* HiddenCraftWorld(UNativeCraftWorld* TargetWorld);
 
 	UFUNCTION(BlueprintCallable)
-	UNativeCraftWorld* ShownCraftWorld(UNativeCraftWorld * TargetWorld);
+	UNativeCraftWorld* TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName,
+	                                        
+	                                         UNativeCraftWorld* TargetWorld = nullptr);
 
 	UFUNCTION(BlueprintCallable)
-	UNativeCraftWorld* HiddenCraftWorld(UNativeCraftWorld * TargetWorld);
-
-	UFUNCTION(BlueprintCallable)
-	UNativeCraftWorld* TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName);
+	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);
 
 	/*!
 	 * This is a more official or logic way to bind runtime generated actor to a
@@ -110,14 +125,14 @@ public:
 	bool LoadGameLevel(FName LevelName);
 
 	/*!
-	 * Teleport player to specific Warp of ASceneWarpPoint
+	 * Teleport player to specific Warp of ACraftWorldWarpPoint
 	 * please check the level is loaded and visible before teleport
 	 * @param PlayerCharacter 
 	 * @param WarpPoint 
 	 * @return whether or not teleport successful
 	 */
 	UFUNCTION(BlueprintCallable)
-	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);
+	bool TravelPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);
 
 	// 加载完成的回调函数
 	UFUNCTION(BlueprintCallable)

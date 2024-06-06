@@ -68,6 +68,11 @@ void UGameEventHandler::OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* Fr
 	OnPlayerTravelToScene.Broadcast(Instigator, FromScene, TargetScene);
 }
 
+void UGameEventHandler::OnPlayerJoinWorldEvent(ACharacter* Instigator, UNativeCraftWorld* TargetWorld)
+{
+	OnPlayerJoinWorld.Broadcast(Instigator, TargetWorld);
+}
+
 void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, ALandChunk* TargetChunk)
 {
 	OnUnloadWorldChunk.Broadcast(Instigator, TargetChunk);
@@ -305,7 +310,8 @@ void UGameEventHandler::OnCloseWidgetEvent(UObject* Instigator, UUserWidget* Tar
 	OnCloseWidget.Broadcast(Instigator, TargetWidget);
 }
 
-void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction, UNativeAction* TargetAction,
+void UGameEventHandler::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction,
+                                                    UNativeAction* TargetAction,
                                                     UItemMeta* ContextMeta)
 {
 	OnItemDynamicSkillBind.Broadcast(Instigator, FromAction, TargetAction, ContextMeta);

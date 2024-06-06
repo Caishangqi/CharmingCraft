@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "RegionChunkWidget.h"
+#include "NativeRegionChunkWidget.h"
 #include "CharmingCraft/Core/UI/Holder/WidgetHolder.h"
-#include "RegionDetailWidget.generated.h"
+#include "NativeRegionDetailWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CHARMINGCRAFT_API URegionDetailWidget : public UWidgetHolder
+class CHARMINGCRAFT_API UNativeRegionDetailWidget : public UWidgetHolder
 {
 	GENERATED_BODY()
 
@@ -26,11 +26,11 @@ public:
 public:
 	/*!
 	 * Read the data from RegionChunkWidget and move RegionChunkWidget RegionChunkMetaData
-	 * into URegionDetailWidget, usually call after constructor from RegionChunkWidget not
-	 * in URegionDetailWidget
+	 * into UNativeRegionDetailWidget, usually call after constructor from RegionChunkWidget not
+	 * in UNativeRegionDetailWidget
 	 * @param RegionChunkWidget 
 	 * @return true if set data correctly
 	 */
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
-	bool ImportRegionData(URegionChunkWidget * RegionChunkWidget);
+	bool ImportRegionData(UNativeRegionChunkWidget * RegionChunkWidget);
 };
