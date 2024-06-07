@@ -80,7 +80,7 @@ public:
 	// Note: Only 1 World could display !
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* GetShownWorld();
-	
+
 	UFUNCTION(BlueprintCallable)
 	bool UnLoadCraftWorldInMemory(UNativeCraftWorld* TargetWorld);
 
@@ -96,10 +96,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* HiddenCraftWorld(UNativeCraftWorld* TargetWorld);
 
-	UFUNCTION(BlueprintCallable)
-	UNativeCraftWorld* TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName,
-	                                        
-	                                         UNativeCraftWorld* TargetWorld = nullptr);
+	UNativeCraftWorld* TeleportPlayerToWorld_Internal(ACharacter* PlayerCharacter, FString WorldName,
+	                                                  UNativeCraftWorld* TargetWorld = nullptr);
 
 	UFUNCTION(BlueprintCallable)
 	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);

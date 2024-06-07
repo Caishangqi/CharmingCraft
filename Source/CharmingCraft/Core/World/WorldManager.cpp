@@ -13,7 +13,6 @@
 #include "CharmingCraft/Core/Save/Data/RuntimeGameData.h"
 #include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
-#include "Engine/LevelScriptActor.h"
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -150,7 +149,7 @@ UNativeCraftWorld* UWorldManager::HiddenCraftWorld(UNativeCraftWorld* TargetWorl
 	return nullptr;
 }
 
-UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld(ACharacter* PlayerCharacter, FString WorldName,
+UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld_Internal(ACharacter* PlayerCharacter, FString WorldName,
                                                         UNativeCraftWorld* TargetWorld)
 {
 	TObjectPtr<UNativeCraftWorld> TargetCraftWorld;
@@ -501,3 +500,4 @@ UGameEventHandler* UWorldManager::GetGameEventHandler_Implementation()
 {
 	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
+

@@ -29,9 +29,18 @@ bool ACraftWorldWarpPoint::SynchronizeDataToCraftWords()
 	{
 		CraftWorld->GetLoadedWarpPoints().Add(this);
 
+		// Double Delegate brodcast that compatible both Blueprint and C++
 		if (TargetName == "Spawn")
 		{
-			CraftWorld->OnCraftWorldPrepare.Broadcast();
+			// Bind C++ version of event
+			CraftWorld->OnCraftWorldPrepareInternal.AddLambda([CraftWorld]
+			{
+				// When triggerd by OnCraftWorldPrepareInternal brodcast Blueprint
+				// version of event
+				CraftWorld->OnCraftWorldPrepare.Broadcast();
+			});
+			// Brodcast C++ version of event
+			CraftWorld->OnCraftWorldPrepareInternal.Broadcast();
 		}
 		return true;
 	}

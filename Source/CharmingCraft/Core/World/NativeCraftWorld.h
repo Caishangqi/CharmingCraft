@@ -13,8 +13,7 @@
 class ACraftWorldWarpPoint;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCraftWorldPrepare);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdate, UNativeCraftWorld *, TargetCraftWorld,
-                                             ACraftWorldWarpPoint *, TargetCraftWorldWarpPoint);
+
 
 UCLASS(Blueprintable, NotBlueprintType)
 class CHARMINGCRAFT_API UNativeCraftWorld : public UObject
@@ -28,6 +27,13 @@ public:
 	bool IsVisible;
 	UPROPERTY(BlueprintAssignable)
 	FOnCraftWorldPrepare OnCraftWorldPrepare;
+
+	// The Internal Delegate that used for bind lambda
+	DECLARE_MULTICAST_DELEGATE(FOnCraftWorldPrepareInternal);
+	FOnCraftWorldPrepareInternal OnCraftWorldPrepareInternal;
+
+	// The blueprint dynamic Delegate that used for bind UObject 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdate, UNativeCraftWorld *, TargetCraftWorld,ACraftWorldWarpPoint *, TargetCraftWorldWarpPoint);
 	UPROPERTY(BlueprintAssignable)
 	FOnWarpDataUpdate OnWarpDataUpdate;
 
