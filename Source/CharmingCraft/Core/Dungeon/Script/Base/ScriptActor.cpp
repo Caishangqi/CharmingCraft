@@ -108,7 +108,10 @@ void AScriptActor::BeginPlay()
 	if (bEnableVolumeTriggerEvent)
 	{
 		VolumeBoxComponent->SetGenerateOverlapEvents(true);
-		VolumeBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AScriptActor::OnOverlapBegin);
+		if (!VolumeBoxComponent->OnComponentBeginOverlap.IsBound())
+		{
+			VolumeBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &AScriptActor::OnOverlapBegin);
+		}
 	}
 	if (!bEnableScriptActorTickScript)
 	{

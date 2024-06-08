@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS(meta=(BlueprintThreadSafe, ScriptName = "CharmingCraft Core Component Library"))
+UCLASS(meta=(BlueprintThreadSafe, ScriptName = "CharmingCraftCoreComponentLibrary"))
 class CHARMINGCRAFT_API UCoreComponents : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
@@ -24,5 +24,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	static UGameEventHandler * GetGameEventHandler(UObject* Context);
-
+	
+	UFUNCTION(BlueprintCallable)
+	static UCameraManager * GetCameraManager(UObject* Context);
 };

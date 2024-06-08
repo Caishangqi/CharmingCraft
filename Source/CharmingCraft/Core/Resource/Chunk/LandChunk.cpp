@@ -125,7 +125,10 @@ void ALandChunk::OnLoadWorldChunk(UObject* InstigatorObject, ALandChunk* TargetC
 		StartBiomeDataTimer();
 	}
 	GameEventHandler = GetGameEventHandler_Implementation();
-	GameEventHandler->OnResourceEntityBreak.AddDynamic(this, &ALandChunk::OnResourceEntityBreakEvent);
+	if (!GameEventHandler->OnResourceEntityBreak.IsBound())
+	{
+		GameEventHandler->OnResourceEntityBreak.AddDynamic(this, &ALandChunk::OnResourceEntityBreakEvent);
+	}
 	// Spawn Creature at a specific distance
 	SpawnCreatureAtChunk();
 }

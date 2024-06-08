@@ -122,15 +122,14 @@ UNativeCraftWorld* UWorldManager::ShownCraftWorld(UNativeCraftWorld* TargetWorld
 {
 	for (auto Element : Worlds)
 	{
-		if (Element == TargetWorld && Element->GetGamePlayWorldInstance())
+		if (Element == TargetWorld)
 		{
 			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(true);
 			//Element->CheckCraftWorldStatus();
 		}
 		else
 		{
-			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
-			//Element->CheckCraftWorldStatus();
+			HiddenCraftWorld(Element);
 		}
 	}
 	return TargetWorld;
@@ -138,19 +137,13 @@ UNativeCraftWorld* UWorldManager::ShownCraftWorld(UNativeCraftWorld* TargetWorld
 
 UNativeCraftWorld* UWorldManager::HiddenCraftWorld(UNativeCraftWorld* TargetWorld)
 {
-	for (auto Element : Worlds)
-	{
-		if (Element == TargetWorld && Element->GetGamePlayWorldInstance())
-		{
-			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
-			return Element;
-		}
-	}
-	return nullptr;
+	TargetWorld->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
+	TargetWorld->OnCraftWorldHidden_Implementation(TargetWorld);
+	return TargetWorld;
 }
 
 UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld_Internal(ACharacter* PlayerCharacter, FString WorldName,
-                                                        UNativeCraftWorld* TargetWorld)
+                                                                 UNativeCraftWorld* TargetWorld)
 {
 	TObjectPtr<UNativeCraftWorld> TargetCraftWorld;
 	if (!WorldName.IsEmpty())
@@ -183,8 +176,7 @@ UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld_Internal(ACharacter* Pla
 		//
 		if (TeleportResult)
 		{
-			GetGameEventHandler_Implementation()->OnPlayerJoinWorldEvent(PlayerCharacter, TargetCraftWorld);
-			//TargetCraftWorld->GetCraftWorldPlayers().Add(PlayerCharacter);
+			TargetCraftWorld->AddPlayerToWorldPlayerList(PlayerCharacter);
 			TObjectPtr<UPlayerData> PlayerData = UCoreComponents::GetGameInstance(PlayerCharacter)->GetRuntimeGameData()
 				->RuntimeSave.PlayerData;
 			PlayerData->PlayerLocation.GameWorld = TargetCraftWorld;
@@ -500,4 +492,3 @@ UGameEventHandler* UWorldManager::GetGameEventHandler_Implementation()
 {
 	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
-

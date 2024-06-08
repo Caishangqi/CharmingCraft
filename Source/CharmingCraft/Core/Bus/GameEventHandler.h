@@ -85,6 +85,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemInteractDelegate, APawn*, In
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnPlayerMovementDelegate, APawn*, Instigator, FVector,
                                                FromLocation, FVector, TargetLocation);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerJoinWorldDelegate, ACharacter*, Instigator, UNativeCraftWorld *, TargetWorld);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPlayerLeftWorldDelegate, ACharacter*, Instigator, UNativeCraftWorld *, TargetWorld);
 
 // Item Ability System
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnItemDynamicSkillBindDelegate, APawn*, Instigator, UNativeAction*,
@@ -179,6 +180,8 @@ public:
 	FOnPlayerTravelToSceneDelegate OnPlayerTravelToScene;
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerJoinWorldDelegate OnPlayerJoinWorld;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerLeftWorldDelegate OnPlayerLeftWorld;
 
 	// Craft
 	UPROPERTY(BlueprintAssignable)
@@ -235,6 +238,8 @@ public:
 	void OnPlayerTravelToSceneEvent(APawn* Instigator, UWorld* FromScene, UWorld* TargetScene);
 	UFUNCTION(BlueprintCallable)
 	void OnPlayerJoinWorldEvent(ACharacter* Instigator, UNativeCraftWorld * TargetWorld);
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerLeftWorldEvent(ACharacter* Instigator, UNativeCraftWorld * TargetWorld);
 
 	/*!
 	 * Unload the specific Chunk in the world

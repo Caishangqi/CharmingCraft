@@ -1,16 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "VolumeSceneTriggerComponent.h"
-
 #include "../Core/Entity/Player/NativePlayerCharacter.h"
-#include "EngineUtils.h"
 #include "CraftWorldWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
-#include "CharmingCraft/Core/Log/Logging.h"
+#include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
-#include "Engine/LevelStreamingDynamic.h"
-#include "Engine/TargetPoint.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -51,22 +45,21 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
                                                   UPrimitiveComponent* OtherComp,
                                                   int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogChamingCraftWorld, Warning,
-	       TEXT("[🌍]  Prepare Load Building Scene: %s"), *TargetLoadedLevel.LoadSynchronous()->GetMapName());
 	if (OtherActor->IsA(ANativePlayerCharacter::StaticClass()))
 	{
 		OverlappedActor = Cast<APawn>(OtherActor);
 		if (bIsASceneTravel)
 		{
-			FCharmingCraftWorld LoadWorldInstanceOut = GetWorldManager_Implementation()->LoadWorldInstance(
-				TargetLoadedLevel);
+			TObjectPtr<UNativeCraftWorld> CraftWorld = UCoreComponents::GetWorldManager(this)->LoadCraftWorldInMemory(
+				TargetCraftWorld);
+			CraftWorld->OnWarpDataUpdate.AddDynamic(this, &UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded);
+			UCoreComponents::GetWorldManager(this)->ShownCraftWorld(CraftWorld);
+			CraftWorld->AddPlayerToWorldPlayerList(static_cast<ACharacter*>(OverlappedActor));
 			if (EnableCameraFade)
 			{
 				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-					0.1f, 1.0f, 1.0f, FColor::Black, false, true);
+					0.1f, 1.0f, 0.5f, FColor::Black, false, true);
 			}
-			LoadWorldInstanceOut.GamePlayWorld->OnLevelShown.AddDynamic(
-				this, &UVolumeSceneTriggerComponent::OnTargetLevelShown);
 		}
 		else
 		{
@@ -75,49 +68,24 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 	}
 }
 
-void UVolumeSceneTriggerComponent::OnTargetLevelShown()
+void UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded(UNativeCraftWorld* CraftWorld,
+                                                          ACraftWorldWarpPoint* TargetCraftWorldWarpPoint)
 {
-	GetGameEventHandler_Implementation()->OnLoadGameLevelCompleteEvent(this, TargetLoadedLevel.LoadSynchronous());
-
 	if (OverlappedActor)
 	{
-		FTimerHandle InOutHandle;
-
-		GetWorld()->GetTimerManager().SetTimer(InOutHandle, [this]()
-		                                       {
-			                                       GetWorldManager_Implementation()->TravelPlayerToScene(
-				                                       OverlappedActor, TargetLoadedLevel, DestinationName,
-				                                       bResetSceneData);
-			                                       PostLevelCameraViewChange(); // Change Camera
-			                                       OverlappedActor->Controller->StopMovement();
-			                                       if (EnableCameraFade)
-			                                       {
-				                                       UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->
-					                                       StartCameraFade(
-						                                       1.0f, 0.0f, 1.0f, FColor::Black);
-			                                       }
-			                                       //OverlappedActor = nullptr;
-			                                       GetWorldManager_Implementation()->UnloadWorldInstance(UnloadedLevel);
-		                                       },
-		                                       1, false);
-	}
-}
-
-void UVolumeSceneTriggerComponent::OnTravelToDestination()
-{
-}
-
-void UVolumeSceneTriggerComponent::PostLevelCameraViewChange()
-{
-	if (EnableChangeCameraView)
-	{
-		if (EnableCustomCameraView)
+		UCoreComponents::GetWorldManager(TargetCraftWorldWarpPoint)->TeleportPlayerToWarp(
+			OverlappedActor, DestinationName);
+		if (EnableCameraFade)
 		{
-			// TODO: EnableCustomCameraView
+			UGameplayStatics::GetPlayerCameraManager(OverlappedActor, 0)->
+				StartCameraFade(
+					1.0f, 0.0f, 1.0f, FColor::Black);
 		}
-		GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(OverlappedActor, TargetCameraView);
 	}
+	CraftWorld->OnWarpDataUpdateInternal.Clear();
+	CraftWorld->OnWarpDataUpdate.Clear();
 }
+
 
 UCharmingCraftInstance* UVolumeSceneTriggerComponent::GetGameInstance_Implementation()
 {

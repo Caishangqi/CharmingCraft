@@ -9,6 +9,8 @@
 #include "VolumeSceneTriggerComponent.generated.h"
 
 
+class UNativeCraftWorld;
+
 UCLASS(Blueprintable, meta=(BlueprintSpawnableComponent))
 class CHARMINGCRAFT_API UVolumeSceneTriggerComponent : public UBoxComponent, public ICoreManagerInterface
 {
@@ -17,28 +19,15 @@ class CHARMINGCRAFT_API UVolumeSceneTriggerComponent : public UBoxComponent, pub
 public:
 	// Sets default values for this component's properties
 	UVolumeSceneTriggerComponent();
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool EnableChangeCameraView = false;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
-	bool EnableCustomCameraView = false;
-
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool EnableCameraFade = true;
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bIsASceneTravel = false;
 	
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
-	bool bResetSceneData = false;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableChangeCameraView"))
-	ECameraPerspectiveEnum TargetCameraView;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="EnableCustomCameraView"))
-	FCameraPerspective CustomCameraView;
-
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="Craft World"))
+	TSubclassOf<UNativeCraftWorld> TargetCraftWorld;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FName DestinationName;
@@ -46,12 +35,6 @@ public:
 	// Whether or not set visibility of origin level after entry sublevel
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool bPostEntryOriginVisibility;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
-	TSoftObjectPtr<UWorld> TargetLoadedLevel;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(EditCondition="bIsASceneTravel"))
-	TSoftObjectPtr<UWorld> UnloadedLevel;
 
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<APawn> OverlappedActor;
@@ -68,13 +51,10 @@ public:
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                    const FHitResult& SweepResult);
+	
+	UFUNCTION()
+	void OnCraftWorldWarpLoaded(UNativeCraftWorld * CraftWorld, ACraftWorldWarpPoint * TargetCraftWorldWarpPoint);
 
-	UFUNCTION(BlueprintCallable)
-	void OnTargetLevelShown();
-	UFUNCTION(BlueprintCallable)
-	void OnTravelToDestination();
-
-	void PostLevelCameraViewChange();
 	// override
 public:
 	virtual UCharmingCraftInstance* GetGameInstance_Implementation() override;

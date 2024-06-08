@@ -30,20 +30,29 @@ void UWidgetHolder::OnCloseWidgetEvent_Implementation(UObject* Instigator, UUser
 bool UWidgetHolder::RemoveWidget_Implementation()
 {
 	bool bIsRemoveLeastOne = false;
-	for (auto& UserWidget : UserWidgetEventHandler->LoadedUserWidget)
+	TArray<UUserWidget*> WidgetsToRemove;
+
+	for (auto UserWidget : UserWidgetEventHandler->LoadedUserWidget)
 	{
 		if (this == UserWidget)
 		{
 			// Broadcase the event from game event handler
 			GameInstance->GetGameEventHandler()->OnCloseWidgetEvent(UserWidgetEventHandler, this);
-			UserWidgetEventHandler->LoadedUserWidget.Remove(this);
+			WidgetsToRemove.Add(this);
 			UE_LOG(LogChamingCraftWidgetHandler, Display,
-			       TEXT("[❌]  Remove Widget: %s from Widget Event Handler(Holder)"), *this->GetName());
+			       TEXT("[❌]  Remove Widget <%s> from Widget Event Handler(Holder)"), *this->GetName());
 			bIsRemoveLeastOne = true;
 		}
 	}
+
+	for (auto& Widget : WidgetsToRemove)
+	{
+		UserWidgetEventHandler->LoadedUserWidget.Remove(Widget);
+	}
+
 	return bIsRemoveLeastOne;
 }
+
 
 void UWidgetHolder::NativeConstruct()
 {
@@ -52,13 +61,21 @@ void UWidgetHolder::NativeConstruct()
 	GameInstance = Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance());
 	UserWidgetEventHandler = GameInstance->GetUserWidgetEventHandler();
 	UE_LOG(LogChamingCraftWidgetHandler, Display,
-	       TEXT("[✅]  Add Widget: %s to Widget Event Handler(Holder)"), *this->GetName());
-	UserWidgetEventHandler->LoadedUserWidget.Push(this);
+	       TEXT("[✅]  Add Widget <%s> to Widget Event Handler(Holder)"), *this->GetName());
+
+	// 先解绑之前的绑定
+	GameInstance->GetGameEventHandler()->OnOpenWidget.RemoveAll(this);
+	GameInstance->GetGameEventHandler()->OnCloseWidget.RemoveAll(this);
+
+	// 再进行绑定
 	GameInstance->GetGameEventHandler()->OnOpenWidget.AddDynamic(this, &UWidgetHolder::OnOpenWidgetEvent);
 	GameInstance->GetGameEventHandler()->OnCloseWidget.AddDynamic(this, &UWidgetHolder::OnCloseWidgetEvent);
+	UserWidgetEventHandler->LoadedUserWidget.Push(this);
+
 	// Broadcase open widget event target is self
 	GameInstance->GetGameEventHandler()->OnOpenWidgetEvent(UserWidgetEventHandler, this);
 }
+
 
 void UWidgetHolder::NativeDestruct()
 {

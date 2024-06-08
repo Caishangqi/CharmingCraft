@@ -15,34 +15,46 @@ void UNativeUserWidgetEventHandler::NativeConstruct()
 	GameInstance = Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance());
 	GamePlayLogicManager = GameInstance->GamePlayLogicManager;
 
-	GamePlayLogicManager->OnPlayerOpenInventory.AddDynamic(this, &UNativeUserWidgetEventHandler::OnPlayerOpenInventoryEvent);
-	GamePlayLogicManager->OnPlayerOpenContainer.AddDynamic(this, &UNativeUserWidgetEventHandler::OnPlayerOpenContainerEvent);
+	GamePlayLogicManager->OnPlayerOpenInventory.AddDynamic(
+		this, &UNativeUserWidgetEventHandler::OnPlayerOpenInventoryEvent);
+	GamePlayLogicManager->OnPlayerOpenContainer.AddDynamic(
+		this, &UNativeUserWidgetEventHandler::OnPlayerOpenContainerEvent);
 	GamePlayLogicManager->OnPlayerClickMove.AddDynamic(this, &UNativeUserWidgetEventHandler::OnPlayerClickMoveEvent);
-	GamePlayLogicManager->OnItemDetailDisplay.AddDynamic(this, &UNativeUserWidgetEventHandler::OnItemDetailDisplayEvent);
+	GamePlayLogicManager->OnItemDetailDisplay.
+	                      AddDynamic(this, &UNativeUserWidgetEventHandler::OnItemDetailDisplayEvent);
 	GamePlayLogicManager->OnCloseWidget.AddDynamic(this, &UNativeUserWidgetEventHandler::OnCloseWidgetEvent);
-	GamePlayLogicManager->OnPlayerOpenTravelMap.AddDynamic(this, &UNativeUserWidgetEventHandler::OnPlayerOpenTravelMapEvent);
+	GamePlayLogicManager->OnPlayerOpenTravelMap.AddDynamic(
+		this, &UNativeUserWidgetEventHandler::OnPlayerOpenTravelMapEvent);
 	GamePlayLogicManager->OnOpenWidget.AddDynamic(this, &UNativeUserWidgetEventHandler::OnOpenWidgetEvent);
-	GamePlayLogicManager->OnPlayerOpenCraftPannel.AddDynamic(this, &UNativeUserWidgetEventHandler::OnPlayerOpenCraftPannelEvent);
-
-	LoadedUserWidget.SetNum(100);
+	GamePlayLogicManager->OnPlayerOpenCraftPannel.AddDynamic(
+		this, &UNativeUserWidgetEventHandler::OnPlayerOpenCraftPannelEvent);
 
 	GameInstance->UserWidgetEventHandler = this;
 }
 
 bool UNativeUserWidgetEventHandler::CloseWidgetByClass(TSubclassOf<UWidgetHolder> TargetWidgetHolder)
 {
+	TArray<UUserWidget*> TargetClassWidget;
+	bool bHasRemoveWidget = false;
+
 	for (auto Element : LoadedUserWidget)
 	{
 		if (Element.IsA(TargetWidgetHolder.Get()))
 		{
-			Cast<UWidgetHolder>(Element)->RemoveWidget_Implementation();
-			return true;
+			TargetClassWidget.Add(Element);
+			bHasRemoveWidget = true;
 		}
 	}
-	return false;
+
+	for (auto ClassWidget : TargetClassWidget)
+	{
+		ICommonUI::Execute_RemoveWidget(ClassWidget);
+	}
+	return bHasRemoveWidget;
 }
 
-void UNativeUserWidgetEventHandler::OnPlayerOpenCraftPannelEvent_Implementation(ACharacter* Instigator, UObject* Creator)
+void UNativeUserWidgetEventHandler::OnPlayerOpenCraftPannelEvent_Implementation(
+	ACharacter* Instigator, UObject* Creator)
 {
 }
 
@@ -77,7 +89,8 @@ void UNativeUserWidgetEventHandler::OnItemDetailDisplayEvent_Implementation(UIte
 	}
 }
 
-void UNativeUserWidgetEventHandler::OnPlayerClickMoveEvent_Implementation(ACharacter* Instigator, FVector TargetLocation)
+void UNativeUserWidgetEventHandler::OnPlayerClickMoveEvent_Implementation(
+	ACharacter* Instigator, FVector TargetLocation)
 {
 	// UE_LOG(LogChamingCraftWidgetHandler, Display,
 	//        TEXT("[🔍] OnPlayerClickMoveEvent trigger by: %s Target Location: %s"),
@@ -85,8 +98,8 @@ void UNativeUserWidgetEventHandler::OnPlayerClickMoveEvent_Implementation(AChara
 }
 
 void UNativeUserWidgetEventHandler::OnPlayerOpenContainerEvent_Implementation(ACharacter* Instigator,
-                                                                        UInventoryComponent* TargetContainer,
-                                                                        UObject* Creator)
+                                                                              UInventoryComponent* TargetContainer,
+                                                                              UObject* Creator)
 {
 	if (Instigator && TargetContainer)
 	{

@@ -73,6 +73,11 @@ void UGameEventHandler::OnPlayerJoinWorldEvent(ACharacter* Instigator, UNativeCr
 	OnPlayerJoinWorld.Broadcast(Instigator, TargetWorld);
 }
 
+void UGameEventHandler::OnPlayerLeftWorldEvent(ACharacter* Instigator, UNativeCraftWorld* TargetWorld)
+{
+	OnPlayerLeftWorld.Broadcast(Instigator, TargetWorld);
+}
+
 void UGameEventHandler::OnUnloadWorldChunkEvent(UObject* Instigator, ALandChunk* TargetChunk)
 {
 	OnUnloadWorldChunk.Broadcast(Instigator, TargetChunk);

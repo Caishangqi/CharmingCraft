@@ -2,8 +2,8 @@
 
 
 #include "NativeCraftWorld.h"
-
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
+#include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "Engine/LevelStreamingDynamic.h"
@@ -27,9 +27,7 @@ bool UNativeCraftWorld::InitializeWorldInstance()
 		this->GetOuter(), WorldMap, FVector(0, 0, 0), FRotator(0, 0, 0), IsSuccessLoadWorldInstance);
 	GamePlayWorldInstance->bInitiallyVisible = false;
 	//GamePlayWorldInstance->SetShouldBeVisible(false);
-	UE_LOG(LogChamingCraftWorld, Warning,
-	       TEXT("		States: %hhd"), IsSuccess);
-
+	UE_LOG(LogChamingCraftWorld, Warning, TEXT("		States: %hhd"), IsSuccess);
 	return IsSuccessLoadWorldInstance;
 }
 
@@ -38,7 +36,7 @@ FString UNativeCraftWorld::GetCraftWorldName()
 	return WorldName;
 }
 
-TArray<ACharacter*> UNativeCraftWorld::GetCraftWorldPlayers()
+TSet<ACharacter*> UNativeCraftWorld::GetCraftWorldPlayers()
 {
 	return PlayerList;
 }
@@ -48,7 +46,7 @@ TSoftObjectPtr<UWorld> UNativeCraftWorld::GetCraftWorldMapRes()
 	return WorldMap;
 }
 
-TArray<ACraftWorldWarpPoint*> UNativeCraftWorld::GetLoadedWarpPoints()
+TSet<ACraftWorldWarpPoint*> UNativeCraftWorld::GetLoadedWarpPoints()
 {
 	return LoadedWarpPoints;
 }
@@ -58,40 +56,65 @@ ULevelStreamingDynamic* UNativeCraftWorld::GetGamePlayWorldInstance()
 	return GamePlayWorldInstance;
 }
 
-/*
-bool UNativeCraftWorld::CheckCraftWorldStatus()
+ECameraPerspectiveEnum UNativeCraftWorld::GetTargetCameraPerspective()
 {
-	GetWorld()->GetTimerManager().SetTimer(
-		CraftWorldCheckHandle,
-		this,
-		&UNativeCraftWorld::BroadcastCraftWorldStatus_Internal,
-		0.1f,
-		true // 重复执行
-	);
-	return true;
+	return TargetCameraPerspective;
 }
 
-void UNativeCraftWorld::BroadcastCraftWorldStatus_Internal()
+TSet<ACharacter*> UNativeCraftWorld::AddPlayerToWorldPlayerList(ACharacter* Player)
 {
-	if (GamePlayWorldInstance->GetLevelScriptActor())
+	if (PlayerList.Contains(Player))
 	{
-		UE_LOG(LogChamingCraftWorld, Warning,
-		       TEXT("[❕] LevelScripActor is BeginningPlay"
-		       ));
-		OnCraftWorldPrepare.Broadcast();
-		GetWorld()->GetTimerManager().PauseTimer(CraftWorldCheckHandle);
+		return PlayerList;
+	}
+	else
+	{
+		UCoreComponents::GetGameEventHandler(Player)->OnPlayerJoinWorldEvent(Player, this);
+		return PlayerList;
 	}
 }
-*/
+
+TSet<ACharacter*> UNativeCraftWorld::RemovePlayerFromWorldPlayerList(ACharacter* Player)
+{
+	if (PlayerList.Contains(Player))
+	{
+		UCoreComponents::GetGameEventHandler(Player)->OnPlayerLeftWorldEvent(Player, this);
+		return PlayerList;
+	}
+	else
+	{
+		return PlayerList;
+	}
+}
+
+void UNativeCraftWorld::OnCraftWorldHidden_Implementation(UNativeCraftWorld* TargetWorld)
+{
+	for (auto Element : PlayerList)
+	{
+		OnPlayerLeftWorld_Implementation(Element, TargetWorld);
+	}
+}
+
+void UNativeCraftWorld::OnPlayerLeftWorld_Implementation(ACharacter* Instigator, UNativeCraftWorld* TargetWorld)
+{
+	if (TargetWorld == this)
+	{
+		PlayerList.Remove(Instigator);
+		UE_LOG(LogChamingCraftWorld, Warning,
+		       TEXT("[❕] OnPlayerLeftWorldEvent Player: <%s> LeftedWorld: <%s>"
+		       ), *Instigator->GetName(), *TargetWorld->WorldName);
+	}
+}
+
 
 void UNativeCraftWorld::OnPlayerJoinWorld_Implementation(ACharacter* Instigator, UNativeCraftWorld* TargetWorld)
 {
 	if (TargetWorld == this)
 	{
 		PlayerList.Add(Instigator);
-	}
-	else
-	{
-		PlayerList.Remove(Instigator);
+		UE_LOG(LogChamingCraftWorld, Warning,
+		       TEXT("[❕] OnPlayerJoinWorldEvent Player: <%s> JoinedWorld: <%s>"
+		       ), *Instigator->GetName(), *TargetWorld->WorldName);
+		UCoreComponents::GetCameraManager(Instigator)->SwitchPlayerCameraView(Instigator, TargetCameraPerspective);
 	}
 }

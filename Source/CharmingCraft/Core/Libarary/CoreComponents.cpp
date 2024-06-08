@@ -19,3 +19,8 @@ UGameEventHandler* UCoreComponents::GetGameEventHandler(UObject* Context)
 {
 	return GetGameInstance(Context)->GetGameEventHandler();
 }
+
+UCameraManager* UCoreComponents::GetCameraManager(UObject* Context)
+{
+	return GetGameInstance(Context)->GetCameraManager();
+}

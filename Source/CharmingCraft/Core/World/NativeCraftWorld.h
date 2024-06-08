@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "UObject/Object.h"
 #include "NativeCraftWorld.generated.h"
 
@@ -11,8 +12,6 @@
  */
 
 class ACraftWorldWarpPoint;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCraftWorldPrepare);
-
 
 
 UCLASS(Blueprintable, NotBlueprintType)
@@ -25,6 +24,12 @@ public:
 	bool IsLoadInMemory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool IsVisible;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName, FString> CraftWorldMetaData;
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCraftWorldPrepare);
+
 	UPROPERTY(BlueprintAssignable)
 	FOnCraftWorldPrepare OnCraftWorldPrepare;
 
@@ -33,9 +38,14 @@ public:
 	FOnCraftWorldPrepareInternal OnCraftWorldPrepareInternal;
 
 	// The blueprint dynamic Delegate that used for bind UObject 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdate, UNativeCraftWorld *, TargetCraftWorld,ACraftWorldWarpPoint *, TargetCraftWorldWarpPoint);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdate, UNativeCraftWorld *, TargetCraftWorld,
+	                                             ACraftWorldWarpPoint *, TargetCraftWorldWarpPoint);
+
 	UPROPERTY(BlueprintAssignable)
 	FOnWarpDataUpdate OnWarpDataUpdate;
+
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdateInternal, UNativeCraftWorld *, ACraftWorldWarpPoint *);
+	FOnWarpDataUpdateInternal OnWarpDataUpdateInternal;
 
 private:
 	FTimerHandle CraftWorldCheckHandle;
@@ -49,11 +59,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<ULevelStreamingDynamic> GamePlayWorldInstance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TObjectPtr<ACharacter>> PlayerList;
+	TSet<ACharacter*> PlayerList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSuccess = false;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TArray<TObjectPtr<ACraftWorldWarpPoint>> LoadedWarpPoints;
+	TSet<ACraftWorldWarpPoint*> LoadedWarpPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ECameraPerspectiveEnum TargetCameraPerspective = ECameraPerspectiveEnum::INCLINE;
 
 public:
 	UNativeCraftWorld();
@@ -64,23 +76,32 @@ public:
 	FString GetCraftWorldName();
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
-	TArray<ACharacter*> GetCraftWorldPlayers();
+	TSet<ACharacter*> GetCraftWorldPlayers();
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	TSoftObjectPtr<UWorld> GetCraftWorldMapRes();
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
-	TArray<ACraftWorldWarpPoint*> GetLoadedWarpPoints();
+	TSet<ACraftWorldWarpPoint*> GetLoadedWarpPoints();
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	ULevelStreamingDynamic* GetGamePlayWorldInstance();
+	UFUNCTION(BlueprintCallable, BlueprintGetter)
+	ECameraPerspectiveEnum GetTargetCameraPerspective();
+	
+	UFUNCTION(BlueprintCallable)
+	TSet<ACharacter*> AddPlayerToWorldPlayerList(ACharacter * Player);
 
-	/*UFUNCTION(BlueprintCallable)
-	bool CheckCraftWorldStatus();*/
-
-
+	UFUNCTION(BlueprintCallable)
+	TSet<ACharacter*> RemovePlayerFromWorldPlayerList(ACharacter * Player);
 public:
 	// Event
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnPlayerJoinWorld(ACharacter* Instigator, UNativeCraftWorld* TargetWorld);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnPlayerLeftWorld(ACharacter* Instigator, UNativeCraftWorld* TargetWorld);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void OnCraftWorldHidden(UNativeCraftWorld* TargetWorld);
 };
