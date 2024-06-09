@@ -47,10 +47,6 @@ public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdateInternal, UNativeCraftWorld *, ACraftWorldWarpPoint *);
 	FOnWarpDataUpdateInternal OnWarpDataUpdateInternal;
 
-private:
-	FTimerHandle CraftWorldCheckHandle;
-	/*void BroadcastCraftWorldStatus_Internal();*/
-
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString WorldName;
@@ -66,6 +62,9 @@ protected:
 	TSet<ACraftWorldWarpPoint*> LoadedWarpPoints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ECameraPerspectiveEnum TargetCameraPerspective = ECameraPerspectiveEnum::INCLINE;
+	// 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UNativeCraftWorld> AssociateCraftWorld;
 
 public:
 	UNativeCraftWorld();
@@ -80,7 +79,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	TSoftObjectPtr<UWorld> GetCraftWorldMapRes();
-
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	TSet<ACraftWorldWarpPoint*> GetLoadedWarpPoints();
 

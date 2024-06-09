@@ -8,6 +8,7 @@
 #include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"
+#include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
 #include "Components/BoxComponent.h"
 #include "Components/SceneCaptureComponent2D.h"
@@ -142,16 +143,18 @@ public:
 	                            FVector LaunchVelocity)
 	{
 		// TODO: Change the logic and avoid use GetPlayerCharacter
-		FCharmingCraftWorld PlayerCurrentLevel = Cast<UCharmingCraftInstance>(UGameplayStatics::GetGameInstance(Instigator))->GetWorldManager()->GetPlayerCurrentLevel(UGameplayStatics::GetPlayerCharacter(Instigator, 0));
+		ALevelScriptActor* LevelScriptActor = UCoreComponents::GetWorldManager(Instigator)->GetShownWorld()->
+			GetGamePlayWorldInstance()->GetLevelScriptActor();
+
 		// If is not in the test environment that PlayerCurrentLevel is valid
 		TObjectPtr<ADropItem> DropItemEntity;
-		if (PlayerCurrentLevel.GamePlayWorld)
+		if (LevelScriptActor)
 		{
 			DropItemEntity = Cast<ADropItem>(
 				UGameplayStatics::BeginDeferredActorSpawnFromClass(
 					Instigator, ADropItem::StaticClass(),
 					SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined,
-					PlayerCurrentLevel.GamePlayWorld->GetLevelScriptActor()));
+					LevelScriptActor));
 		}
 		// If in the test envitonment that open a level through editor not
 		// form persistence level so that the PlayerCurrentLevel is not handle
@@ -166,7 +169,7 @@ public:
 
 		if (DropItemEntity)
 		{
-			DropItemEntity->Initialize(ItemStack, PlayerCurrentLevel.GamePlayWorld->GetLevelScriptActor());
+			DropItemEntity->Initialize(ItemStack, LevelScriptActor);
 			// 使用FinishSpawningActor将Drop对象放入世界中
 			UGameplayStatics::FinishSpawningActor(DropItemEntity, SpawnTransform);
 			DropItemEntity->InvisibleCollision->AddImpulse(LaunchVelocity, NAME_None, true);

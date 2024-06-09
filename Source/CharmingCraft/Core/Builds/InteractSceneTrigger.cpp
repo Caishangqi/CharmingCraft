@@ -30,6 +30,7 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 		{
 			UCoreComponents::GetWorldManager(this->InteractObject)->TeleportPlayerToWarp(
 				this->InteractObject, DestinationName);
+			
 			if (EnableCameraFade)
 			{
 				UGameplayStatics::GetPlayerCameraManager(InteractObject, 0)->StartCameraFade

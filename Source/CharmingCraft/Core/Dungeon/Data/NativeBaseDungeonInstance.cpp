@@ -2,7 +2,6 @@
 
 
 #include "NativeBaseDungeonInstance.h"
-
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "GameFramework/Character.h"
 
@@ -36,7 +35,7 @@ bool ANativeBaseDungeonInstance::JoinPlayerToDungeon(ACharacter* Player, int32 T
 	if (IsDungeonWorldLoaded(TargetChildDungeon))
 	{
 		// Should Unload Player Current Level
-		FCharmingCraftWorld PlayerCurrentWorld = UCoreComponents::GetWorldManager(Player)->GetPlayerCurrentLevel(Player);
+		
 		//UCoreComponents::GetWorldManager(Player)->Un
 		// Let Player Join Dungeon world
 	}

@@ -16,24 +16,6 @@
 #include "Engine/LevelStreamingDynamic.h"
 #include "Kismet/GameplayStatics.h"
 
-FCharmingCraftWorld UWorldManager::GetPlayerCurrentLevel(ACharacter* PlayerCharacter)
-{
-	FCharmingCraftWorld LevelStreamingDynamicResult;
-	TObjectPtr<UPlayerData> PlayerData = GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.PlayerData;
-	if (GetWorldIsVisible(PlayerData->PlayerLocation.Level))
-	{
-		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[PlayerData->PlayerLocation.Level.LoadSynchronous()->
-		                                                                     GetName()];
-		LevelStreamingDynamicResult.IsSuccess = true;
-	}
-	else if (PlayerData->PlayerSceneLocation.Level)
-	{
-		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[PlayerData->PlayerSceneLocation.Level->GetName()];
-		LevelStreamingDynamicResult.IsSuccess = true;
-	}
-	return LevelStreamingDynamicResult;
-}
-
 UNativeCraftWorld* UWorldManager::GetPlayerCurrentWorld(ACharacter* PlayerCharacter)
 {
 	TObjectPtr<UPlayerData> PlayerData = UCoreComponents::GetGameInstance(PlayerCharacter)->GetRuntimeGameData()->
@@ -47,6 +29,14 @@ UNativeCraftWorld* UWorldManager::GetPlayerCurrentWorld(ACharacter* PlayerCharac
 		       TEXT("[🌍]  玩家不在任何世界中!\n"
 			       "		(❌) 查找是否在加载世界时将玩家添加到 PlayerList 中"));
 	}
+	return CraftWorld;
+}
+
+UNativeCraftWorld* UWorldManager::GetPlayerCurrentRegion(ACharacter* PlayerCharacter)
+{
+	TObjectPtr<UPlayerData> PlayerData = UCoreComponents::GetGameInstance(PlayerCharacter)->GetRuntimeGameData()->
+		RuntimeSave.PlayerData;
+	UNativeCraftWorld* CraftWorld = PlayerData->PlayerLocation.RegionGameWorld;
 	return CraftWorld;
 }
 
@@ -125,10 +115,10 @@ UNativeCraftWorld* UWorldManager::ShownCraftWorld(UNativeCraftWorld* TargetWorld
 		if (Element == TargetWorld)
 		{
 			Element->GetGamePlayWorldInstance()->SetShouldBeVisible(true);
-			//Element->CheckCraftWorldStatus();
 		}
 		else
 		{
+			// Auto matically hiddent the worlds that not the target
 			HiddenCraftWorld(Element);
 		}
 	}
@@ -138,6 +128,7 @@ UNativeCraftWorld* UWorldManager::ShownCraftWorld(UNativeCraftWorld* TargetWorld
 UNativeCraftWorld* UWorldManager::HiddenCraftWorld(UNativeCraftWorld* TargetWorld)
 {
 	TargetWorld->GetGamePlayWorldInstance()->SetShouldBeVisible(false);
+	// broadcast hidden event in Craft worlds.
 	TargetWorld->OnCraftWorldHidden_Implementation(TargetWorld);
 	return TargetWorld;
 }
@@ -180,6 +171,7 @@ UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld_Internal(ACharacter* Pla
 			TObjectPtr<UPlayerData> PlayerData = UCoreComponents::GetGameInstance(PlayerCharacter)->GetRuntimeGameData()
 				->RuntimeSave.PlayerData;
 			PlayerData->PlayerLocation.GameWorld = TargetCraftWorld;
+			PlayerData->PlayerLocation.RegionGameWorld = TargetCraftWorld;
 		}
 	}
 	else
@@ -252,25 +244,6 @@ AWorldEntityManager* UWorldManager::GetWorldEntityManager()
 	return nullptr;
 }
 
-bool UWorldManager::LoadGameLevel(FName LevelName)
-
-{
-	FLatentActionInfo LatentInfo;
-	LatentInfo.CallbackTarget = this;
-	LatentInfo.ExecutionFunction = "OnLevelLoadedCallback";
-	LatentInfo.UUID = 1;
-	LatentInfo.Linkage = 0;
-	if (UGameplayStatics::GetCurrentLevelName(this, true) == "PersistentLevel")
-	{
-		// 异步加载关卡
-		UGameplayStatics::LoadStreamLevel(this, LevelName, true, true, LatentInfo);
-		return false;
-	}
-	UGameplayStatics::OpenLevel(this, FName("L_PersistentLevel"));
-	// 异步加载关卡
-	UGameplayStatics::LoadStreamLevel(this, LevelName, true, true, LatentInfo);
-	return true;
-}
 
 bool UWorldManager::TravelPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
 {
@@ -306,182 +279,6 @@ bool UWorldManager::TravelPlayerToWarp(APawn* PlayerCharacter, const FName WarpP
 	return false;
 }
 
-void UWorldManager::OnLevelLoadedCallback()
-{
-	OnLevelLoaded.Broadcast();
-}
-
-FCharmingCraftWorld UWorldManager::TravelPlayerToWorld(APawn* PlayerCharacter,
-                                                       const TSoftObjectPtr<UWorld> TargetLevel)
-{
-	FCharmingCraftWorld LevelStreamingDynamicResult;
-
-	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
-	{
-		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[TargetLevel->GetName()];
-		LevelStreamingDynamicResult.IsSuccess = TravelPlayerToWarp(PlayerCharacter, "Spawn");
-		if (LevelStreamingDynamicResult.IsSuccess)
-		{
-			UE_LOG(LogChamingCraftWorld, Display,
-			       TEXT("[🌍]  Travel Player to target World: %s"), *TargetLevel.LoadSynchronous()->GetName());
-			GetGameInstance_Implementation()->GetCameraManager()->SwitchPlayerCameraView(
-				PlayerCharacter, ECameraPerspectiveEnum::INCLINE);
-			UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-				1.0f, 0.0f, 2.0f, FColor::Black, false, true);
-			PlayerCharacter->SetActorHiddenInGame(false); // Make Player visible in game
-			GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.PlayerData->PlayerLocation.Level =
-				TargetLevel;
-			GetGameEventHandler_Implementation()->OnPlayerTravelToRegionEvent(
-				PlayerCharacter, TargetLevel.LoadSynchronous());
-		}
-	}
-	// TODO: Unbind the OnShown Delegate prevent multiple trigger
-	return LevelStreamingDynamicResult;
-}
-
-FCharmingCraftWorld UWorldManager::TravelPlayerToScene(APawn* PlayerCharacter,
-                                                       const TSoftObjectPtr<UWorld> TargetScene,
-                                                       FName WarpPoint, bool ResetSceneData)
-{
-	FCharmingCraftWorld LevelStreamingDynamicResult;
-	if (LoadedWorlds.Contains(TargetScene.LoadSynchronous()->GetName()))
-	{
-		LevelStreamingDynamicResult.GamePlayWorld = LoadedWorlds[TargetScene->GetName()];
-		LevelStreamingDynamicResult.IsSuccess = LevelStreamingDynamicResult.IsSuccess = TravelPlayerToWarp(
-			PlayerCharacter, WarpPoint);
-		if (LevelStreamingDynamicResult.IsSuccess)
-		{
-			TObjectPtr<UPlayerData> PlayerData = GetGameInstance_Implementation()->GetRuntimeGameData()->RuntimeSave.
-				PlayerData;
-			UE_LOG(LogChamingCraftWorld, Display,
-			       TEXT("[🌍]  Travel Player to target Scene: %s"), *TargetScene.LoadSynchronous()->GetName());
-			if (ResetSceneData)
-			{
-				PlayerData->PlayerSceneLocation.Level = nullptr;
-			}
-			else
-			{
-				PlayerData->PlayerSceneLocation.Level = TargetScene;
-			}
-		}
-	}
-	return LevelStreamingDynamicResult;
-}
-
-
-FCharmingCraftWorld UWorldManager::LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
-                                                     bool UnloadRemainWorld)
-{
-	FCharmingCraftWorld LevelStreamingDynamicResult;
-
-	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetMapName()))
-	{
-		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()];
-		LevelStreamingDynamic->SetShouldBeVisible(true);
-		LevelStreamingDynamicResult.IsSuccess = true;
-		LevelStreamingDynamicResult.GamePlayWorld = LevelStreamingDynamic;
-		GetGameEventHandler_Implementation()->OnLoadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
-		if (UnloadRemainWorld)
-		{
-			UnloadAllWorldInstance(TargetLevel);
-		}
-		return LevelStreamingDynamicResult;
-	}
-
-	bool IsSuccess;
-	ULevelStreamingDynamic* LevelStreamingDynamic = ULevelStreamingDynamic::LoadLevelInstanceBySoftObjectPtr(
-		this, TargetLevel, FVector(0, 0, 0), FRotator(0, 0, 0), IsSuccess);
-	if (LevelStreamingDynamic != nullptr)
-	{
-		LevelStreamingDynamic->OnLevelLoaded.AddUniqueDynamic(this, &UWorldManager::OnLevelLoadedCallback);
-	}
-	if (IsSuccess)
-	{
-		LoadedWorlds.Add(TargetLevel.LoadSynchronous()->GetName(), LevelStreamingDynamic);
-		LevelStreamingDynamicResult.GamePlayWorld = LevelStreamingDynamic;
-		LevelStreamingDynamicResult.IsSuccess = true;
-		GetGameEventHandler_Implementation()->OnLoadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
-		if (UnloadRemainWorld)
-		{
-			UnloadAllWorldInstance(TargetLevel);
-		}
-		return LevelStreamingDynamicResult;
-	}
-	return LevelStreamingDynamicResult;
-}
-
-bool UWorldManager::UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel)
-{
-	if (WhiteListLevel)
-	{
-		for (auto Element : LoadedWorlds)
-		{
-			if (Element.Key != WhiteListLevel.LoadSynchronous()->GetName())
-			{
-				Element.Value->SetShouldBeVisible(false);
-			}
-		}
-		return true;
-	}
-	else
-	{
-		for (auto Element : LoadedWorlds)
-		{
-			Element.Value->SetShouldBeVisible(false);
-		}
-		return false;
-	}
-}
-
-FCharmingCraftWorld UWorldManager::UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
-{
-	FCharmingCraftWorld LevelStreamingDynamicResult;
-	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
-	{
-		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()];
-		LevelStreamingDynamic->SetShouldBeVisible(false);
-		LevelStreamingDynamicResult.GamePlayWorld = LevelStreamingDynamic;
-		LevelStreamingDynamicResult.IsSuccess = true;
-		GetGameEventHandler_Implementation()->OnUnloadGameLevelStartEvent(this, TargetLevel.LoadSynchronous());
-		return LevelStreamingDynamicResult;
-	}
-	return LevelStreamingDynamicResult;
-}
-
-FCharmingCraftWorld UWorldManager::UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel)
-{
-	FCharmingCraftWorld LevelStreamingDynamicResult;
-	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
-	{
-		ULevelStreamingDynamic* LevelStreamingDynamic = LoadedWorlds[TargetLevel->GetName()];
-		LevelStreamingDynamic->SetShouldBeVisible(false);
-		LevelStreamingDynamic->SetShouldBeLoaded(false);
-		LevelStreamingDynamicResult.GamePlayWorld = nullptr;
-		LevelStreamingDynamicResult.IsSuccess = true;
-		return LevelStreamingDynamicResult;
-	}
-	return LevelStreamingDynamicResult;
-}
-
-bool UWorldManager::GetWorldIsVisible(const TSoftObjectPtr<UWorld> TargetLevel)
-{
-	if (LoadedWorlds.Contains(TargetLevel.LoadSynchronous()->GetName()))
-	{
-		return LoadedWorlds[TargetLevel.LoadSynchronous()->GetName()]->ShouldBeVisible();
-	}
-	return false;
-}
-
-
-bool UWorldManager::UnloadWorldChunk(UObject* Instigator, ALandChunk* TargetChunk)
-{
-	UE_LOG(LogChamingCraftWorld, Warning,
-	       TEXT("[🌍]  Unloading Chunks form world\n"
-		       "		[I] Instigator: %s\n"
-		       "		[C] Target Chunk: %s"), *Instigator->GetName(), *TargetChunk->GetName());
-	GetGameEventHandler()->OnUnloadWorldChunkEvent(Instigator, TargetChunk);
-	return true; // 12
-}
 
 UCharmingCraftInstance* UWorldManager::GetGameInstance_Implementation()
 {

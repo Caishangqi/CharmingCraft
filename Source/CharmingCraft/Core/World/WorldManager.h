@@ -47,37 +47,41 @@ class CHARMINGCRAFT_API UWorldManager : public UObject, public ICoreManagerInter
 	GENERATED_BODY()
 
 public:
-	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
-	// 委托事件，用于在关卡加载完毕后通知
-	FOnLevelLoadedDelegate OnLevelLoaded;
-
-	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	TMap<FString, ULevelStreamingDynamic*> LoadedWorlds;
-
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TArray<TObjectPtr<UNativeCraftWorld>> Worlds;
 
 	/*!
-	 * Return playerr current level, this is different from GetWorld()
-	 * double check with LoadedWorlds and game runtime data
+	 * Get Player Current CraftWorld instance player joined, this world
+	 * is exactly the player current joined and the world's player list
+	 * should have the target player.
 	 * @param PlayerCharacter 
-	 * @return FLevelStreamingDynamicResult
+	 * @return PlayerCurrent CraftWorlds instance
 	 */
-	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
-	UFUNCTION(BlueprintCallable)
-	FCharmingCraftWorld GetPlayerCurrentLevel(ACharacter* PlayerCharacter);
-
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* GetPlayerCurrentWorld(ACharacter* PlayerCharacter);
+	/*!
+	 * Get Player Current Region, this is different with GetPlayerCurrentWorld, player current
+	 * world could be any world but region world can not be scene and dungeon "instance" world
+	 * @param PlayerCharacter 
+	 * @return PlayerCurrentRegion CraftWorlds
+	 */
+	UFUNCTION(BlueprintCallable)
+	UNativeCraftWorld* GetPlayerCurrentRegion(ACharacter* PlayerCharacter);
 
+	UNativeCraftWorld* TeleportPlayerToWorld_Internal(ACharacter* PlayerCharacter, FString WorldName,
+	                                                  UNativeCraftWorld* TargetWorld = nullptr);
+	
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* GetWorldByWorldName(FString SearchWorldName);
 
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* LoadCraftWorldInMemory(TSubclassOf<UNativeCraftWorld> TargetWorld);
-	// Get the CraftWorld that currently display to player
-	// Note: Only 1 World could display !
+	/*!
+	 *	Get the CraftWorld that currently display to player
+	 *	Note: Only 1 World could display ! The method would
+	 *	automatically Hidden other worlds and brodcast player
+	 *	left world event
+	 */
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* GetShownWorld();
 
@@ -96,8 +100,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	UNativeCraftWorld* HiddenCraftWorld(UNativeCraftWorld* TargetWorld);
 
-	UNativeCraftWorld* TeleportPlayerToWorld_Internal(ACharacter* PlayerCharacter, FString WorldName,
-	                                                  UNativeCraftWorld* TargetWorld = nullptr);
 
 	UFUNCTION(BlueprintCallable)
 	bool TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);
@@ -118,10 +120,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	AWorldEntityManager* GetWorldEntityManager();
 
-	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
-	UFUNCTION(BlueprintCallable)
-	bool LoadGameLevel(FName LevelName);
-
 	/*!
 	 * Teleport player to specific Warp of ACraftWorldWarpPoint
 	 * please check the level is loaded and visible before teleport
@@ -131,67 +129,6 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable)
 	bool TravelPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint);
-
-	// 加载完成的回调函数
-	UFUNCTION(BlueprintCallable)
-	void OnLevelLoadedCallback();
-	/*!
-	 * Travel player to another world, this method is different from
-	 * warp, warp generally used in scene change, for example, player
-	 * enter a room. please ensure you load or set loaded level,
-	 * visible before teleport, or it will not work
-	 * @param PlayerCharacter
-	 * @param TargetLevel 
-	 * @return FLevelStreamingDynamicResult
-	 */
-	UFUNCTION(BlueprintCallable)
-	FCharmingCraftWorld TravelPlayerToWorld(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetLevel);
-
-	/*!
-	 * Travel player to another scene, use in scene travel of building,
-	 * it will save the scene information in GameRuntime Data, and the
-	 * data will retrived by GetPlayerCurrentLevel
-	 *
-	 * @see GetPlayerCurrentLevel()
-	 *
-	 * @param PlayerCharacter 
-	 * @param TargetScene 
-	 * @param WarpPoint 
-	 * @param ResetSceneData If reset the scene data, it will clear the GameRuntime Data and
-	 * set the PlayerSceneLocation to null after teleport player to warp point
-	 * @return 
-	 */
-	UFUNCTION(BlueprintCallable)
-	FCharmingCraftWorld TravelPlayerToScene(APawn* PlayerCharacter, const TSoftObjectPtr<UWorld> TargetScene,
-	                                        FName WarpPoint, bool ResetSceneData = true);
-
-
-	UFUNCTION(BlueprintCallable)
-	FCharmingCraftWorld LoadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel,
-	                                      bool UnloadRemainWorld = false);
-	UFUNCTION(BlueprintCallable)
-	bool UnloadAllWorldInstance(const TSoftObjectPtr<UWorld> WhiteListLevel = nullptr);
-	UFUNCTION(BlueprintCallable)
-	FCharmingCraftWorld UnloadWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
-	UFUNCTION(BlueprintCallable)
-	FCharmingCraftWorld UnloadAndRemoveWorldInstance(const TSoftObjectPtr<UWorld> TargetLevel);
-
-	/*!
-	 * Check whether target world is loaded and visible
-	 * @param TargetLevel Target Level you want to check
-	 * @return 
-	 */
-	UFUNCTION(BlueprintCallable)
-	bool GetWorldIsVisible(const TSoftObjectPtr<UWorld> TargetLevel);
-
-
-	/*!
-	 * @param Instigator The instigator that unload the chunk
-	 * @param TargetChunk The specific chunk you want to unload
-	 * @return whether unload chunk success
-	 */
-	UFUNCTION(BlueprintCallable)
-	bool UnloadWorldChunk(UObject* Instigator, ALandChunk* TargetChunk);
 
 public:
 	// Interface

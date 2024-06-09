@@ -9,8 +9,7 @@ struct FPlayerLocation
 	GENERATED_BODY()
 
 public:
-	FPlayerLocation(): PlayerRotation(0, 0, 0), PlayerLocation(0, 0, 0), LevelName("WorldSpawn"), bIsSpawnPoint(true),
-	                   Level(nullptr)
+	FPlayerLocation(): PlayerRotation(0, 0, 0), PlayerLocation(0, 0, 0), LevelName("WorldSpawn"), bIsSpawnPoint(true)
 	{
 	}
 
@@ -24,11 +23,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "SpawnData")
 	bool bIsSpawnPoint;
 
-	// Runtime
-	UE_DEPRECATED(5.3, "The WorldManager has been refactory, please use new API")
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Level Runtime Data")
-	TSoftObjectPtr<UWorld> Level;
-
+	// Runtime GameWorld 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Level Runtime Data")
 	TObjectPtr<UNativeCraftWorld> GameWorld;
+	// Runtime RegionWorld
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Level Runtime Data")
+	TObjectPtr<UNativeCraftWorld> RegionGameWorld;
 };

@@ -26,8 +26,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
 	FPlayerLocation PlayerLocation;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
-	FPlayerLocation PlayerSceneLocation;
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PlayerInformation")
 	TArray<FString> PlayerInventoryItems;
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "AttributeComponentData")
 	FString AttributeComponentData;
