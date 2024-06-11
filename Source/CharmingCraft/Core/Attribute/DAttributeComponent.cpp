@@ -43,6 +43,7 @@ UDAttributeComponent::UDAttributeComponent()
 void UDAttributeComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	if (!OnAttributeChange.IsBound())
 	{
 		OnAttributeChange.AddDynamic(this, &UDAttributeComponent::ApplyAttributeChange);
@@ -53,7 +54,12 @@ void UDAttributeComponent::BeginPlay()
 		// Apply DamageChain
 		DamageChain = NewObject<UDamageChain>(this, "DamageChain")->InitializeChain();
 	}
-	GameInstance->GamePlayLogicManager->OnPlayerJoin.AddDynamic(this, &UDAttributeComponent::OnPlayerJoin);
+
+	if (!GameInstance->GamePlayLogicManager->OnPlayerJoin.IsBound())
+	{
+		GameInstance->GamePlayLogicManager->OnPlayerJoin.AddDynamic(this, &UDAttributeComponent::OnPlayerJoin);
+	}
+	
 }
 
 

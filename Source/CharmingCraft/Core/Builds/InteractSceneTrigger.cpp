@@ -25,33 +25,21 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 		//UE_LOG(LogChamingCraftWorld, Error, TEXT("AInteractSceneTrigger::Interact_Implementation"))
 		TObjectPtr<UNativeCraftWorld> CraftWorld = UCoreComponents::GetWorldManager(this)->LoadCraftWorldInMemory(
 			TargetCraftWorld);
+		if (EnableCameraFade)
+		{
+			UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
+				1.0f, 1.0f, 0.2f, FColor::Black, false, true);
+		}
 		// TODO: Find why CraftWorld->OnWarpDataUpdate.AddDynamic not invoke
 		CraftWorld->OnWarpDataUpdateInternal.AddLambda([this,CraftWorld](UNativeCraftWorld*, ACraftWorldWarpPoint*)
 		{
 			UCoreComponents::GetWorldManager(this->InteractObject)->TeleportPlayerToWarp(
 				this->InteractObject, DestinationName);
-			
-			if (EnableCameraFade)
-			{
-				UGameplayStatics::GetPlayerCameraManager(InteractObject, 0)->StartCameraFade
-				(0.8f, 0.0f, 2.0f, FColor::Black, false,
-				 true);
-			}
 			CraftWorld->OnWarpDataUpdateInternal.Clear();
 			CraftWorld->OnWarpDataUpdate.Clear();
 		});
-
-		//CraftWorld->OnWarpDataUpdate.AddDynamic(this, &AInteractSceneTrigger::OnCraftWorldWarpLoaded);
-
 		UCoreComponents::GetWorldManager(this)->ShownCraftWorld(CraftWorld);
 		CraftWorld->AddPlayerToWorldPlayerList(static_cast<ACharacter*>(InteractObject));
-
-		if (EnableCameraFade)
-		{
-			UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade
-			(0.5f, 1.0f, 1.0f, FColor::Black, false,
-			 true);
-		}
 	}
 	else
 	{

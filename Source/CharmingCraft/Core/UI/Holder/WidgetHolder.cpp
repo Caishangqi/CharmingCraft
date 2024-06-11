@@ -29,28 +29,19 @@ void UWidgetHolder::OnCloseWidgetEvent_Implementation(UObject* Instigator, UUser
 
 bool UWidgetHolder::RemoveWidget_Implementation()
 {
-	bool bIsRemoveLeastOne = false;
-	TArray<UUserWidget*> WidgetsToRemove;
-
-	for (auto UserWidget : UserWidgetEventHandler->LoadedUserWidget)
+	try
 	{
-		if (this == UserWidget)
-		{
-			// Broadcase the event from game event handler
-			GameInstance->GetGameEventHandler()->OnCloseWidgetEvent(UserWidgetEventHandler, this);
-			WidgetsToRemove.Add(this);
-			UE_LOG(LogChamingCraftWidgetHandler, Display,
-			       TEXT("[❌]  Remove Widget <%s> from Widget Event Handler(Holder)"), *this->GetName());
-			bIsRemoveLeastOne = true;
-		}
+		// Broadcase the event from game event handler
+		GameInstance->GetGameEventHandler()->OnCloseWidgetEvent(UserWidgetEventHandler, this);
+		UE_LOG(LogChamingCraftWidgetHandler, Display,
+		       TEXT("[❌]  Remove Widget <%s> from Widget Event Handler(Holder)"), *this->GetName());
+		UserWidgetEventHandler->LoadedUserWidget.Remove(this);
 	}
-
-	for (auto& Widget : WidgetsToRemove)
+	catch (...)
 	{
-		UserWidgetEventHandler->LoadedUserWidget.Remove(Widget);
+		return false;
 	}
-
-	return bIsRemoveLeastOne;
+	return true;
 }
 
 

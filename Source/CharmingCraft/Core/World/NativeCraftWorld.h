@@ -86,12 +86,13 @@ public:
 	ULevelStreamingDynamic* GetGamePlayWorldInstance();
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	ECameraPerspectiveEnum GetTargetCameraPerspective();
-	
-	UFUNCTION(BlueprintCallable)
-	TSet<ACharacter*> AddPlayerToWorldPlayerList(ACharacter * Player);
 
 	UFUNCTION(BlueprintCallable)
-	TSet<ACharacter*> RemovePlayerFromWorldPlayerList(ACharacter * Player);
+	TSet<ACharacter*> AddPlayerToWorldPlayerList(ACharacter* Player);
+
+	UFUNCTION(BlueprintCallable)
+	TSet<ACharacter*> RemovePlayerFromWorldPlayerList(ACharacter* Player);
+
 public:
 	// Event
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -102,4 +103,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void OnCraftWorldHidden(UNativeCraftWorld* TargetWorld);
+
+private:
+	TSet<ACharacter*> PendingRemovePlayerList;
 };

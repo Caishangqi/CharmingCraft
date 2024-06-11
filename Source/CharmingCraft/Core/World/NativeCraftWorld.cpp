@@ -7,6 +7,7 @@
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "Engine/LevelStreamingDynamic.h"
+#include "Kismet/GameplayStatics.h"
 
 
 UNativeCraftWorld::UNativeCraftWorld(): IsLoadInMemory(false), IsVisible(false)
@@ -94,16 +95,22 @@ void UNativeCraftWorld::OnCraftWorldHidden_Implementation(UNativeCraftWorld* Tar
 	{
 		OnPlayerLeftWorld_Implementation(Element, TargetWorld);
 	}
+	PlayerList.Empty();
 }
 
 void UNativeCraftWorld::OnPlayerLeftWorld_Implementation(ACharacter* Instigator, UNativeCraftWorld* TargetWorld)
 {
 	if (TargetWorld == this)
 	{
-		PlayerList.Remove(Instigator);
 		UE_LOG(LogChamingCraftWorld, Warning,
 		       TEXT("[❕] OnPlayerLeftWorldEvent Player: <%s> LeftedWorld: <%s>"
 		       ), *Instigator->GetName(), *TargetWorld->WorldName);
+
+		UGameplayStatics::GetPlayerCameraManager(Instigator, 0)->StartCameraFade
+		(0.1f, 1.0f, 0.1f, FColor::Black, false,
+		 true);
+
+		// TODO: Shoud use event to Trigger player state: such as invisible/ hidden in game
 	}
 }
 
@@ -117,5 +124,12 @@ void UNativeCraftWorld::OnPlayerJoinWorld_Implementation(ACharacter* Instigator,
 		       TEXT("[❕] OnPlayerJoinWorldEvent Player: <%s> JoinedWorld: <%s>"
 		       ), *Instigator->GetName(), *TargetWorld->WorldName);
 		UCoreComponents::GetCameraManager(Instigator)->SwitchPlayerCameraView(Instigator, TargetCameraPerspective);
+		FTimerHandle EffectTimer;
+		Instigator->GetWorld()->GetTimerManager().SetTimer(EffectTimer, [this,Instigator]
+		{
+			UGameplayStatics::GetPlayerCameraManager(Instigator, 0)->StartCameraFade
+			(1.0f, 0.0f, 1.0f, FColor::Black, false,
+			 true);
+		}, 0.5f, false);
 	}
 }

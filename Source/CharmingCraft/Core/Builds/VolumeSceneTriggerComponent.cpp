@@ -50,16 +50,17 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 		OverlappedActor = Cast<APawn>(OtherActor);
 		if (bIsASceneTravel)
 		{
-			TObjectPtr<UNativeCraftWorld> CraftWorld = UCoreComponents::GetWorldManager(this)->LoadCraftWorldInMemory(
-				TargetCraftWorld);
-			CraftWorld->OnWarpDataUpdate.AddDynamic(this, &UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded);
-			UCoreComponents::GetWorldManager(this)->ShownCraftWorld(CraftWorld);
-			CraftWorld->AddPlayerToWorldPlayerList(static_cast<ACharacter*>(OverlappedActor));
 			if (EnableCameraFade)
 			{
 				UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(
-					0.1f, 1.0f, 0.5f, FColor::Black, false, true);
+					1.0f, 1.0f, 1.0f, FColor::Black, false, true);
 			}
+			TObjectPtr<UNativeCraftWorld> CraftWorld = UCoreComponents::GetWorldManager(this)->
+				LoadCraftWorldInMemory(
+					TargetCraftWorld);
+			CraftWorld->OnWarpDataUpdate.AddDynamic(this, &UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded);
+			UCoreComponents::GetWorldManager(this)->ShownCraftWorld(CraftWorld);
+			CraftWorld->AddPlayerToWorldPlayerList(static_cast<ACharacter*>(OverlappedActor));
 		}
 		else
 		{
@@ -75,12 +76,6 @@ void UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded(UNativeCraftWorld* Cra
 	{
 		UCoreComponents::GetWorldManager(TargetCraftWorldWarpPoint)->TeleportPlayerToWarp(
 			OverlappedActor, DestinationName);
-		if (EnableCameraFade)
-		{
-			UGameplayStatics::GetPlayerCameraManager(OverlappedActor, 0)->
-				StartCameraFade(
-					1.0f, 0.0f, 1.0f, FColor::Black);
-		}
 	}
 	CraftWorld->OnWarpDataUpdateInternal.Clear();
 	CraftWorld->OnWarpDataUpdate.Clear();

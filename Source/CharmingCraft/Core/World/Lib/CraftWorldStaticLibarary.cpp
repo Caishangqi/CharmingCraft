@@ -13,7 +13,6 @@ UNativeCraftWorld* UCraftWorldStaticLibarary::TeleportPlayerToWorld(ACharacter* 
 	{
 		GetWorldHandler(PlayerCharacter)->TeleportPlayerToWorld_Internal(PlayerCharacter, WorldName, TargetWorld);
 		TargetWorld->OnCraftWorldPrepareInternal.Clear();
-		UGameplayStatics::GetPlayerCameraManager(PlayerCharacter, 0)->StopCameraFade();
 		PlayerCharacter->SetActorHiddenInGame(false);
 	});
 	GetWorldHandler(PlayerCharacter)->ShownCraftWorld(TargetWorld);
