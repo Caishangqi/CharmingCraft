@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "NativeCraftWorld.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
@@ -105,10 +104,6 @@ void UNativeCraftWorld::OnPlayerLeftWorld_Implementation(ACharacter* Instigator,
 		UE_LOG(LogChamingCraftWorld, Warning,
 		       TEXT("[❕] OnPlayerLeftWorldEvent Player: <%s> LeftedWorld: <%s>"
 		       ), *Instigator->GetName(), *TargetWorld->WorldName);
-
-		UGameplayStatics::GetPlayerCameraManager(Instigator, 0)->StartCameraFade
-		(0.1f, 1.0f, 0.1f, FColor::Black, false,
-		 true);
 
 		// TODO: Shoud use event to Trigger player state: such as invisible/ hidden in game
 	}

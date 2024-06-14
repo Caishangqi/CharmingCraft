@@ -1,16 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "UObject/Object.h"
 #include "NativeCraftWorld.generated.h"
-
 /**
  * 
  */
-
 class ACraftWorldWarpPoint;
 
 

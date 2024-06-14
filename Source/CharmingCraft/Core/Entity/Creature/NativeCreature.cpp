@@ -100,7 +100,7 @@ bool ANativeCreature::IsDead_Implementation()
 
 void ANativeCreature::LootFromObject_Implementation(UObject* InstigatorObject)
 {
-	if (DropLoot)
+	if (DropLoot && DropTableData != nullptr)
 	{
 		TArray<UItemStack*> LootItemStackList = UResourceGenerateLibrary::GenerateDropItemFromDropData(
 			this->GetWorld(), DropTableData.GetDefaultObject());

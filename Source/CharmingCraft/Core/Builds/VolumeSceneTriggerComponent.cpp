@@ -74,11 +74,16 @@ void UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded(UNativeCraftWorld* Cra
 {
 	if (OverlappedActor)
 	{
-		UCoreComponents::GetWorldManager(TargetCraftWorldWarpPoint)->TeleportPlayerToWarp(
+		if (TargetCraftWorldWarpPoint->TargetName == DestinationName)
+		{
+			UCoreComponents::GetWorldManager(TargetCraftWorldWarpPoint)->TeleportPlayerToWarp(
 			OverlappedActor, DestinationName);
+			CraftWorld->OnWarpDataUpdateInternal.Clear();
+			CraftWorld->OnWarpDataUpdate.Clear();
+		}
+		
 	}
-	CraftWorld->OnWarpDataUpdateInternal.Clear();
-	CraftWorld->OnWarpDataUpdate.Clear();
+	
 }
 
 
