@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/CraftComponent/Interface/ComponentizedObjectInterface.h"
 #include "CharmingCraft/Core/Save/Data/PersistentDataContainer.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
 #include "Components/ActorComponent.h"
@@ -10,11 +11,12 @@
 #include "ItemStack.generated.h"
 
 
+class UNativeCraftComponent;
 class UItem;
 class UItemMeta;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class CHARMINGCRAFT_API UItemStack : public UPersistentDataContainer
+class CHARMINGCRAFT_API UItemStack : public UPersistentDataContainer, public IComponentizedObjectInterface
 {
 	GENERATED_BODY()
 
@@ -31,6 +33,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "ItemStack Fields")
 	UItemMeta* ItemMeta;
 
+	UPROPERTY()
+	TArray<UNativeCraftComponent*> Components;
+
+	virtual UNativeCraftComponent* AddComponents_Implementation(UNativeCraftComponent* AddedComponents) override;
+	virtual bool RemoveComponents_Implementation(UNativeCraftComponent* RemovededComponents) override;
+	virtual TArray<UNativeCraftComponent*> GetObjectComponentsByClass_Implementation(TSubclassOf<UNativeCraftComponent> ComponentsClass) override;
+	virtual TArray<UNativeCraftComponent*> GetObjectComponents_Implementation() override;
+	
 protected:
 
 

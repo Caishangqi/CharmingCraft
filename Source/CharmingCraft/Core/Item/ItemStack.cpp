@@ -45,6 +45,41 @@ UObject* UItemStack::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 	return NewInstance;
 }
 
+UNativeCraftComponent* UItemStack::AddComponents_Implementation(UNativeCraftComponent* AddedComponents)
+{
+	Components.Add(AddedComponents);
+	return AddedComponents;
+}
+
+bool UItemStack::RemoveComponents_Implementation(UNativeCraftComponent* RemovededComponents)
+{
+	if (Components.Remove(RemovededComponents))
+	{
+		return true;
+	}
+	return false;
+}
+
+TArray<UNativeCraftComponent*> UItemStack::GetObjectComponentsByClass_Implementation(
+	TSubclassOf<UNativeCraftComponent> ComponentsClass)
+{
+	TArray<UNativeCraftComponent*> ResultComponentsArray;
+	ResultComponentsArray.SetNum(3); //Pre allocate space
+	for (auto Element : Components)
+	{
+		if (Element->IsA(ComponentsClass))
+		{
+			ResultComponentsArray.Add(Element);
+		}
+	}
+	return ResultComponentsArray;
+}
+
+TArray<UNativeCraftComponent*> UItemStack::GetObjectComponents_Implementation()
+{
+	return Components;
+}
+
 UItemStack* UItemStack::CopyData()
 {
 	UItemStack* NewInstance = NewObject<UItemStack>();

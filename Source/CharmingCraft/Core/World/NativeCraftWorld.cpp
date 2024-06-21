@@ -11,6 +11,7 @@
 
 UNativeCraftWorld::UNativeCraftWorld(): IsLoadInMemory(false), IsVisible(false)
 {
+	
 }
 
 bool UNativeCraftWorld::InitializeWorldInstance()
@@ -26,7 +27,6 @@ bool UNativeCraftWorld::InitializeWorldInstance()
 	GamePlayWorldInstance = ULevelStreamingDynamic::LoadLevelInstanceBySoftObjectPtr(
 		this->GetOuter(), WorldMap, FVector(0, 0, 0), FRotator(0, 0, 0), IsSuccessLoadWorldInstance);
 	GamePlayWorldInstance->bInitiallyVisible = false;
-	//GamePlayWorldInstance->SetShouldBeVisible(false);
 	UE_LOG(LogChamingCraftWorld, Warning, TEXT("		States: %hhd"), IsSuccess);
 	return IsSuccessLoadWorldInstance;
 }

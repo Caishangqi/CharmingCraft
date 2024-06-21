@@ -24,6 +24,9 @@ UBow::UBow()
 		DefaultItemEntityActorClass = ActorBlueprint.Object->GeneratedClass;
 		// 然后你可以使用ActorClass来在游戏世界中创建这个Actor的实例
 	}
+
+	// @TODO: 这里添加物品默认技能可以一个个把新的物品技能组件放上去
+	
 	// Default ItemDynamicSkill
 	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemDynamicSkillFinder(
 		TEXT(

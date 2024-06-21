@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "VolumeSceneTriggerComponent.h"
-#include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "../Core/Interact/NativeInteractActor.h"
 #include "InteractSceneTrigger.generated.h"
 
