@@ -3,7 +3,7 @@
 
 #include "../Core/Skill/Actions/NativeAction.h"
 
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "CharmingCraft/Core/Skill/Actions/ActionActor/BaseActionActor.h"
 
 void UNativeAction::StartAction_Implementation(APawn* Instigator)
@@ -11,7 +11,7 @@ void UNativeAction::StartAction_Implementation(APawn* Instigator)
 	UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));
 	StartCoolDown();
 	// Find the ActionComponent we belong to, and apply the tag to that
-	UDActionComponent* Comp = GetOwningComponent(Instigator);
+	UCraftActionComponent* Comp = GetOwningComponent(Instigator);
 	Comp->ActiveGamePlayTags.AppendTags(GrantsTags);
 	CachedInstigator = Instigator;
 	bIsRunning = true;
@@ -19,7 +19,7 @@ void UNativeAction::StartAction_Implementation(APawn* Instigator)
 
 void UNativeAction::StopAction_Implementation(APawn* Instigator)
 {
-	UDActionComponent* Comp = GetOwningComponent(Instigator);
+	UCraftActionComponent* Comp = GetOwningComponent(Instigator);
 	Comp->ActiveGamePlayTags.RemoveTags(GrantsTags);
 	bIsRunning = false;
 }
@@ -31,7 +31,7 @@ bool UNativeAction::CanStart_Implementation(APawn* Instigator)
 		return false;
 	}
 
-	const UDActionComponent* Comp = GetOwningComponent(Instigator);
+	const UCraftActionComponent* Comp = GetOwningComponent(Instigator);
 	/* 如果在激活的标签中发现应该禁止的, 则禁止不能启动该动作。 */
 	if (Comp->ActiveGamePlayTags.HasAny(BlockedTags))
 	{
@@ -56,11 +56,11 @@ UWorld* UNativeAction::GetWorld() const
 }
 
 
-UDActionComponent* UNativeAction::GetOwningComponent(APawn* Owner) const
+UCraftActionComponent* UNativeAction::GetOwningComponent(APawn* Owner) const
 {
-	if (Cast<UDActionComponent>(GetOuter()))
+	if (Cast<UCraftActionComponent>(GetOuter()))
 	{
-		return Cast<UDActionComponent>(GetOuter());
+		return Cast<UCraftActionComponent>(GetOuter());
 	}
 	else if (Handler)
 	{
@@ -68,7 +68,7 @@ UDActionComponent* UNativeAction::GetOwningComponent(APawn* Owner) const
 	}
 	else
 	{
-		return Cast<UDActionComponent>(Owner->GetComponentByClass(UDActionComponent::StaticClass()));
+		return Cast<UCraftActionComponent>(Owner->GetComponentByClass(UCraftActionComponent::StaticClass()));
 	}
 }
 
@@ -109,6 +109,13 @@ void UNativeAction::SetIsSelected(bool RHS_IsSelected)
 	this->bIsSelected = RHS_IsSelected;
 }
 
+bool UNativeAction::SetUpAttachment_Implementation(UObject* RHS_ParentObject)
+{
+	AttachedParentObject = RHS_ParentObject;
+	return true;
+}
+
+
 // 吴昕,你这么写就是对自己最大的不负责
 FHitData UNativeAction::GetActionHitData_Implementation()
 {
@@ -116,6 +123,7 @@ FHitData UNativeAction::GetActionHitData_Implementation()
 	FHitData HitData;
 	return HitData;
 }
+
 // 吴昕,你这么写就是对自己最大的不负责
 FActionActorData UNativeAction::GetActionActorData_Implementation()
 {

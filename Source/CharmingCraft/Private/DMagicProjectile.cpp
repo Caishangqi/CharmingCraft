@@ -6,7 +6,7 @@
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Buff/Lib/BuffLibrary.h"
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -63,8 +63,8 @@ void ADMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent,
 		 * 在这个方法中,我们可以暴露ParryTag,从而在编辑器中
 		 * 编辑和操作
 		 */
-		UDActionComponent* ActionComp = Cast<UDActionComponent>(
-			OtherActor->GetComponentByClass(UDActionComponent::StaticClass()));
+		UCraftActionComponent* ActionComp = Cast<UCraftActionComponent>(
+			OtherActor->GetComponentByClass(UCraftActionComponent::StaticClass()));
 
 		UBuffHandlerComponent* BuffHandlerComponent = Cast<UBuffHandlerComponent>(
 			OtherActor->GetComponentByClass(UBuffHandlerComponent::StaticClass()));

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DActionComponent.h"
+#include "CraftActionComponent.h"
 #include "../Core/Skill/Actions/NativeAction.h"
 #include "../Core/Entity/Player/NativePlayerCharacter.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
@@ -11,21 +11,21 @@
 #include "CharmingCraft/Core/CraftComponent/ItemComponent/ItemActionComponent.h"
 
 // Sets default values for this component's properties
-UDActionComponent::UDActionComponent()
+UCraftActionComponent::UCraftActionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	UE_LOG(LogChamingCraftItem, Display, TEXT("(+) UDActionComponent::UDActionComponent()"));
+	UE_LOG(LogChamingCraftItem, Display, TEXT("(+) UCraftActionComponent::UCraftActionComponent()"));
 
 	// ...
 }
 
 
 // Called when the game starts
-void UDActionComponent::BeginPlay()
+void UCraftActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	/* 把从编辑器设置的 DefaultActions 中的内容添加到 Actions中
-	 * @see UDActionComponent.Actions 内容
+	 * @see UCraftActionComponent.Actions 内容
 	 */
 	for (TSubclassOf<UNativeAction> ActionClass : DefaultActions)
 	{
@@ -43,10 +43,10 @@ void UDActionComponent::BeginPlay()
 	if (!GetGameEventHandler_Implementation()->OnActorOnEquipment.IsBound())
 	{
 		GetGameEventHandler_Implementation()->OnActorOnEquipment.AddDynamic(
-			this, &UDActionComponent::OnActorOnEquipmentEvent);
+			this, &UCraftActionComponent::OnActorOnEquipmentEvent);
 
 		GetGameEventHandler_Implementation()->OnActorUnEquipment.AddDynamic(
-			this, &UDActionComponent::OnActorUnEquipmentEvent);
+			this, &UCraftActionComponent::OnActorUnEquipmentEvent);
 	}
 
 
@@ -55,16 +55,16 @@ void UDActionComponent::BeginPlay()
 	                                                         ->GetGameEventHandler()->OnItemDynamicSkillBind;
 	if (!OnItemDynamicSkillBind.IsBound())
 	{
-		OnItemDynamicSkillBind.AddDynamic(this, &UDActionComponent::OnItemDynamicSkillBindEvent);
+		OnItemDynamicSkillBind.AddDynamic(this, &UCraftActionComponent::OnItemDynamicSkillBindEvent);
 	}
 }
 
-void UDActionComponent::OnRegister()
+void UCraftActionComponent::OnRegister()
 {
 	Super::OnRegister();
 }
 
-void UDActionComponent::OnActorOnEquipmentEvent(UObject* Instigator, UItemStack* OnEquipItem, int32 EquipIndex)
+void UCraftActionComponent::OnActorOnEquipmentEvent(UObject* Instigator, UItemStack* OnEquipItem, int32 EquipIndex)
 {
 	UE_LOG(LogChamingCraftAction, Display,
 	       TEXT("[⚔️]  Actor装备物品事件: 物品名称 <%s>\n"
@@ -77,7 +77,7 @@ void UDActionComponent::OnActorOnEquipmentEvent(UObject* Instigator, UItemStack*
 	}
 }
 
-void UDActionComponent::OnActorUnEquipmentEvent(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex)
+void UCraftActionComponent::OnActorUnEquipmentEvent(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex)
 {
 	UE_LOG(LogChamingCraftAction, Display,
 	       TEXT("[⚔️]  Actor卸载物品事件: 物品名称 <%s>\n"
@@ -90,24 +90,24 @@ void UDActionComponent::OnActorUnEquipmentEvent(UObject* Instigator, UItemStack*
 	}
 }
 
-UCharmingCraftInstance* UDActionComponent::GetGameInstance_Implementation()
+UCharmingCraftInstance* UCraftActionComponent::GetGameInstance_Implementation()
 {
 	return Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance());
 }
 
-UGameEventHandler* UDActionComponent::GetGameEventHandler_Implementation()
+UGameEventHandler* UCraftActionComponent::GetGameEventHandler_Implementation()
 {
 	return GetGameInstance_Implementation()->GetGameEventHandler();
 }
 
 
-UWorldManager* UDActionComponent::GetWorldManager_Implementation()
+UWorldManager* UCraftActionComponent::GetWorldManager_Implementation()
 {
 	return GetGameInstance_Implementation()->GetWorldManager();
 }
 
 // Called every frame
-void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+void UCraftActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                       FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -117,13 +117,13 @@ void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UDActionComponent::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+void UCraftActionComponent::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
 {
 	TagContainer = ActiveGamePlayTags;
 }
 
 
-void UDActionComponent::AddAction(const TSubclassOf<UNativeAction> ActionClass)
+void UCraftActionComponent::AddAction(const TSubclassOf<UNativeAction> ActionClass)
 {
 	/* 安全的空指针判断 */
 	if (!ensure(ActionClass))
@@ -132,7 +132,7 @@ void UDActionComponent::AddAction(const TSubclassOf<UNativeAction> ActionClass)
 	}
 
 	/* 实例化 UNativeAction, outer可以理解成包裹的类,这样在 UDAction中就可以
-	 * .GetOuter()获取 UDActionComponent 了.
+	 * .GetOuter()获取 UCraftActionComponent 了.
 	 */
 	UNativeAction* NewAction = NewObject<UNativeAction>(this, ActionClass);
 	if (ensure(NewAction))
@@ -141,7 +141,7 @@ void UDActionComponent::AddAction(const TSubclassOf<UNativeAction> ActionClass)
 	}
 }
 
-void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UNativeAction> ActionClass)
+void UCraftActionComponent::AddBindAction(int32 index, TSubclassOf<UNativeAction> ActionClass)
 {
 	if (!ensure(ActionClass))
 	{
@@ -152,10 +152,10 @@ void UDActionComponent::AddBindAction(int32 index, TSubclassOf<UNativeAction> Ac
 	BindAction.Add(index, NewAction);
 }
 
-bool UDActionComponent::AddItemDynamicSkills(UItemMeta* ItemMeta)
+bool UCraftActionComponent::AddItemDynamicSkills(UItemMeta* ItemMeta)
 {
 	UE_LOG(LogChamingCraftAction, Display,
-	       TEXT("[⚔️]  UDActionComponent::AddItemDynamicSkills = %s"),
+	       TEXT("[⚔️]  UCraftActionComponent::AddItemDynamicSkills = %s"),
 	       *ItemMeta->ItemDynamicSkill->ItemDynamicSkillName.ToString());
 
 	for (auto ActionPairs : ItemMeta->BindItemDynamicSkill)
@@ -175,10 +175,10 @@ bool UDActionComponent::AddItemDynamicSkills(UItemMeta* ItemMeta)
 	return true;
 }
 
-bool UDActionComponent::RemoveItemDynamicSkills(UItemMeta* ItemMeta)
+bool UCraftActionComponent::RemoveItemDynamicSkills(UItemMeta* ItemMeta)
 {
 	UE_LOG(LogChamingCraftAction, Display,
-	       TEXT("[⚔️]  UDActionComponent::RemoveItemDynamicSkills =	%s"),
+	       TEXT("[⚔️]  UCraftActionComponent::RemoveItemDynamicSkills =	%s"),
 	       *ItemMeta->ItemDynamicSkill->ItemDynamicSkillName.ToString());
 
 	for (auto ActionPairs : ItemMeta->BindItemDynamicSkill)
@@ -195,7 +195,7 @@ bool UDActionComponent::RemoveItemDynamicSkills(UItemMeta* ItemMeta)
 	return true;
 }
 
-bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionName)
+bool UCraftActionComponent::StartActionByName(APawn* Instigator, const FName ActionName)
 {
 	for (UNativeAction* Action : Actions)
 	{
@@ -214,7 +214,7 @@ bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionN
 	return false;
 }
 
-bool UDActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
+bool UCraftActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
 {
 	// UE_LOG(LogChamingCraftAction, Display,
 	//        TEXT("[⚔️]  尝试执行指定类型 <%s> 的所有技能 执行对象<%s>"),
@@ -268,7 +268,7 @@ bool UDActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSl
 	return false;
 }
 
-bool UDActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
+bool UCraftActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
 {
 	for (UNativeAction* Action : Actions)
 	{
@@ -284,7 +284,7 @@ bool UDActionComponent::StopActionByType(APawn* Instigator, EItemDynamicSkillSlo
 	return false;
 }
 
-bool UDActionComponent::HasActionByType(EItemDynamicSkillSlot ActionType)
+bool UCraftActionComponent::HasActionByType(EItemDynamicSkillSlot ActionType)
 {
 	for (const auto Element : Actions)
 	{
@@ -296,7 +296,7 @@ bool UDActionComponent::HasActionByType(EItemDynamicSkillSlot ActionType)
 	return false;
 }
 
-void UDActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction,
+void UCraftActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAction* FromAction,
                                                     UNativeAction* TargetAction, UItemMeta* ContextMeta)
 {
 	// We only want to receive broadcast when the item is equipped
@@ -319,7 +319,7 @@ void UDActionComponent::OnItemDynamicSkillBindEvent(APawn* Instigator, UNativeAc
 	}
 }
 
-bool UDActionComponent::StartActionByIndex(APawn* Instigator, int32 index)
+bool UCraftActionComponent::StartActionByIndex(APawn* Instigator, int32 index)
 {
 	if (BindAction[index])
 	{
@@ -343,7 +343,7 @@ bool UDActionComponent::StartActionByIndex(APawn* Instigator, int32 index)
 	return false;
 }
 
-bool UDActionComponent::StopActionByName(APawn* Instigator, const FName ActionName)
+bool UCraftActionComponent::StopActionByName(APawn* Instigator, const FName ActionName)
 {
 	for (UNativeAction* Action : Actions)
 	{
@@ -359,7 +359,7 @@ bool UDActionComponent::StopActionByName(APawn* Instigator, const FName ActionNa
 	return false;
 }
 
-bool UDActionComponent::MappingItemActionToComponent(UItemActionComponent* ItemActionComponent,
+bool UCraftActionComponent::MappingItemActionToComponent(UItemActionComponent* ItemActionComponent,
                                                      bool bSetToRemoveMapping)
 {
 	UE_LOG(LogChamingCraftAction, Display,
@@ -397,7 +397,7 @@ bool UDActionComponent::MappingItemActionToComponent(UItemActionComponent* ItemA
 	}
 }
 
-void UDActionComponent::CastActionOne()
+void UCraftActionComponent::CastActionOne()
 {
 	StartActionByIndex(Cast<APawn>(GetOwner()), 1);
 }

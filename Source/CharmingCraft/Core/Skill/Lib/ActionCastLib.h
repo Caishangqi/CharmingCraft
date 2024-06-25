@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharmingCraft/Core/Item/ItemStack.h"
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
 #include "CharmingCraft/Core/Skill/Actions/ActionActor/BaseActionActor.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -63,8 +61,8 @@ public:
 		{
 			return nullptr;
 		}
-		TObjectPtr<UDActionComponent> ActionComponent = Cast<UDActionComponent>(
-			Owner->GetComponentByClass(UDActionComponent::StaticClass()));
+		TObjectPtr<UCraftActionComponent> ActionComponent = Cast<UCraftActionComponent>(
+			Owner->GetComponentByClass(UCraftActionComponent::StaticClass()));
 		for (const UNativeAction* Action : ActionComponent->Actions)
 		{
 			if (Action == ItemStack->ItemMeta->BindItemDynamicSkill.Find(ActionType)->Get())

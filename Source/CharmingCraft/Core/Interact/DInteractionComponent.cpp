@@ -10,7 +10,7 @@
 #include "CharmingCraft/Core/Entity/Creature/NativeCreature.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "../Core/Interact/NativeInteractActor.h"
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "../Core/CharmingCraftInstance.h"

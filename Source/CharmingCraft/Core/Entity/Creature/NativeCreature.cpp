@@ -8,7 +8,7 @@
 #include "CharmingCraft/Core/Container/Lib/ItemEntityUtilityLibrary.h"
 #include "CharmingCraft/Core/Resource/Lib/ResourceGenerateLibrary.h"
 #include "CharmingCraft/Core/Resource/Loot/NativeLootEntity.h"
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "CharmingCraft/Core/UI/HealthIndicator.h"
 #include "CharmingCraft/Object/Components/UI/DamageIndicator.h"
 #include "Kismet/GameplayStatics.h"
@@ -25,7 +25,7 @@ ANativeCreature::ANativeCreature()
 	HealthIndicator = CreateDefaultSubobject<UHealthIndicator>("HealthIndicator");
 	HealthIndicator->SetupAttachment(GetRootComponent());
 	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
-	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComp");
+	ActionComponent = CreateDefaultSubobject<UCraftActionComponent>("ActionComp");
 	
 	HitBox = CreateDefaultSubobject<UBoxComponent>("HitBox");
 	HitBox->SetupAttachment(RootComponent);

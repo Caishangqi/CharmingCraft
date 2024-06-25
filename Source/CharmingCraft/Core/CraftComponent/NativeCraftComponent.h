@@ -9,12 +9,17 @@
 /**
  * 
  */
-UCLASS(Blueprintable,BlueprintType)
+UCLASS(Blueprintable, BlueprintType)
 class CHARMINGCRAFT_API UNativeCraftComponent : public UObject
 {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
+	bool SetUpAttachment(UObject* ParentObject);
+	UFUNCTION(BlueprintCallable)
+	UObject* GetParentAttachedObject();
+
 	UFUNCTION(BlueprintCallable)
 	bool IsAllowMultipleInstance() const;
 	UFUNCTION(BlueprintCallable)
@@ -38,4 +43,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	bool bIsActive = false;
+
+	// The Object that the components attached to different with Outer
+	// the outer is the creator
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UObject> ParentAttachedObject;
 };

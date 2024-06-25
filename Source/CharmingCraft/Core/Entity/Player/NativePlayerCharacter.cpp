@@ -12,7 +12,7 @@
 #include "CharmingCraft/Core/Attribute/DAttributeComponent.h"
 #include "CharmingCraft/Core/Buff/BuffHandlerComponent.h"
 #include "CharmingCraft/Core/Interact/DInteractionComponent.h"
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "../Core/Container/Inventory/InventoryComponent.h"
 #include "../Core/Container/Inventory/EquipmentComponent.h"
 #include "Components/PostProcessComponent.h"
@@ -55,7 +55,7 @@ ANativePlayerCharacter::ANativePlayerCharacter()
 
 	/* Ability Component Settings */
 
-	ActionComponent = CreateDefaultSubobject<UDActionComponent>("ActionComponent");
+	ActionComponent = CreateDefaultSubobject<UCraftActionComponent>("ActionComponent");
 
 	/* AI Settings */
 

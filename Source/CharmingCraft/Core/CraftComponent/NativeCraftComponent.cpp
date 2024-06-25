@@ -3,6 +3,17 @@
 
 #include "NativeCraftComponent.h"
 
+bool UNativeCraftComponent::SetUpAttachment(UObject* ParentObject)
+{
+	this->ParentAttachedObject = ParentObject;
+	return true;
+}
+
+UObject* UNativeCraftComponent::GetParentAttachedObject()
+{
+	return ParentAttachedObject;
+}
+
 bool UNativeCraftComponent::IsAllowMultipleInstance() const
 {
 	return bIsAllowMultipleInstance;

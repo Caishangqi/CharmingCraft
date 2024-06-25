@@ -16,7 +16,7 @@
 class ANativeLootEntity;
 class UDropTableData;
 class UInventoryComponent;
-class UDActionComponent;
+class UCraftActionComponent;
 class UHealthIndicator;
 class UDamageIndicator;
 class UBuffHandlerComponent;
@@ -48,7 +48,7 @@ public:
 	TObjectPtr<UHealthIndicator> HealthIndicator;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category="Action")
-	TObjectPtr<UDActionComponent> ActionComponent;
+	TObjectPtr<UCraftActionComponent> ActionComponent;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Attribute")
 	TObjectPtr<UDAttributeComponent> CreatureAttributeComponent;

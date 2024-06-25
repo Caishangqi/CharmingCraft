@@ -47,6 +47,7 @@ UObject* UItemStack::DeserializeFromJson(TSharedPtr<FJsonObject> JsonObject)
 
 UNativeCraftComponent* UItemStack::AddComponents_Implementation(UNativeCraftComponent* AddedComponents)
 {
+	AddedComponents->SetUpAttachment(this);
 	Components.Add(AddedComponents);
 	return AddedComponents;
 }

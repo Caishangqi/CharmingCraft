@@ -22,7 +22,7 @@ class USpringArmComponent;
 class UDInteractionComponent;
 class UAnimMontage;
 class UDAttributeComponent;
-class UDActionComponent;
+class UCraftActionComponent;
 /*
  * https://sketchfab.com/3d-models/minecraft-player-slim-4e9962a0a094494ab3e85cd688f3d74d
  */
@@ -94,7 +94,7 @@ public:
 	 *	AbilityComponent System
 	 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
-	UDActionComponent* ActionComponent;
+	UCraftActionComponent* ActionComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Components")
 	UCharacterMovementComponent* MovementComponent;

@@ -34,7 +34,10 @@ public:
 	TArray<UNativeAction*> GetActionByType(EItemDynamicSkillSlot ActionType);
 	UFUNCTION(BlueprintCallable)
 	TArray<EItemDynamicSkillSlot> GetTotalTypesActionInComponent();
-
+	
+	UFUNCTION(BlueprintCallable)
+	bool AddActionToComponent(UNativeAction* TargetAction);
+	
 	UFUNCTION(BlueprintCallable)
 	void CreateActionInstances();
 
@@ -46,12 +49,14 @@ public:
 	virtual void SetIsActive(bool bIsActive) override;
 
 	UFUNCTION(BlueprintCallable)
-	UItemStack * GetOuterItemStack();
+	UItemStack * GetParentItemStack();
 
 private:
 	UPROPERTY()
 	TArray<UNativeAction*> ActionInstances;
-
+	
+	void MappingActionContent(UNativeAction* TargetAction);
+	
 	TMap<EItemDynamicSkillSlot, TArray<UNativeAction*>> ActionInstanceMapping;
 
 	UPROPERTY()

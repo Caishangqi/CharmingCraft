@@ -11,10 +11,23 @@ UNativeItemAction::UNativeItemAction()
 {
 }
 
+bool UNativeItemAction::SetUpAttachment_Implementation(UObject* RHS_ParentObject)
+{
+	Super::SetUpAttachment_Implementation(RHS_ParentObject);
+	// if the RHS_ParentObject is ItemActionComponent we get the ActionParentItemStack
+	// for ItemAction logic needs
+	if (RHS_ParentObject->IsA(UItemActionComponent::StaticClass()))
+	{
+		OuterItemActionComponent = Cast<UItemActionComponent>(RHS_ParentObject);
+		ActionParentItemStack = OuterItemActionComponent->GetParentItemStack();
+	}
+	return true;
+}
+
+
 void UNativeItemAction::PostInitProperties()
 {
 	Super::PostInitProperties();
-	
 }
 
 void UNativeItemAction::StartAction_Implementation(APawn* Instigator)
@@ -22,6 +35,4 @@ void UNativeItemAction::StartAction_Implementation(APawn* Instigator)
 	Super::StartAction_Implementation(Instigator);
 	CastInstigatorPlayer = Cast<ANativePlayerCharacter>(CachedInstigator);
 	GameInstance = Cast<UCharmingCraftInstance>(Instigator->GetGameInstance());
-	OuterItemActionComponent = Cast<UItemActionComponent>(GetOuter());
-	ActionParentItemStack = OuterItemActionComponent->GetOuterItemStack();
 }

@@ -8,7 +8,7 @@
 #include "CharmingCraft/Core/Damage/IDamageable.h"
 #include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
 #include "CharmingCraft/Core/Log/Logging.h"
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "CharmingCraft/Interface/Meta/WeaponMeta.h"
 #include "../Core/CharmingCraftInstance.h"
 #include "CharmingCraft/Object/Class/roguelike/RoguelikeAttributeLibrary.h"

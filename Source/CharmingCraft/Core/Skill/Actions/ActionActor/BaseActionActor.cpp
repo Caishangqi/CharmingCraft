@@ -3,7 +3,7 @@
 
 #include "BaseActionActor.h"
 
-#include "CharmingCraft/Core/Skill/DActionComponent.h"
+#include "CharmingCraft/Core/Skill/CraftActionComponent.h"
 #include "CharmingCraft/Core/Skill/Actions/NativeOnHitAction.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"

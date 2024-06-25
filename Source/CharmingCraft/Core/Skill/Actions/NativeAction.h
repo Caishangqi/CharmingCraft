@@ -36,7 +36,7 @@ public:
 
 	// Useful when Action's outer is not ActionComponent
 	UPROPERTY(Category= "Handler", BlueprintReadWrite)
-	TObjectPtr<UDActionComponent> Handler;
+	TObjectPtr<UCraftActionComponent> Handler;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Item")
 	UTexture2D* SkillIcon;
@@ -66,7 +66,7 @@ public:
 	int32 Priority;
 
 	UFUNCTION(BlueprintCallable, Category= "Action")
-	UDActionComponent* GetOwningComponent(APawn* Owner) const;
+	UCraftActionComponent* GetOwningComponent(APawn* Owner) const;
 
 
 	/*
@@ -121,6 +121,13 @@ public:
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "Action Actor")
 	FHitData GetActionHitData();
+
+	UFUNCTION(BlueprintCallable)
+	UObject* GetParentObject() { return AttachedParentObject; }
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool SetUpAttachment(UObject* ParentObject);
+
 	/* Event */
 	UPROPERTY(BlueprintAssignable)
 	FOnCoolComplete OnCoolComplete;
@@ -148,4 +155,12 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UWorld> WorldContext;
+
+	/*!
+	 * The AttachedParentObject is different with Outer, this is more logically
+	 * related and mutable, usually, the AttachedParentObject for Native Action
+	 * can be Action Component or the ItemActionComponent
+	 */
+	UPROPERTY()
+	TObjectPtr<UObject> AttachedParentObject;
 };

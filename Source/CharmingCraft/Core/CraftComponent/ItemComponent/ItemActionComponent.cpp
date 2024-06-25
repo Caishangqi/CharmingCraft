@@ -41,28 +41,26 @@ TArray<EItemDynamicSkillSlot> UItemActionComponent::GetTotalTypesActionInCompone
 	return Keys;
 }
 
+bool UItemActionComponent::AddActionToComponent(UNativeAction* TargetAction)
+{
+	TargetAction->SetUpAttachment(this);
+	ActionInstances.Add(TargetAction);
+	MappingActionContent(TargetAction);
+	return true;
+}
+
 
 void UItemActionComponent::CreateActionInstances()
 {
 	for (auto TemplateCollection : ActionTemplateCollection)
 	{
 		TObjectPtr<UNativeAction> ActionInstance = NewObject<UNativeAction>(this, TemplateCollection);
+		ActionInstance->SetUpAttachment(this);
 		ActionInstances.Add(ActionInstance);
 		UE_LOG(LogChamingCraftAction, Display,
 		       TEXT("		UItemActionComponent: 从模板中创建Action实例 <%s> 并添加到 ActionInstance"),
 		       *ActionInstance->ActionName.ToString());
-
-		// Mapping
-		if (ActionInstanceMapping.Find(ActionInstance->SkillType))
-		{
-			ActionInstanceMapping.Find(ActionInstance->SkillType)->Add(ActionInstance);
-		}
-		else
-		{
-			TArray<UNativeAction*> SkillTypeArray;
-			SkillTypeArray.Add(ActionInstance);
-			ActionInstanceMapping.Add(ActionInstance->SkillType, SkillTypeArray);
-		}
+		MappingActionContent(ActionInstance);
 	}
 }
 
@@ -85,7 +83,36 @@ void UItemActionComponent::SetIsActive(bool RHS_bIsActive)
 	// If is active bind all event related to this component
 }
 
-UItemStack * UItemActionComponent::GetOuterItemStack()
+UItemStack* UItemActionComponent::GetParentItemStack()
 {
-	return Cast<UItemStack>(GetOuter());
+	if (GetParentAttachedObject())
+	{
+		return Cast<UItemStack>(GetParentAttachedObject());
+	}
+	else if (GetOuter()->IsA(UItemStack::StaticClass()))
+	{
+		return Cast<UItemStack>(GetOuter());
+	}
+	else
+	{
+		UE_LOG(LogChamingCraftAction, Error,
+		       TEXT("[⚔️]  未能找到物品技能组件所属的ItemStack\n"
+			       "		可能是由未正确 SetUpAttachment所导致"));
+		throw std::invalid_argument("ParentAttachedObject is null");
+	}
+}
+
+void UItemActionComponent::MappingActionContent(UNativeAction* TargetAction)
+{
+	// Mapping
+	if (ActionInstanceMapping.Find(TargetAction->SkillType))
+	{
+		ActionInstanceMapping.Find(TargetAction->SkillType)->Add(TargetAction);
+	}
+	else
+	{
+		TArray<UNativeAction*> SkillTypeArray;
+		SkillTypeArray.Add(TargetAction);
+		ActionInstanceMapping.Add(TargetAction->SkillType, SkillTypeArray);
+	}
 }

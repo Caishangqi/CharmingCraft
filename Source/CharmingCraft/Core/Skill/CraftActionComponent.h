@@ -11,7 +11,7 @@
 #include "Components/ActorComponent.h"
 #include "EquipmentSkill/ItemDynamicSkill.h"
 #include "Templates/Tuple.h"
-#include "DActionComponent.generated.h"
+#include "CraftActionComponent.generated.h"
 
 /*
  *	Action Component Holds the actions we want to able to use
@@ -22,7 +22,7 @@ class UItemActionComponent;
 class UNativeAction;
 
 UCLASS(Blueprintable)
-class CHARMINGCRAFT_API UDActionComponent : public UActorComponent, public IGameplayTagAssetInterface,
+class CHARMINGCRAFT_API UCraftActionComponent : public UActorComponent, public IGameplayTagAssetInterface,
                                             public ICoreManagerInterface
 {
 	GENERATED_BODY()
@@ -77,7 +77,7 @@ public:
 	void CastActionOne();
 
 	// Sets default values for this component's properties
-	UDActionComponent();
+	UCraftActionComponent();
 
 	/** Granted abilities at game start */
 	UPROPERTY(EditAnywhere, Category = "Editor Actions")

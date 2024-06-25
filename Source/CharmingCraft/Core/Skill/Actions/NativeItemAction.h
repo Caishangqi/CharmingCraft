@@ -42,9 +42,9 @@ protected:
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UItemActionComponent> OuterItemActionComponent;
-
 public:
 	UNativeItemAction();
+	virtual bool SetUpAttachment_Implementation(UObject* ParentObject) override;
 	virtual void PostInitProperties() override;
 	virtual void StartAction_Implementation(APawn* Instigator) override;
 };
