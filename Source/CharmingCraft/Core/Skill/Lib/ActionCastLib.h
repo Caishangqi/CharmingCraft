@@ -48,14 +48,15 @@ public:
 	                                          ESpawnActorCollisionHandlingMethod CollisionHandlingOverride)
 	{
 		TObjectPtr<ABaseActionActor> ActionActor = Cast<ABaseActionActor>(
-			UGameplayStatics::BeginDeferredActorSpawnFromClass(ActionActorData.Parent, ActionActorClass,
+			UGameplayStatics::BeginDeferredActorSpawnFromClass(ActionActorData.WorldContextObject, ActionActorClass,
 			                                                   ActionActorTransform, CollisionHandlingOverride));
 		ActionActor->InjectActionData(ActionActorData);
 		UGameplayStatics::FinishSpawningActor(ActionActor, ActionActorTransform);
 		return nullptr;
 	}
 
-	UFUNCTION(BlueprintCallable, Category = "Action Actor")
+	// Deprecated in 2024/6/25
+	/*UFUNCTION(BlueprintCallable, Category = "Action Actor")
 	static UNativeAction* GetItemActionsByType(UItemStack* ItemStack, APawn* Owner, EItemDynamicSkillSlot ActionType)
 	{
 		if (!(ItemStack && Owner))
@@ -72,5 +73,5 @@ public:
 			}
 		}
 		return nullptr;
-	}
+	}*/
 };

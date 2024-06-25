@@ -21,7 +21,9 @@ void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 	// UE_LOG(LogChamingCraftAction, Display,
 	//        TEXT("[⚔️]  UEquipment::OnEquip =		%s"),
 	//        *Instigator->GetName());
-	if (Instigator->IsA(ANativePlayerCharacter::StaticClass()))
+	
+	/*! 过期
+	 *if (Instigator->IsA(ANativePlayerCharacter::StaticClass()))
 	{
 		TObjectPtr<ANativePlayerCharacter> PlayerCharacter = Cast<ANativePlayerCharacter>(Instigator);
 		if (!OnEquipItem->ItemMeta->BindItemDynamicSkill.IsEmpty())
@@ -29,7 +31,7 @@ void UEquipment::OnEquip(UObject* Instigator, UItemStack* OnEquipItem)
 			PlayerCharacter->ActionComponent->AddItemDynamicSkills(OnEquipItem->ItemMeta);
 			OnEquipItem->ItemMeta->bIsEquipped = true;
 		}
-	}
+	}*/
 }
 
 void UEquipment::UnEquip(UObject* Instigator, UItemStack* UnEquipItem)

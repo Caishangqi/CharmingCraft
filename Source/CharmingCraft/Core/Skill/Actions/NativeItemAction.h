@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "../Core/Skill/Actions/NativeAction.h"
 #include "NativeItemAction.generated.h"
+class UItemActionComponent;
 class ANativePlayerCharacter;
 class UCharmingCraftInstance;
 class UItemStack;
@@ -29,7 +30,8 @@ class CHARMINGCRAFT_API UNativeItemAction : public UNativeAction
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category= "Bind ItemStack", BlueprintReadWrite)
-	TObjectPtr<UItemStack> BindItemStack;
+	TObjectPtr<UItemStack> ActionParentItemStack;
+
 
 	// Who cast the Action
 	UPROPERTY(BlueprintReadWrite)
@@ -38,10 +40,11 @@ public:
 protected:
 	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UCharmingCraftInstance> GameInstance;
-
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UItemActionComponent> OuterItemActionComponent;
 
 public:
 	UNativeItemAction();
-	
+	virtual void PostInitProperties() override;
 	virtual void StartAction_Implementation(APawn* Instigator) override;
 };

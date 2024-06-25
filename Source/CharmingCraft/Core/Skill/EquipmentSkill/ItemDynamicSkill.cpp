@@ -31,12 +31,12 @@ void UItemDynamicSkill::PostInitProperties()
 
 bool UItemDynamicSkill::AddDynamicSkillToSlot(TSubclassOf<UNativeAction> ActionClass)
 {
-	UE_LOG(LogChamingCraftAction, Display,
-	       TEXT("[⚔️]  UItemDynamicSkill::AddDynamicSkillToSlot"));
 	const TObjectPtr<UNativeAction> DefaultAction = NewObject<UNativeAction>(this, ActionClass);
 	if (!DynamicSkills.Contains(DefaultAction))
 	{
 		DynamicSkills.Add(DefaultAction);
+		UE_LOG(LogChamingCraftAction, Display,
+		       TEXT("[⚔️]  添加技能 <%s> 至 ItemDynamicSkill 的数组中"), *DefaultAction->ActionName.ToString());
 		return true;
 	}
 	return false;

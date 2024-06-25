@@ -34,12 +34,13 @@ UWatering_Can::UWatering_Can()
 	}
 	
 	// Default ItemDynamicSkill
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemDynamicSkillFinder(
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemActionComponentFinder(
 		TEXT(
-			"Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Water_Can/Actions/IDS_WaterCan.IDS_WaterCan'"));
-	if (ItemDynamicSkillFinder.Succeeded())
+			"/Script/Engine.Blueprint'/Game/CharmingCraft/CraftComponents/Item/WaterCanDefaultActionComponent.WaterCanDefaultActionComponent'"));
+	if (ItemActionComponentFinder.Succeeded())
 	{
-		ItemDynamicSkillClass = ItemDynamicSkillFinder.Object->GeneratedClass;
+		UClass * Class = ItemActionComponentFinder.Object->GeneratedClass;
+		ItemPredefineComponents.Add(Class);
 	}
 }
 

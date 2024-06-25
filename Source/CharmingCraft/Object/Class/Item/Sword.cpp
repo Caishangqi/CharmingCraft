@@ -28,11 +28,12 @@ USword::USword()
 		// 然后你可以使用ActorClass来在游戏世界中创建这个Actor的实例
 	}
 	// Default ItemDynamicSkill
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemDynamicSkillFinder(
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemActionComponentFinder(
 		TEXT(
-			"Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Sword/Actions/IDS_Sword.IDS_Sword'"));
-	if (ItemDynamicSkillFinder.Succeeded())
+			"/Script/Engine.Blueprint'/Game/CharmingCraft/CraftComponents/Item/SwordDefaultActionComponent.SwordDefaultActionComponent'"));
+	if (ItemActionComponentFinder.Succeeded())
 	{
-		ItemDynamicSkillClass = ItemDynamicSkillFinder.Object->GeneratedClass;
+		UClass * Class = ItemActionComponentFinder.Object->GeneratedClass;
+		ItemPredefineComponents.Add(Class);
 	}
 }

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "CharmingCraft/Core/Entity/Item/DropItem.h"
 #include "../Core/Resource/DropTable/DropTableData.h"
+#include "../Core/World/NativeCraftWorld.h"
 #include "CharmingCraft/Core/Entity/Item/ItemTargetRenderActor.h"
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Item/RenderActor/ItemEntityActor.h"

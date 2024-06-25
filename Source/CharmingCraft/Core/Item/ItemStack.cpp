@@ -64,7 +64,6 @@ TArray<UNativeCraftComponent*> UItemStack::GetObjectComponentsByClass_Implementa
 	TSubclassOf<UNativeCraftComponent> ComponentsClass)
 {
 	TArray<UNativeCraftComponent*> ResultComponentsArray;
-	ResultComponentsArray.SetNum(3); //Pre allocate space
 	for (auto Element : Components)
 	{
 		if (Element->IsA(ComponentsClass))
@@ -78,6 +77,18 @@ TArray<UNativeCraftComponent*> UItemStack::GetObjectComponentsByClass_Implementa
 TArray<UNativeCraftComponent*> UItemStack::GetObjectComponents_Implementation()
 {
 	return Components;
+}
+
+bool UItemStack::RegistItemComponent()
+{
+	for (TSubclassOf<UNativeCraftComponent> ItemPredefineComponent : ItemClass.GetDefaultObject()->
+	                                                                           ItemPredefineComponents)
+	{
+		TObjectPtr<UNativeCraftComponent> ItemComponent = NewObject<
+			UNativeCraftComponent>(this, ItemPredefineComponent);
+		Components.Add(ItemComponent);
+	}
+	return true;
 }
 
 UItemStack* UItemStack::CopyData()
@@ -124,6 +135,8 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 
 			ItemStack->ItemMeta = NewObject<UItemMeta>(ItemStack, ItemMetaClass, FName(RowData->ItemMeta->GetName()));
 			ItemStack->ItemMeta->InitializeItemMetaData(ItemClass);
+			// Regist Item Default Components
+			ItemStack->RegistItemComponent();
 
 			if (ItemClass->MaxStackSize < SetAmount)
 			{

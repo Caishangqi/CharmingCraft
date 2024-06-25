@@ -37,13 +37,15 @@ UHoe::UHoe()
 	{
 		BuildModel = BuildModelBlueprint.Object->GeneratedClass;
 	}
+	
 	// Default ItemDynamicSkill
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemDynamicSkillFinder(
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemActionComponentFinder(
 		TEXT(
-			"Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Hoe/IDS_Hoe.IDS_Hoe'"));
-	if (ItemDynamicSkillFinder.Succeeded())
+			"/Script/Engine.Blueprint'/Game/CharmingCraft/CraftComponents/Item/HoeDefaultAction.HoeDefaultAction'"));
+	if (ItemActionComponentFinder.Succeeded())
 	{
-		ItemDynamicSkillClass = ItemDynamicSkillFinder.Object->GeneratedClass;
+		UClass * Class = ItemActionComponentFinder.Object->GeneratedClass;
+		ItemPredefineComponents.Add(Class);
 	}
 }
 

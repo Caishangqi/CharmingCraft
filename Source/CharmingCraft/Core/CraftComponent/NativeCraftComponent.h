@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable,BlueprintType)
 class CHARMINGCRAFT_API UNativeCraftComponent : public UObject
 {
 	GENERATED_BODY()
@@ -22,20 +22,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsActive() const;
 	UFUNCTION(BlueprintCallable)
-	void SetIsActive(bool bIsActive);
+	virtual void SetIsActive(bool bIsActive);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FString Description;
 
 public:
-	
+	virtual void PostInitProperties() override;
 	UNativeCraftComponent();
 
 private:
 	// Whether allow item or entity have multiple same class of components
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	bool bIsAllowMultipleInstance = true;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(EditAnywhere)
 	bool bIsActive = false;
 };

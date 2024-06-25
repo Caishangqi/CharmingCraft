@@ -8,6 +8,7 @@
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "../Core/CharmingCraftInstance.h"
+#include "CharmingCraft/Core/CraftComponent/ItemComponent/ItemActionComponent.h"
 
 // Sets default values for this component's properties
 UDActionComponent::UDActionComponent()
@@ -38,7 +39,15 @@ void UDActionComponent::BeginPlay()
 
 	TObjectPtr<ANativePlayerCharacter> Player = Cast<ANativePlayerCharacter>(GetOwner());
 
-	// ....
+	// Handle Event
+	if (!GetGameEventHandler_Implementation()->OnActorOnEquipment.IsBound())
+	{
+		GetGameEventHandler_Implementation()->OnActorOnEquipment.AddDynamic(
+			this, &UDActionComponent::OnActorOnEquipmentEvent);
+
+		GetGameEventHandler_Implementation()->OnActorUnEquipment.AddDynamic(
+			this, &UDActionComponent::OnActorUnEquipmentEvent);
+	}
 
 
 	// Bind Event
@@ -55,6 +64,47 @@ void UDActionComponent::OnRegister()
 	Super::OnRegister();
 }
 
+void UDActionComponent::OnActorOnEquipmentEvent(UObject* Instigator, UItemStack* OnEquipItem, int32 EquipIndex)
+{
+	UE_LOG(LogChamingCraftAction, Display,
+	       TEXT("[⚔️]  Actor装备物品事件: 物品名称 <%s>\n"
+		       "		准备将物品技能组件内的Action添加到组件内"), *OnEquipItem->ItemMeta->DisplayName);
+	TArray<UNativeCraftComponent*> ActionComponents = OnEquipItem->GetObjectComponentsByClass_Implementation(
+		UItemActionComponent::StaticClass());
+	for (UNativeCraftComponent* ActionComponent : ActionComponents)
+	{
+		MappingItemActionToComponent(Cast<UItemActionComponent>(ActionComponent));
+	}
+}
+
+void UDActionComponent::OnActorUnEquipmentEvent(UObject* Instigator, UItemStack* UnEquipItem, int32 EquipIndex)
+{
+	UE_LOG(LogChamingCraftAction, Display,
+	       TEXT("[⚔️]  Actor卸载物品事件: 物品名称 <%s>\n"
+		       "		准备将物品技能组件内的Action从组件内移除"), *UnEquipItem->ItemMeta->DisplayName);
+	TArray<UNativeCraftComponent*> ActionComponents = UnEquipItem->GetObjectComponentsByClass_Implementation(
+		UItemActionComponent::StaticClass());
+	for (UNativeCraftComponent* ActionComponent : ActionComponents)
+	{
+		MappingItemActionToComponent(Cast<UItemActionComponent>(ActionComponent),true);
+	}
+}
+
+UCharmingCraftInstance* UDActionComponent::GetGameInstance_Implementation()
+{
+	return Cast<UCharmingCraftInstance>(GetWorld()->GetGameInstance());
+}
+
+UGameEventHandler* UDActionComponent::GetGameEventHandler_Implementation()
+{
+	return GetGameInstance_Implementation()->GetGameEventHandler();
+}
+
+
+UWorldManager* UDActionComponent::GetWorldManager_Implementation()
+{
+	return GetGameInstance_Implementation()->GetWorldManager();
+}
 
 // Called every frame
 void UDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -166,27 +216,53 @@ bool UDActionComponent::StartActionByName(APawn* Instigator, const FName ActionN
 
 bool UDActionComponent::StartActionByType(APawn* Instigator, EItemDynamicSkillSlot ActionType)
 {
+	// UE_LOG(LogChamingCraftAction, Display,
+	//        TEXT("[⚔️]  尝试执行指定类型 <%s> 的所有技能 执行对象<%s>"),
+	//        *StaticEnum<EItemDynamicSkillSlot>()->GetNameByValue(static_cast<int64>(ActionType)).ToString(),
+	//        *Instigator->GetName());
 	for (auto Action : Actions)
 	{
-		if (Action && Action->SkillType == ActionType)
+		// UE_LOG(LogChamingCraftAction, Display,
+		// 			   TEXT("	  尝试执行 <%s> 执行对象 <%s>"),
+		// 			   *Action->ActionName.ToString(), *Instigator->GetName());
+		if (Action->SkillType == ActionType)
 		{
 			if (Action->bIsCooling)
 			{
 				FString FailedMsg = FString::Printf(TEXT("[x] Failed to run: %s Because it is cooling, Remain: %f"),
 				                                    *Action->ActionName.ToString(), Action->GetRemainCooldown());
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
-				return false;
+				// UE_LOG(LogChamingCraftAction, Warning,
+				// 	   TEXT("		尝试执行 <%s> 失败失败原因: 技能在冷却"),
+				// 	   *Action->ActionName.ToString());
+				continue;
 			}
-
-			if (!Action->CanStart(Instigator))
+			else if (!Action->CanStart(Instigator))
 			{
 				FString FailedMsg = FString::Printf(TEXT("Failed to run: %s"), *Action->ActionName.ToString());
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
+				// UE_LOG(LogChamingCraftAction, Warning,
+				// 	   TEXT("		尝试执行 <%s> 失败失败原因: 技能在不能启用"),
+				// 	   *Action->ActionName.ToString());
 				continue;
 			}
+			else if (!Action->GetIsSelected())
+			{
+				// UE_LOG(LogChamingCraftAction, Warning,
+				// 	   TEXT("		尝试执行 <%s> 失败失败原因: 物品技能没有被选中"),
+				// 	   *Action->ActionName.ToString());
+				continue;
+			}
+			else
+			{
+				Action->StartAction(Instigator);
+				UE_LOG(LogChamingCraftAction, Display,
+					   TEXT("[⚔️]  执行技能 <%s> 执行对象 <%s>"),
+					   *Action->ActionName.ToString(), *Instigator->GetName());
+			}
 
-			Action->StartAction(Instigator);
-			return true;
+			
+			//return true;
 		}
 	}
 	return false;
@@ -281,6 +357,44 @@ bool UDActionComponent::StopActionByName(APawn* Instigator, const FName ActionNa
 		}
 	}
 	return false;
+}
+
+bool UDActionComponent::MappingItemActionToComponent(UItemActionComponent* ItemActionComponent,
+                                                     bool bSetToRemoveMapping)
+{
+	UE_LOG(LogChamingCraftAction, Display,
+	       TEXT("[⚔️]  将物品技能组件 <%s> 的技能映射到Action数组中. 是否为移除映射操作: <%d> "),
+	       *ItemActionComponent->ItemDynamicSkillName.ToString(), bSetToRemoveMapping);
+	if (!ItemActionComponent->GetActionInstances().IsEmpty())
+	{
+		if (bSetToRemoveMapping)
+		{
+			for (UNativeAction* ActionInstance : ItemActionComponent->GetActionInstances())
+			{
+				Actions.Remove(ActionInstance);
+				UE_LOG(LogChamingCraftAction, Warning,
+				       TEXT("		(-) 将物品技能 <%s> 映射到Action数组中. 映射操作为(移除)"),
+				       *ActionInstance->ActionName.ToString());
+			}
+		}
+		else
+		{
+			for (UNativeAction* ActionInstance : ItemActionComponent->GetActionInstances())
+			{
+				ActionInstance->Handler = this;
+				Actions.Add(ActionInstance);
+				UE_LOG(LogChamingCraftAction, Warning,
+				       TEXT("		(+) 将物品技能 <%s> 映射到Action数组中. 映射操作为(添加)"),
+				       *ActionInstance->ActionName.ToString());
+			}
+		}
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void UDActionComponent::CastActionOne()

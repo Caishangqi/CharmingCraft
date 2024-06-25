@@ -2,6 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
+#include "CharmingCraft/Core/CraftComponent/NativeCraftComponent.h"
 #include "CharmingCraft/Core/Item/Enum/EItemType.h"
 #include "CharmingCraft/Core/Skill/EquipmentSkill/ItemDynamicSkill.h"
 #include "CharmingCraft/Object/Enum/MaterialType.h"
@@ -60,7 +61,7 @@ public:
 	TObjectPtr<UMaterialInstanceDynamic> DynamicMaterialInstance;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Skill")
-	TSubclassOf<UItemDynamicSkill> ItemDynamicSkillClass;
+	TArray<TSubclassOf<UNativeCraftComponent>> ItemPredefineComponents;
 
 public: // Methods
 

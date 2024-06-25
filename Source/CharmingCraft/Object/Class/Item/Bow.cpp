@@ -26,13 +26,14 @@ UBow::UBow()
 	}
 
 	// @TODO: 这里添加物品默认技能可以一个个把新的物品技能组件放上去
-	
 	// Default ItemDynamicSkill
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemDynamicSkillFinder(
+	static ConstructorHelpers::FObjectFinder<UBlueprint> ItemActionComponentFinder(
 		TEXT(
-			"Script/Engine.Blueprint'/Game/CharmingCraft/Item/ItemEntityActor/Bow/IDS_Bow.IDS_Bow'"));
-	if (ItemDynamicSkillFinder.Succeeded())
+			"/Script/Engine.Blueprint'/Game/CharmingCraft/CraftComponents/Item/BowDefaultActionComponent.BowDefaultActionComponent'"));
+	if (ItemActionComponentFinder.Succeeded())
 	{
-		ItemDynamicSkillClass = ItemDynamicSkillFinder.Object->GeneratedClass;
+		UClass * Class = ItemActionComponentFinder.Object->GeneratedClass;
+		ItemPredefineComponents.Add(Class);
 	}
+	
 }

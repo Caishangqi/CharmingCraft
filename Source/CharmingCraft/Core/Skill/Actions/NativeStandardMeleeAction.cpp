@@ -31,7 +31,7 @@ void UNativeStandardMeleeAction::OnActionHit_Implementation(AActor* HitEntity)
 	
 	FPlayerAttribute PlayerAttribute = Cast<UDAttributeComponent>(CastInstigatorPlayer->GetComponentByClass(UDAttributeComponent::StaticClass()))->GetPlayerAttributeData();
 
-	FEquipmentAttribute EquipmentAttribute = Cast<UIntegratedMeta>(BindItemStack->ItemMeta)->EquipmentAttribute;
+	FEquipmentAttribute EquipmentAttribute = Cast<UIntegratedMeta>(ActionParentItemStack->ItemMeta)->EquipmentAttribute;
 
 	FHitData HitData;
 
@@ -91,7 +91,7 @@ void UNativeStandardMeleeAction::MeleeActionTick_Implementation()
 
 void UNativeStandardMeleeAction::StartMeleeActionTrace_Implementation()
 {
-	GameInstance->GetGameEventHandler()->OnItemInteractEvent(CastInstigatorPlayer,BindItemStack);
+	GameInstance->GetGameEventHandler()->OnItemInteractEvent(CastInstigatorPlayer,ActionParentItemStack);
 	CastInstigatorPlayer->GetWorld()->GetTimerManager().
 				SetTimer(TraceTimer, this, &UNativeStandardMeleeAction::MeleeActionTick, 0.01f, true);
 }

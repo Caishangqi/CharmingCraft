@@ -3,6 +3,7 @@
 
 #include "NativeStandardRangedAction.h"
 #include "../Core/Interact/Interface/DGameplayInterface.h"
+#include "CharmingCraft/Core/Item/RenderActor/Abstract/EquipmentEntityActor.h"
 
 UNativeStandardRangedAction::UNativeStandardRangedAction()
 {
@@ -11,6 +12,7 @@ UNativeStandardRangedAction::UNativeStandardRangedAction()
 
 FVector UNativeStandardRangedAction::GetCastMouseLocation(APawn* Instigator)
 {
+	bool bUseNormalViewProject = true;
 	FVector CameraLocation;
 	FRotator CameraRotation;
 	FVector WorldLocation, WorldDirection;
@@ -22,22 +24,25 @@ FVector UNativeStandardRangedAction::GetCastMouseLocation(APawn* Instigator)
 	TObjectPtr<APlayerController> PlayerController = Cast<APlayerController>(Instigator->GetController());
 	if (PlayerController->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
 	{
+
 		PlayerController->GetPlayerViewPoint(CameraLocation, CameraRotation);
 		FVector End = CameraLocation + (WorldDirection * 10000.f);
 		bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, End, ECC_WorldStatic, Params);
 		if (bHit)
 		{
-			AActor* HitActor = HitResult.GetActor();
+			// AActor* HitActor = HitResult.GetActor();
+			//
+			// if (HitActor && HitActor->Implements<UMouseInteractInterface>())
+			// {
+			// 	// Add Additional 50 unit offset
+			// 	return HitActor->GetActorLocation() + FVector(0,0,50);
+			// }
+			// else
+			// {
+			// 	return HitResult.Location;
+			// }
 
-			if (HitActor && HitActor->Implements<UMouseInteractInterface>())
-			{
-				// Add Additional 50 unit offset
-				return HitActor->GetActorLocation() + FVector(0,0,50);
-			}
-			else
-			{
-				return HitResult.Location;
-			}
+			return HitResult.Location;
 		}
 		else
 		{
@@ -46,6 +51,7 @@ FVector UNativeStandardRangedAction::GetCastMouseLocation(APawn* Instigator)
 	}
 	return WorldLocation;
 }
+
 
 void UNativeStandardRangedAction::StartAction_Implementation(APawn* Instigator)
 {

@@ -66,7 +66,7 @@ public:
 	int32 Priority;
 
 	UFUNCTION(BlueprintCallable, Category= "Action")
-	UDActionComponent* GetOwningComponent() const;
+	UDActionComponent* GetOwningComponent(APawn* Owner) const;
 
 
 	/*
@@ -99,6 +99,12 @@ public:
 	void ResetCoolDown();
 	UFUNCTION(BlueprintCallable, Category= "Timer")
 	float GetRemainCooldown();
+
+	UFUNCTION(BlueprintCallable)
+	void SetIsSelected(bool IsSelected);
+
+	UFUNCTION(BlueprintCallable)
+	bool GetIsSelected() { return bIsSelected; };
 
 	/*!
 	 * Get the FActionActorData if the action is going to spawn a
@@ -136,4 +142,10 @@ protected:
 	TObjectPtr<AActor> CachedInstigator;
 
 	bool bIsRunning;
+	/* Use for Item Action select and deselect*/
+	UPROPERTY(EditAnywhere, Category = "Selected")
+	bool bIsSelected;
+
+	UPROPERTY()
+	TObjectPtr<UWorld> WorldContext;
 };

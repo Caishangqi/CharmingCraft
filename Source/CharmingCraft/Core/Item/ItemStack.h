@@ -40,7 +40,9 @@ public:
 	virtual bool RemoveComponents_Implementation(UNativeCraftComponent* RemovededComponents) override;
 	virtual TArray<UNativeCraftComponent*> GetObjectComponentsByClass_Implementation(TSubclassOf<UNativeCraftComponent> ComponentsClass) override;
 	virtual TArray<UNativeCraftComponent*> GetObjectComponents_Implementation() override;
-	
+
+	UFUNCTION(BlueprintCallable)
+	bool RegistItemComponent();
 protected:
 
 

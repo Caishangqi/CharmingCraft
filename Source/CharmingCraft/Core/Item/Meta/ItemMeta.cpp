@@ -131,33 +131,4 @@ void UItemMeta::InitializeItemMetaData(UItem* ItemClass)
 	{
 		ItemEntityActorClass = ItemClass->DefaultItemEntityActorClass;
 	}
-	if (ItemClass->ItemDynamicSkillClass)
-	{
-		ItemDynamicSkill = NewObject<UItemDynamicSkill>(this, ItemClass->ItemDynamicSkillClass);
-		// Pass ItemStack into ItemDynamicSkill
-		for (auto UnityDynamicSkill : ItemDynamicSkill->DynamicSkills)
-		{
-			if (UnityDynamicSkill->IsA(UNativeItemAction::StaticClass()))
-			{
-				const TObjectPtr<UNativeItemAction> ItemActionDynamicSkill = Cast<UNativeItemAction>(UnityDynamicSkill);
-				ItemActionDynamicSkill->BindItemStack = Cast<UItemStack>(this->GetOuter());
-			}
-		}
-
-		// TODO: Deserialize Item Skill Binding and Skills
-
-		// Give Default Select bind Skills
-		for (auto DynamicSkill : ItemDynamicSkill->DynamicSkills)
-		{
-			if (BindItemDynamicSkill.IsEmpty())
-			{
-				AddActionToBindItemSkill(nullptr, nullptr, DynamicSkill, this);
-			}
-
-			if (BindItemDynamicSkill.Find(DynamicSkill->SkillType) == nullptr)
-			{
-				AddActionToBindItemSkill(nullptr, nullptr, DynamicSkill, this);
-			}
-		}
-	}
 }

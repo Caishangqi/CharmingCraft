@@ -22,5 +22,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetCastMouseLocation(APawn* Instigator);
 	
+	
 	virtual void StartAction_Implementation(APawn* Instigator) override;
 };

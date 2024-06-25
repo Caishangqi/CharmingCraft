@@ -31,9 +31,10 @@ struct FActionActorData
 	GENERATED_BODY()
 
 public:
+	FActionActorData(): ActionHitData()
+	{
+	};
 
-	FActionActorData():ActionHitData(){};
-	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FHitData ActionHitData;
 
@@ -61,7 +62,9 @@ public:
 	// Who Own the Action Entity, usually the instigator character
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<APawn> ActionActorOwner;
-	
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	TObjectPtr<UObject> WorldContextObject;
 };
 
 
@@ -84,7 +87,7 @@ public:
 	// Who Own the Action Entity, usually the instigator character
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	TObjectPtr<APawn> ActionActorOwner;
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	TSet<TObjectPtr<AActor>> HitActors;
 
