@@ -121,7 +121,7 @@ public:
 	AWorldEntityManager* GetWorldEntityManager();
 
 	/*!
-	 * Teleport player to specific Warp of ACraftWorldWarpPoint
+	 * Teleport player to specific Warp of ACraftWarpPoint
 	 * please check the level is loaded and visible before teleport
 	 * @param PlayerCharacter 
 	 * @param WarpPoint 

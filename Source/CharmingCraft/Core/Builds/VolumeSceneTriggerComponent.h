@@ -53,7 +53,7 @@ public:
 	                    const FHitResult& SweepResult);
 	
 	UFUNCTION()
-	void OnCraftWorldWarpLoaded(UNativeCraftWorld * CraftWorld, ACraftWorldWarpPoint * TargetCraftWorldWarpPoint);
+	void OnCraftWorldWarpLoaded(UNativeCraftWorld * CraftWorld, ACraftWarpPoint * TargetCraftWorldWarpPoint);
 
 	// override
 public:

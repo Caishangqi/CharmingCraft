@@ -8,7 +8,7 @@
 /**
  * 
  */
-class ACraftWorldWarpPoint;
+class ACraftWarpPoint;
 
 
 UCLASS(Blueprintable, NotBlueprintType)
@@ -36,12 +36,12 @@ public:
 
 	// The blueprint dynamic Delegate that used for bind UObject 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdate, UNativeCraftWorld *, TargetCraftWorld,
-	                                             ACraftWorldWarpPoint *, TargetCraftWorldWarpPoint);
+	                                             ACraftWarpPoint *, TargetCraftWorldWarpPoint);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnWarpDataUpdate OnWarpDataUpdate;
 
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdateInternal, UNativeCraftWorld *, ACraftWorldWarpPoint *);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnWarpDataUpdateInternal, UNativeCraftWorld *, ACraftWarpPoint *);
 	FOnWarpDataUpdateInternal OnWarpDataUpdateInternal;
 
 protected:
@@ -56,7 +56,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsSuccess = false;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TSet<ACraftWorldWarpPoint*> LoadedWarpPoints;
+	TSet<ACraftWarpPoint*> LoadedWarpPoints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	ECameraPerspectiveEnum TargetCameraPerspective = ECameraPerspectiveEnum::INCLINE;
 	// 
@@ -77,7 +77,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	TSoftObjectPtr<UWorld> GetCraftWorldMapRes();
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
-	TSet<ACraftWorldWarpPoint*> GetLoadedWarpPoints();
+	TSet<ACraftWarpPoint*> GetLoadedWarpPoints();
 
 	UFUNCTION(BlueprintCallable, BlueprintGetter)
 	ULevelStreamingDynamic* GetGamePlayWorldInstance();

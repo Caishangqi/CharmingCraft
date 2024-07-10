@@ -47,7 +47,7 @@ TSoftObjectPtr<UWorld> UNativeCraftWorld::GetCraftWorldMapRes()
 }
 
 
-TSet<ACraftWorldWarpPoint*> UNativeCraftWorld::GetLoadedWarpPoints()
+TSet<ACraftWarpPoint*> UNativeCraftWorld::GetLoadedWarpPoints()
 {
 	return LoadedWarpPoints;
 }

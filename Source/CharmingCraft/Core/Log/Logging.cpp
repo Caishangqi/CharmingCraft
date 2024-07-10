@@ -17,4 +17,4 @@ DEFINE_LOG_CATEGORY(LogChamingCraftAction);
 DEFINE_LOG_CATEGORY(LogChamingCraftWorld);
 DEFINE_LOG_CATEGORY(LogChamingCraftRecipe);
 DEFINE_LOG_CATEGORY(LogChamingCraftDungeon);
-
+DEFINE_LOG_CATEGORY(LogChamingCraftVisual);

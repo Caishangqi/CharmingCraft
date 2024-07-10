@@ -5,7 +5,7 @@
 
 #include "NativeCraftWorld.h"
 #include "WorldEntityManager.h"
-#include "CharmingCraft/Core/Builds/CraftWorldWarpPoint.h"
+#include "CharmingCraft/Core/Builds/CraftWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Camera/CameraManager.h"
 #include "CharmingCraft/Core/Log/Logging.h"
@@ -185,13 +185,13 @@ UNativeCraftWorld* UWorldManager::TeleportPlayerToWorld_Internal(ACharacter* Pla
 bool UWorldManager::TeleportPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
 {
 	TArray<AActor*> OutActors;
-	UGameplayStatics::GetAllActorsOfClass(this, ACraftWorldWarpPoint::StaticClass(), OutActors);
+	UGameplayStatics::GetAllActorsOfClass(this, ACraftWarpPoint::StaticClass(), OutActors);
 	for (const auto OutActor : OutActors)
 	{
 		UE_LOG(LogChamingCraftWorld, Warning,
-		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ACraftWorldWarpPoint>(OutActor)->TargetName,
+		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ACraftWarpPoint>(OutActor)->TargetName,
 		       *PlayerCharacter->GetWorld()->GetName());
-		if (Cast<ACraftWorldWarpPoint>(OutActor)->TargetName == WarpPoint)
+		if (Cast<ACraftWarpPoint>(OutActor)->TargetName == WarpPoint)
 		{
 			//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
 			bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(
@@ -248,13 +248,13 @@ AWorldEntityManager* UWorldManager::GetWorldEntityManager()
 bool UWorldManager::TravelPlayerToWarp(APawn* PlayerCharacter, const FName WarpPoint)
 {
 	TArray<AActor*> OutActors;
-	UGameplayStatics::GetAllActorsOfClass(this, ACraftWorldWarpPoint::StaticClass(), OutActors);
+	UGameplayStatics::GetAllActorsOfClass(this, ACraftWarpPoint::StaticClass(), OutActors);
 	for (const auto OutActor : OutActors)
 	{
 		UE_LOG(LogChamingCraftWorld, Warning,
-		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ACraftWorldWarpPoint>(OutActor)->TargetName,
+		       TEXT("[🌍]  Find Warp <%s> in world <%s>"), *Cast<ACraftWarpPoint>(OutActor)->TargetName,
 		       *PlayerCharacter->GetWorld()->GetName());
-		if (Cast<ACraftWorldWarpPoint>(OutActor)->TargetName == WarpPoint)
+		if (Cast<ACraftWarpPoint>(OutActor)->TargetName == WarpPoint)
 		{
 			//TODO: 未知原因会导致这里发生传送位置不符,初步判断是生命周期问题
 			bool bIsSuccessTeleport = PlayerCharacter->SetActorLocation(

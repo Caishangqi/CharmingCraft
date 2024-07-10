@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "VolumeSceneTriggerComponent.h"
 #include "../Core/Entity/Player/NativePlayerCharacter.h"
-#include "CraftWorldWarpPoint.h"
+#include "CraftWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
@@ -70,7 +70,7 @@ void UVolumeSceneTriggerComponent::OnOverlapBegin(UPrimitiveComponent* Overlappe
 }
 
 void UVolumeSceneTriggerComponent::OnCraftWorldWarpLoaded(UNativeCraftWorld* CraftWorld,
-                                                          ACraftWorldWarpPoint* TargetCraftWorldWarpPoint)
+                                                          ACraftWarpPoint* TargetCraftWorldWarpPoint)
 {
 	if (OverlappedActor)
 	{

@@ -3,7 +3,7 @@
 
 #include "InteractSceneTrigger.h"
 
-#include "CraftWorldWarpPoint.h"
+#include "CraftWarpPoint.h"
 #include "CharmingCraft/Core/Bus/GameEventHandler.h"
 #include "CharmingCraft/Core/Libarary/CoreComponents.h"
 #include "CharmingCraft/Core/World/WorldManager.h"
@@ -33,7 +33,7 @@ void AInteractSceneTrigger::Interact_Implementation(APawn* InstigatorPawn)
 
 		// TODO: Find why CraftWorld->OnWarpDataUpdate.AddDynamic not invoke
 		CraftWorld->OnWarpDataUpdateInternal.AddLambda(
-			[this,CraftWorld](UNativeCraftWorld* InvokeCraftWorld, ACraftWorldWarpPoint* InvokeWarpPoint)
+			[this,CraftWorld](UNativeCraftWorld* InvokeCraftWorld, ACraftWarpPoint* InvokeWarpPoint)
 			{
 				if (InvokeWarpPoint->TargetName == DestinationName)
 				{
