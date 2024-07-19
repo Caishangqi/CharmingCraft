@@ -26,6 +26,9 @@ public:
 	bool HideOccludedComponent();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool ShowOccludedComponent();
+	// Whether the Component is block player view
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool GetIsOccluded() const;
 
 public:
 };
