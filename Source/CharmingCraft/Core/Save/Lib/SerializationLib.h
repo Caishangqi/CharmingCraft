@@ -62,13 +62,13 @@ TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&OutputStringNam
 FJsonSerializer::Serialize(JsonObjectName.ToSharedRef(), Writer);
 
 #define GET_CLASS_FROM_STRING(InputString) \
-FindObject<UClass>(ANY_PACKAGE, *InputString)
+FindFirstObject<UClass>(*InputString, EFindFirstObjectOptions::NativeFirst)
 
 #define GET_ENUM_AS_STRING(EnumValue, EnumType, OutputString) \
 FString OutputString;\
 do \
 { \
-UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT(#EnumType), true); \
+UEnum* EnumPtr = StaticEnum<EnumType>(); \
 if(EnumPtr != nullptr) \
 { \
 OutputString = EnumPtr->GetNameStringByValue((int64)EnumValue); \
@@ -82,7 +82,7 @@ OutputString = TEXT("Unknown"); \
 #define GET_ENUM_FROM_STRING(InputString, EnumType, OutputEnum) \
 do \
 { \
-UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT(#EnumType), true); \
+UEnum* EnumPtr = StaticEnum<EnumType>(); \
 if(EnumPtr != nullptr) \
 { \
 int64 EnumValue = EnumPtr->GetValueByName(FName(*InputString)); \

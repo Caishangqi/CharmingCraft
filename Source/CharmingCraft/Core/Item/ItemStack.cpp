@@ -119,7 +119,7 @@ UItemStack* UItemStack::CreateItemStackFromMaterial(UObject* Outer, const EMater
 
 	if (MaterialMetaMapper)
 	{
-		UEnum* MapperEnum = FindObject<UEnum>(ANY_PACKAGE, TEXT("EMaterial"), true);
+		UEnum* MapperEnum = StaticEnum<EMaterial>();
 		FString MaterialString = MapperEnum->GetNameStringByValue(static_cast<int64>(ItemMaterial));
 		FDMaterial* RowData = MaterialMetaMapper->FindRow<FDMaterial>(FName(MaterialString),
 		                                                              TEXT(

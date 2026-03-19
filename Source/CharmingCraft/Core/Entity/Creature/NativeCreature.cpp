@@ -26,10 +26,9 @@ ANativeCreature::ANativeCreature()
 	HealthIndicator->SetupAttachment(GetRootComponent());
 	BuffHandlerComponent = CreateDefaultSubobject<UBuffHandlerComponent>("BuffHandlerComp");
 	ActionComponent = CreateDefaultSubobject<UCraftActionComponent>("ActionComp");
-	
+
 	HitBox = CreateDefaultSubobject<UBoxComponent>("HitBox");
 	HitBox->SetupAttachment(RootComponent);
-
 }
 
 // Called when the game starts or when spawned
@@ -111,8 +110,9 @@ void ANativeCreature::LootFromObject_Implementation(UObject* InstigatorObject)
 				// Generate Loot Entity
 				FTransform SpawnTransform(GetActorRotation(), GetActorLocation());
 				TObjectPtr<ANativeLootEntity> LootEntity = Cast<ANativeLootEntity>(
-					UGameplayStatics::BeginDeferredActorSpawnFromClass(
-						this, LootEntityClass, SpawnTransform, ESpawnActorCollisionHandlingMethod::Undefined, this));
+					UGameplayStatics::BeginDeferredActorSpawnFromClass(this, LootEntityClass, SpawnTransform,
+					                                                   ESpawnActorCollisionHandlingMethod::Undefined,
+					                                                   this));
 				LootEntity->GenerateLootContent(LootItemStackList);
 				UGameplayStatics::FinishSpawningActor(LootEntity, SpawnTransform);
 			}

@@ -8,9 +8,9 @@
 // operator that compare priority of BuffInstance base on int priority
 struct FBuffInfoPriorityComparer
 {
-	bool operator()(const TObjectPtr<UBuffInfo>& A, const TObjectPtr<UBuffInfo>& B) const
+	bool operator()(const UBuffInfo& A, const UBuffInfo& B) const
 	{
-		return A->BuffData->Priority < B->BuffData->Priority;
+		return A.BuffData->Priority < B.BuffData->Priority;
 	}
 };
 

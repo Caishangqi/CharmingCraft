@@ -3,6 +3,8 @@
 
 #include "ItemActionComponent.h"
 
+#include <stdexcept>
+
 #include "CharmingCraft/Core/Item/ItemStack.h"
 #include "CharmingCraft/Core/Log/Logging.h"
 #include "CharmingCraft/Core/Skill/Actions/NativeAction.h"

@@ -134,7 +134,7 @@ void ADropItem::BeginPlay()
 {
 	Super::BeginPlay();
 	// 旋转
-	TArray<TObjectPtr<AActor>> OutActors;
+	TArray<AActor*> OutActors;
 	GetAttachedActors(OutActors);
 	for (auto OutActor : OutActors)
 	{

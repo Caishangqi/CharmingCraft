@@ -22,7 +22,7 @@ public:
 };
 
 UENUM(BlueprintType)
-enum class ERegionState
+enum class ERegionState:uint8
 {
 	AVAILABLE,
 	LOCKED,

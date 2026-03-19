@@ -8,7 +8,7 @@
 #include "LandChunk.generated.h"
 
 UENUM(BlueprintType)
-enum class EChunkState
+enum class EChunkState: uint8
 {
 	// The chunk is loaded and generate resource periodically
 	LOADED,
